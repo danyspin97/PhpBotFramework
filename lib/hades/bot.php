@@ -185,7 +185,7 @@ class Bot {
         $parameters = [
             'chat_id' => &$chat_id,
             'message_id' => &$message_id,
-            'from_chat_id' => &$from_chat_id
+            'from_chat_id' => &$from_chat_id,
             'disable_notification' => $disable_notification
         ];
         $url = API_URL . 'editMessageText?' . http_build_query($parameters);
