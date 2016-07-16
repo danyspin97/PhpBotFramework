@@ -105,7 +105,7 @@ class Bot {
             'disable_web_page_preview' => $disable_web_page_preview,
             'disable_notification' => $disable_notification
         ];
-        $url = API_URL . 'sendMessage?' . http_build_query($parameters);
+        $url = $api_url . 'sendMessage?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -126,7 +126,7 @@ class Bot {
             'disable_web_page_preview' => $disable_web_page_preview,
             'disable_notification' => $disable_notification
         ];
-        $url = API_URL . 'sendMessage?' . http_build_query($parameters);
+        $url = $api_url . 'sendMessage?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -147,7 +147,7 @@ class Bot {
             'disable_web_page_preview' => $disable_web_page_preview,
             'disable_notification' => $disable_notification
         ];
-        $url = API_URL . 'sendMessage?' . http_build_query($parameters);
+        $url = $api_url . 'sendMessage?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -170,7 +170,7 @@ class Bot {
             'disable_web_page_preview' => $disable_web_page_preview,
             'disable_notification' => $disable_notification
         ];
-        $url = API_URL . 'sendMessage?' . http_build_query($parameters);
+        $url = $api_url . 'sendMessage?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -188,7 +188,7 @@ class Bot {
             'from_chat_id' => &$from_chat_id,
             'disable_notification' => $disable_notification
         ];
-        $url = API_URL . 'editMessageText?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageText?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -205,7 +205,7 @@ class Bot {
             'caption' => &$caption,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
-        $url = API_URL . 'editMessageText?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageText?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -224,7 +224,7 @@ class Bot {
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
-        $url = API_URL . 'editMessageText?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageText?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -237,7 +237,7 @@ class Bot {
             'chat_id' => &$chat_id,
             'action' => &$action
         ];
-        $url = API_URL . 'sendChatAction?' . http_build_query($parameters);
+        $url = $api_url . 'sendChatAction?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -251,7 +251,7 @@ class Bot {
             'id' => &$update['callback_query']['id'],
             'text' => ''
         ];
-        $url = API_URL . 'answerCallbackQuery?' . http_build_query($parameters);
+        $url = $api_url . 'answerCallbackQuery?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -268,7 +268,7 @@ class Bot {
             'text' => &$text,
             'show_alert' => &$show_alert
         ];
-        $url = API_URL . 'answerCallbackQuery?' . http_build_query($parameters);
+        $url = $api_url . 'answerCallbackQuery?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -288,7 +288,7 @@ class Bot {
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
-        $url = API_URL . 'editMessageText?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageText?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -306,7 +306,7 @@ class Bot {
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
-        $url = API_URL . 'editMessageText?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageText?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -327,7 +327,7 @@ class Bot {
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
-        $url = API_URL . 'editMessageText?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageText?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -346,7 +346,7 @@ class Bot {
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
-        $url = API_URL . 'editMessageText?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageText?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -363,7 +363,7 @@ class Bot {
             'message_id' => &$message_id,
             'reply_markup' => &$inline_keyboard,
         ];
-        $url = API_URL . 'editMessageReplyMarkup?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageReplyMarkup?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -379,7 +379,7 @@ class Bot {
             'inline_message_id' => &$message_id,
             'reply_markup' => &$inline_keyboard,
         ];
-        $url = API_URL . 'editMessageReplyMarkup?' . http_build_query($parameters);
+        $url = $api_url . 'editMessageReplyMarkup?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
@@ -400,7 +400,7 @@ class Bot {
             'cache_time' => $cache_time
         ];
 
-        $url = API_URL . 'answerInlineQuery?' . http_build_query($parameters);
+        $url = $api_url . 'answerInlineQuery?' . http_build_query($parameters);
 
         return exec_curl_request($handle);
     }
