@@ -16,7 +16,7 @@ class Bot {
     // Chat_id of the user that interacted with the bot
     public $chat_id;
     // Database connection using class Database (optional)
-    public Database $database;
+    public $database;
     // Pdo reference (optional)
     public $pdo;
     // Redis connectio (optional)
@@ -374,7 +374,7 @@ class Bot {
      * $message_id Identifier of the message to edit
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      */
-    public function &editMessageReplyMarkup(&$message_id, &$inline_keyboard) {
+    public function &editInlineMessageReplyMarkup(&$message_id, &$inline_keyboard) {
         $parameters = [
             'inline_message_id' => &$message_id,
             'reply_markup' => &$inline_keyboard,
