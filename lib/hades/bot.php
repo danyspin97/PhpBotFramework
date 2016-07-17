@@ -16,7 +16,7 @@ class Bot {
     // Chat_id of the user that interacted with the bot
     public $chat_id;
     // Database connection using class Database (optional)
-    public Database $database;
+    public $database;
     // Pdo reference (optional)
     public $pdo;
     // Redis connectio (optional)
@@ -41,16 +41,17 @@ class Bot {
     }
 
     /*
-     * Connect to database
+     * Connect to database through the HadesSQL ORM,
+     * it doesn't need to know what DBMS you use, just enable
+     * the right driver for PDO.
+     *
      * @param
-     * $driver Driver of the database(mysql, pgsql)
      * $dbname Name of the database
      * $user Username for logging
      * $password Passoword for the $username
      */
-    public function &connectToDatabase($driver, $dbname, $user, $password) {
-        $database = new Database($driver, $dbname, $user, $password);
-        $pdo = &$database->getPDO();
+    public function &connectToDatabase($dbname, $user, $password) {
+        $database = new Database($dbname, $user, $password);
         return $database;
     }
     
