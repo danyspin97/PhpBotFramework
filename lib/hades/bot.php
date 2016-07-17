@@ -42,16 +42,15 @@ class Bot {
 
     /*
      * Connect to database through the HadesSQL ORM,
-     * it doesn't need to know what DBMS you use, just enable
-     * the right driver for PDO.
      *
      * @param
+     * $driver DBMS used
      * $dbname Name of the database
      * $user Username for logging
      * $password Passoword for the $username
      */
-    public function &connectToDatabase($dbname, $user, $password) {
-        $database = new Database($dbname, $user, $password);
+    public function &connectToDatabase($driver, $dbname, $user, $password) {
+        $database = new Database($driver, $dbname, $user, $password);
         return $database;
     }
     
