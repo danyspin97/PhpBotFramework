@@ -1,5 +1,8 @@
 {
-  "require": {
-    "phpunit/phpunit": "5.4.*"
-  }
+    "name": "wisedragonstd/hades-wrapper",
+    "description": "Hades is a lightweight and high-extensible wrapper for Telegram Bots' APIs.",
+    "require": {
+        "php": "7.*",
+        "phpunit/phpunit": "5.4.*"
+    }
 }
