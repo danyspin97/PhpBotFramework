@@ -10,21 +10,25 @@
 
 class Bot {
     // Token of the bot
-    protected $token;
+    private $token;
     // Url for api requesting
-    protected $api_url;
-    // Chat_id of the user that interacted with the bot
-    protected $chat_id;
-    // Database connection using class Database (optional)
-    public $database;
-    // Pdo reference (optional)
-    public $pdo;
-    // Redis connectio (optional)
-    public $redis;
-    // Language for multi-language bot
-    public $language;
+    private $api_url;
     // Update reference
     protected $update;
+    // Chat_id of the user that interacted with the bot
+    protected $chat_id;
+    // Inline Keyboard
+    public Inline_keyboard $inline_keyboard;
+    // Database connection using class Database (optional)
+    public Database $database;
+    // Pdo reference (optional)
+    public PDO $pdo;
+    // Redis connection (optional)
+    public REDIS $redis;
+    // Language and localitation and localitation for multi-language bot
+    public $language;
+    public $localization;
+
 
     // Contructor, simply put token bot in $token variable
     public function __construct($token) {
@@ -35,10 +39,10 @@ class Bot {
     
     public function __destruct() {
         // Close database connection by deleting the reference
-        $database = null;
+        $this->database = null;
         // Close redis connection if it is open
-        if (isset($redis))
-            $redis->close();
+        if (isset($this->redis))
+            $this->redis->close();
     }
 
     /*
@@ -70,6 +74,72 @@ class Bot {
     public function setChatIDRef(&$chat_id) {
         $this->chat_id = &$chat_id;
     }
+     
+    /*
+     * Get language for the current user, reading it from the database
+     */
+     public function &getLanguage() {
+        if (!isset($this->database)) {
+            exit;
+        }
+        $sth = $this->pdo->prepare('SELECT "language" FROM "User" WHERE "chat_id" = :chat_id');
+        $sth->bindParam(':chat_id', $this->chat_id);
+        $sth->execute();
+        $row = $sth->fetch();
+        $sth = null;
+        if (isset($row['language'])) {
+            $this->language = $row['language'];
+            return $row['language'];
+        } else {
+            $this->language = 'en';
+            return $this->language;
+        }
+     }
+     
+         /*
+     * Using Redis as a cache we store language in both database and Redis, read it from redis if
+     * it exists (the key will expire in 1 day after it is set) or read it from the database and
+     * store it in Redis
+     */
+     public function &getLanguageRedis() {
+        if (!isset($this->redis)) {
+            exit;
+        }
+        $is_language_set = $this->redis->exists($this->chat_id . ':language');
+        if ($is_language_set) {
+            $this->language = $this->redis->get($this->chat_id . 'language');
+            return $this->language;
+        } else {
+            // TODO User Database instead of $pdo
+            $redis->setEx($chat_id . ':language', 86400, getLanguage());
+            return $this->language;
+        }  
+     }
+     
+    /*
+     * Set language for the current user, first it save it on db, then change it on redis if it exists
+     * @param
+     * $language New language
+     */
+    function setLanguage($language) {
+        if (!isset($this->database)) {
+            exit;
+        }
+        $sth = $this->pdo->prepare('UPDATE "User" SET "language" = :language WHERE "chat_id" = :chat_id');
+        $sth->bindParam(':language', $language);
+        $sth->bindParam(':chat_id', $this->chat_id);
+        $sth->execute();
+        $sth = null;
+        if (isset($this->redis)) {
+            $this->redis->setEx($chat_id . ':language', 86400, $language); 
+        }
+    }
+    
+    public function setLocalization(&$localization) {
+        $this->localization = &$localization;
+    }
+    
+    
     
     // Read update and sent it to the right method
     public function processUpdate(&$update) {
@@ -86,19 +156,23 @@ class Bot {
     }
     
     protected function processMessage() {
-        $message = &$update['message'];
+        $message = &$this->update['message'];
+        $this->chat_id = &$message['from']['id'];
     }
     
     protected function processCallbackQuery() {
-        $callback_query = &$update['callback_query'];
+        $callback_query = &$this->update['callback_query'];
+        $this->chat_id = &$callback_query['from']['id'];
     }
     
     protected function processInlineQuery() {
-        $inline_query = &$update['inline_query'];
+        $inline_query = &$this->update['inline_query'];
+        $this->chat_id = &$inline_query['from']['id'];
     }
     
     protected function processInlineResult() {
-        $inline_result = &$update['chosen_inline_result'];
+        $inline_result = &$this->update['chosen_inline_result'];
+        $this->chat_id = &$inline_result['from']['id'];
     }
     
     /*
@@ -132,6 +206,8 @@ class Bot {
         foreach($updates as $update) {
             processUpdate($update);
         }
+        
+        $this->redis->set($variable_name, $offset + count($updates) + 1);
     }
     
      /*
@@ -143,19 +219,26 @@ class Bot {
      */
     public function getUpdatesDatabase($limit = 100, $timeout = 0, $table_name = 'TELEGRAM', $column_name = 'offset') {
         if (!isset($this->database)) {
-                exit;
-            }
-            $sth = $this->pdo->prepare('SELECT :column_name FROM :table_name');
-            $sth->bindParam(':column_name', $column_name);
-            $sth->bindParam(':table_name', $table_name);
-            $sth->execute();
-            $offset = $sth->fetchColumn();
-            $sth = null;
-            $updates = &getUpdates($offset, $limit, $timeout);
-            
-            foreach($updates as $update) {
-                processUpdate($update);
+            exit;
         }
+        $sth = $this->pdo->prepare('SELECT :column_name FROM :table_name');
+        $sth->bindParam(':column_name', $column_name);
+        $sth->bindParam(':table_name', $table_name);
+        $sth->execute();
+        $offset = $sth->fetchColumn();
+        $sth = null;
+        $updates = &getUpdates($offset, $limit, $timeout);
+            
+        foreach($updates as $update) {
+            processUpdate($update);
+        }
+        
+        $sth = $this->pdo->prepare('UPDATE :table_name SET :column_name = :new_offset');
+        $sth->bindParam(':column_name', $column_name);
+        $sth->bindParam(':table_name', $table_name);
+        $new_offset = $offset + count($updates) + 1;
+        $sth->bindParam(':new_offset', $new_offset);
+        $sth->execute();
     }
     
     /*

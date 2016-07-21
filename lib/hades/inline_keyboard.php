@@ -1,9 +1,11 @@
 <?php
 
 class Inline_keyboard {
-    private $inline_keyboard;
-
-    public function __construct($array = null) {
+    protected $inline_keyboard;
+    protected Bot $bot;
+    
+    public function __construct($bot = null, $array = null) {
+        $this->bot = $bot;
         $this->inline_keyboard = $array ?? array();
     }
 
