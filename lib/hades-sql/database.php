@@ -3,7 +3,9 @@
     class Database
     {
     	protected $pdo;
-        protected Bot $bot;
+        //protected Bot $bot;
+        public $table = NULL;
+        public $where_condition = NULL;
 
     	public function __construct($driver, $dbname, $user, $password)
     	{
@@ -38,6 +40,33 @@
     	}
         
         /**
+         * == SYNTAX SUGAR
+         * HadesSQL provides some 'scope function' that change the
+         * table's scope for the current database object.
+         * @example
+         *   $db->from("user")->delete(["*"], "where" => "id = 1")
+         */
+
+        public function from($table)
+        {
+            $this->table = $table;
+            return $this;
+        }
+
+        public function into($table)
+        {
+            $this->table = $table;
+            return $this;
+        }
+
+        public function where($condition)
+        {
+            $this->where_condition = $condition;
+            return $this;
+        }
+
+
+        /**
     	 * == CREATE
     	 * This method takes as first argument the table's name and 
     	 * as second argument an hash table which contains all table's columns
@@ -67,16 +96,15 @@
 
         /**
          * == CREATE
-         * This method takes as first argument the table's name and 
-         * as second arguments an hash table which contains all table's columns
-         * and respective values.
+         * This method takes as first argument an hash table which contains 
+         * all table's columns and respective values.
          *
          * The function automatically add single quote to string values.
          * @example
-         *   $crud->insertInto("users", ["name" => "Dom", "age" => 16])
+         *   $crud->into("users")->insert(["name" => "Dom", "age" => 16])
          */
 
-        public function insertInto($table_name, $columns)
+        public function insert($columns)
         {
             $columns_keys = [];
             $columns_values = [];
@@ -85,21 +113,68 @@
             if(empty($columns) == 1)
                 throw new Exception("Expected at least one column");
 
+            /* Raise an exception if table is not defined */
+            if($this->table == NULL)
+                throw new Exception("The target table isn't defined.");
+
             foreach($columns as $key => $value)
             {
                 if(gettype($value) == "string")
                   $value = "'$value'";
 
-                array_push($columns, $key);
+                array_push($columns_keys, $key);
                 array_push($columns_values, $value);
             }
 
-            $columns = join(", ", $columns);
+            $columns_keys = join(", ", $columns_keys);
             $columns_values = join(", ", $columns_values);
 
-            $statement = "insert into $name ($columns) values($columns_values)";
+            $statement = "insert into $this->table ($columns_keys) values($columns_values)";
             
             return $this->execute($statement);
+        }
+
+        /**
+         * == READ
+         * This method return all records from a table and pass 
+         * each record to an optional callback function.
+         * @example
+         *   $counter = 1
+         *   $db->from("users")->selectAll(function($row){ $counter++; });
+         */
+
+        function selectAll($callback=NULL)
+        {
+            /* Raise an exception if table is not defined */
+            if($this->table == NULL)
+                throw new Exception("The target table isn't defined.");
+
+            return $this->execute("select * from $this->table", $callback);
+        }
+
+        /**
+         * == READ
+         * This method act like a classic SELECT statement.
+         * The first argument takes the list of columns to return per record,
+         * if not specified it return all the columns.
+         * @example
+         *   $db->from("users")->where("sex='male'")->select(['id'], function($row){
+         *     print $row['id'] . "\n";
+         *   });
+         */
+
+        function select($columns, $callback=NULL)
+        {
+            if($columns == [])
+                array_push($columns, "*");
+
+            $columns = join(", ", $columns);
+            $statement = "select $columns from $this->table";
+
+            if($this->where_condition != NULL || $this->where_condition != "")
+                $statement .= " where $this->where_condition";
+
+            return $this->execute($statement, $callback);
         }
 
         /**
