@@ -145,13 +145,13 @@ class Bot {
     public function processUpdate(&$update) {
         $this->update = &$update;
         if (isset($update['message'])) {
-            processMessage();
+            $this->processMessage();
         } elseif (isset($update['callback_query'])) {
-            processCallbackQuery($update['callback_query']);
+            $this->processCallbackQuery($update['callback_query']);
         } elseif (isset($update['inline_query'])) {
-            processInlineQuery($update['inline_query']);
+            $this->processInlineQuery($update['inline_query']);
         } elseif (isset($update['chosen_inline_result'])) {
-            processInlineResult($update['chosen_inline_result']);
+            $this->processInlineResult($update['chosen_inline_result']);
         }
     }
     
@@ -245,14 +245,17 @@ class Bot {
      * Send a text only message (https://core.telegram.org/bots/api#sendmessage)
      * @param
      * $text Text of the message
+     * $inline_keyboard reply_markup of the message (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
      */
-    public function &sendDefaultMessage($text, $parse_mode = 'HTML', $disable_web_page_preview = false, $disable_notification = false) {
+    public function &sendMessage($text, $inline_keyboard = null, $reply_to = null, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
             'parse_mode' => $parse_mode,
             'disable_web_page_preview' => $disable_web_page_preview,
+            'reply_markup' => $inline_keyboard,
+            'reply_to_message_id' => 
             'disable_notification' => $disable_notification
         ];
         $url = $this->api_url . 'sendMessage?' . http_build_query($parameters);
@@ -260,7 +263,7 @@ class Bot {
         return $this->exec_curl_request($url);
     }
 
-    public function &sendDefaultMessageRef(&$text, $parse_mode = 'HTML', $disable_web_page_preview = false, $disable_notification = false) {
+    public function &sendMessageRef(&$text, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
@@ -280,21 +283,8 @@ class Bot {
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
      */
-    public function &sendMessageKeyboard($text, $inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false, $disable_notification	= false) {
-        $parameters = [
-            'chat_id' => &$this->chat_id,
-            'text' => &$text,
-            'parse_mode' => $parse_mode,
-            'reply_markup' => &$inline_keyboard,
-            'disable_web_page_preview' => $disable_web_page_preview,
-            'disable_notification' => $disable_notification
-        ];
-        $url = $this->api_url . 'sendMessage?' . http_build_query($parameters);
 
-        return $this->exec_curl_request($url);
-    }
-
-    public function &sendMessageKeyboardRef(&$text, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false, $disable_notification	= false) {
+    public function &sendMessageKeyboard(&$text, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification	= false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
@@ -315,21 +305,8 @@ class Bot {
      * $message_id Id of the message the bot will reply
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
      */
-    public function &sendReplyMessage($text, $message_id, $parse_mode = 'HTML', $disable_web_page_preview = false, $disable_notification = false) {
-        $parameters = [
-            'chat_id' => &$this->chat_id,
-            'text' => &$text,
-            'reply_to_message_id' => &$message_id,
-            'parse_mode' => $parse_mode,
-            'disable_web_page_preview' => $disable_web_page_preview,
-            'disable_notification' => $disable_notification
-        ];
-        $url = $this->api_url . 'sendMessage?' . http_build_query($parameters);
-
-        return $this->exec_curl_request($url);
-    }
     
-    public function &sendReplyMessageRef(&$text, &$message_id, $parse_mode = 'HTML', $disable_web_page_preview = false, $disable_notification = false) {
+    public function &sendReplyMessage(&$text, &$message_id, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
@@ -350,23 +327,8 @@ class Bot {
      * $message_id Id of the message the bot will reply
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
-     */
-    public function &sendReplyMessageKeyboard($text, $message_id, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false, $disable_notification	= false) {
-        $parameters = [
-            'chat_id' => &$this->chat_id,
-            'text' => &$text,
-            'reply_to_message_id' => &$message_id,
-            'parse_mode' => $parse_mode,
-            'reply_markup' => &$inline_keyboard,
-            'disable_web_page_preview' => $disable_web_page_preview,
-            'disable_notification' => $disable_notification
-        ];
-        $url = $this->api_url . 'sendMessage?' . http_build_query($parameters);
-
-        return $this->exec_curl_request($url);
-    }
-    
-    public function &sendReplyMessageKeyboardRef(&$text, &$message_id, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false, $disable_notification	= false) {
+     */    
+    public function &sendReplyMessageKeyboard(&$text, &$inline_keyboard, &$message_id, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
@@ -415,12 +377,14 @@ class Bot {
      * Send a photo (https://core.telegram.org/bots/api#sendphoto)
      * @param
      * $photo Photo to send, can be a file_id or a string referencing the location of that image
+     * $inline_keyboard reply_markup of the message (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      */
-    public function &sendPhoto($photo, $caption = '', $disable_notification = false) {
+    public function &sendPhoto($photo, $inline_keyboard = null, $caption = '', $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'photo' => &$photo,
             'caption' => &$caption,
+            'reply_markup' => &$inline_keyboard,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
         $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
@@ -428,11 +392,12 @@ class Bot {
         return $this->exec_curl_request($url);
     }
     
-    public function &sendPhotoRef(&$photo, $caption = '', $disable_notification = false) {
+    public function &sendPhotoRef(&$photo, $inline_keyboard = null, $caption = '', $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'photo' => &$photo,
             'caption' => &$caption,
+            'reply_markup' => &$inline_keyboard,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
         $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
@@ -446,11 +411,13 @@ class Bot {
      * $photo Photo to send, can be a file_id or a string referencing the location of that image
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      */
-    public function &sendPhotoKeyboard($photo, $inline_keyboard, $caption = '', $disable_notification = false) {
+    
+    public function &sendPhotoKeyboard(&$photo, &$inline_keyboard, $caption = '', $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'photo' => &$photo,
             'caption' => &$caption,
+            'reply_markup' => &$inline_keyboard,
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
@@ -459,19 +426,31 @@ class Bot {
         return $this->exec_curl_request($url);
     }
     
-    public function &sendPhotoKeyboardRef(&$photo, &$inline_keyboard, $caption = '', $disable_notification = false) {
+    /*
+     *  Send sticker (https://core.telegram.org/bots/api#sendsticker)
+     */
+    public function &sendSticker($sticker, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
-            'photo' => &$photo,
-            'caption' => &$caption,
-            'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_page_preview,
+            'sticker' => &$sticker,
+            'disable_notification' => $disable_notification
         ];
-        $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
+        $url = $this->api_url . 'sendSticker?' . http_build_query($parameters);
 
         return $this->exec_curl_request($url);
     }
+    
+    public function &sendStickerRef(&$sticker, $disable_notification = false) {
+        $parameters = [
+            'chat_id' => &$this->chat_id,
+            'sticker' => &$sticker,
+            'disable_notification' => $disable_notification
+        ];
+        $url = $this->api_url . 'sendSticker?' . http_build_query($parameters);
 
+        return $this->exec_curl_request($url);
+    }
+    
     /*
      * Change the bot status for 5 or less seconds to $action (https://core.telegram.org/bots/api#sendchataction)
      */
@@ -491,6 +470,27 @@ class Bot {
             'action' => &$action
         ];
         $url = $this->api_url . 'sendChatAction?' . http_build_query($parameters);
+
+        return $this->exec_curl_request($url);
+    }
+    
+    /*
+     * Return basic info about a user or a chat identified by a chat_id (https://core.telegram.org/bots/api#getchat)
+     */
+    public function &getChat($chat_id) {
+        $parameters = [
+            'chat_id' => &$chat_id,
+        ];
+        $url = $this->api_url . 'getChat?' . http_build_query($parameters);
+
+        return $this->exec_curl_request($url);
+    }
+    
+    public function &getChatRef(&$chat_id) {
+        $parameters = [
+            'chat_id' => &$chat_id,
+        ];
+        $url = $this->api_url . 'getChat?' . http_build_query($parameters);
 
         return $this->exec_curl_request($url);
     }
@@ -543,11 +543,12 @@ class Bot {
      * $text New text of the message
      * $message_id Identifier of the message to edit
      */
-    public function &editMessageText($text, $message_id, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    public function &editMessageText($text, $message_id, $inline_keyboard = null, $parse_mode = 'HTML', $disable_web_page_preview = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'message_id' => &$message_id,
             'text' => &$text,
+            'reply_markup' => &$inline_keyboard,
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
@@ -575,10 +576,11 @@ class Bot {
      * $text New text of the message
      * $message_id Identifier of the message to edit
      */
-    public function &editInlineMessageText($text, $inline_message_id, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    public function &editInlineMessageText($text, $inline_message_id, $inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false) {
         $parameters = [
             'inline_message_id' => &$inline_message_id,
             'text' => &$text,
+            'reply_markup' => &$inline_keyboard,
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_page_preview,
         ];
@@ -606,21 +608,7 @@ class Bot {
      * $message_id Identifier of the message to edit
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      */
-    public function &editMessageTextInlineKeyboard($text, $message_id, $inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false) {
-        $parameters = [
-            'chat_id' => &$this->chat_id,
-            'message_id' => &$message_id,
-            'text' => &$text,
-            'reply_markup' => &$inline_keyboard,
-            'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_page_preview,
-        ];
-        $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
-
-        return $this->exec_curl_request($url);
-    }
-    
-    public function &editMessageTextInlineKeyboardRef(&$text, &$message_id, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    public function &editMessageTextKeyboard(&$text, &$inline_keyboard, &$message_id, $parse_mode = 'HTML', $disable_web_page_preview = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'message_id' => &$message_id,
@@ -640,7 +628,8 @@ class Bot {
      * $text New text of the message
      * $message_id Identifier of the message to edit
      */
-    public function &editInlineMessageTextInlineKeyboard(&$text, &$inline_message_id, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    
+    public function &editInlineMessageTextInlineKeyboard(&$text, &$inline_keyboard, &$inline_message_id, $parse_mode = 'HTML', $disable_web_page_preview = false) {
         $parameters = [
             'inline_message_id' => &$inline_message_id,
             'text' => &$text,
@@ -659,7 +648,18 @@ class Bot {
      * $message_id Identifier of the message to edit
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      */
-    public function &editMessageReplyMarkup(&$message_id, &$inline_keyboard) {
+    public function &editMessageReplyMarkup($message_id, $inline_keyboard) {
+        $parameters = [
+            'chat_id' => &$this->chat_id,
+            'message_id' => &$message_id,
+            'reply_markup' => &$inline_keyboard,
+        ];
+        $url = $this->api_url . 'editMessageReplyMarkup?' . http_build_query($parameters);
+
+        return $this->exec_curl_request($url);
+    }
+    
+    public function &editMessageReplyMarkupRef(&$message_id, &$inline_keyboard) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'message_id' => &$message_id,
@@ -695,6 +695,40 @@ class Bot {
 
         return $this->exec_curl_request($url);
     }
+    
+    /*
+     * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
+     * without showing any results to the user
+     * @param
+     * $switch_pm_text Text to show on the button
+     */
+    public function &answerEmptyInlineQuerySwitchPM($switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
+        $parameters = [
+            'inline_query_id' => &$update['inline_query']['id'],
+            'switch_pm_text' => &$switch_pm_text,
+            'is_personal' => $is_personal,
+            'switch_pm_parameter' => $switch_pm_parameter,
+            'cache_time' => $cache_time
+        ];
+
+        $url = $this->api_url . 'answerInlineQuery?' . http_build_query($parameters);
+
+        return $this->exec_curl_request($url);
+    }
+    
+    public function &answerEmptyInlineQuerySwitchPMRef(&$switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
+        $parameters = [
+            'inline_query_id' => &$update['inline_query']['id'],
+            'switch_pm_text' => &$switch_pm_text,
+            'is_personal' => $is_personal,
+            'switch_pm_parameter' => $switch_pm_parameter,
+            'cache_time' => $cache_time
+        ];
+
+        $url = $this->api_url . 'answerInlineQuery?' . http_build_query($parameters);
+
+        return $this->exec_curl_request($url);
+    }
 
     /*
      * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
@@ -702,12 +736,12 @@ class Bot {
      * $results Array on InlineQueryResult (https://core.telegram.org/bots/api#inlinequeryresult)
      * $switch_pm_text Text to show on the button
      */
-    public function &answerInlineQuerySwitchPM($results, $switch_pm_text, $is_personal = true, $cache_time = 300) {
+    public function &answerInlineQuerySwitchPM($results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
         $parameters = [
             'inline_query_id' => &$update['inline_query']['id'],
             'switch_pm_text' => &$switch_pm_text,
             'is_personal' => $is_personal,
-            'switch_pm_parameter' => 'show_ab',
+            'switch_pm_parameter' => $switch_pm_parameter,
             'results' => &$results,
             'cache_time' => $cache_time
         ];
@@ -717,17 +751,35 @@ class Bot {
         return $this->exec_curl_request($url);
     }
     
-    public function &answerInlineQuerySwitchPMRef(&$results, &$switch_pm_text, $is_personal = true, $cache_time = 300) {
+    public function &answerInlineQuerySwitchPMRef(&$results, &$switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
         $parameters = [
             'inline_query_id' => &$update['inline_query']['id'],
             'switch_pm_text' => &$switch_pm_text,
             'is_personal' => $is_personal,
-            'switch_pm_parameter' => 'show_ab',
+            'switch_pm_parameter' => $switch_pm_parameter,
             'results' => &$results,
             'cache_time' => $cache_time
         ];
 
         $url = $this->api_url . 'answerInlineQuery?' . http_build_query($parameters);
+
+        return $this->exec_curl_request($url);
+    }
+    
+    function &apiRequest($method, $parameters) {
+        if (!is_string($method)) {
+            error_log("Method name must be a string\n");
+            return false;
+        }
+
+        if (!$parameters) {
+            $parameters = array();
+        } else if (!is_array($parameters)) {
+            error_log("Parameters must be an array\n");
+            return false;
+        }
+
+        $url = $this->api_url . $method.'?'. http_build_query($parameters);
 
         return $this->exec_curl_request($url);
     }

@@ -5,53 +5,40 @@ class Inline_query_results {
     private $id_article;
 
     public function __construct() {
-        $results = [];
-        $id_article = 0;
+        $this->results = [];
+        $this->id_article = 0;
     }
 
-    public function newArticle($title, $message_text, $description, $parse_mode = 'HTML', $disable_web_page_preview = false) {
-        array_push($results, [
+    public function newArticle($title, $message_text, $description,  $inline_keyboard = null, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+        array_push($this->results, [
             'type' => 'article',
-            'id' => (string)$id_article,
+            'id' => (string)$this->id_article,
             'title' => $title,
             'message_text' => $message_text,
             'description' => $description,
-            'parse_mode' => 'HTML',
-            'disable_web_page_preview' => $disable_web_page_preview
-        ]);
-        $id_article++;
-    }
-
-    public function newArticleKeyboard($title, $message_text, $description, $inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false) {
-        array_push($results, [
-            'type' => 'article',
-            'id' => (string)$id_article,
-            'title' => $title,
-            'message_text' => $message_text,
-            'description' => $description,
+            'parse_mode' => $parse_mode,
             'reply_markup' => $inline_keyboard,
-            'parse_mode' => 'HTML',
             'disable_web_page_preview' => $disable_web_page_preview
         ]);
-        $id_article++;
+        return $this->id_article++;
     }
 
-    public function newArticleKeyboardRef(&$title, &$message_text, &$description, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false) {
-        array_push($results, [
+    public function newArticleKeyboard(&$title, &$message_text, &$description, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+        array_push($this->results, [
             'type' => 'article',
-            'id' => (string)$id_article,
+            'id' => (string)$this->id_article,
             'title' => &$title,
             'message_text' => &$message_text,
             'description' => &$description,
             'reply_markup' => &$inline_keyboard,
-            'parse_mode' => 'HTML',
+            'parse_mode' => $parse_mode,
             'disable_web_page_preview' => $disable_web_page_preview
         ]);
-        $id_article++;
+        return $this->id_article++;
     }
 
     public function &getResults() {
-        $results = json_encode($results);
-        return $results;
+        $this->results = json_encode($this->results);
+        return $this->results;
     }
 }

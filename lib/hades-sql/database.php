@@ -3,7 +3,7 @@
     class Database
     {
     	protected $pdo;
-        //protected Bot $bot;
+        protected Bot $bot;
         public $table = NULL;
         public $where_condition = NULL;
 

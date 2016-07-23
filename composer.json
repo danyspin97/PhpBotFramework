@@ -1,8 +1,23 @@
 {
     "name": "wisedragonstd/hades-wrapper",
     "description": "Hades is a lightweight and high-extensible wrapper for Telegram Bots' APIs.",
+    "type": "wrapper",
+    "keywords": ["telegram","bot", "wrapper", "telegram-bot"],
+    "homepage": "https://gitlab.com/WiseDragonStd/HadesWrapper",
+    "authors": [
+        {
+            "name": "Dany Spin",
+            "homepage": "https://gitlab.com/u/danyspin97",
+            "role": "Lead Developer"
+        },
+        {
+            "name": "Dom Corvasce",
+            "homepage": "https://gitlab.com/u/dom.corvasce",
+            "role": "Developer"
+        }
+    ],
+    "license": "AGPLv3",
     "require": {
-        "php": "7.*",
-        "phpunit/phpunit": "5.4.*"
+        "php": "7.*"
     }
 }
