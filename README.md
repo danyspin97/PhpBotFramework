@@ -1,7 +1,6 @@
 # Hades
-![Version Badge](https://img.shields.io/badge/version-0.3-lightgrey.svg?style=flat)
-![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/37c6ba26de864c1e966aa4813b538e96)](https://www.codacy.com/app/danyspin97/HadesWrapper?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=WiseDragonStd/HadesWrapper/&amp;utm_campaign=Badge_Grade)
+![Version Badge](https://img.shields.io/badge/version-0.3-lightgrey.svg?style=flat) ![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/37c6ba26de864c1e966aa4813b538e96)](https://www.codacy.com/app/danyspin97/HadesWrapper?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=WiseDragonStd/HadesWrapper/&amp;utm_campaign=Badge_Grade)
+
 *Hades* is a lightweight and high-extensible wrapper for Telegram Bots' APIs.
 
 ## Getting Started
@@ -14,7 +13,7 @@ git clone https://gitlab.com/WiseDragonStd/HadesWrapper
 
 ## Features and roadmap
 
-[x] Bot class
+- [x] Bot class
     - [x] connectToDatabase
     - [x] connectToRedis
     - [x] Api methods
