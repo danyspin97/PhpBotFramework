@@ -1,5 +1,5 @@
 # Hades
-![Version Badge](https://img.shields.io/badge/version-0.3-lightgrey.svg?style=flat) ![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/37c6ba26de864c1e966aa4813b538e96)](https://www.codacy.com/app/danyspin97/HadesWrapper?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=WiseDragonStd/HadesWrapper/&amp;utm_campaign=Badge_Grade)
+![Version Badge](https://img.shields.io/badge/version-0.3-lightgrey.svg?style=flat)![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/37c6ba26de864c1e966aa4813b538e96)](https://www.codacy.com/app/danyspin97/HadesWrapper?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=WiseDragonStd/HadesWrapper/&amp;utm_campaign=Badge_Grade)
 
 *Hades* is a lightweight and high-extensible wrapper for Telegram Bots' APIs.
 
@@ -28,31 +28,31 @@ git clone https://gitlab.com/WiseDragonStd/HadesWrapper
             - [x] sendReplyMessageKeyboard
         - [x] forwardMessage
         - [x] sendPhoto
-        - [] sendAudio
-        - [] sendDocument
+        - [ ] sendAudio
+        - [ ] sendDocument
         - [x] sendSticker
-        - [] sendVideo
-        - [] sendVoice
-        - [] sendLocation
-        - [] sendVenue
-        - [] sendContact
+        - [ ] sendVideo
+        - [ ] sendVoice
+        - [ ] sendLocation
+        - [ ] sendVenue
+        - [ ] sendContact
         - [x] sendChatAction
-        - [] getUserProfilePhotos
-        - [] getFile
-        - [] kickChatMember
-        - [] leaveChat
-        - [] unbanChatMember
+        - [ ] getUserProfilePhotos
+        - [ ] getFile
+        - [ ] kickChatMember
+        - [ ] leaveChat
+        - [ ] unbanChatMember
         - [x] getChat
-        - [] getChatAdministrators
-        - [] getChatMembersCount
-        - [] getChatMember
+        - [ ] getChatAdministrators
+        - [ ] getChatMembersCount
+        - [ ] getChatMember
         - [x] answerCallbackQuery
             - [x] answerEmptyCallbackQuery
         - [x] editMessageText
             - [x] editInlineMessageText
             - [x] editMessageTextKeyboard
             - [x] editInlineMessageTextKeyboard
-        - [] editMessageCaption
+        - [ ] editMessageCaption
         - [x] editMessageReplyMarkup
             - [x] editInlineMessageReplyMarkup
         - [x] answerInlineQuery
@@ -61,28 +61,28 @@ git clone https://gitlab.com/WiseDragonStd/HadesWrapper
     - [x] addLevelButtons
     - [x] getKeyboard
         - [x] getNoJSONKeyboard
-    - [] getListKeyboard
-    - [] getBackKeyboard
+    - [ ] getListKeyboard
+    - [ ] getBackKeyboard
 - [x] Inline_query_results
     - [x] newArticle
         - [x] newArticleKeyboard
-    - [] newResult
+    - [ ] newResult
     - [x] getResults
 -[x] Database
     - [x] getPDO
     - [x] createTable
     - [x] insertTable
     - [x] deleteTable
-- [] Examples
-    - [] Webhook
-    - [] getUpdateDatabase
-    - [] getUpdateRedis
-    - [] configuration
+- [ ] Examples
+    - [ ] Webhook
+    - [ ] getUpdateDatabase
+    - [ ] getUpdateRedis
+    - [ ] configuration
 - [x] Documentation
     - [x] Readme
     - [x] License
     - [x] Changelog
-    - [] Function examples
+    - [ ] Function examples
 
 ## Author
 This wrapper was developed by @WiseDragonStd.
