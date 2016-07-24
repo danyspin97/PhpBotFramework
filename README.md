@@ -1,5 +1,5 @@
 # Hades
-![Version Badge](https://img.shields.io/badge/version-0.3-lightgrey.svg?style=flat)![License Badge](https://img.shields.io/badge/license-AGPLv3-blue.svg?style=flat)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/37c6ba26de864c1e966aa4813b538e96)](https://www.codacy.com/app/danyspin97/HadesWrapper?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=WiseDragonStd/HadesWrapper/&amp;utm_campaign=Badge_Grade)
+![Version Badge](https://img.shields.io/badge/version-0.3-lightgrey.svg?style=flat)![License Badge](https://img.shields.io/badge/license-LGPL-blue.svg?style=flat)[![Codacy Badge](https://api.codacy.com/project/badge/Grade/37c6ba26de864c1e966aa4813b538e96)](https://www.codacy.com/app/danyspin97/HadesWrapper?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=WiseDragonStd/HadesWrapper/&amp;utm_campaign=Badge_Grade)
 
 *Hades* is a lightweight and high-extensible wrapper for Telegram Bots' APIs.
 
@@ -68,16 +68,18 @@ git clone https://gitlab.com/WiseDragonStd/HadesWrapper
         - [x] newArticleKeyboard
     - [ ] newResult
     - [x] getResults
--[x] Database
+- [x] Database
     - [x] getPDO
     - [x] createTable
     - [x] insertTable
     - [x] deleteTable
-- [ ] Examples
+- [ ] Templates
     - [ ] Webhook
     - [ ] getUpdateDatabase
     - [ ] getUpdateRedis
     - [ ] configuration
+- [ ] Examples
+    - [ ] Hellobot
 - [x] Documentation
     - [x] Readme
     - [x] License
@@ -89,6 +91,6 @@ This wrapper was developed by @WiseDragonStd.
 - Bot, Inline_keyboard and Inline_query_results classes created by @danyspin97
 - Database class created by @dom.theseeker
 
-## [License](https://gitlab.com/WiseDragonStd/HadesWrapper/blob/master/LICENSE.md)
+## [License](https://www.gnu.org/licenses/lgpl-3.0.en.html)
 
-Hades is released under GNU GPLv3 license generally know as AGPLv3.
+Hades is released under GNU Lesser General Public License.

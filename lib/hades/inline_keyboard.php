@@ -3,7 +3,7 @@
 class Inline_keyboard {
     protected $inline_keyboard;
     protected Bot $bot;
-    
+
     public function __construct($bot = null, $array = null) {
         $this->bot = $bot;
         $this->inline_keyboard = $array ?? array();

@@ -34,7 +34,6 @@ class Bot {
     public function __construct($token) {
         $this->token = &$token;
         $this->api_url = 'https://api.telegram.org/bot' . $token . '/';
-        
     }
     
     public function __destruct() {
@@ -96,14 +95,14 @@ class Bot {
         }
      }
      
-         /*
+    /*
      * Using Redis as a cache we store language in both database and Redis, read it from redis if
      * it exists (the key will expire in 1 day after it is set) or read it from the database and
      * store it in Redis
      */
-     public function &getLanguageRedis() {
+    public function &getLanguageRedis() {
         if (!isset($this->redis)) {
-            exit;
+            return 'en';
         }
         $is_language_set = $this->redis->exists($this->chat_id . ':language');
         if ($is_language_set) {
@@ -121,7 +120,7 @@ class Bot {
      * @param
      * $language New language
      */
-    function setLanguage($language) {
+    public function setLanguage($language) {
         if (!isset($this->database)) {
             exit;
         }
@@ -131,7 +130,7 @@ class Bot {
         $sth->execute();
         $sth = null;
         if (isset($this->redis)) {
-            $this->redis->setEx($chat_id . ':language', 86400, $language); 
+            $this->redis->setEx($chat_id . ':language', 86400, $language);
         }
     }
     
@@ -766,7 +765,7 @@ class Bot {
         return $this->exec_curl_request($url);
     }
     
-    function &apiRequest($method, $parameters) {
+    public function &apiRequest($method, $parameters) {
         if (!is_string($method)) {
             error_log("Method name must be a string\n");
             return false;
@@ -824,5 +823,4 @@ class Bot {
         }
       return $response;
     }
-
 }

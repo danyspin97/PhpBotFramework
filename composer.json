@@ -16,7 +16,7 @@
             "role": "Developer"
         }
     ],
-    "license": "AGPLv3",
+    "license": "LGPL",
     "require": {
         "php": "7.*"
     }
