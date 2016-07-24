@@ -87,7 +87,7 @@ git clone https://gitlab.com/WiseDragonStd/HadesWrapper
 ## Author
 This wrapper was developed by @WiseDragonStd.
 - Bot, Inline_keyboard and Inline_query_results classes created by @danyspin97
-- Database class created by @xtheseeker
+- Database class created by @dom.theseeker
 
 ## [License](https://gitlab.com/WiseDragonStd/HadesWrapper/blob/master/LICENSE.md)
 
