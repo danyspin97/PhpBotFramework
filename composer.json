@@ -1,8 +1,10 @@
 {
     "name": "wisedragonstd/hades-wrapper",
     "description": "Hades is a lightweight and high-extensible wrapper for Telegram Bots' APIs.",
-    "type": "wrapper",
-    "keywords": ["telegram","bot", "wrapper", "telegram-bot"],
+    "version": "0.3.0-alpha",
+    "type": "library",
+    "license": "LGPL-3.0+",
+    "keywords": ["telegram", "bot", "wrapper", "telegram-bot"],
     "homepage": "https://gitlab.com/WiseDragonStd/HadesWrapper",
     "authors": [
         {
@@ -16,8 +18,24 @@
             "role": "Developer"
         }
     ],
-    "license": "LGPL",
     "require": {
-        "php": "7.*"
+        "php": ">=7.0",
+        "ext-redis": "*",
+        "ext-curl": "*",
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.4.*",
+    },
+    "suggest": {
+        "ext-mysql": "*",
+        "ext-pgsql": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "HadesWrapper\\": ["lib/hades/", "lib/hades-sql"]
+        }
+    },
+    "archive": {
+        "exclude": ["/examples", "/templates", "/tests", "/ci", "/*.md", "phpunit.xml"]
     }
 }

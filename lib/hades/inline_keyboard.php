@@ -2,7 +2,7 @@
 
 class Inline_keyboard {
     protected $inline_keyboard;
-    protected Bot $bot;
+    protected $bot;
 
     public function __construct($bot = null, $array = null) {
         $this->bot = $bot;
@@ -20,7 +20,6 @@ class Inline_keyboard {
         return $reply_markup;
     }
 
-    
     public function addLevelButtons(...$buttons) {
         array_push($this->inline_keyboard, $buttons);
     }

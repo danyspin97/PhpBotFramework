@@ -1,0 +1,24 @@
+# Select image from https://hub.docker.com/r/_/php/
+image: php:7.0
+
+cache:
+  untracked: true
+  paths:
+  - vendor/
+
+before_script:
+# Install dependencies
+- bash ci/docker_install.sh > /dev/null
+
+services:
+- mysql:latest
+- redis:latest
+
+variables:
+  # Configure mysql service (https://hub.docker.com/_/mysql/)
+  MYSQL_DATABASE: hello_world_test
+  MYSQL_ROOT_PASSWORD: mysql
+
+test:app:
+  script:
+  - phpunit --configuration phpunit.xml

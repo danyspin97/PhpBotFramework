@@ -2,7 +2,7 @@
 
 class Database {
     protected $pdo;
-    protected Bot $bot;
+    protected $bot;
     public $table = null;
     public $where_condition = null;
 
@@ -16,8 +16,8 @@ class Database {
     public function &getPDO() {
         return $this->pdo;
     }
-        
-    /** 
+
+    /**
      * This function takes as arguments a valid SQL query and an
      * optional callback function to call on the returned records.
      * The callback must accept an argument who is the single record's row.
@@ -29,14 +29,14 @@ class Database {
 
         /** Users can avoid to specify a callback function */
         if ($callback != null) {
-            while($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
                 $callback($row);
             }
         }
 
         return 0;
     }
-        
+
     /**
      * == SYNTAX SUGAR
      * HadesSQL provides some 'scope function' that change the
@@ -63,7 +63,7 @@ class Database {
 
     /**
      * == CREATE
-     * This method takes as first argument the table's name and 
+     * This method takes as first argument the table's name and
      * as second argument an hash table which contains all table's columns
      * @example
      *   $crud->createTable("user", ["name" => "text", "money" => "real"])
@@ -76,15 +76,15 @@ class Database {
 
         $formatted_columns = [];
 
-        if($columns['id'] == null) {
+        if ($columns['id'] == null) {
             array_push($formatted_columns, "id integer primary key");
         }
 
-        foreach($columns as $key => $value) {
+        foreach ($columns as $key => $value) {
             array_push($formatted_columns, "$key $value");
         }
 
-    	$formatted_columns = join(", ", $formatted_columns);
+        $formatted_columns = join(", ", $formatted_columns);
         $statement = "create table $name ($formatted_columns)";
 
         return $this->execute($statement);
@@ -92,7 +92,7 @@ class Database {
 
     /**
      * == CREATE
-     * This method takes as first argument an hash table which contains 
+     * This method takes as first argument an hash table which contains
      * all table's columns and respective values.
      *
      * The function automatically add single quote to string values.
@@ -127,20 +127,20 @@ class Database {
         $columns_values = join(", ", $columns_values);
 
         $statement = "insert into $this->table ($columns_keys) values($columns_values)";
-            
+
         return $this->execute($statement);
     }
 
     /**
      * == READ
-     * This method return all records from a table and pass 
+     * This method return all records from a table and pass
      * each record to an optional callback function.
      * @example
      *   $counter = 1
      *   $db->from("users")->selectAll(function($row){ $counter++; });
      */
 
-    function selectAll($callback = null) {
+    public function selectAll($callback = null) {
         /* Raise an exception if table is not defined */
         if ($this->table == null) {
             throw new Exception("The target table isn't defined.");
@@ -160,7 +160,7 @@ class Database {
      *   });
      */
 
-    function select($columns, $callback = null) {
+    public function select($columns, $callback = null) {
         if ($columns == []) {
             array_push($columns, "*");
         }
@@ -186,4 +186,3 @@ class Database {
         return $this->execute("drop table $name");
     }
 }
-
