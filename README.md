@@ -41,9 +41,8 @@ git clone https://gitlab.com/WiseDragonStd/HadesWrapper
             - [x] getUpdatesRedis
             - [x] getUpdatesDatabase
         - [x] sendMessage
-            - [x] sendDefaultMessage
+            - [x] sendMessage
             - [x] sendMessageKeyboard
-            - [x] sendReplyMessage
             - [x] sendReplyMessageKeyboard
         - [x] forwardMessage
         - [x] sendPhoto
@@ -78,7 +77,7 @@ git clone https://gitlab.com/WiseDragonStd/HadesWrapper
             - [x] answerInlineQueryArticleSwitchPM
 - [x] Inline_keyboard class
     - [x] addLevelButtons
-    - [ ] clearKeyboard
+    - [x] clearKeyboard
     - [x] getKeyboard
         - [x] getNoJSONKeyboard
     - [ ] getListKeyboard

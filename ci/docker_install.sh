@@ -9,9 +9,11 @@ set -xe
 apt-get update -yqq
 apt-get install git -yqq
 
-# Install mysql driver and redis
+# Install mysql driver
 docker-php-ext-install pdo_mysql
-docker-php-ext-install redis
+
+pecl install redis
+docker-php-ext-enable redis
 
 # Install composer dependencies
 curl -sS https://getcomposer.org/installer | php

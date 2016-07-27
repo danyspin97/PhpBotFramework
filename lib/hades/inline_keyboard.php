@@ -23,4 +23,8 @@ class Inline_keyboard {
     public function addLevelButtons(...$buttons) {
         array_push($this->inline_keyboard, $buttons);
     }
+
+    public function clearKeyboard() {
+        $this->inline_keyboard = [];
+    }
 }
