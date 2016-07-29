@@ -1,6 +1,6 @@
 # Hades
-[![Version Badge](https://img.shields.io/badge/version-0.3-lightgrey.svg?style=flat)]()
-[![License Badge](https://img.shields.io/badge/license-LGPL-blue.svg?style=flat)]()
+[![build status](https://gitlab.com/WiseDragonStd/HadesWrapper/badges/master/build.svg)](https://gitlab.com/WiseDragonStd/HadesWrapper/commits/master)
+[![License Badge](https://img.shields.io/badge/license-LGPL--3.0+-blue.svg?style=flat)]()
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/37c6ba26de864c1e966aa4813b538e96)](https://www.codacy.com/app/danyspin97/HadesWrapper?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=WiseDragonStd/HadesWrapper/&amp;utm_campaign=Badge_Grade)
 
 *Hades* is a lightweight and high-extensible wrapper for Telegram Bots' APIs.

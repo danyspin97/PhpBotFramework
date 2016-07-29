@@ -176,6 +176,7 @@ class Bot extends CoreBot {
         $updates = &getUpdates($offset, $limit, $timeout);
 
         foreach ($updates as $update) {
+            $update = json_decode($content, true);
             processUpdate($update);
         }
 
@@ -202,6 +203,7 @@ class Bot extends CoreBot {
         $updates = &getUpdates($offset, $limit, $timeout);
 
         foreach($updates as $update) {
+            $update = json_decode($content, true);
             processUpdate($update);
         }
 
