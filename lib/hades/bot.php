@@ -118,7 +118,7 @@ class Bot extends CoreBot {
         $sth->execute();
         $sth = null;
         if (isset($this->redis)) {
-            $this->redis->setEx($chat_id . ':language', 86400, $language);
+            $this->redis->setEx($this->chat_id . ':language', 86400, $language);
         }
     }
 
@@ -176,8 +176,7 @@ class Bot extends CoreBot {
         $updates = &getUpdates($offset, $limit, $timeout);
 
         foreach ($updates as $update) {
-            $update = json_decode($content, true);
-            processUpdate($update);
+            processUpdate(json_decode($update, true));
         }
 
         $this->redis->set($variable_name, $offset + count($updates) + 1);
@@ -235,7 +234,7 @@ class Bot extends CoreBot {
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
      */
-    public function &sendMessageKeyboard(&$text, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification	= false) {
+    public function &sendMessageKeyboard(&$text, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
