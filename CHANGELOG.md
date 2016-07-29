@@ -1,3 +1,7 @@
+## v0.3.3
+- Changed namespace to WiseDragonStd\\HadesWrapper\\
+- Bug fixes
+
 ## v0.3.2
 - Split Bot class in CoreBot and Bot classes
 - Added clearKeyboard method to Inline_keyboard

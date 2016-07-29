@@ -43,12 +43,12 @@ class CoreBot {
      * $inline_keyboard reply_markup of the message (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
      */
-    public function &sendMessage($text, $inline_keyboard = null, $reply_to = null, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification = false) {
+    public function &sendMessage($text, $inline_keyboard = null, $reply_to = null, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
             'parse_mode' => $parse_mode,
-            'disable_web_page_preview' => $disable_web_page_preview,
+            'disable_web_page_preview' => $disable_web_preview,
             'reply_markup' => $inline_keyboard,
             'reply_to_message_id' => $reply_to,
             'disable_notification' => $disable_notification
@@ -157,14 +157,14 @@ class CoreBot {
      * $text New text of the message
      * $message_id Identifier of the message to edit
      */
-    public function &editMessageText($text, $message_id, $inline_keyboard = null, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    public function &editMessageText($text, $message_id, $inline_keyboard = null, $parse_mode = 'HTML', $disable_web_preview = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'message_id' => &$message_id,
             'text' => &$text,
             'reply_markup' => &$inline_keyboard,
             'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_page_preview,
+            'disable_web_page_preview' => &$disable_web_preview,
         ];
         $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
 
@@ -177,13 +177,13 @@ class CoreBot {
     * $text New text of the message
     * $message_id Identifier of the message to edit
     */
-    public function &editInlineMessageText($text, $inline_message_id, $inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = false) {
-       $parameters = [
+    public function &editInlineMessageText($text, $inline_message_id, $inline_keyboard, $parse_mode = 'HTML', $disable_web_preview = false) {
+        $parameters = [
            'inline_message_id' => &$inline_message_id,
            'text' => &$text,
            'reply_markup' => &$inline_keyboard,
            'parse_mode' => &$parse_mode,
-           'disable_web_page_preview' => &$disable_web_page_preview,
+           'disable_web_page_preview' => &$disable_web_preview,
        ];
        $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
 

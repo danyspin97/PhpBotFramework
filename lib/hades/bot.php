@@ -65,7 +65,7 @@ class Bot extends CoreBot {
     /*
      * Get language for the current user, reading it from the database
      */
-     public function &getLanguage() {
+    public function &getLanguage() {
         if (!isset($this->database)) {
             return 'en';
         }
@@ -215,12 +215,12 @@ class Bot extends CoreBot {
         $sth->execute();
     }
 
-    public function &sendMessageRef(&$text, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification = false) {
+    public function &sendMessageRef(&$text, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
             'parse_mode' => $parse_mode,
-            'disable_web_page_preview' => $disable_web_page_preview,
+            'disable_web_page_preview' => $disable_web_preview,
             'disable_notification' => $disable_notification
         ];
         $url = $this->api_url . 'sendMessage?' . http_build_query($parameters);
@@ -235,13 +235,13 @@ class Bot extends CoreBot {
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
      */
-    public function &sendMessageKeyboard(&$text, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification	= false) {
+    public function &sendMessageKeyboard(&$text, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification	= false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
             'parse_mode' => $parse_mode,
             'reply_markup' => &$inline_keyboard,
-            'disable_web_page_preview' => $disable_web_page_preview,
+            'disable_web_page_preview' => $disable_web_preview,
             'disable_notification' => $disable_notification
         ];
         $url = $this->api_url . 'sendMessage?' . http_build_query($parameters);
@@ -257,14 +257,14 @@ class Bot extends CoreBot {
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
      */
-    public function &sendReplyMessageKeyboard(&$text, &$inline_keyboard, &$message_id, $parse_mode = 'HTML', $disable_web_page_preview = true, $disable_notification = false) {
+    public function &sendReplyMessageKeyboard(&$text, &$inline_keyboard, &$message_id, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
             'reply_to_message_id' => &$message_id,
             'parse_mode' => $parse_mode,
             'reply_markup' => &$inline_keyboard,
-            'disable_web_page_preview' => $disable_web_page_preview,
+            'disable_web_page_preview' => $disable_web_preview,
             'disable_notification' => $disable_notification
         ];
         $url = $this->api_url . 'sendMessage?' . http_build_query($parameters);
@@ -306,25 +306,25 @@ class Bot extends CoreBot {
         return $this->exec_curl_request($url);
     }
 
-    public function &editMessageTextRef(&$text, &$message_id, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    public function &editMessageTextRef(&$text, &$message_id, $parse_mode = 'HTML', $disable_web_preview = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'message_id' => &$message_id,
             'text' => &$text,
             'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_page_preview,
+            'disable_web_page_preview' => &$disable_web_preview,
         ];
         $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
 
         return $this->exec_curl_request($url);
     }
 
-    public function &editInlineMessageTextRef(&$text, &$inline_message_id, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    public function &editInlineMessageTextRef(&$text, &$inline_message_id, $parse_mode = 'HTML', $disable_web_preview = false) {
         $parameters = [
             'inline_message_id' => &$inline_message_id,
             'text' => &$text,
             'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_page_preview,
+            'disable_web_page_preview' => &$disable_web_preview,
         ];
         $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
 
@@ -338,14 +338,14 @@ class Bot extends CoreBot {
      * $message_id Identifier of the message to edit
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      */
-    public function &editMessageTextKeyboard(&$text, &$inline_keyboard, &$message_id, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    public function &editMessageTextKeyboard(&$text, &$inline_keyboard, &$message_id, $parse_mode = 'HTML', $disable_web_preview = false) {
         $parameters = [
             'chat_id' => &$this->chat_id,
             'message_id' => &$message_id,
             'text' => &$text,
             'reply_markup' => &$inline_keyboard,
             'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_page_preview,
+            'disable_web_page_preview' => &$disable_web_preview,
         ];
         $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
 
@@ -359,13 +359,13 @@ class Bot extends CoreBot {
      * $message_id Identifier of the message to edit
      */
 
-    public function &editInlineMessageTextKeyboard(&$text, &$inline_keyboard, &$inline_message_id, $parse_mode = 'HTML', $disable_web_page_preview = false) {
+    public function &editInlineMessageTextKeyboard(&$text, &$inline_keyboard, &$inline_message_id, $parse_mode = 'HTML', $disable_web_preview = false) {
         $parameters = [
             'inline_message_id' => &$inline_message_id,
             'text' => &$text,
             'reply_markup' => &$inline_keyboard,
             'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_page_preview,
+            'disable_web_page_preview' => &$disable_web_preview,
         ];
         $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
 

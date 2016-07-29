@@ -114,7 +114,7 @@ class Database {
             throw new Exception("The target table isn't defined.");
         }
 
-        foreach($columns as $key => $value) {
+        foreach ($columns as $key => $value) {
             if (gettype($value) == "string") {
                 $value = "'$value'";
             }
