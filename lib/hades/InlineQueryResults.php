@@ -1,6 +1,8 @@
 <?php
 
-class Inline_query_results {
+namespace WiseDragonStd\HadesWrapper;
+
+class InlineQueryResults {
     private $results;
     private $id_article;
 

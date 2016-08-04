@@ -1,5 +1,7 @@
 <?php
 
+namespace WiseDragonStd\HadesWrapper;
+
 /*
  *
  * Class Bot to handle task like api request, or more specific api function(sendMessage, editMessageText, etc).

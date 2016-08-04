@@ -1,6 +1,8 @@
 <?php
 
-class Inline_keyboard {
+namespace WiseDragonStd\HadesWrapper;
+
+class InlineKeyboard {
     protected $inline_keyboard;
     protected $bot;
 

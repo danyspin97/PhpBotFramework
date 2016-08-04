@@ -1,5 +1,7 @@
 <?php
 
+namespace WiseDragonStd\HadesWrapper;
+
 class Database {
     protected $pdo;
     protected $bot;
