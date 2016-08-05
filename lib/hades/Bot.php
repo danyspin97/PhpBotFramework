@@ -44,13 +44,13 @@ class Bot extends CoreBot {
      * $password Passoword for the $username
      */
     public function &connectToDatabase($driver, $dbname, $user, $password) {
-        $database = new Database($driver, $dbname, $user, $password);
+        $database = new WiseDragonStd\HadesWrapper\Database($driver, $dbname, $user, $password);
         return $database;
     }
 
     // Connect to redis giving $address parameter and optional append port to it (127.0.0.1:6379)
     public function &connectToRedis($address = '127.0.0.1') {
-        $redis = new Redis();
+        $redis = new \Redis();
         $redis->connect($address);
         return $redis;
     }
