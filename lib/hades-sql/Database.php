@@ -10,8 +10,8 @@ class Database {
 
     public function __construct($driver, $dbname, $user, $password) {
         $this->pdo = new \PDO("$driver:host=localhost;dbname=$dbname", $user, $password);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-        $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
+        $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     }
 
     // Get pdo object
@@ -31,7 +31,7 @@ class Database {
 
         /** Users can avoid to specify a callback function */
         if ($callback != null) {
-            while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
                 $callback($row);
             }
         }
