@@ -1,6 +1,6 @@
 <?php
 
-include "../autoload.php";
+require './vendor/autoload.php';
 
 class BotTest extends PHPUnit_Framework_TestCase
 {

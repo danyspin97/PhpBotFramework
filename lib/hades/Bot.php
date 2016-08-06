@@ -44,14 +44,15 @@ class Bot extends CoreBot {
      * $password Passoword for the $username
      */
     public function &connectToDatabase($driver, $dbname, $user, $password) {
-        $database = new WiseDragonStd\HadesWrapper\Database($driver, $dbname, $user, $password);
-        return $database;
+        $this->database = new WiseDragonStd\HadesWrapper\Database($driver, $dbname, $user, $password);
+        $this->pdo = $this->database->getPDO();
+        return $this->database;
     }
 
     // Connect to redis giving $address parameter and optional append port to it (127.0.0.1:6379)
     public function &connectToRedis($address = '127.0.0.1') {
-        $redis = new \Redis();
-        $redis->connect($address);
+        $this->redis = new \Redis();
+        $this->redis->connect($address);
         return $redis;
     }
 
@@ -132,6 +133,7 @@ class Bot extends CoreBot {
 
     // Read update and sent it to the right method
     public function processUpdate(&$update) {
+        $update = json_decode($update, true);
         $this->update = &$update;
         if (isset($update['message'])) {
             $this->processMessage();
@@ -178,7 +180,7 @@ class Bot extends CoreBot {
         $updates = &getUpdates($offset, $limit, $timeout);
 
         foreach ($updates as $update) {
-            processUpdate(json_decode($update, true));
+            processUpdate($update);
         }
 
         $this->redis->set($variable_name, $offset + count($updates) + 1);
@@ -204,7 +206,6 @@ class Bot extends CoreBot {
         $updates = &getUpdates($offset, $limit, $timeout);
 
         foreach($updates as $update) {
-            $update = json_decode($content, true);
             processUpdate($update);
         }
 

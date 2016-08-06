@@ -1,8 +1,8 @@
 <?php
 
-include "../autoload.php";
+require './vendor/autoload.php';
 
-class BotTest extends PHPUnit_Framework_TestCase
+class KeyboardTest extends PHPUnit_Framework_TestCase
 {
     public function testInlineKeyboard() {
         $keyboard = new Inline_keyboard();
