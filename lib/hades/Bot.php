@@ -65,6 +65,11 @@ class Bot extends CoreBot {
         $this->chat_id = &$chat_id;
     }
 
+    public function setDatabase($database) {
+        $this->database = $database;
+        $this->pdo = &$database->getPDO();
+    }
+
     /*
      * Get language for the current user, reading it from the database
      */

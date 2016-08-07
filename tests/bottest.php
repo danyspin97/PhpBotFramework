@@ -7,7 +7,7 @@ class BotTest extends PHPUnit_Framework_TestCase
     public $bot;
 
     public function setUpBot() {
-        $this->bot = new Bot("token");
+        $this->bot = new \WiseDragonStd\HadesWrapper\Bot("token");
     }
 
     /*
