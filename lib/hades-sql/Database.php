@@ -8,10 +8,11 @@ class Database {
     public $table = null;
     public $where_condition = null;
 
-    public function __construct($driver, $dbname, $user, $password) {
+    public function __construct($driver, $dbname, $user, $password, $bot = null) {
         $this->pdo = new \PDO("$driver:host=localhost;dbname=$dbname", $user, $password);
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
         $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+        $this->bot = &$bot;
     }
 
     // Get pdo object

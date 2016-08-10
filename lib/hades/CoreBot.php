@@ -27,7 +27,7 @@ class CoreBot {
      * Request updates received by the bot using method getUpdates of Telegram API
      * (https://core.telegram.org/bots/api#getupdates)
      */
-    protected function &getUpdate($offset, $limit, $timeout) {
+    protected function &getUpdates($offset, $limit, $timeout) {
         $parameters = [
             'offset' => &$offset,
             'limit' => &$limit,
@@ -142,9 +142,9 @@ class CoreBot {
      * $text Text shown
      * $show_alert Show a alert or a simple notification on the top of the chat screen
      */
-    public function &answerCallbackQuery(&$text, $show_alert = false) {
+    public function &answerCallbackQuery($text, $show_alert = false) {
         $parameters = [
-            'id' => &$update['callback_query']['id'],
+            'callback_query_id' => &$this->update['callback_query']['id'],
             'text' => &$text,
             'show_alert' => &$show_alert
         ];
@@ -217,7 +217,7 @@ class CoreBot {
     */
     public function &answerInlineQuerySwitchPM($results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
        $parameters = [
-           'inline_query_id' => &$update['inline_query']['id'],
+           'inline_query_id' => &$this->update['inline_query']['id'],
            'switch_pm_text' => &$switch_pm_text,
            'is_personal' => $is_personal,
            'switch_pm_parameter' => $switch_pm_parameter,

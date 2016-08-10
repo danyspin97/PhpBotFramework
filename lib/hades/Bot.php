@@ -56,6 +56,10 @@ class Bot extends CoreBot {
         return $redis;
     }
 
+    public function &getChatID() {
+        return $this->chat_id;
+    }
+
     // Set chat_id of the bot
     public function setChatID($chat_id) {
         $this->chat_id = &$chat_id;
@@ -138,17 +142,17 @@ class Bot extends CoreBot {
 
     // Read update and sent it to the right method
     public function processUpdate(&$update) {
-        $update = json_decode($update, true);
         $this->update = &$update;
         if (isset($update['message'])) {
             $this->processMessage();
         } elseif (isset($update['callback_query'])) {
-            $this->processCallbackQuery($update['callback_query']);
+            $this->processCallbackQuery();
         } elseif (isset($update['inline_query'])) {
-            $this->processInlineQuery($update['inline_query']);
+            $this->processInlineQuery();
         } elseif (isset($update['chosen_inline_result'])) {
-            $this->processInlineResult($update['chosen_inline_result']);
+            $this->processInlineResult();
         }
+        return $update['update_id'];
     }
 
     protected function processMessage() {
@@ -182,13 +186,15 @@ class Bot extends CoreBot {
             exit;
         }
         $offset = $this->redis->get($variable_name);
-        $updates = &getUpdates($offset, $limit, $timeout);
+        $updates = $this->getUpdates($offset, $limit, $timeout);
 
-        foreach ($updates as $update) {
-            processUpdate($update);
+        if (!empty($updates)) {
+            foreach ($updates as $key => $update) {
+                 $this->processUpdate($update);
+            }
+        
+            $this->redis->set($variable_name, $offset + count($updates));
         }
-
-        $this->redis->set($variable_name, $offset + count($updates) + 1);
     }
 
      /*
@@ -202,24 +208,64 @@ class Bot extends CoreBot {
         if (!isset($this->database)) {
             exit;
         }
-        $sth = $this->pdo->prepare('SELECT :column_name FROM :table_name');
-        $sth->bindParam(':column_name', $column_name);
-        $sth->bindParam(':table_name', $table_name);
+        $sth = $this->pdo->prepare('SELECT "' . $column_name . '" FROM "' . $table_name . '"');
         $sth->execute();
         $offset = $sth->fetchColumn();
         $sth = null;
-        $updates = &getUpdates($offset, $limit, $timeout);
+        $updates = $this->getUpdates($offset, $limit, $timeout);
 
-        foreach($updates as $update) {
-            processUpdate($update);
+        if (!empty($updates)) {
+            foreach($updates as $key => $update) {
+                $this->processUpdate($update);
+            }
+
+            $sth = $this->pdo->prepare('UPDATE "' . $table_name . '" SET "' . $column_name . '" = :new_offset');
+            $new_offset = $offset + sizeof($updates);
+            $sth->bindParam(':new_offset', $new_offset);
+            $sth->execute();
         }
+    }
 
-        $sth = $this->pdo->prepare('UPDATE :table_name SET :column_name = :new_offset');
-        $sth->bindParam(':column_name', $column_name);
-        $sth->bindParam(':table_name', $table_name);
-        $new_offset = $offset + count($updates) + 1;
-        $sth->bindParam(':new_offset', $new_offset);
+    public function adjustOffsetDatabase($limit = 100, $timeout = 0, $table_name = 'TELEGRAM', $column_name = 'offset') {
+        if (!isset($this->database)) {
+            exit;
+        }
+        $sth = $this->pdo->prepare('SELECT "' . $column_name . '" FROM "' . $table_name . '"');
         $sth->execute();
+        $offset = $sth->fetchColumn();
+        $sth = null;
+        $updates = $this->getUpdates($offset, $limit, $timeout);
+
+        if (!empty($updates)) {
+            foreach($updates as $key => $update) {
+                $new_offset = $this->processUpdate($update);
+            }
+
+            $sth = $this->pdo->prepare('UPDATE "' . $table_name . '" SET "' . $column_name . '" = :new_offset');
+            $new_offset++;
+            $sth->bindParam(':new_offset', $new_offset);
+            $sth->execute();
+            return $new_offset;
+        }
+    }
+
+    public function adjustOffsetRedis($limit = 100, $timeout = 0, $variable_name = 'offset') {
+        if (!isset($this->redis)) {
+            exit;
+        }
+        $offset = $this->redis->get($variable_name);
+        $updates = $this->getUpdates($offset, $limit, $timeout);
+
+        if (!empty($updates)) {
+            foreach ($updates as $key => $update) {
+                $new_offset = $this->processUpdate($update);
+            }
+        
+            $new_offset++;
+        
+            $this->redis->set($variable_name, $new_offset);
+            return $new_offset;
+       }
     }
 
     public function &sendMessageRef(&$text, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
@@ -294,7 +340,7 @@ class Bot extends CoreBot {
      */
     public function &answerEmptyCallbackQuery() {
         $parameters = [
-            'id' => &$update['callback_query']['id'],
+            'callback_query_id' => &$this->update['callback_query']['id'],
             'text' => ''
         ];
         $url = $this->api_url . 'answerCallbackQuery?' . http_build_query($parameters);
@@ -302,9 +348,9 @@ class Bot extends CoreBot {
         return $this->exec_curl_request($url);
     }
 
-    public function &answerCallbackQueryRef($text, $show_alert = false) {
+    public function &answerCallbackQueryRef(&$text, $show_alert = false) {
         $parameters = [
-            'id' => &$update['callback_query']['id'],
+            'callback_query_id' => &$this->update['callback_query']['id'],
             'text' => &$text,
             'show_alert' => &$show_alert
         ];
@@ -424,7 +470,7 @@ class Bot extends CoreBot {
      */
     public function &answerEmptyInlineQuerySwitchPM($switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
         $parameters = [
-            'inline_query_id' => &$update['inline_query']['id'],
+            'inline_query_id' => &$this->update['inline_query']['id'],
             'switch_pm_text' => &$switch_pm_text,
             'is_personal' => $is_personal,
             'switch_pm_parameter' => $switch_pm_parameter,
@@ -438,10 +484,10 @@ class Bot extends CoreBot {
 
     public function &answerInlineQuerySwitchPMRef(&$results, &$switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
         $parameters = [
-            'inline_query_id' => &$update['inline_query']['id'],
+            'inline_query_id' => &$this->update['inline_query']['id'],
             'switch_pm_text' => &$switch_pm_text,
             'is_personal' => $is_personal,
-            'switch_pm_parameter' => $switch_pm_parameter,
+            'switch_pm_parameter' => &$switch_pm_parameter,
             'results' => &$results,
             'cache_time' => $cache_time
         ];
