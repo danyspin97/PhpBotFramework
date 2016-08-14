@@ -204,7 +204,7 @@ class Bot extends CoreBot {
      * $table_name Name of the table where offset is saved in the database
      * $column_name Name of the column where the offset is saved in the database
      */
-    public function getUpdatesDatabase($limit = 100, $timeout = 0, $table_name = 'TELEGRAM', $column_name = 'offset') {
+    public function getUpdatesDatabase($limit = 100, $timeout = 0, $table_name = 'telegram', $column_name = 'bot_offset') {
         if (!isset($this->database)) {
             exit;
         }
