@@ -44,7 +44,7 @@ class Bot extends CoreBot {
      * $password Passoword for the $username
      */
     public function &connectToDatabase($driver, $dbname, $user, $password) {
-        $this->database = new WiseDragonStd\HadesWrapper\Database($driver, $dbname, $user, $password);
+        $this->database = new Database($driver, $dbname, $user, $password);
         $this->pdo = $this->database->getPDO();
         return $this->database;
     }
