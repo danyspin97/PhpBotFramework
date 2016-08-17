@@ -24,6 +24,8 @@ class Bot extends CoreBot {
     // Language and localitation and localitation for multi-language bot
     public $language;
     public $localization;
+    // Status of the bot
+    protected $status;
 
     public function __destruct() {
         // Close database connection by deleting the reference
@@ -138,7 +140,24 @@ class Bot extends CoreBot {
         $this->localization = &$localization;
     }
 
+    // Get status of the bot, it will be both returned and setted in $this->status
+    public function &getStatus() {
+        $is_status_set = $this->redis->exists($this->chat_id . ':status');
+        if ($is_status_set) {
+            $this->status = $this->redis->get($this->chat_id . ':status');
+            return $this->status;
+        } else {
+            $this->redis->set($this->chat_id . ':status', 0);
+            $this->redis->set($this->chat_id . ':easter_egg', 1);
+            $this->status = -1;
+            return -1;
+        }
+    }
 
+    // Set the status of the bot
+    public function setStatus($status) {
+        $this->redis->set($this->chat_id . ':status', SHOW_CONTACT_NOTVALID);
+    }
 
     // Read update and sent it to the right method
     public function processUpdate(&$update) {
