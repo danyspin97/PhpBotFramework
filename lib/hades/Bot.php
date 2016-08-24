@@ -156,7 +156,7 @@ class Bot extends CoreBot {
 
     // Set the status of the bot
     public function setStatus($status) {
-        $this->redis->set($this->chat_id . ':status', SHOW_CONTACT_NOTVALID);
+        $this->redis->set($this->chat_id . ':status', $status);
     }
 
     // Read update and sent it to the right method
@@ -514,5 +514,18 @@ class Bot extends CoreBot {
         $url = $this->api_url . 'answerInlineQuery?' . http_build_query($parameters);
 
         return $this->exec_curl_request($url);
+    }
+
+    public function &handleUsernameDesc(&$string) {
+        $usernames = FALSE;
+        preg_match_all("/(@\w+)/u", $string, $matches);
+        if ($matches) {
+            $usernamesArray = array_count_values($matches[0]);
+            $usernames = array_keys($usernamesArray);
+        }
+        $count = count($usernames);
+        for($i = 0; $i < $count; $count++) {
+            $string = str_replace($usernames[$i], '</i>' . $usernames[$i] . '<i>', $string);
+        }
     }
 }
