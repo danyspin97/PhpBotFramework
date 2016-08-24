@@ -515,17 +515,4 @@ class Bot extends CoreBot {
 
         return $this->exec_curl_request($url);
     }
-
-    public function &handleUsernameDesc(&$string) {
-        $usernames = FALSE;
-        preg_match_all("/(@\w+)/u", $string, $matches);
-        if ($matches) {
-            $usernamesArray = array_count_values($matches[0]);
-            $usernames = array_keys($usernamesArray);
-        }
-        $count = count($usernames);
-        for($i = 0; $i < $count; $count++) {
-            $string = str_replace($usernames[$i], '</i>' . $usernames[$i] . '<i>', $string);
-        }
-    }
 }
