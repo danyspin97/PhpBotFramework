@@ -156,7 +156,7 @@ class Bot extends CoreBot {
 
     // Set the status of the bot
     public function setStatus($status) {
-        $this->redis->set($this->chat_id . ':status', SHOW_CONTACT_NOTVALID);
+        $this->redis->set($this->chat_id . ':status', $status);
     }
 
     // Read update and sent it to the right method
