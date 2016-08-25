@@ -47,7 +47,7 @@ class Database {
      */
 
     public function from($table) {
-        if(strtolower($table) == "user")
+        if (strtolower($table) == "user")
             $table = '"User"';
 
         $this->table = $table;
@@ -55,7 +55,7 @@ class Database {
     }
 
     public function into($table) {
-        if(strtolower($table) == "user")
+        if (strtolower($table) == "user")
             $table = '"User"';
 
         $this->table = $table;
@@ -63,7 +63,7 @@ class Database {
     }
 
     public function where($condition) {
-        if(strtolower($table) == "user")
+        if (strtolower($table) == "user")
             $table = '"User"';
 
         $this->where_condition = $condition;
@@ -203,7 +203,7 @@ class Database {
      *   $crud->exist("User", ["chat_id" => "-2"])
      */
     public function exist($table, $conditions) {
-        if(strtolower($table) == "user")
+        if (strtolower($table) == "user")
           $table = '"User"';
 
         $conditions_formatted = array();
@@ -216,6 +216,7 @@ class Database {
         $statement .= join(" and ", $conditions_formatted);
 
         $this->execute($statement, function($row){
+          $row;
           return true;
         });
 
