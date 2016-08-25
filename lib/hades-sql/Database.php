@@ -36,8 +36,6 @@ class Database {
                 $callback($row);
             }
         }
-
-        return 0;
     }
 
     /**
@@ -49,16 +47,25 @@ class Database {
      */
 
     public function from($table) {
+        if(strtolower($table) == "user")
+            $table = '"User"';
+
         $this->table = $table;
         return $this;
     }
 
     public function into($table) {
+        if(strtolower($table) == "user")
+            $table = '"User"';
+
         $this->table = $table;
         return $this;
     }
 
     public function where($condition) {
+        if(strtolower($table) == "user")
+            $table = '"User"';
+
         $this->where_condition = $condition;
         return $this;
     }
@@ -187,5 +194,31 @@ class Database {
 
     public function destroy($name) {
         return $this->execute("drop table $name");
+    }
+
+    /**
+     * == VALIDATION
+     * Check if there's a record in a given table.
+     * @example
+     *   $crud->exist("User", ["chat_id" => "-2"])
+     */
+    public function exist($table, $conditions) {
+        if(strtolower($table) == "user")
+          $table = '"User"';
+
+        $conditions_formatted = array();
+
+        $statement = "select * from $table where ";
+        foreach ($conditions as $key => $value) {
+            array_push($conditions_formatted, "$key=$value");
+        }
+
+        $statement .= join(" and ", $conditions_formatted);
+
+        $this->execute($statement, function($row){
+          return true;
+        });
+
+        return false;
     }
 }
