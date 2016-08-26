@@ -1,3 +1,8 @@
+## v0.3.4
+- Added basic keyboards
+- Added adjustOffsetRedis and adjustOffsetDatabase
+- Added templates
+
 ## v0.3.3
 - Changed namespace to WiseDragonStd\\HadesWrapper\\
 - Bug fixes

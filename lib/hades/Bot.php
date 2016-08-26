@@ -216,6 +216,12 @@ class Bot extends CoreBot {
         }
     }
 
+     public function getNextUpdates() {
+        $url = $this->api_url . 'getUpdates';
+
+        return $this->exec_curl_request($url);
+     }
+
      /*
      * Get updates received by the bot, save the new offset to the database and then process them
      * (https://core.telegram.org/bots/api#getupdates)
@@ -276,13 +282,16 @@ class Bot extends CoreBot {
         $updates = $this->getUpdates($offset, $limit, $timeout);
 
         if (!empty($updates)) {
+            $this->redis->set('error', 1);
             foreach ($updates as $key => $update) {
                 $new_offset = $this->processUpdate($update);
+                $this->redis->set($variable_name, $new_offset);
             }
-        
+
             $new_offset++;
         
             $this->redis->set($variable_name, $new_offset);
+            $this->redis->set('error', 0);
             return $new_offset;
        }
     }
