@@ -31,4 +31,695 @@ class InlineKeyboard {
     public function clearKeyboard() {
         $this->inline_keyboard = [];
     }
+
+    public function &getBackKeyboard() {
+        $inline_keyboard = [ 'inline_keyboard' =>
+            [
+                [
+                    [
+                        'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
+                        'callback_data' => 'back'
+                    ]
+                ]
+            ]
+        ];
+        return json_encode($inline_keyboard);
+    }
+
+    public function &getBackSkipKeyboard() {
+        $inline_keyboard = [ 'inline_keyboard' =>
+            [
+                [
+                    [
+                        'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
+                        'callback_data' => 'back'
+                    ],
+                    [
+                        'text' => &$this->bot->localization[$this->bot->language]['Skip_Button'],
+                        'callback_data' => 'skip'
+                    ]
+                ]
+            ]
+        ];
+        return json_encode($inline_keyboard);
+    }
+
+    public function &getChooseLanguageKeyboard() {
+        $inline_keyboard = ['inline_keyboard' => array()];
+        foreach($this->bot->localization['launguages'] as $languages => $language_msg) {
+            if (strpos($languages, $this->bot->language) !== false) {
+                array_push($inline_keyboard['inline_keyboard'], [
+                    [
+                        'text' => $language_msg,
+                        'callback_data' => 'same/language'
+                    ]
+                ]);
+            } else {
+                array_push($inline_keyboard['inline_keyboard'], [
+                    [
+                        'text' => $language_msg . '/' . $this->bot->localization[$this->bot->language][$languages],
+                        'callback_data' => 'cl/' . $languages
+                    ]
+                ]);
+            }
+        }
+        unset($languages);
+        unset($language_msg);
+        array_push($inline_keyboard['inline_keyboard'], [
+            [
+                'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
+                'callback_data' => 'back'
+            ]
+        ]);
+        return json_encode($inline_keyboard);
+    }
+
+    public function &getListKeyboard($index, $list, $menu_button = false, $search_button = false, $search_mode = false, $extra_name = array(), $extra_callback = array()) {
+        if (($list > 0) && ($index > 0)) {
+            if (!$search_mode) {
+                $prefix = 'list';
+            } else {
+                $prefix = 'search';
+            }
+            if ($index == 1) {
+                if ($list > 1) {
+                    if ($list > 2) {
+                        if ($list > 3) {
+                            if ($list > 4) {
+                                if ($list > 5) {
+                                    $inline_keyboard = [ 'inline_keyboard' =>
+                                        [
+                                            [
+                                                [
+                                                    'text' => '• 1 •',
+                                                    'callback_data' => 'null'
+                                                ],
+                                                [
+                                                    'text' => '2',
+                                                    'callback_data' => $prefix . '/2'
+                                                ],
+                                                [
+                                                    'text' => '3',
+                                                    'callback_data' => $prefix . '/3'
+                                                ],
+                                                [
+                                                    'text' => '4 ›',
+                                                    'callback_data' => $prefix . '/4'
+                                                ],
+                                                [
+                                                    'text' => "$list ››",
+                                                    'callback_data' => $prefix . "/$list"
+                                                ]
+                                                ]
+                                            ]
+                                    ];
+                                } else {
+                                    $inline_keyboard = [ 'inline_keyboard' =>
+                                        [
+                                            [
+                                                [
+                                                    'text' => '• 1 •',
+                                                    'callback_data' => 'null'
+                                                ],
+                                                [
+                                                    'text' => '2',
+                                                    'callback_data' => $prefix . '/2'
+                                                ],
+                                                [
+                                                    'text' => '3',
+                                                    'callback_data' => $prefix . '/3'
+                                                ],
+                                                [
+                                                    'text' => '4',
+                                                    'callback_data' => $prefix . '/4'
+                                                ],
+                                                [
+                                                    'text' => '5',
+                                                    'callback_data' => $prefix . '/5'
+                                                ]
+                                            ]
+                                        ]
+                                    ];
+                                }
+                            } else {
+                                $inline_keyboard = [ 'inline_keyboard' =>
+                                    [
+                                        [
+                                            [
+                                                'text' => '• 1 •',
+                                                'callback_data' => 'null'
+                                            ],
+                                            [
+                                                'text' => '2',
+                                                'callback_data' => $prefix . '/2'
+                                            ],
+                                            [
+                                                'text' => '3',
+                                                'callback_data' => $prefix . '/3'
+                                            ],
+                                            [
+                                                'text' => '4',
+                                                'callback_data' => $prefix . '/4'
+                                            ],
+                                        ]
+                                    ]
+                                ];
+                            }
+                        } else {
+                            $inline_keyboard = [ 'inline_keyboard' =>
+                                [
+                                    [
+                                        [
+                                            'text' => '• 1 •',
+                                            'callback_data' => 'null'
+                                        ],
+                                        [
+                                            'text' => '2',
+                                            'callback_data' => $prefix . '/2'
+                                        ],
+                                        [
+                                            'text' => '3',
+                                            'callback_data' => $prefix . '/3'
+                                        ],
+                                    ]
+                                ]
+                            ];
+                        }
+                    } elseif ($list == 2) {
+                        $inline_keyboard = [ 'inline_keyboard' =>
+                            [
+                                [
+                                    [
+                                        'text' => '• 1 •',
+                                        'callback_data' => 'null'
+                                    ],
+                                    [
+                                        'text' => '2',
+                                        'callback_data' => $prefix . '/2'
+                                    ],
+                                ]
+                            ]
+                        ];
+                    }
+                } else {
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '• 1 •',
+                                    'callback_data' => 'null'
+                                ]
+                            ]
+                        ]
+                    ];
+                }
+            } elseif ($index == 2) {
+                if ($list > 3) {
+                    if ($list > 4) {
+                        if ($list > 5) {
+                            $inline_keyboard = [ 'inline_keyboard' =>
+                                [
+                                    [
+                                        [
+                                            'text' => '1',
+                                            'callback_data' => $prefix . '/1'
+                                        ],
+                                        [
+                                            'text' => '• 2 •',
+                                            'callback_data' => 'null'
+                                        ],
+                                        [
+                                            'text' => '3',
+                                            'callback_data' => $prefix . '/3'
+                                        ],
+                                        [
+                                            'text' => '4 ›',
+                                            'callback_data' => $prefix . '/4'
+                                        ],
+                                        [
+                                            'text' => "$list ››",
+                                            'callback_data' => $prefix . "/$list"
+                                        ]
+                                    ]
+                                ]
+                            ];
+                        } else {
+                            $inline_keyboard = [ 'inline_keyboard' =>
+                                [
+                                    [
+                                        [
+                                            'text' => '1',
+                                            'callback_data' => $prefix . '/1'
+                                        ],
+                                        [
+                                            'text' => '• 2 •',
+                                            'callback_data' => 'null'
+                                        ],
+                                        [
+                                            'text' => '3',
+                                            'callback_data' => $prefix . '/3'
+                                        ],
+                                        [
+                                            'text' => '4',
+                                            'callback_data' => '4'
+                                        ],
+                                        [
+                                            'text' => '5',
+                                            'callback_data' => $prefix . '/5'
+                                        ]
+                                    ]
+                                ]
+                            ];
+                        }
+                    } else {
+                        $inline_keyboard = [ 'inline_keyboard' =>
+                            [
+                                [
+                                    [
+                                        'text' => '1',
+                                        'callback_data' => $prefix . '/1'
+                                    ],
+                                    [
+                                        'text' => '• 2 •',
+                                        'callback_data' => 'null'
+                                    ],
+                                    [
+                                        'text' => '3',
+                                        'callback_data' => $prefix . '/3'
+                                    ],
+                                    [
+                                        'text' => '4',
+                                        'callback_data' => $prefix . '/4'
+                                    ],
+                                ]
+                            ]
+                        ];
+                    }
+                } elseif ($list == 3) {
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '• 2 •',
+                                    'callback_data' => 'null'
+                                ],
+                                [
+                                    'text' => '3',
+                                    'callback_data' => $prefix . '/3'
+                                ],
+                            ]
+                        ]
+                    ];
+                } else {
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '• 2 •',
+                                    'callback_data' => 'null'
+                                ]
+                            ]
+                        ]
+                    ];
+                }
+            } elseif ($index == 3) {
+                if ($list > 4) {
+                    if ($list > 5) {
+                        $inline_keyboard = [ 'inline_keyboard' =>
+                            [
+                                [
+                                    [
+                                        'text' => '1',
+                                        'callback_data' => $prefix . '/1'
+                                    ],
+                                    [
+                                        'text' => '2',
+                                        'callback_data' => $prefix . '/2'
+                                    ],
+                                    [
+                                        'text' => '• 3 •',
+                                        'callback_data' => 'null'
+                                    ],
+                                    [
+                                        'text' => '4 ›',
+                                        'callback_data' => $prefix . '/4'
+                                    ],
+                                    [
+                                        'text' => "$list ››",
+                                        'callback_data' => $prefix . "/$list"
+                                    ],
+                                ]
+                            ]
+                        ];
+                    } else {
+                        $inline_keyboard = [ 'inline_keyboard' =>
+                            [
+                                [
+                                    [
+                                        'text' => '1',
+                                        'callback_data' => $prefix . '/1'
+                                    ],
+                                    [
+                                        'text' => '2',
+                                        'callback_data' => $prefix . '/2'
+                                    ],
+                                    [
+                                        'text' => '• 3 •',
+                                        'callback_data' => 'null'
+                                    ],
+                                    [
+                                        'text' => '4',
+                                        'callback_data' => $prefix . '/4'
+                                    ],
+                                    [
+                                        'text' => '5',
+                                        'callback_data' => $prefix . '/5'
+                                    ]
+                                ]
+                            ]
+                        ];
+                    }
+                } elseif ($list == 4) {
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '2',
+                                    'callback_data' => $prefix . '/2'
+                                ],
+                                [
+                                    'text' => '• 3 •',
+                                    'callback_data' => 'null'
+                                ],
+                                [
+                                    'text' => '4',
+                                    'callback_data' => $prefix . '/4'
+                                ],
+                            ]
+                        ]
+                    ];
+                } else {
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '2',
+                                    'callback_data' => $prefix . '/2'
+                                ],
+                                [
+                                    'text' => '• 3 •',
+                                    'callback_data' => 'null'
+                                ]
+                            ]
+                        ]
+                    ];
+                }
+            } elseif ($index == 4 && $list <= 5) {
+                if ($list == 4) {
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '2',
+                                    'callback_data' => $prefix . '/2'
+                                ],
+                                [
+                                    'text' => '3',
+                                    'callback_data' => $prefix . '/3'
+                                ],
+                                [
+                                    'text' => '• 4 •',
+                                    'callback_data' => 'null'
+                                ]
+                            ]
+                        ]
+                    ];
+                } else if ($list == 5) {
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '2',
+                                    'callback_data' => $prefix . '/2'
+                                ],
+                                [
+                                    'text' => '3',
+                                    'callback_data' => $prefix . '/3'
+                                ],
+                                [
+                                    'text' => '• 4 •',
+                                    'callback_data' => 'null'
+                                ],
+                                [
+                                    'text' => '5',
+                                    'callback_data' => $prefix . '/5'
+                                ],
+                            ]
+                        ]
+                    ];
+                }
+            } else if ($index == 5 && $list == 5) {
+                $inline_keyboard = [ 'inline_keyboard' =>
+                    [
+                        [
+                            [
+                                'text' => '1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '2',
+                                'callback_data' => $prefix . '/2'
+                            ],
+                            [
+                                'text' => '3',
+                                'callback_data' => $prefix . '/3'
+                            ],
+                            [
+                                'text' => '4',
+                                'callback_data' => $prefix . '/4'
+                            ],
+                            [
+                                'text' => '• 5 •',
+                                'callback_data' => 'null'
+                            ],
+                        ]
+                    ]
+                ];
+            } else {
+                if ($index < $list - 2) {
+                    $indexm = $index - 1;
+                    $indexp = $index + 1;
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '‹‹ 1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '‹ ' . $indexm,
+                                    'callback_data' => $prefix . '/' . $indexm
+                                ],
+                                [
+                                    'text' => '• ' . $index . ' •',
+                                    'callback_data' => 'null',
+                                ],
+                                [
+                                    'text' => $indexp . ' ›',
+                                    'callback_data' => $prefix . '/' . $indexp
+                                ],
+                                [
+                                    'text' => $list . ' ››',
+                                    'callback_data' => $prefix . '/' . $list
+                                ]
+                            ]
+                        ]
+                    ];
+                } elseif ($index == ($list - 2)) {
+                    $indexm = $index - 1;
+                    $indexp = $index + 1;
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '‹‹1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '' . $indexm,
+                                    'callback_data' => $prefix . '/' . $indexm
+                                ],
+                                [
+                                    'text' => '• ' . $index . ' •',
+                                    'callback_data' => 'null',
+                                ],
+                                [
+                                    'text' => '' . $indexp,
+                                    'callback_data' => $prefix . '/' . $indexp
+                                ],
+                                [
+                                'text' => "$list",
+                                'callback_data' => $prefix . "/$list"
+                                ]
+                            ]
+                        ]
+                    ];
+                } elseif ($index == ($list - 1)) {
+                    $indexm = $index - 1;
+                    $indexmm = $index - 2;
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '‹‹ 1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '‹ ' . $indexmm,
+                                    'callback_data' => $prefix . '/' . $indexmm
+                                ],
+                                [
+                                    'text' => '' . $indexm,
+                                    'callback_data' => $prefix . '/' . $indexm
+                                ],
+                                [
+                                    'text' => '• ' . $index . ' •',
+                                    'callback_data' => $prefix . '/' . $index
+                                ],
+                                [
+                                    'text' => "$list",
+                                    'callback_data' => $prefix . "/$list"
+                                ]
+                            ]
+                        ]
+                    ];
+                } else if ($index == $list) {
+                    $indexm = $index - 1;
+                    $indexmm = $index - 2;
+                    $indexmmm = $index - 3;
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '‹‹ 1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '‹ ' . $indexmmm,
+                                    'callback_data' => $prefix . '/' . $indexmmm
+                                ],
+                                [
+                                    'text' => '' . $indexmm,
+                                    'callback_data' => $prefix . '/' . $indexmm,
+                                ],
+                                [
+                                    'text' => '' . $indexm,
+                                    'callback_data' => $prefix . '/' . $indexm
+                                ],
+                                [
+                                    'text' => '• ' . $index . ' •',
+                                    'callback_data' => $prefix . '/' . $index
+                                ]
+                            ]
+                        ]
+                    ];
+                }
+            }
+        }
+        if (isset($extra_name) && isset($extra_callback) {
+            $names_count = count($extra_name);
+            $callback_count = count($extra_callback);
+            if ($names_count <=> $extra_callback) {
+                $n = $names_count;
+            } else {
+                $n = $callback_count;
+            }
+            if ($n === 3) {
+                array_push($inline_keyboard['inline_keyboard'], [
+                    [
+                        'text' => $extra_name[0],
+                        'callback_data' => $extra_callback[0] . $optional_suffix
+                    ],
+                    [
+                        'text' => $extra_name[1],
+                        'callback_data' => $extra_callback[0] . $optional_suffix
+                    ],
+                    [
+                        'text' => $extra_name[2],
+                        'callback_data' => $extra_callback[0] . $optional_suffix
+                    ]
+                ]);
+            } elseif ($n === 2) {
+                array_push($inline_keyboard['inline_keyboard'], [
+                    [
+                        'text' => $extra_name[0],
+                        'callback_data' => $extra_callback[0] . $optional_suffix
+                    ],
+                    [
+                        'text' => $extra_name[1]
+                        'callback_data' => $extra_callback[1] . $optional_suffix
+                    ],
+                ]);
+            } elseif ($n === 1) {
+                array_push($inline_keyboard['inline_keyboard'], [
+                    [
+                        'text' => $extra_name[0]
+                        'callback_data' => $extra_callback_data[0] . $optional_suffix
+                    ],
+                ]);
+            }
+        }
+        if($search_button) {
+            array_push($inline_keyboard['inline_keyboard'], [
+                [
+                    'text' => $this->bot->localization[$this->bot->language]['Search_Button'],
+                    'callback_data' => 'search'
+                ]
+            ]);
+        } elseif ($search_mode) {
+            array_push($inline_keyboard['inline_keyboard'], [
+                [
+                    'text' => $this->bot->localization[$this->bot->language]['Show_Button'],
+                    'callback_data' => 'back'
+                ],
+                [
+                    'text' => $this->bot->localization[$this->bot->language]['NewSearch_Button'],
+                    'callback_data' => 'search'
+                ]
+            ]);
+        }
+        if ($menu_button) {
+            array_push($inline_keyboard['inline_keyboard'], [
+                [
+                    'text' => $this->bot->localization[$this->bot->language]['Menu_Button'],
+                    'callback_data' => 'menu'
+                ]
+            ]);
+        }
+        return json_encode($inline_keyboard);
+    }
 }
