@@ -650,7 +650,7 @@ class InlineKeyboard {
                 }
             }
         }
-        if (isset($extra_name) && isset($extra_callback) {
+        if (isset($extra_name) && isset($extra_callback)) {
             $names_count = count($extra_name);
             $callback_count = count($extra_callback);
             if ($names_count <=> $extra_callback) {

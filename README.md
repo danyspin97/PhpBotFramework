@@ -3,7 +3,6 @@
 [![License Badge](https://img.shields.io/badge/license-LGPL--3.0+-blue.svg?style=flat)]()
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/37c6ba26de864c1e966aa4813b538e96)](https://www.codacy.com/app/danyspin97/HadesWrapper?utm_source=gitlab.com&amp;utm_medium=referral&amp;utm_content=WiseDragonStd/HadesWrapper/&amp;utm_campaign=Badge_Grade)
 [![Version_Badge](https://img.shields.io/badge/version-0.3.4-yellow.svg?style=flat)]()
-[![Packagist_Badge](https://img.shields.io/packagist/v/wisedragonstd/hades-wrapper.svg?style=flat)]()
 
 *Hades* is a lightweight and high-extensible wrapper for Telegram Bots' APIs.
 
@@ -26,6 +25,7 @@ The first step in order to use Hades is get it:
 
 ```
 composer require wisedragonstd/hades-wrapper
+composer install
 ```
 
 ## Features and roadmap
