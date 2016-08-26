@@ -680,14 +680,14 @@ class InlineKeyboard {
                         'callback_data' => $extra_callback[0] . $optional_suffix
                     ],
                     [
-                        'text' => $extra_name[1]
+                        'text' => $extra_name[1],
                         'callback_data' => $extra_callback[1] . $optional_suffix
                     ],
                 ]);
             } elseif ($n === 1) {
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => $extra_name[0]
+                        'text' => $extra_name[0],
                         'callback_data' => $extra_callback_data[0] . $optional_suffix
                     ],
                 ]);
