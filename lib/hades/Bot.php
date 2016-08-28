@@ -289,7 +289,7 @@ class Bot extends CoreBot {
             }
 
             $new_offset++;
-        
+
             $this->redis->set($variable_name, $new_offset);
             $this->redis->set('error', 0);
             return $new_offset;
