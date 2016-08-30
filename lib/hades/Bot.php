@@ -26,6 +26,7 @@ class Bot extends CoreBot {
     public $localization;
     // Status of the bot
     protected $status;
+    public $offset = 0;
 
     public function __destruct() {
         // Close database connection by deleting the reference
@@ -220,6 +221,28 @@ class Bot extends CoreBot {
         $url = $this->api_url . 'getUpdates';
 
         return $this->exec_curl_request($url);
+     }
+
+     public function getUpdatesLocal($limit = 100, $timeout = 60) {
+         while(true) {
+             $parameters = [
+                 'offset' => &$this->offset,
+                 'limit' => &$limit,
+                 'timeout' => &$timeout
+             ];
+             $url = $this->api_url . 'getUpdates?' . http_build_query($parameters);
+             $updates = $this->exec_curl_request($url);
+             if (!empty($updates)) {
+                 if ($this->offset === 0) {
+                     $this->offset = $updates[0]['update_id'];
+                 }
+                 foreach($updates as $key => $update) {
+                     $this->processUpdate($update);
+                 }
+
+                 $this->offset += sizeof($updates);
+             }
+         }
      }
 
      /*

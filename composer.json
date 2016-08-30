@@ -1,7 +1,7 @@
 {
     "name": "wisedragonstd/hades-wrapper",
     "description": "Hades is a lightweight and high-extensible wrapper for Telegram Bots' APIs.",
-    "version": "0.3.4-beta",
+    "version": "0.3.5",
     "type": "library",
     "license": "LGPL-3.0+",
     "keywords": ["telegram", "bot", "wrapper", "telegram-bot"],
