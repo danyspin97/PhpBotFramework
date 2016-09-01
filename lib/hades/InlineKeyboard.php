@@ -94,7 +94,7 @@ class InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getListKeyboard($index, $list, $menu_button = false, $search_button = false, $search_mode = false, $extra_name = array(), $extra_callback = array()) {
+    public function &getListKeyboard($index, $list, $menu_button = false, $search_button = false, $search_mode = false, $extra_name = array(), $extra_callback = array(), $extra_buttons1 = array(), $extra_buttons2 = array()) {
         if (($list > 0) && ($index > 0)) {
             if (!$search_mode) {
                 $prefix = 'list';
@@ -719,6 +719,12 @@ class InlineKeyboard {
                     'callback_data' => 'menu'
                 ]
             ]);
+        }
+        if (!empty($extra_buttons1)) {
+            array_push($inline_keyboard['InlineKeyboard'], $extra_buttons1);
+        }
+        if (!empty($extra_buttons2)) {
+            array_push($inline_keyboard['InlineKeyboard'], $extra_buttons2);
         }
         return json_encode($inline_keyboard);
     }
