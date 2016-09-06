@@ -94,7 +94,7 @@ class InlineKeyboard {
         return json_encode($inline_keyboard);
     }
 
-    public function &getListKeyboard($index, $list, $menu_button = false, $search_button = false, $search_mode = false, $extra_name = array(), $extra_callback = array(), $extra_buttons1 = array(), $extra_buttons2 = array()) {
+    public function &getListKeyboard($index, $list, $menu_button = false, $search_button = false, $search_mode = false, $extra_buttons0 = array(), $extra_buttons1 = array(), $extra_buttons2 = array()) {
         if (($list > 0) && ($index > 0)) {
             if (!$search_mode) {
                 $prefix = 'list';
@@ -650,48 +650,8 @@ class InlineKeyboard {
                 }
             }
         }
-        if (isset($extra_name) && isset($extra_callback)) {
-            $names_count = count($extra_name);
-            $callback_count = count($extra_callback);
-            if ($names_count <=> $extra_callback) {
-                $n = $names_count;
-            } else {
-                $n = $callback_count;
-            }
-            if ($n === 3) {
-                array_push($inline_keyboard['inline_keyboard'], [
-                    [
-                        'text' => $extra_name[0],
-                        'callback_data' => $extra_callback[0] . $optional_suffix
-                    ],
-                    [
-                        'text' => $extra_name[1],
-                        'callback_data' => $extra_callback[0] . $optional_suffix
-                    ],
-                    [
-                        'text' => $extra_name[2],
-                        'callback_data' => $extra_callback[0] . $optional_suffix
-                    ]
-                ]);
-            } elseif ($n === 2) {
-                array_push($inline_keyboard['inline_keyboard'], [
-                    [
-                        'text' => $extra_name[0],
-                        'callback_data' => $extra_callback[0] . $optional_suffix
-                    ],
-                    [
-                        'text' => $extra_name[1],
-                        'callback_data' => $extra_callback[1] . $optional_suffix
-                    ],
-                ]);
-            } elseif ($n === 1) {
-                array_push($inline_keyboard['inline_keyboard'], [
-                    [
-                        'text' => $extra_name[0],
-                        'callback_data' => $extra_callback_data[0] . $optional_suffix
-                    ],
-                ]);
-            }
+        if (!empty($extra_buttons0)) {
+            array_push($inline_keyboard['InlineKeyboard'], $extra_buttons0);
         }
         if($search_button) {
             array_push($inline_keyboard['inline_keyboard'], [
