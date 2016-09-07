@@ -95,13 +95,145 @@ class InlineKeyboard {
     }
 
     public function &getListKeyboard($index, $list, $menu_button = false, $search_button = false, $search_mode = false, $extra_buttons0 = array(), $extra_buttons1 = array(), $extra_buttons2 = array()) {
-        if (($list > 0) && ($index > 0)) {
+        if (($list > 0) && ($index >= 0)) {
             if (!$search_mode) {
                 $prefix = 'list';
             } else {
                 $prefix = 'search';
             }
-            if ($index == 1) {
+            if ($index == 0) {
+                if ($list > 1) {
+                    if ($list > 2) {
+                        if ($list > 3) {
+                            if ($list > 4) {
+                                if ($list > 5) {
+                                    $inline_keyboard = [ 'inline_keyboard' =>
+                                        [
+                                            [
+                                                [
+                                                    'text' => '1',
+                                                    'callback_data' => $prefix . '/1'
+                                                ],
+                                                [
+                                                    'text' => '2',
+                                                    'callback_data' => $prefix . '/2'
+                                                ],
+                                                [
+                                                    'text' => '3',
+                                                    'callback_data' => $prefix . '/3'
+                                                ],
+                                                [
+                                                    'text' => '4 ›',
+                                                    'callback_data' => $prefix . '/4'
+                                                ],
+                                                [
+                                                    'text' => "$list ››",
+                                                    'callback_data' => $prefix . "/$list"
+                                                ]
+                                                ]
+                                            ]
+                                    ];
+                                } else {
+                                    $inline_keyboard = [ 'inline_keyboard' =>
+                                        [
+                                            [
+                                                [
+                                                    'text' => '1',
+                                                    'callback_data' => $prefix . '/1'
+                                                ],
+                                                [
+                                                    'text' => '2',
+                                                    'callback_data' => $prefix . '/2'
+                                                ],
+                                                [
+                                                    'text' => '3',
+                                                    'callback_data' => $prefix . '/3'
+                                                ],
+                                                [
+                                                    'text' => '4',
+                                                    'callback_data' => $prefix . '/4'
+                                                ],
+                                                [
+                                                    'text' => '5',
+                                                    'callback_data' => $prefix . '/5'
+                                                ]
+                                            ]
+                                        ]
+                                    ];
+                                }
+                            } else {
+                                $inline_keyboard = [ 'inline_keyboard' =>
+                                    [
+                                        [
+                                            [
+                                                'text' => '1',
+                                                'callback_data' => $prefix . '/1'
+                                            ],
+                                            [
+                                                'text' => '2',
+                                                'callback_data' => $prefix . '/2'
+                                            ],
+                                            [
+                                                'text' => '3',
+                                                'callback_data' => $prefix . '/3'
+                                            ],
+                                            [
+                                                'text' => '4',
+                                                'callback_data' => $prefix . '/4'
+                                            ],
+                                        ]
+                                    ]
+                                ];
+                            }
+                        } else {
+                            $inline_keyboard = [ 'inline_keyboard' =>
+                                [
+                                    [
+                                        [
+                                            'text' => '1',
+                                            'callback_data' => $prefix . '/1'
+                                        ],
+                                        [
+                                            'text' => '2',
+                                            'callback_data' => $prefix . '/2'
+                                        ],
+                                        [
+                                            'text' => '3',
+                                            'callback_data' => $prefix . '/3'
+                                        ],
+                                    ]
+                                ]
+                            ];
+                        }
+                    } elseif ($list == 2) {
+                        $inline_keyboard = [ 'inline_keyboard' =>
+                            [
+                                [
+                                    [
+                                        'text' => '1',
+                                        'callback_data' => $prefix . '/1'
+                                    ],
+                                    [
+                                        'text' => '2',
+                                        'callback_data' => $prefix . '/2'
+                                    ],
+                                ]
+                            ]
+                        ];
+                    }
+                } else {
+                    $inline_keyboard = [ 'inline_keyboard' =>
+                        [
+                            [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ]
+                            ]
+                        ]
+                    ];
+                }
+            } else if ($index == 1) {
                 if ($list > 1) {
                     if ($list > 2) {
                         if ($list > 3) {
@@ -653,7 +785,6 @@ class InlineKeyboard {
         if ($extra_buttons0 != null && empty($extra_buttons0) == false) {
             array_push($inline_keyboard["inline_keyboard"], $extra_buttons0);
         }
-
         if($search_button) {
             array_push($inline_keyboard['inline_keyboard'], [
                 [
@@ -688,7 +819,6 @@ class InlineKeyboard {
         if ($extra_buttons2 != null && empty($extra_buttons2) == false) {
             array_push($inline_keyboard["inline_keyboard"], $extra_buttons2);
         }
-
         return json_encode($inline_keyboard);
     }
 }
