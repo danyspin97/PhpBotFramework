@@ -1,3 +1,6 @@
+## v0.3.5
+- added getUpdatesLocal and getNextUpdates functions
+
 ## v0.3.4
 - Added basic keyboards
 - Added adjustOffsetRedis and adjustOffsetDatabase

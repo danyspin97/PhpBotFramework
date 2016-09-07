@@ -45,9 +45,13 @@ class CoreBot {
      * $inline_keyboard reply_markup of the message (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
      */
+<<<<<<< HEAD
     public function &sendMessage($text, $chat_id, $inline_keyboard = null, $reply_to = null, $parse_mode = 'Markdown', $disable_web_preview = true, $disable_notification = false) {
+=======
+    public function &sendMessage($text, $inline_keyboard = null, $reply_to = null, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
+>>>>>>> 8506fdcd3879a5d0f4b6b5068a7d241762e1cd5c
         $parameters = [
-            'chat_id' => &$chat_id,
+            'chat_id' => &$this->chat_id,
             'text' => &$text,
             'parse_mode' => $parse_mode,
             'disable_web_page_preview' => $disable_web_preview,
