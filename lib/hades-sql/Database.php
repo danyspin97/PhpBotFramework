@@ -203,6 +203,8 @@ class Database {
      *   $crud->exist("User", ["chat_id" => "-2"])
      */
     public function exist($table, $conditions) {
+        $this->found = false;
+
         if (strtolower($table) == "user")
           $table = '"User"';
 
@@ -217,9 +219,9 @@ class Database {
 
         $this->execute($statement, function($row){
           $row;
-          return true;
+          $this->found = true;
         });
 
-        return false;
+        return $this->found;
     }
 }
