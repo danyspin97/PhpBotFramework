@@ -307,8 +307,13 @@ class Bot extends CoreBot {
         if (!empty($updates)) {
             $this->redis->set('error', 1);
             foreach ($updates as $key => $update) {
-                $new_offset = $this->processUpdate($update);
-                $this->redis->set($variable_name, $new_offset);
+                try {
+                    $new_offset = $this->processUpdate($update);
+                    $this->redis->set($variable_name, $new_offset);
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                    $new_offset++;
+                }
             }
 
             $new_offset++;

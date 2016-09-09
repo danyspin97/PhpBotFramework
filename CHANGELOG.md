@@ -1,5 +1,8 @@
+## v0.3.6
+- Added try/cath in adjustOffsetRedis
+
 ## v0.3.5
-- added getUpdatesLocal and getNextUpdates functions
+- Added getUpdatesLocal and getNextUpdates functions
 
 ## v0.3.4
 - Added basic keyboards
