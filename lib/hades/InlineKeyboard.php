@@ -819,7 +819,6 @@ class InlineKeyboard {
         if ($extra_buttons2 != null && empty($extra_buttons2) == false) {
             array_push($inline_keyboard["inline_keyboard"], [$extra_buttons2]);
         }
-        print_r($inline_keyboard);
         return json_encode($inline_keyboard);
     }
 }
