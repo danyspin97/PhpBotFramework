@@ -783,7 +783,7 @@ class InlineKeyboard {
             }
         }
         if ($extra_buttons0 != null && empty($extra_buttons0) == false) {
-            array_push($inline_keyboard["inline_keyboard"], $extra_buttons0);
+            array_push($inline_keyboard["inline_keyboard"], [$extra_buttons0]);
         }
         if($search_button) {
             array_push($inline_keyboard['inline_keyboard'], [
@@ -813,12 +813,13 @@ class InlineKeyboard {
             ]);
         }
         if ($extra_buttons1 != null && empty($extra_buttons1) == false) {
-            array_push($inline_keyboard["inline_keyboard"], $extra_buttons1);
+            array_push($inline_keyboard["inline_keyboard"], [$extra_buttons1]);
         }
 
         if ($extra_buttons2 != null && empty($extra_buttons2) == false) {
-            array_push($inline_keyboard["inline_keyboard"], $extra_buttons2);
+            array_push($inline_keyboard["inline_keyboard"], [$extra_buttons2]);
         }
+        print_r($inline_keyboard);
         return json_encode($inline_keyboard);
     }
 }
