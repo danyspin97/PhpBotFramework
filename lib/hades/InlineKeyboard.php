@@ -25,7 +25,7 @@ class InlineKeyboard {
     }
 
     public function addLevelButtons(...$buttons) {
-        array_push($this->inline_keyboard, $buttons);
+        $this->inline_keyboard[] = $buttons;
     }
 
     public function clearKeyboard() {
@@ -820,5 +820,579 @@ class InlineKeyboard {
             array_push($inline_keyboard["inline_keyboard"], [$extra_buttons2]);
         }
         return json_encode($inline_keyboard);
+    }
+
+    public function &getCompositeListKeyboard($index, $list, $prefix) {
+        if (($list > 0) && ($index >= 0)) {
+            if ($index == 0) {
+                if ($list > 1) {
+                    if ($list > 2) {
+                        if ($list > 3) {
+                            if ($list > 4) {
+                                if ($list > 5) {
+                                    $buttons = [
+                                            [
+                                                'text' => '1',
+                                                'callback_data' => $prefix . '/1'
+                                            ],
+                                            [
+                                                'text' => '2',
+                                                'callback_data' => $prefix . '/2'
+                                            ],
+                                            [
+                                                'text' => '3',
+                                                'callback_data' => $prefix . '/3'
+                                            ],
+                                            [
+                                                'text' => '4 ›',
+                                                'callback_data' => $prefix . '/4'
+                                            ],
+                                            [
+                                                'text' => "$list ››",
+                                                'callback_data' => $prefix . "/$list"
+                                            ]
+                                        ];
+                                } else {
+                                    $buttons = [
+                                            [
+                                                'text' => '1',
+                                                'callback_data' => $prefix . '/1'
+                                            ],
+                                            [
+                                                'text' => '2',
+                                                'callback_data' => $prefix . '/2'
+                                            ],
+                                            [
+                                                'text' => '3',
+                                                'callback_data' => $prefix . '/3'
+                                            ],
+                                            [
+                                                'text' => '4',
+                                                'callback_data' => $prefix . '/4'
+                                            ],
+                                            [
+                                                'text' => '5',
+                                                'callback_data' => $prefix . '/5'
+                                            ]
+                                        ];
+                                }
+                            } else {
+                                $buttons = [
+                                        [
+                                            'text' => '1',
+                                            'callback_data' => $prefix . '/1'
+                                        ],
+                                        [
+                                            'text' => '2',
+                                            'callback_data' => $prefix . '/2'
+                                        ],
+                                        [
+                                            'text' => '3',
+                                            'callback_data' => $prefix . '/3'
+                                        ],
+                                        [
+                                            'text' => '4',
+                                            'callback_data' => $prefix . '/4'
+                                        ],
+                                    ];
+                            }
+                        } else {
+                            $buttons = [
+                                    [
+                                        'text' => '1',
+                                        'callback_data' => $prefix . '/1'
+                                    ],
+                                    [
+                                        'text' => '2',
+                                        'callback_data' => $prefix . '/2'
+                                    ],
+                                    [
+                                        'text' => '3',
+                                        'callback_data' => $prefix . '/3'
+                                    ],
+                                ];
+                        }
+                    } elseif ($list == 2) {
+                        $buttons = [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '2',
+                                    'callback_data' => $prefix . '/2'
+                                ],
+                            ];
+                    }
+                } else {
+                    $buttons = [ 
+                            [
+                                'text' => '1',
+                                'callback_data' => $prefix . '/1'
+                            ]
+                    ];
+                }
+            } else if ($index == 1) {
+                if ($list > 1) {
+                    if ($list > 2) {
+                        if ($list > 3) {
+                            if ($list > 4) {
+                                if ($list > 5) {
+                                    $buttons = [
+                                            [
+                                                'text' => '• 1 •',
+                                                'callback_data' => 'null'
+                                            ],
+                                            [
+                                                'text' => '2',
+                                                'callback_data' => $prefix . '/2'
+                                            ],
+                                            [
+                                                'text' => '3',
+                                                'callback_data' => $prefix . '/3'
+                                            ],
+                                            [
+                                                'text' => '4 ›',
+                                                'callback_data' => $prefix . '/4'
+                                            ],
+                                            [
+                                                'text' => "$list ››",
+                                                'callback_data' => $prefix . "/$list"
+                                            ]
+                                        ];
+                                } else {
+                                    $buttons = [
+                                            [
+                                                'text' => '• 1 •',
+                                                'callback_data' => 'null'
+                                            ],
+                                            [
+                                                'text' => '2',
+                                                'callback_data' => $prefix . '/2'
+                                            ],
+                                            [
+                                                'text' => '3',
+                                                'callback_data' => $prefix . '/3'
+                                            ],
+                                            [
+                                                'text' => '4',
+                                                'callback_data' => $prefix . '/4'
+                                            ],
+                                            [
+                                                'text' => '5',
+                                                'callback_data' => $prefix . '/5'
+                                            ]
+                                        ];
+                                }
+                            } else {
+                                $buttons = [
+                                        [
+                                            'text' => '• 1 •',
+                                                'callback_data' => 'null'
+                                        ],
+                                        [
+                                                'text' => '2',
+                                                'callback_data' => $prefix . '/2'
+                                        ],
+                                        [
+                                                'text' => '3',
+                                                'callback_data' => $prefix . '/3'
+                                        ],
+                                        [
+                                                'text' => '4',
+                                                'callback_data' => $prefix . '/4'
+                                        ]
+                                    ];
+                            }
+                        } else {
+                            $buttons = [
+                                    [
+                                        'text' => '• 1 •',
+                                        'callback_data' => 'null'
+                                    ],
+                                    [
+                                        'text' => '2',
+                                        'callback_data' => $prefix . '/2'
+                                    ],
+                                    [
+                                        'text' => '3',
+                                        'callback_data' => $prefix . '/3'
+                                    ]
+                                ];
+                        }
+                    } elseif ($list == 2) {
+                        $buttons = [
+                                [
+                                    'text' => '• 1 •',
+                                    'callback_data' => 'null'
+                                ],
+                                [
+                                    'text' => '2',
+                                    'callback_data' => $prefix . '/2'
+                                ]
+                            ];
+                    }
+                } else {
+                    $buttons = [
+                            [
+                                'text' => '• 1 •',
+                                'callback_data' => 'null'
+                            ]
+                        ];
+                }
+            } elseif ($index == 2) {
+                if ($list > 3) {
+                    if ($list > 4) {
+                        if ($list > 5) {
+                            $buttons = [
+                                    [
+                                        'text' => '1',
+                                        'callback_data' => $prefix . '/1'
+                                    ],
+                                    [
+                                        'text' => '• 2 •',
+                                        'callback_data' => 'null'
+                                    ],
+                                    [
+                                        'text' => '3',
+                                        'callback_data' => $prefix . '/3'
+                                    ],
+                                    [
+                                        'text' => '4 ›',
+                                        'callback_data' => $prefix . '/4'
+                                    ],
+                                    [
+                                        'text' => "$list ››",
+                                        'callback_data' => $prefix . "/$list"
+                                    ]
+                                ];
+                        } else {
+                            $buttons = [
+                                    [
+                                        'text' => '1',
+                                        'callback_data' => $prefix . '/1'
+                                    ],
+                                    [
+                                        'text' => '• 2 •',
+                                        'callback_data' => 'null'
+                                    ],
+                                    [
+                                        'text' => '3',
+                                        'callback_data' => $prefix . '/3'
+                                    ],
+                                    [
+                                        'text' => '4',
+                                        'callback_data' => '4'
+                                    ],
+                                    [
+                                        'text' => '5',
+                                        'callback_data' => $prefix . '/5'
+                                    ]
+                                ];
+                        }
+                    } else {
+                        $buttons = [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '• 2 •',
+                                    'callback_data' => 'null'
+                                ],
+                                [
+                                    'text' => '3',
+                                    'callback_data' => $prefix . '/3'
+                                ],
+                                [
+                                    'text' => '4',
+                                    'callback_data' => $prefix . '/4'
+                                ]
+                            ];
+                    }
+                } elseif ($list == 3) {
+                    $buttons = [
+                            [
+                                'text' => '1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '• 2 •',
+                                'callback_data' => 'null'
+                            ],
+                            [
+                                'text' => '3',
+                                'callback_data' => $prefix . '/3'
+                            ]
+                        ];
+                } else {
+                    $buttons = [
+                            [
+                                'text' => '1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '• 2 •',
+                                'callback_data' => 'null'
+                            ]
+                        ];
+                }
+            } elseif ($index == 3) {
+                if ($list > 4) {
+                    if ($list > 5) {
+                        $buttons = [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '2',
+                                    'callback_data' => $prefix . '/2'
+                                ],
+                                [
+                                    'text' => '• 3 •',
+                                    'callback_data' => 'null'
+                                ],
+                                [
+                                    'text' => '4 ›',
+                                    'callback_data' => $prefix . '/4'
+                                ],
+                                [
+                                    'text' => "$list ››",
+                                    'callback_data' => $prefix . "/$list"
+                                ]
+                            ];
+                    } else {
+                        $buttons = [
+                                [
+                                    'text' => '1',
+                                    'callback_data' => $prefix . '/1'
+                                ],
+                                [
+                                    'text' => '2',
+                                    'callback_data' => $prefix . '/2'
+                                ],
+                                [
+                                    'text' => '• 3 •',
+                                    'callback_data' => 'null'
+                                ],
+                                [
+                                    'text' => '4',
+                                    'callback_data' => $prefix . '/4'
+                                ],
+                                [
+                                    'text' => '5',
+                                    'callback_data' => $prefix . '/5'
+                                ]
+                            ];
+                    }
+                } elseif ($list == 4) {
+                    $buttons = [
+                            [
+                                'text' => '1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '2',
+                                'callback_data' => $prefix . '/2'
+                            ],
+                            [
+                                'text' => '• 3 •',
+                                'callback_data' => 'null'
+                            ],
+                            [
+                                'text' => '4',
+                                'callback_data' => $prefix . '/4'
+                            ]
+                        ];
+                } else {
+                    $buttons = [
+                            [
+                                'text' => '1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '2',
+                                'callback_data' => $prefix . '/2'
+                            ],
+                            [
+                                'text' => '• 3 •',
+                                'callback_data' => 'null'
+                            ]
+                        ];
+                }
+            } elseif ($index == 4 && $list <= 5) {
+                if ($list == 4) {
+                    $buttons = [
+                            [
+                                'text' => '1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '2',
+                                'callback_data' => $prefix . '/2'
+                            ],
+                            [
+                                'text' => '3',
+                                'callback_data' => $prefix . '/3'
+                            ],
+                            [
+                                'text' => '• 4 •',
+                                'callback_data' => 'null'
+                            ]
+                        ];
+                } else if ($list == 5) {
+                    $buttons = [
+                            [
+                                'text' => '1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '2',
+                                'callback_data' => $prefix . '/2'
+                            ],
+                            [
+                                'text' => '3',
+                                'callback_data' => $prefix . '/3'
+                            ],
+                            [
+                                'text' => '• 4 •',
+                                'callback_data' => 'null'
+                            ],
+                            [
+                                'text' => '5',
+                                'callback_data' => $prefix . '/5'
+                            ]
+                        ];
+                }
+            } else if ($index == 5 && $list == 5) {
+                $buttons = [
+                        [
+                            'text' => '1',
+                            'callback_data' => $prefix . '/1'
+                        ],
+                        [
+                            'text' => '2',
+                            'callback_data' => $prefix . '/2'
+                        ],
+                        [
+                            'text' => '3',
+                            'callback_data' => $prefix . '/3'
+                        ],
+                        [
+                            'text' => '4',
+                            'callback_data' => $prefix . '/4'
+                        ],
+                        [
+                            'text' => '• 5 •',
+                            'callback_data' => 'null'
+                        ]
+                    ];
+            } else {
+                if ($index < $list - 2) {
+                    $indexm = $index - 1;
+                    $indexp = $index + 1;
+                    $buttons = [
+                            [
+                                'text' => '‹‹ 1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '‹ ' . $indexm,
+                                'callback_data' => $prefix . '/' . $indexm
+                            ],
+                            [
+                                'text' => '• ' . $index . ' •',
+                                'callback_data' => 'null',
+                            ],
+                            [
+                                'text' => $indexp . ' ›',
+                                'callback_data' => $prefix . '/' . $indexp
+                            ],
+                            [
+                                'text' => $list . ' ››',
+                                'callback_data' => $prefix . '/' . $list
+                            ]
+                        ];
+                } elseif ($index == ($list - 2)) {
+                    $indexm = $index - 1;
+                    $indexp = $index + 1;
+                    $buttons = [
+                            [
+                                'text' => '‹‹1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '' . $indexm,
+                                'callback_data' => $prefix . '/' . $indexm
+                            ],
+                            [
+                                'text' => '• ' . $index . ' •',
+                                'callback_data' => 'null',
+                            ],
+                            [
+                                'text' => '' . $indexp,
+                                'callback_data' => $prefix . '/' . $indexp
+                            ],
+                            [
+                                'text' => "$list",
+                                'callback_data' => $prefix . "/$list"
+                            ]
+                        ];
+                } elseif ($index == ($list - 1)) {
+                    $indexm = $index - 1;
+                    $indexmm = $index - 2;
+                    $buttons = [
+                            [
+                                'text' => '‹‹ 1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '‹ ' . $indexmm,
+                                'callback_data' => $prefix . '/' . $indexmm
+                            ],
+                            [
+                                'text' => '' . $indexm,
+                                'callback_data' => $prefix . '/' . $indexm
+                            ],
+                            [
+                                'text' => '• ' . $index . ' •',
+                                'callback_data' => $prefix . '/' . $index
+                            ],
+                            [
+                                'text' => "$list",
+                                'callback_data' => $prefix . "/$list"
+                            ]
+                        ];
+                } else if ($index == $list) {
+                    $indexm = $index - 1;
+                    $indexmm = $index - 2;
+                    $indexmmm = $index - 3;
+                    $buttons = [
+                            [
+                                'text' => '‹‹ 1',
+                                'callback_data' => $prefix . '/1'
+                            ],
+                            [
+                                'text' => '‹ ' . $indexmmm,
+                                'callback_data' => $prefix . '/' . $indexmmm
+                            ],
+                            [
+                                'text' => '' . $indexmm,
+                                'callback_data' => $prefix . '/' . $indexmm,
+                            ],
+                            [
+                                'text' => '' . $indexm,
+                                'callback_data' => $prefix . '/' . $indexm
+                            ],
+                            [
+                                'text' => '• ' . $index . ' •',
+                                'callback_data' => $prefix . '/' . $index
+                            ]
+                        ];
+                }
+            }
+        }
+        $this->inline_keyboard[] = $buttons;
     }
 }
