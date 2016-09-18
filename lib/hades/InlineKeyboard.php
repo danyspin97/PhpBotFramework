@@ -66,7 +66,7 @@ class InlineKeyboard {
 
     public function &getChooseLanguageKeyboard() {
         $inline_keyboard = ['inline_keyboard' => array()];
-        foreach($this->bot->localization['launguages'] as $languages => $language_msg) {
+        foreach($this->bot->localization['languages'] as $languages => $language_msg) {
             if (strpos($languages, $this->bot->language) !== false) {
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
