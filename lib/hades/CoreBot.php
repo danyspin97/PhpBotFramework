@@ -46,9 +46,6 @@ class CoreBot {
      */
     protected function &getUpdates($offset, $limit, $timeout) {
 
-        if (is_numeric($offset) || !is_numeric($limit) || $timeout) {
-            throw new BotException('getUpdates args are not valid');
-        }
         $parameters = [
             'offset' => &$offset,
             'limit' => &$limit,
