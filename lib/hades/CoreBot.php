@@ -19,7 +19,7 @@ class CoreBot {
     protected $chat_id;
 
     // Curl request handler
-    protected $ch;
+    public $ch;
 
     // Contructor, simply put token bot in $token variable
     public function __construct($token) {
@@ -31,11 +31,13 @@ class CoreBot {
 
         $this->token = &$token;
         $this->api_url = 'https://api.telegram.org/bot' . $token . '/';
+
         $this->ch = curl_init();
-        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($this->ch, CURLOPT_TIMEOUT, 60);
-        curl_setopt($this->ch, CURLOPT_ENCODING,  '')
+        curl_setopt($this->ch, CURLOPT_HEADER, 0);
+        curl_setopt($this->ch, CURLOPT_ENCODING,  '');
     }
 
     /*
@@ -67,17 +69,17 @@ class CoreBot {
     public function &sendMessage($text, $inline_keyboard = null, $reply_to = null, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
 
         if (!isset($this->chat_id)) {
-            throw new BotException('(sendMessage) Chat id is not set')
+            throw new BotException('(sendMessage) Chat id is not set');
         }
 
         $parameters = [
             'chat_id' => &$this->chat_id,
             'text' => &$text,
-            'parse_mode' => $parse_mode,
-            'disable_web_page_preview' => $disable_web_preview,
-            'reply_markup' => $inline_keyboard,
-            'reply_to_message_id' => $reply_to,
-            'disable_notification' => $disable_notification
+            'parse_mode' => &$parse_mode,
+            'disable_web_page_preview' => &$disable_web_preview,
+            'reply_markup' => &$inline_keyboard,
+            'reply_to_message_id' => &$reply_to,
+            'disable_notification' => &$disable_notification
         ];
 
         $url = $this->api_url . 'sendMessage?' . http_build_query($parameters);
@@ -94,17 +96,17 @@ class CoreBot {
     public function &forwardMessage(&$from_chat_id, &$message_id, $disable_notification = false) {
 
         if (!isset($this->chat_id)) {
-            throw new BotException('(sendMessage) Chat id is not set')
+            throw new BotException('(sendMessage) Chat id is not set');
         }
 
         $parameters = [
             'chat_id' => &$this->chat_id,
             'message_id' => &$message_id,
             'from_chat_id' => &$from_chat_id,
-            'disable_notification' => $disable_notification
+            'disable_notification' => &$disable_notification
         ];
 
-        $url = $this->api_url . 'editMessageText?' . http_build_query($parameters);
+        $url = $this->api_url . 'forwardMessage?' . http_build_query($parameters);
 
         return $this->exec_curl_request($url);
     }
@@ -203,7 +205,7 @@ class CoreBot {
     public function &editMessageText($text, $message_id, $inline_keyboard = null, $parse_mode = 'HTML', $disable_web_preview = false) {
 
         if (!isset($this->chat_id)) {
-            throw new BotException('(sendMessage) Chat id is not set')
+            throw new BotException('(sendMessage) Chat id is not set');
         }
 
         $parameters = [
@@ -302,39 +304,37 @@ class CoreBot {
     // Base core function to execute url request
     protected function &exec_curl_request(&$url) {
 
-        $handle = &$this->ch;
-        curl_setopt($handle, CURLOPT_URL, $url);
+        curl_setopt($this->ch, CURLOPT_URL, $url);
 
-        $response = curl_exec($handle);
+        $response = curl_exec($this->ch);
 
         if ($response === false) {
-            $errno = curl_errno($handle);
-            $error = curl_error($handle);
+            $errno = curl_errno($this->ch);
+            $error = curl_error($this->ch);
             error_log("Curl returned error $errno: $error\n");
-            curl_close($handle);
+            curl_close($this->ch);
             return false;
         }
 
-        $http_code = intval(curl_getinfo($handle, CURLINFO_HTTP_CODE));
-        curl_close($handle);
+        $http_code = intval(curl_getinfo($this->ch, CURLINFO_HTTP_CODE));
 
-        if ($http_code >= 500) {
-            // do not wat to DDOS server if something goes wrong
-            sleep(10);
-            return false;
-        } else if ($http_code != 200) {
-            $response = json_decode($response, true);
-            error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
-            if ($http_code == 401) {
-                throw new BotException('Invalid access token provided');
-            }
-            return false;
-        } else {
+        if ($http_code === 200) { 
             $response = json_decode($response, true);
             if (isset($response['desc'])) {
                 error_log("Request was successfull: {$response['description']}\n");
             }
-            $response = $response['result'];
+            return $response['result'];
+        } elseif ($http_code >= 500) {
+            // do not wat to DDOS server if something goes wrong
+            sleep(10);
+            return false;
+        } elseif ($http_code !== 200) {
+            $response = json_decode($response, true);
+            error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
+            if ($http_code === 401) {
+                throw new BotException('Invalid access token provided');
+            }
+            return false;
         }
 
         return $response;
