@@ -54,8 +54,12 @@ class Bot extends CoreBot {
 
     // Connect to redis giving $address parameter and optional append port to it (127.0.0.1:6379)
     public function &connectToRedis($address = '127.0.0.1') {
-        $this->redis = new \Redis();
-        $this->redis->connect($address);
+        try {
+            $this->redis = new \Redis();
+            $this->redis->connect($address);
+        } catch (RedisException $e) {
+            throw new BotException($e->getMessage());
+        }
         return $redis;
     }
 
@@ -130,7 +134,11 @@ class Bot extends CoreBot {
         $sth = $this->pdo->prepare('UPDATE "User" SET "language" = :language WHERE "chat_id" = :chat_id');
         $sth->bindParam(':language', $language);
         $sth->bindParam(':chat_id', $this->chat_id);
-        $sth->execute();
+        try {
+            $sth->execute();
+        } catch (PDOException $e) {
+            throw new BotException($e->getMessage());
+        }
         $sth = null;
         if (isset($this->redis)) {
             $this->redis->setEx($this->chat_id . ':language', 86400, $language);

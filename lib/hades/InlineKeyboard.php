@@ -3,33 +3,47 @@
 namespace WiseDragonStd\HadesWrapper;
 
 class InlineKeyboard {
+
+    // Store the array of InlineKeyboardButton
     protected $inline_keyboard;
+    // Store a reference to the bot that is using this inline keyboard
     protected $bot;
 
     public function __construct($bot = null, $array = null) {
+
         $this->bot = &$bot;
         $this->inline_keyboard = $array ?? array();
+
     }
 
     public function &getKeyboard() {
+
         $reply_markup = ['inline_keyboard' => $this->inline_keyboard];
         $reply_markup = json_encode($reply_markup);
+
         $this->clearKeyboard();
+
         return $reply_markup;
     }
 
     public function &getNoJSONKeyboard() {
+
         $reply_markup = ['inline_keyboard' => $this->inline_keyboard];
         $this->clearKeyboard();
+
         return $reply_markup;
     }
 
     public function addLevelButtons(...$buttons) {
+
         $this->inline_keyboard[] = $buttons;
+
     }
 
     public function clearKeyboard() {
+
         $this->inline_keyboard = [];
+
     }
 
     public function &getBackKeyboard() {
@@ -47,6 +61,7 @@ class InlineKeyboard {
     }
 
     public function &getBackSkipKeyboard() {
+
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
@@ -61,11 +76,14 @@ class InlineKeyboard {
                 ]
             ]
         ];
+
         return json_encode($inline_keyboard);
     }
 
     public function &getChooseLanguageKeyboard() {
+
         $inline_keyboard = ['inline_keyboard' => array()];
+
         foreach($this->bot->localization['languages'] as $languages => $language_msg) {
             if (strpos($languages, $this->bot->language) !== false) {
                 array_push($inline_keyboard['inline_keyboard'], [
@@ -83,6 +101,7 @@ class InlineKeyboard {
                 ]);
             }
         }
+
         unset($languages);
         unset($language_msg);
         array_push($inline_keyboard['inline_keyboard'], [
@@ -91,6 +110,7 @@ class InlineKeyboard {
                 'callback_data' => 'back'
             ]
         ]);
+
         return json_encode($inline_keyboard);
     }
 
