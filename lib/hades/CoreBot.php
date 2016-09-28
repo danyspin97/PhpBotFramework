@@ -12,7 +12,7 @@ namespace WiseDragonStd\HadesWrapper;
 
 class CoreBot {
     // Token of the bot
-    private $token;
+    protected $token;
     // Url for api requesting
     protected $api_url;
     // Chat_id of the user that interacted with the bot
