@@ -309,7 +309,6 @@ class CoreBot {
             $errno = curl_errno($this->ch);
             $error = curl_error($this->ch);
             error_log("Curl returned error $errno: $error\n");
-            curl_close($this->ch);
             return false;
         }
 
