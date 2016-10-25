@@ -1,6 +1,6 @@
 <?php
 
-namespace WiseDragonStd\HadesWrapper;
+namespace DanySpin97\PhpBotFramework;
 
 /*
  *
@@ -11,21 +11,32 @@ namespace WiseDragonStd\HadesWrapper;
 
 
 class Bot extends CoreBot {
+
     // Update reference
     protected $update;
+
+    // Text received
+    public $text;
+
     // Inline Keyboard
     public $inline_keyboard;
+
     // Database connection using class Database (optional)
     public $database;
+
     // Pdo reference (optional)
     public $pdo;
+
     // Redis connection (optional)
     public $redis;
+
     // Language and localitation and localitation for multi-language bot
     public $language;
     public $localization;
+
     // Status of the bot
     protected $status;
+
     public $offset = 0;
 
     public function __destruct() {
@@ -116,7 +127,6 @@ class Bot extends CoreBot {
             $this->language = $this->redis->get($this->chat_id . 'language');
             return $this->language;
         } else {
-            // TODO User Database instead of $pdo
             $this->redis->setEx($this->chat_id . ':language', 86400, getLanguage());
             return $this->language;
         }
@@ -143,6 +153,7 @@ class Bot extends CoreBot {
         if (isset($this->redis)) {
             $this->redis->setEx($this->chat_id . ':language', 86400, $language);
         }
+        $this->language = $language;
     }
 
     public function setLocalization(&$localization) {
@@ -172,6 +183,8 @@ class Bot extends CoreBot {
     public function processUpdate(&$update) {
         $this->update = &$update;
         if (isset($update['message'])) {
+            $this->chat_id = $update['message']['from']['id'];
+            $this->text = $update['message']['text'];
             $this->processMessage();
         } elseif (isset($update['callback_query'])) {
             $this->processCallbackQuery();

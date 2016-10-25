@@ -1,20 +1,20 @@
 {
-    "name": "wisedragonstd/hades-wrapper",
-    "description": "Hades is a lightweight and high-extensible wrapper for Telegram Bots' APIs.",
-    "version": "0.3.6",
+    "name": "danyspin97/php-bot-framework",
+    "description": "Php Bot Framework is a lightweight framework for Telegram Bots' APIs.",
+    "version": "1.0.0",
     "type": "library",
     "license": "LGPL-3.0+",
-    "keywords": ["telegram", "bot", "wrapper", "telegram-bot"],
-    "homepage": "https://gitlab.com/WiseDragonStd/HadesWrapper",
+    "keywords": ["telegram", "bot", "framework", "telegram-bot"],
+    "homepage": "https://danyspin97.github.io/PhpBotFramework",
     "authors": [
         {
             "name": "Dany Spin",
-            "homepage": "https://gitlab.com/u/danyspin97",
-            "role": "Lead Developer"
+            "homepage": "https://github.com/danyspin97",
+            "role": "Developer"
         },
         {
             "name": "TheSeeker",
-            "homepage": "https://gitlab.com/u/dom.theseeker",
+            "homepage": "https://github.com/domcorvasce",
             "role": "Developer"
         }
     ],
@@ -32,7 +32,7 @@
     },
     "autoload": {
         "psr-4": {
-            "WiseDragonStd\\HadesWrapper\\": ["lib/hades", "lib/hades-sql"]
+            "DanySpin97\\PhpBotFramework\\": ["lib/framework", "lib/hades-sql"]
         }
     },
     "archive": {

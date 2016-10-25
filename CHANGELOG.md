@@ -10,7 +10,7 @@
 - Added templates
 
 ## v0.3.3
-- Changed namespace to WiseDragonStd\\HadesWrapper\\
+- Changed namespace to DanySpin97\\PhpBotFramework\\
 - Bug fixes
 
 ## v0.3.2
