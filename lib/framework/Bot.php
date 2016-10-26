@@ -12,22 +12,22 @@ namespace DanySpin97\PhpBotFramework;
 
 class Bot extends CoreBot {
 
-    // Update reference
-    protected $update;
-
-    // Text received
+    /** \brief Text received in messages */
     public $text;
 
-    // Inline Keyboard
+    /** \brief Data received in callback query */
+    public $data;
+
+    /** \brief Query sent by the user in the inline query */
+    public $query;
+
+    /** \brief Store the inline keyboard */
     public $inline_keyboard;
 
-    // Database connection using class Database (optional)
-    public $database;
-
-    // Pdo reference (optional)
+    /** \brief <i>Optional</i>. Pdo reference */
     public $pdo;
 
-    // Redis connection (optional)
+    /** \brief <i>Optional</i>. Redis connection */
     public $redis;
 
     // Language and localitation and localitation for multi-language bot
@@ -40,8 +40,6 @@ class Bot extends CoreBot {
     public $offset = 0;
 
     public function __destruct() {
-        // Close database connection by deleting the reference
-        $this->database = null;
         // Close redis connection if it is open
         if (isset($this->redis)) {
             $this->redis->close();
@@ -69,7 +67,7 @@ class Bot extends CoreBot {
             $this->redis = new \Redis();
             $this->redis->connect($address);
         } catch (RedisException $e) {
-            throw new BotException($e->getMessage());
+            echo $e->getMessage();
         }
         return $redis;
     }
@@ -78,38 +76,47 @@ class Bot extends CoreBot {
         return $this->chat_id;
     }
 
-    // Set chat_id of the bot
-    public function setChatID($chat_id) {
-        $this->chat_id = &$chat_id;
-    }
-
-    public function setChatIDRef(&$chat_id) {
-        $this->chat_id = &$chat_id;
-    }
-
-    public function setDatabase($database) {
-        $this->database = $database;
-        $this->pdo = &$database->getPDO();
-    }
-
-    /*
-     * Get language for the current user, reading it from the database
+    /**
+     * \brief Set current chat id.
+     * \details Change the chat id which the bot execute api methods.
      */
-    public function &getLanguage() {
+    public function setChatID($chat_id) {
+        $this->chat_id = $chat_id;
+    }
+
+    /**
+     * \brief Get current user language from the database
+     * \details Get the language for
+     */
+    public function &getLanguageDatabase() {
+
         if (!isset($this->database)) {
             return 'en';
         }
+
         $sth = $this->pdo->prepare('SELECT "language" FROM "User" WHERE "chat_id" = :chat_id');
         $sth->bindParam(':chat_id', $this->chat_id);
-        $sth->execute();
+
+        try {
+            $sth->execute();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
         $row = $sth->fetch();
+
         $sth = null;
+
         if (isset($row['language'])) {
+
             $this->language = $row['language'];
             return $row['language'];
+
         } else {
+
             $this->language = 'en';
             return $this->language;
+
         }
     }
 
@@ -127,7 +134,7 @@ class Bot extends CoreBot {
             $this->language = $this->redis->get($this->chat_id . 'language');
             return $this->language;
         } else {
-            $this->redis->setEx($this->chat_id . ':language', 86400, getLanguage());
+            $this->redis->setEx($this->chat_id . ':language', 86400, $this->getLanguageDatabase());
             return $this->language;
         }
     }
@@ -181,40 +188,59 @@ class Bot extends CoreBot {
 
     // Read update and sent it to the right method
     public function processUpdate(&$update) {
-        $this->update = &$update;
+
         if (isset($update['message'])) {
+
             $this->chat_id = $update['message']['from']['id'];
             $this->text = $update['message']['text'];
-            $this->processMessage();
+
+            $this->processMessage($update['message']);
+
+            unset($this->text);
+
         } elseif (isset($update['callback_query'])) {
-            $this->processCallbackQuery();
+
+            $this->chat_id = $update['callback_query']['from']['id'];
+            $this->data = $update['callback_query']['data'];
+
+            $this->processCallbackQuery($update['callback_query']);
+
+            unset($this->data);
+
         } elseif (isset($update['inline_query'])) {
-            $this->processInlineQuery();
+
+            $this->chat_id = $update['inline_query']['from']['id'];
+            $this->query = $update['inline_query']['query'];
+
+            $this->processInlineQuery($update['inline_query']);
+
+            unset($this->query);
+
+        } elseif (isset($update['edited_message'])) {
+
+            $this->chat_id = $update['edited_message']['from']['id'];
+
+            $this->processEditedMessage($update['edited_message']);
+
         } elseif (isset($update['chosen_inline_result'])) {
-            $this->processInlineResult();
+
+            $this->chat_id = $update['chosen_inline_result']['from']['id'];
+
+            $this->processInlineResult($update['chosen_inline_result']);
         }
+
         return $update['update_id'];
     }
 
-    protected function processMessage() {
-        $message = &$this->update['message'];
-        $this->chat_id = &$message['from']['id'];
-    }
+    protected function processMessage(&$message) {}
 
-    protected function processCallbackQuery() {
-        $callback_query = &$this->update['callback_query'];
-        $this->chat_id = &$callback_query['from']['id'];
-    }
+    protected function processCallbackQuery(&$callback_query) {}
 
-    protected function processInlineQuery() {
-        $inline_query = &$this->update['inline_query'];
-        $this->chat_id = &$inline_query['from']['id'];
-    }
+    protected function processInlineQuery(&$inline_query) {}
 
-    protected function processInlineResult() {
-        $inline_result = &$this->update['chosen_inline_result'];
-        $this->chat_id = &$inline_result['from']['id'];
-    }
+    protected function processChosenInlineResult(&$chosen_inline_result) {}
+
+    protected function processEditedMessage(&$edited_message) {}
 
     /*
      * Get updates received by the bot, save the new offset to Redis and then process them
