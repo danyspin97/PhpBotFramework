@@ -22,10 +22,10 @@ class HelloBot extends \WiseDragonStd\PhpBotFramework\Bot {
 - cURL
 - Composer (to install this package and the required ones)
 - Web server (*required for webhook*) ([nginx](http://nginx.org/) reccomended)
-- SSL certificate (*required for webhook*) (follow [these steps](https://devcenter.heroku.com/articles/ssl-certificate-self) to make a self-signed certificate or use [StartSSL](https://www.startssl.com/))
+- SSL certificate (*required for webhook*) (follow [these steps](https://devcenter.heroku.com/articles/ssl-certificate-self) to make a self-signed certificate or use [Let's Encrypt](https://letsencrypt.org/))
 
 ## Installation
-The first step in order to use Hades is get it:
+The first step in order to create a new project using :
 
 ```shell
 composer require wisedragonstd/hades-wrapper

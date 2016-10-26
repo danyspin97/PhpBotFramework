@@ -66,11 +66,21 @@ class CoreBot {
         curl_close($this->ch);
     }
 
-    /*
-     * Request updates received by the bot using method getUpdates of Telegram API
-     * (https://core.telegram.org/bots/api#getupdates)
+    /**
+     * \addtogroup Api Methods
+     * @{
      */
-    protected function &getUpdates($offset, $limit, $timeout) {
+
+    /**
+     * \brief Request bot updates.
+     * \details Request updates received by the bot using method getUpdates of Telegram API.
+     * (https://core.telegram.org/bots/api#getupdates)
+     * @param $offset <i>Optional</i>. Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as getUpdates is called with an offset higher than its update_id. The negative offset can be specified to retrieve updates starting from -offset update from the end of the updates queue. All previous updates will forgotten.
+     * @param $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
+     * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
+     * @return <i>Optional</i>. An Array of Update objects is returned.
+     */
+    protected function &getUpdates($offset = 0, $limit = 100, $timeout = 60) {
 
         $parameters = [
             'offset' => &$offset,
@@ -82,14 +92,17 @@ class CoreBot {
         return $this->exec_curl_request($url);
     }
 
-    /*
-     * Send a text only message (https://core.telegram.org/bots/api#sendmessage)
-     * @param
-     * $text Text of the message
-     * $inline_keyboard reply_markup of the message (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
-     * $parse_mode Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
+    /**
+     * \brief Send a text message.
+     * \details Use this method to send text messages. (https://core.telegram.org/bots/api#sendmessage)
+     * @param $text Text of the message.
+     * @param <i>Optional</i>. $inline_keyboard reply_markup of the message (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
+     * @param $parse_mode <i>Optional</i>. Parse mode of the message (https://core.telegram.org/bots/api#formatting-options)
+     * @param $disable_web_preview <i>Optional</i>. Disables link previews for links in this message.
+     * @param $disable_notification <i>Optional</i>. Sends the message silently.
+     * @return On success, the sent message.
      */
-    public function &sendMessage($text, $inline_keyboard = null, $reply_to = null, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
+    public function &sendMessage($text, $reply_markup = null, $reply_to = null, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
 
         if (!isset($this->chat_id)) {
             throw new BotException('(sendMessage) Chat id is not set');
@@ -100,7 +113,7 @@ class CoreBot {
             'text' => &$text,
             'parse_mode' => &$parse_mode,
             'disable_web_page_preview' => &$disable_web_preview,
-            'reply_markup' => &$inline_keyboard,
+            'reply_markup' => &$reply_markup,
             'reply_to_message_id' => &$reply_to,
             'disable_notification' => &$disable_notification
         ];
@@ -110,13 +123,15 @@ class CoreBot {
         return $this->exec_curl_request($url);
     }
 
-    /*
-     * Forward a message (https://core.telegram.org/bots/api#forwardmessage)
-     * @param
-     * $from_chat_id The chat where the original message was sent
-     * $message_id Message identifier (id)
+    /**
+     * \brief Forward a message.
+     * \details Use this method to forward messages of any kind. (https://core.telegram.org/bots/api#forwardmessage)
+     * @param $from_chat_id The chat where the original message was sent.
+     * @param $message_id Message identifier (id).
+     * @param $disable_notification <i>Optional</i>. Sends the message silently.
+     * @return On success, the sent message.
      */
-    public function &forwardMessage(&$from_chat_id, &$message_id, $disable_notification = false) {
+    public function &forwardMessage($from_chat_id, $message_id, $disable_notification = false) {
 
         if (!isset($this->chat_id)) {
             throw new BotException('(sendMessage) Chat id is not set');
@@ -134,25 +149,37 @@ class CoreBot {
         return $this->exec_curl_request($url);
     }
 
-    /*
-     * Send a photo (https://core.telegram.org/bots/api#sendphoto)
-     * @param
-     * $photo Photo to send, can be a file_id or a string referencing the location of that image
-     * $inline_keyboard reply_markup of the message (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
+    /**
+     * \brief Send a photo.
+     * \details Use this method to send photos. (https://core.telegram.org/bots/api#sendphoto)
+     * @param $photo Photo to send, can be a file_id or a string referencing the location of that image.
+     * @param $inline_keyboard reply_markup of the message (https://core.telegram.org/bots/api#inlinekeyboardmarkup).
+     * @param $caption Photo caption (may also be used when resending photos by file_id), 0-200 characters.
+     * @param $disable_notification Sends the message silently.
+     * @return On success, the sent message.
      */
-    public function &sendPhoto($photo, $inline_keyboard = null, $caption = '', $disable_notification = false) {
+    public function &sendPhoto($photo, $reply_markup = null, $caption = '', $disable_notification = false) {
 
         $parameters = [
             'chat_id' => &$this->chat_id,
             'photo' => &$photo,
             'caption' => &$caption,
-            'reply_markup' => &$inline_keyboard,
+            'reply_markup' => &$reply_markup,
             'disable_notification' => &$disable_notification,
         ];
 
         $url = $this->api_url . 'sendPhoto?' . http_build_query($parameters);
 
         return $this->exec_curl_request($url);
+    }
+
+    /**
+     * \brief Send an audio.
+     * \details Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. (https://core.telegram.org/bots/api/#sendaudio)
+     * @param
+     */
+    public function &sendAudio($audio, $caption = null, $reply_markup = null, $duration = null, $title = null, $disable_notification = false, $reply_to_message_id = null) {
+
     }
 
     /*
