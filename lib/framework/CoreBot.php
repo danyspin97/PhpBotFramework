@@ -2,12 +2,6 @@
 
 namespace DanySpin97\PhpBotFramework;
 
-/*
- *
- * Class Bot to handle task like api request, or more specific api function(sendMessage, editMessageText, etc).
- * Usage example in echobot.php
- *
- */
 
 /**
  * \mainpage
@@ -31,29 +25,50 @@ namespace DanySpin97\PhpBotFramework;
  *
  */
 
+/**
+ * \brief Core of the framework
+ * \details Contains data used by the bot to works, curl request handling, and all api methods (sendMessage, editMessageText, etc).
+ *
+ */
 
 class CoreBot {
-    // Token of the bot
-    protected $token;
-    // Url for api requesting
+
+    /**
+     * \addtogroup Core Core(Internal)
+     * @{
+     */
+
+    /** \brief The bot token */
+    private $token;
+
+    /** \brief Url request (containing $token) */
     protected $api_url;
+
     // Chat_id of the user that interacted with the bot
     protected $chat_id;
 
     // Curl request handler
     public $ch;
 
-    // Contructor, simply put token bot in $token variable
+    /** @} */
+
+    /** \brief Contrusct an empty bot
+     * \details Construct a bot passing the token
+     * @param $token Token given by @botfather
+     */
     public function __construct($token) {
 
+        // Check token is valid
         if (is_numeric($token) || $token === '') {
             throw new BotException('Token is not valid or empty');
             return;
         }
 
+        // Init variables
         $this->token = &$token;
         $this->api_url = 'https://api.telegram.org/bot' . $token . '/';
 
+        // Init connection and config it
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -62,7 +77,9 @@ class CoreBot {
         curl_setopt($this->ch, CURLOPT_ENCODING,  '');
     }
 
+    /** \brief Destroy the object */
     public function __destruct() {
+        // Close connection
         curl_close($this->ch);
     }
 
@@ -389,3 +406,5 @@ class CoreBot {
         return $response;
     }
 }
+
+/** @} */

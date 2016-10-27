@@ -30,14 +30,24 @@ class Bot extends CoreBot {
     /** \brief <i>Optional</i>. Redis connection */
     public $redis;
 
-    // Language and localitation and localitation for multi-language bot
-    public $language;
+    /** \brief <i>Optional</i>. Store the language for a multi-language bot */
+    protected $language;
+
+    /** \brief <i>Optional</i>. Store the array containing language */
     public $localization;
 
-    // Status of the bot
+    /** \brief <i>Optional</i>. Status of the bot to handle data inserting */
     protected $status;
 
-    public $offset = 0;
+    /**
+     * \addtogroup Core Core(Internal)
+     * @{
+     */
+
+    /** \brief Offset used when asking new updates from telegram */
+    private $offset = 0;
+
+    /** @} */
 
     public function __destruct() {
         // Close redis connection if it is open
