@@ -44,44 +44,30 @@ class Bot extends CoreBot {
      * @{
      */
 
-    /** \brief Offset used when asking new updates from telegram */
+    /** \brief Offset used when asking new updates from telegram. */
     private $offset = 0;
 
     /** @} */
 
+    /** \brief Descruct the class */
     public function __destruct() {
+
         // Close redis connection if it is open
         if (isset($this->redis)) {
             $this->redis->close();
         }
+
     }
 
-    /*
-     * Connect to database through the HadesSQL ORM,
-     *
-     * @param
-     * $driver DBMS used
-     * $dbname Name of the database
-     * $user Username for logging
-     * $password Passoword for the $username
+    /**
+     * \addtogroup Bot
+     * @{
      */
-    public function &connectToDatabase($driver, $dbname, $user, $password) {
-        $this->database = new Database($driver, $dbname, $user, $password);
-        $this->pdo = $this->database->getPDO();
-        return $this->database;
-    }
 
-    // Connect to redis giving $address parameter and optional append port to it (127.0.0.1:6379)
-    public function &connectToRedis($address = '127.0.0.1') {
-        try {
-            $this->redis = new \Redis();
-            $this->redis->connect($address);
-        } catch (RedisException $e) {
-            echo $e->getMessage();
-        }
-        return $redis;
-    }
-
+    /**
+     * \brief Get chat id of the current user.
+     * @return Chat id of the user.
+     */
     public function &getChatID() {
         return $this->chat_id;
     }
@@ -89,21 +75,87 @@ class Bot extends CoreBot {
     /**
      * \brief Set current chat id.
      * \details Change the chat id which the bot execute api methods.
+     * @param $chat_id The new chat id to set.
      */
     public function setChatID($chat_id) {
         $this->chat_id = $chat_id;
     }
 
+    /** @} */
+
     /**
-     * \brief Get current user language from the database
-     * \details Get the language for
+     * \addtogroup Database
+     * @{
+     */
+
+    /**
+     * \brief Connect to the database.
+     * \details Create a pdo reference and store it in the bot.
+     *
+     * @param $driver Database used.
+     * @param $dbname Name of the database.
+     * @param $user Username for login.
+     * @param $password Password for login.
+     * @param $parameters Parameter for the connection.
+     * @return Newly created pdo reference.
+     */
+    public function &connectToDatabase($driver, $dbname, $user, $password, array $parameters = null) {
+
+        // Connect
+        $this->pdo = new \PDO("$driver:host=localhost;dbname=$dbname", $user, $password);
+
+        if (isset($parameters)) {
+
+            foreach ($parameters as $key => $value) {
+                $this->pdo->setAttribute($key, $value);
+            }
+
+        } else {
+
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION );
+            $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+
+        }
+
+        return $this->pdo;
+
+    }
+
+    /**
+     * \brief Set pdo in the bot.
+     * @param $pdo Connection to the database.
+     */
+    public function setPDO($pdo) {
+
+        $this->pdo = $pdo;
+
+    }
+
+    /**
+     * \brief Get connection to the database.
+     * @return Connection variable.
+     */
+    public function &getPDO() {
+
+        return $this->pdo;
+
+    }
+
+    /**
+     * \brief Get current user language from the database.
+     * @return Language set for the current user.
      */
     public function &getLanguageDatabase() {
 
+        // If we have no database
         if (!isset($this->database)) {
+            // Set the language to english
+            $this->language = 'en';
+            // Return english
             return 'en';
         }
 
+        // Get the language from the bot
         $sth = $this->pdo->prepare('SELECT "language" FROM "User" WHERE "chat_id" = :chat_id');
         $sth->bindParam(':chat_id', $this->chat_id);
 
@@ -117,36 +169,80 @@ class Bot extends CoreBot {
 
         $sth = null;
 
+        // If we got the language
         if (isset($row['language'])) {
 
+            // Set the language in the bot
             $this->language = $row['language'];
+            // And return it
             return $row['language'];
 
+        // If we couldn't get it
         } else {
 
+            // Set the language to english
             $this->language = 'en';
+            // And return english
             return $this->language;
 
         }
     }
 
-    /*
-     * Using Redis as a cache we store language in both database and Redis, read it from redis if
-     * it exists (the key will expire in 1 day after it is set) or read it from the database and
-     * store it in Redis
+    /** @} */
+
+    /**
+     * \addtogroup Redis
+     * @{
      */
-    public function &getLanguageRedis() {
-        if (!isset($this->redis)) {
-            return 'en';
+
+    /**
+     * \brief Connect to redis database.
+     * @param $address of the redis server (append port to it, <code>127.0.0.1:6379</code>, if needed).
+     * @return Newly created redis reference.
+     */
+    public function &connectToRedis($address = '127.0.0.1') {
+
+        try {
+            $this->redis = new \Redis();
+            $this->redis->connect($address);
+        } catch (RedisException $e) {
+            echo $e->getMessage();
         }
+
+        return $redis;
+    }
+
+
+
+    /**
+     * \brief Get language from redis as cache.
+     * \details Using redis database as cache, seeks the language in it, if there isn't
+     * then get the language from the sql database and store it (with default expiring of one day) in redis
+     * @param $expiring_time Set the expiring time for the language on redis each time it is took from the sql database
+     * @return Language for the current user, 'en' on errors
+     */
+    public function &getLanguageRedisAsCache() {
+
+        if (!isset($this->redis)) {
+
+            return 'en';
+
+        }
+
         $is_language_set = $this->redis->exists($this->chat_id . ':language');
+
         if ($is_language_set) {
+
             $this->language = $this->redis->get($this->chat_id . 'language');
             return $this->language;
+
         } else {
+
             $this->redis->setEx($this->chat_id . ':language', 86400, $this->getLanguageDatabase());
             return $this->language;
+
         }
+
     }
 
     /*
