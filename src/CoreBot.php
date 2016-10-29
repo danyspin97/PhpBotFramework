@@ -20,17 +20,17 @@ namespace DanySpin97\PhpBotFramework;
  * - Inline query results handler
  * - Sql database support
  * - Redis support
- * - Highly tested
+ * - Support for multilanguage bot
+ * - Support for bot state
  * - Highly documented
  *
  */
 
 /**
+ * \class CoreBot
  * \brief Core of the framework
  * \details Contains data used by the bot to works, curl request handling, and all api methods (sendMessage, editMessageText, etc).
- *
  */
-
 class CoreBot {
 
     /**
@@ -50,9 +50,8 @@ class CoreBot {
     // Curl request handler
     public $ch;
 
-    /** @} */
-
-    /** \brief Contrusct an empty bot
+    /**
+     * \constructor Contrusct an empty bot
      * \details Construct a bot passing the token
      * @param $token Token given by @botfather
      */
@@ -82,6 +81,8 @@ class CoreBot {
         // Close connection
         curl_close($this->ch);
     }
+
+    /** @} */
 
     /**
      * \addtogroup Api Methods

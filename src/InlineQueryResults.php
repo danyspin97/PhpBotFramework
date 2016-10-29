@@ -1,7 +1,10 @@
 <?php
 
-namespace WiseDragonStd\HadesWrapper;
+namespace DanySpin97\PhpBotFramework;
 
+/**
+ * \class InlineQueryResults InlineQueryResults
+ */
 class InlineQueryResults {
 
     // The results created by this class that will be sent as inline query

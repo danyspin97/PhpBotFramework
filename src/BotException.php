@@ -1,5 +1,5 @@
 <?php
 
-namespace WiseDragonStd\HadesWrapper;
+namespace DanySpin97\PhpBotFramework;
 
 class BotException extends \Exception {}

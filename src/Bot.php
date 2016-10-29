@@ -2,16 +2,18 @@
 
 namespace DanySpin97\PhpBotFramework;
 
-/*
- *
+/**
+ * \class Bot Bot
  * Class Bot to handle task like api request, or more specific api function(sendMessage, editMessageText, etc).
  * Usage example in webhook.php
  *
  */
-
-
 class Bot extends CoreBot {
 
+    /**
+     * \modules Bot Bot
+     * @{
+     */
     /** \brief Text received in messages */
     public $text;
 
@@ -24,20 +26,41 @@ class Bot extends CoreBot {
     /** \brief Store the inline keyboard */
     public $inline_keyboard;
 
-    /** \brief <i>Optional</i>. Pdo reference */
+    /** \brief Pdo reference */
     public $pdo;
 
-    /** \brief <i>Optional</i>. Redis connection */
+    /** \brief Redis connection */
     public $redis;
 
-    /** \brief <i>Optional</i>. Store the language for a multi-language bot */
-    protected $language;
+    /** @} */
 
-    /** \brief <i>Optional</i>. Store the array containing language */
+    /**
+     * \addtogroup Multilanguage Multilanguage
+     * @{
+     */
+
+    /** \brief Store the language for a multi-language bot */
+    public $language;
+
+    /** \brief Store the array containing language */
     public $localization;
 
+    /** \brief Table contaning bot users data. */
+    public $user_table;
+
+    /** \brief Name of the column that represents the user id. */
+    public $id_column;
+
+    /** @} */
+
+    /** \addtogroup State
+     * @{
+     */
+
     /** \brief <i>Optional</i>. Status of the bot to handle data inserting */
-    protected $status;
+    public $status;
+
+    /** @} */
 
     /**
      * \addtogroup Core Core(Internal)
@@ -49,7 +72,12 @@ class Bot extends CoreBot {
 
     /** @} */
 
-    /** \brief Descruct the class */
+    /**
+     * \addtogroup Bot
+     * @{
+     */
+
+    /** \constructor Descruct the class */
     public function __destruct() {
 
         // Close redis connection if it is open
@@ -58,11 +86,6 @@ class Bot extends CoreBot {
         }
 
     }
-
-    /**
-     * \addtogroup Bot
-     * @{
-     */
 
     /**
      * \brief Get chat id of the current user.
@@ -122,41 +145,22 @@ class Bot extends CoreBot {
     }
 
     /**
-     * \brief Set pdo in the bot.
-     * @param $pdo Connection to the database.
-     */
-    public function setPDO($pdo) {
-
-        $this->pdo = $pdo;
-
-    }
-
-    /**
-     * \brief Get connection to the database.
-     * @return Connection variable.
-     */
-    public function &getPDO() {
-
-        return $this->pdo;
-
-    }
-
-    /**
      * \brief Get current user language from the database.
-     * @return Language set for the current user.
+     * @param $default_language Default language to return in case of errors.
+     * @return Language set for the current user, $default_language on errors.
      */
-    public function &getLanguageDatabase() {
+    public function &getLanguageDatabase($default_language = 'en') {
 
         // If we have no database
         if (!isset($this->database)) {
             // Set the language to english
-            $this->language = 'en';
+            $this->language = $default_language;
             // Return english
-            return 'en';
+            return $default_language;
         }
 
         // Get the language from the bot
-        $sth = $this->pdo->prepare('SELECT "language" FROM "User" WHERE "chat_id" = :chat_id');
+        $sth = $this->pdo->prepare('SELECT language FROM "User" WHERE "chat_id" = :chat_id');
         $sth->bindParam(':chat_id', $this->chat_id);
 
         try {
@@ -181,7 +185,7 @@ class Bot extends CoreBot {
         } else {
 
             // Set the language to english
-            $this->language = 'en';
+            $this->language = $default_language;
             // And return english
             return $this->language;
 
@@ -196,85 +200,118 @@ class Bot extends CoreBot {
      */
 
     /**
-     * \brief Connect to redis database.
-     * @param $address of the redis server (append port to it, <code>127.0.0.1:6379</code>, if needed).
-     * @return Newly created redis reference.
+     * \brief Get current user language from redis.
+     * \details Using redis database we get language stored.
+     * @param $default_language Default language to return in case of errors.
+     * @return Language for the current user, $default_language on errors.
      */
-    public function &connectToRedis($address = '127.0.0.1') {
+    public function &getLanguageRedis($default_language = 'en') {
 
-        try {
-            $this->redis = new \Redis();
-            $this->redis->connect($address);
-        } catch (RedisException $e) {
-            echo $e->getMessage();
-        }
-
-        return $redis;
-    }
-
-
-
-    /**
-     * \brief Get language from redis as cache.
-     * \details Using redis database as cache, seeks the language in it, if there isn't
-     * then get the language from the sql database and store it (with default expiring of one day) in redis
-     * @param $expiring_time Set the expiring time for the language on redis each time it is took from the sql database
-     * @return Language for the current user, 'en' on errors
-     */
-    public function &getLanguageRedisAsCache() {
-
+        // If redis or pdo connection are not set
         if (!isset($this->redis)) {
 
-            return 'en';
+            // return default language
+            return $default_language;
 
         }
 
-        $is_language_set = $this->redis->exists($this->chat_id . ':language');
+        // Does it exists on redis?
+        if ($this->redis->exists($this->chat_id . ':language')) {
 
-        if ($is_language_set) {
-
-            $this->language = $this->redis->get($this->chat_id . 'language');
+            // Get the value
+            $this->language = $this->redis->get($this->chat_id . ':language');
             return $this->language;
 
         } else {
 
-            $this->redis->setEx($this->chat_id . ':language', 86400, $this->getLanguageDatabase());
+            $this->language = 'en';
             return $this->language;
 
         }
 
     }
 
-    /*
-     * Set language for the current user, first it save it on db, then change it on redis if it exists
-     * @param
-     * $language New language
+    /**
+     * \brief Get current user language from redis, as a cache.
+     * \details Using redis database as cache, seeks the language in it, if there isn't
+     * then get the language from the sql database and store it (with default expiring of one day) in redis.
+     * It also change $language parameter of the bot to the language returned.
+     * @param $default_language Default language to return in case of errors.
+     * @param $expiring_time Set the expiring time for the language on redis each time it is took from the sql database.
+     * @return Language for the current user, $default_language on errors.
      */
-    public function setLanguage($language) {
-        if (!isset($this->database)) {
-            exit;
+    public function &getLanguageRedisAsCache($default_language = 'en', $expiring_time = '86400') {
+
+        // If redis or pdo connection are not set
+        if (!isset($this->redis) || !isset($this->pdo)) {
+
+            // return default language
+            return $default_language;
+
         }
-        $sth = $this->pdo->prepare('UPDATE "User" SET "language" = :language WHERE "chat_id" = :chat_id');
+
+        // Does it exists on redis?
+        if ($this->redis->exists($this->chat_id . ':language')) {
+
+            // Get the value
+            $this->language = $this->redis->get($this->chat_id . ':language');
+            return $this->language;
+
+        } else {
+
+            // Set the value from the db
+            $this->redis->setEx($this->chat_id . ':language', $expiring_time, $this->getLanguageDatabase());
+            return $this->language;
+
+        }
+
+    }
+
+    /**
+     * \brief Set the current user language in both redis and sql database.
+     * \details Save it on database first, then create the expiring key on redis.
+     * @param $language The new language to set.
+     * @param $expiring_time Time for the language key in redis to expire.
+     * @return On sucess, return true, throw exception otherwise.
+     */
+    public function setLanguageRedisAsCache($language, $user_table = '"User"', $id_column = 'chat_id', $expiring_time = '86400') {
+
+        // Check database connection
+        if (!isset($this->database) && !isset($this->redis)) {
+            throw new BotException('Database connection not set');
+        }
+
+        // Update the language in the database
+        $sth = $this->pdo->prepare('UPDATE ' . $user_table . ' SET language = :language WHERE ' . $id_column . ' = :id');
         $sth->bindParam(':language', $language);
-        $sth->bindParam(':chat_id', $this->chat_id);
+        $sth->bindParam(':id', $this->chat_id);
+
         try {
             $sth->execute();
         } catch (PDOException $e) {
             throw new BotException($e->getMessage());
         }
+
+        // Destroy statement
         $sth = null;
-        if (isset($this->redis)) {
-            $this->redis->setEx($this->chat_id . ':language', 86400, $language);
-        }
+
+        // Set the language in redis with expiring
+        $this->redis->setEx($this->chat_id . ':language', $expiring_time, $language);
+
+        // Set language in the bot variable
         $this->language = $language;
     }
 
-    public function setLocalization(&$localization) {
-        $this->localization = &$localization;
-    }
-
-    // Get status of the bot, it will be both returned and setted in $this->status
+    /**
+     * \brief Get current user status from redis and set it in status variable.
+     * @return The status.
+     */
     public function &getStatus() {
+
+        if (!isset($this->redis)) {
+            throw new BotException('Redis connection not set');
+        }
+
         $is_status_set = $this->redis->exists($this->chat_id . ':status');
         if ($is_status_set) {
             $this->status = $this->redis->get($this->chat_id . ':status');
