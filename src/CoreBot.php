@@ -105,6 +105,7 @@ class CoreBot {
             'limit' => &$limit,
             'timeout' => &$timeout,
         ];
+
         $url = $this->api_url . 'getUpdates?' . http_build_query($parameters);
 
         return $this->exec_curl_request($url);
@@ -352,25 +353,35 @@ class CoreBot {
        return $this->exec_curl_request($url);
     }
 
-    public function &apiRequest($method, $parameters) {
+    /*
+     * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
+     * without showing any results to the user
+     * @param
+     * $switch_pm_text Text to show on the button
+     */
+    public function &answerEmptyInlineQuerySwitchPM($switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
+        $parameters = [
+            'inline_query_id' => &$this->update['inline_query']['id'],
+            'switch_pm_text' => &$switch_pm_text,
+            'is_personal' => $is_personal,
+            'switch_pm_parameter' => $switch_pm_parameter,
+            'cache_time' => $cache_time
+        ];
 
-        if (!is_string($method)) {
-            throw new BotException('Method name must be a string');
-        }
-
-        if (!$parameters) {
-            $parameters = array();
-        } else if (!is_array($parameters)) {
-            throw new BotException('Parameters must be an array');
-        }
-
-        $url = $this->api_url . $method.'?'. http_build_query($parameters);
+        $url = $this->api_url . 'answerInlineQuery?' . http_build_query($parameters);
 
         return $this->exec_curl_request($url);
     }
 
+
+    public function &apiRequest(string $method, array $parameters) {
+
+        return $this->exec_curl_request($this->api_url . $method.'?'. http_build_query($parameters));
+
+    }
+
     // Base core function to execute url request
-    protected function &exec_curl_request(&$url) {
+    protected function &exec_curl_request($url) {
 
         curl_setopt($this->ch, CURLOPT_URL, $url);
 
