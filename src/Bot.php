@@ -16,7 +16,7 @@ class Bot extends CoreBot {
      * @{
      */
 
-    private $commands;
+    private $message_commands;
 
     /** @} */
 
@@ -77,6 +77,20 @@ class Bot extends CoreBot {
      * @{
      */
 
+    /**
+     * \constructor Construct an empy bot
+     * \details Construct a bot with commands, multilanguage and status
+     */
+    public function __construct(string $token) {
+
+        // Parent constructor
+        parent::__construct($token);
+
+        // Initialize to an empty array
+        $message_commands = [];
+
+    }
+
     /** \constructor Descruct the class */
     public function __destruct() {
 
@@ -104,7 +118,7 @@ class Bot extends CoreBot {
      * \details Change the chat id which the bot execute api methods.
      * @param $chat_id The new chat id to set.
      */
-    public function setChatID(int $chat_id) {
+    public function setChatID($chat_id) {
 
         $this->chat_id = $chat_id;
 
@@ -118,7 +132,7 @@ class Bot extends CoreBot {
 
         if (isset($this->text)) {
 
-            return $this->text);
+            return $this->text;
 
         }
 
@@ -157,6 +171,17 @@ class Bot extends CoreBot {
         throw new BotException("Query not set: wrong update type");
     }
 
+    /**
+     * \brief Get update and process it.
+     * \details Call this method if you are using webhook.
+     * It will get update from php::\input, check it and then process it using processUpdate.
+     */
+    public function processWebhookUpdate() {
+
+        $this->processUpdate(json_decode(file_get_contents('php://input'), true));
+
+    }
+
     /** @} */
 
     /**
@@ -165,19 +190,45 @@ class Bot extends CoreBot {
      */
 
     /**
-     * \brief Dispatch each update to the right method.
+     * \brief Dispatch each update to the right method (processMessage, processCallbackQuery, etc).
      * \details Set $chat_id for each update, $text, $data and $query are set for each update that contains them.
-     * It also calls commands for each updates.
+     * It also calls commands for each updates, before process methods.
      * @param $update Reference to the update received.
      * @return The id of the update processed.
      */
-    public function processUpdate(&$update) {
+    public function processUpdate(array &$update) : int {
 
         if (isset($update['message'])) {
 
             // Set data from the message
             $this->chat_id = $update['message']['from']['id'];
             $this->text = $update['message']['text'];
+
+            if (isset($update['message']['entities']) && $update['message']['entities'][0]['type'] === 'bot_command') {
+
+                // The lenght of the command
+                $length = $update['message']['entities'][0]['length'];
+
+                // For each command added by the user
+                foreach ($this->message_commands as $trigger) {
+
+                    // Check corresponding
+                    if($trigger['length'] == $length && mb_strpos($trigger['command'], $this->text) !== false) {
+
+                        // Execute script,
+                        $trigger['script']($this, $update['message']);
+
+                        // clear text variable
+                        unset($this->text);
+
+                        // and return the id of the current update
+                        return $update['update_id'];
+
+                    }
+
+                }
+
+            }
 
             // And process it
             $this->processMessage($update['message']);
@@ -277,7 +328,7 @@ class Bot extends CoreBot {
      * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
      * @param $offset_key <i>Optional</i>. Name of the variable where the offset is saved on Redis
      */
-    public function getUpdatesRedis($limit = 100, $timeout = 60, $offset_key = 'offset') {
+    public function getUpdatesRedis(int $limit = 100, int $timeout = 60, string $offset_key = 'offset') {
 
         // Check redis connection
         if (!isset($this->redis)) {
@@ -312,8 +363,10 @@ class Bot extends CoreBot {
         // Process all updates received
         while (true) {
 
+            $updates = $this->getUpdates($offset, $limit, $timeout);
+
             // Parse all updates received
-            foreach ($this->getUpdates($offset, $limit, $timeout) as $key => $update) {
+            foreach ($updates as $key => $update) {
 
                 try {
 
@@ -342,7 +395,7 @@ class Bot extends CoreBot {
      * @param $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
      * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
      */
-    public function getUpdatesLocal($limit = 100, $timeout = 60) {
+    public function getUpdatesLocal(int $limit = 100, int $timeout = 60) {
 
         $update = [];
 
@@ -370,8 +423,10 @@ class Bot extends CoreBot {
                     'timeout' => &$timeout
             ];
 
+            $updates = $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters));
+
             // Parse all update to receive
-            foreach($this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters)) as $key => $update) {
+            foreach($updates as $key => $update) {
 
                 try {
 
@@ -404,7 +459,7 @@ class Bot extends CoreBot {
      * @param $table_name <i>Optional</i>. Name of the table where offset is saved in the database
      * @param $column_name <i>Optional</i>. Name of the column where the offset is saved in the database
      */
-    public function getUpdatesDatabase($limit = 100, $timeout = 0, $table_name = 'telegram', $column_name = 'bot_offset') {
+    public function getUpdatesDatabase(int $limit = 100, int $timeout = 0, string $table_name = 'telegram', string $column_name = 'bot_offset') {
 
         if (!isset($this->database)) {
 
@@ -445,7 +500,9 @@ class Bot extends CoreBot {
 
         while (true) {
 
-            foreach($this->getUpdates($offset, $limit, $timeout) as $key => $update) {
+            $updates = $this->getUpdates($offset, $limit, $timeout);
+
+            foreach($updates as $key => $update) {
 
                 try {
 
@@ -464,6 +521,25 @@ class Bot extends CoreBot {
             $sth->bindParam(':new_offset', $offset + sizeof($updates));
             $sth->execute();
         }
+    }
+
+    /**
+     * \brief Add a function that will be executed everytime a message contain the selected command
+     * \details Use this syntax:
+     *
+     *     addMessageCommand("start", function($bot, $message) {
+     *         $bot->sendMessage("Hi"); });
+     * @param $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
+     * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
+     */
+    public function addMessageCommand(string $command, $script) {
+
+        $this->message_commands[] = [
+                'command' => '/' . $command,
+                'script' => $script,
+                'length' => mb_strlen($command) + 1
+        ];
+
     }
 
     /** @} */
@@ -488,7 +564,7 @@ class Bot extends CoreBot {
             'disable_notification' => &$disable_notification
         ];
 
-        return $this->exec_curl_request($this->api_url . 'sendMessage?' . http_build_query($parameters))
+        return $this->exec_curl_request($this->api_url . 'sendMessage?' . http_build_query($parameters));
 
     }
 
@@ -721,7 +797,7 @@ class Bot extends CoreBot {
 
         }
 
-        if ($this->redis->exists($this->chat_id . ':status') {
+        if ($this->redis->exists($this->chat_id . ':status')) {
 
             $this->status = $this->redis->get($this->chat_id . ':status');
 

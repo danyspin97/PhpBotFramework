@@ -1,6 +1,6 @@
 {
     "name": "danyspin97/php-bot-framework",
-    "description": "Php Bot Framework is a lightweight framework for Telegram Bots' APIs.",
+    "description": "Php Bot Framework is a framework for Telegram Bots' APIs.",
     "version": "1.0.0",
     "type": "library",
     "license": "LGPL-3.0+",
@@ -10,11 +10,6 @@
         {
             "name": "Dany Spin",
             "homepage": "https://github.com/danyspin97",
-            "role": "Developer"
-        },
-        {
-            "name": "TheSeeker",
-            "homepage": "https://github.com/domcorvasce",
             "role": "Developer"
         }
     ],
@@ -32,10 +27,10 @@
     },
     "autoload": {
         "psr-4": {
-            "DanySpin97\\PhpBotFramework\\": ["lib/framework", "lib/hades-sql"]
+            "DanySpin97\\PhpBotFramework\\": ["src/framework"]
         }
     },
     "archive": {
-        "exclude": ["/examples", "/templates", "/tests", "/ci", "/*.md", "phpunit.xml"]
+        "exclude": ["/examples", "/templates", "/tests", "/*.md", "phpunit.xml"]
     }
 }

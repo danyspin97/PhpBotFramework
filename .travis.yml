@@ -1,24 +1,28 @@
-# Select image from https://hub.docker.com/r/_/php/
-image: php:7.0
+dist: trusty
+sudo: required
+language: php
 
-cache:
-  untracked: true
-  paths:
-  - vendor/
-
-before_script:
-# Install dependencies
-- bash ci/docker_install.sh > /dev/null
+php:
+  - '7.0'
 
 services:
-- mysql:latest
-- redis:latest
+  - postgresql
+  - redis-server
 
-variables:
-  # Configure mysql service (https://hub.docker.com/_/mysql/)
-  MYSQL_DATABASE: hello_world_test
-  MYSQL_ROOT_PASSWORD: mysql
+cache:
+  directories:
+    - $HOME/.composer/cache
 
-test:app:
-  script:
-  - ./vendor/bin/phpunit --configuration phpunit.xml
+notifications:
+  on_success: never
+  on_failure: always
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+
+before_install: phpenv config-add phpconfig.ini
+
+script:
+  - phpunit --configuration phpunit.xml
