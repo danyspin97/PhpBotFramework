@@ -15,7 +15,6 @@
     ],
     "require": {
         "php": ">=7.0",
-        "ext-redis": "*",
         "ext-curl": "*"
     },
     "require-dev": {
@@ -24,6 +23,7 @@
     "suggest": {
         "ext-mysql": "*",
         "ext-pgsql": "*"
+        "ext-redis": "*",
     },
     "autoload": {
         "psr-4": {

@@ -1,6 +1,10 @@
 # Php Bot Framework
-[![License Badge](https://img.shields.io/badge/license-LGPL--3.0+-blue.svg?style=flat)]()
-[![Version_Badge](https://img.shields.io/badge/version-1.0.0-green.svg?style=flat)]()
+[![Total Downloads](https://poser.pugx.org/danyspin97/php-bot-framework/downloads)](https://packagist.org/packages/danyspin97/php-bot-framework)<Paste>
+[![Latest Stable Version](https://poser.pugx.org/danyspin97/php-bot-framework/v/stable)](https://packagist.org/packages/danyspin97/php-bot-framework)
+[![Build Status](https://travis-ci.org/DanySpin97/PhpBotFramework.svg?branch=master)](https://travis-ci.org/DanySpin97/PhpBotFramework)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6254e3eccc93497997dae21e57a452ac)](https://www.codacy.com/app/danyspin97/PhpBotFramework?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DanySpin97/PhpBotFramework&amp;utm_campaign=Badge_Grade)
+[![License](https://poser.pugx.org/danyspin97/php-bot-framework/license)](https://packagist.org/packages/danyspin97/php-bot-framework)
+
 
 *Php Bot Framework* is a framework for Telegram Bot API.
 Designed to be fast and easy to use, it provides all the features a user need.
@@ -9,14 +13,23 @@ Take control of your bot using the command-handler system or the update type bas
 ## Usage
 
 ```php
-class HelloBot extends DanySpin97\PhpBotFramework\Bot {
-    public function processMessage(&$message) {
-        // Send back the text sent by the user
-        $this->sendMessage($this->getText());
-    }
-}
+<?php
 
-$bot = new HelloBot("token");
+// Include the framework
+require './vendor/autoload.php';
+
+// Create a bot
+$bot = new DanySpin97\PhpBotFramework\Bot("token");
+
+// Add a command that will be triggered everytime the user click "/start"
+$bot->addMessageCommand("start",
+    function($bot, $message) {
+        // Reply with "Hello"
+        $bot->sendMessage("Hello");
+    }
+);
+
+// Received updates from telegram using getUpdates
 $bot->getUpdatesLocal();
 ```
 
@@ -45,17 +58,20 @@ $bot->getUpdatesLocal();
 To use this framework go in your project folder and execute these commands:
 
 ```shell
-composer require wisedragonstd/hades-wrapper
+composer require danyspin97/php-bot-framework
 composer install --no-dev
 ```
 
+## Documentation
+Check the documentation [Here](https://danyspin97.github.io/PhpBotFramework/) for more.
+
 ## Bot using this wrapper
-- [@MyAddressBookBot](https://telegram.me/myaddressbookbot)
+- [@MyAddressBookBot](https://telegram.me/myaddressbookbot) ([Source](https://github.com/DanySpin97/MyAddressBookBot))
 - [@Giveaways_Bot](https://telegram.me/giveaways_bot)
 
 ## Author
-This Framework is developed and manteined by @DanySpin97.
+This Framework is developed and mantained by @DanySpin97.
 
 ## [License](https://www.gnu.org/licenses/lgpl-3.0.en.html)
 PhpBotFramework is released under GNU Lesser General Public License.
-You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL-3. Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the wrapper don't have to be.
+You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL-3. Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the framework don't have to be.

@@ -70,12 +70,22 @@ Description</h1>
 <p>PhpBotFramework a lightweight framework for Telegram <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> API. Designed to be fast and easy to use, it provides all the features a user need. Take control of your bot using the command-handler system or the update type based function.</p>
 <h2><a class="anchor" id="Example"></a>
 Example</h2>
-<p>A quick example that say "Hello" every time the user send "/start": </p><pre class="fragment">namespace DanySpin97\PhpBotFramework;
+<p>A quick example, the bot will send "Hello" every time the user click "/start": </p><pre class="fragment">&lt;?php
+
+// Include the framework
 require './vendor/autoload.php';
-$bot = new Bot("token");
-$bot-&gt;addMessageCommand("/start", function($bot, $message) {
+
+// Create the bot
+$bot = new DanySpin97\PhpBotFramework\Bot("token");
+
+// Add a command that will be triggered every time the user click /start
+$bot-&gt;addMessageCommand("start",
+    function($bot, $message) {
         $bot-&gt;sendMessage("Hello");
-        });
+    }
+);
+
+// Receive update from telegram using getUpdates
 $bot-&gt;getUpdatesLocal();
 </pre><h1><a class="anchor" id="Features"></a>
 Features</h1>
@@ -96,22 +106,22 @@ Features</h1>
 <h1><a class="anchor" id="Requirements"></a>
 Requirements</h1>
 <ul>
-<li><b>Php 7.0</b> or greater</li>
-<li><b>php-mbstring</b></li>
-<li><b>Composer</b> (to install the framework)</li>
-<li><b>SSL certificate</b> (<em>required by webhook</em>)</li>
-<li><b>Web server</b> (<em>required by webhook</em>)</li>
+<li>Php 7.0 or greater</li>
+<li>php-mbstring</li>
+<li>Composer (to install the framework)</li>
+<li>SSL certificate (<em>required by webhook</em>)</li>
+<li>Web server (<em>required by webhook</em>)</li>
 </ul>
 <h1><a class="anchor" id="Installation"></a>
 Installation</h1>
 <p>In your project folder: </p><pre class="fragment">composer require danyspin97/php-bot-framework
-composer install
+composer install --no-dev
 </pre><h2><a class="anchor" id="Web-server"></a>
 Web-server</h2>
 <p>To use webhook for the bot, a web server and a SSL certificate are required. Install one using your package manager (nginx or caddy reccomended). To get a SSL certificate you can user <a href="https://letsencrypt.org/">Let's Encrypt</a>.</p>
 <h1><a class="anchor" id="Usage"></a>
 Usage</h1>
-<p>Add the scripting by adding command (addMessageCommand()) or by creating a class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a>.</p>
+<p>Add the scripting by adding command (addMessageCommand()) or by creating a class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a>. Each api call will have $chat_id pk</p>
 <h2><a class="anchor" id="getUpdates"></a>
 getUpdates</h2>
 <p>The bot ask for updates to telegram server. If you want to use getUpdates method to receive updates from telegram, add one of these function at the end of your bot:</p><ul>
@@ -127,22 +137,22 @@ Webhook</h2>
 Commands</h2>
 <p>Script how the bot will answer to messages containing commands (like <code>/start</code>). </p><pre class="fragment">$bot-&gt;addMessageCommand("/start", function($bot, $message) {
         $bot-&gt;sendMessage("I am your personal bot, try /help command");
-        });
+});
 
 $help_function = function($bot, $message) {
     $bot-&gt;sendMessage("This is the help message")
-    };
+};
 
 $bot-&gt;addMessageCommand("/help", $help_function);
 </pre><h2><a class="anchor" id="Bot-Intherited"></a>
 Inherit Bot Class</h2>
 <p>Create a new class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> to handle all updates.</p>
-<p>EchoBot.php </p><pre class="fragment">class EchoBot extends DanySpin97\PhpBotFramework\Bot {
+<p><code>EchoBot.php</code> </p><pre class="fragment">class EchoBot extends DanySpin97\PhpBotFramework\Bot {
     protected function processMessage(&amp;$message) {
         $this-&gt;sendMessage($this-&gt;getText());
     }
 }
-</pre><p>main.php </p><pre class="fragment">$bot = new EchoBot("token");
+</pre><p><code>main.php</code> </p><pre class="fragment">$bot = new EchoBot("token");
 $bot-&gt;processWebhookUpdate();
 </pre><p>Override these method to make your bot handle each update type:</p><ul>
 <li><code>processMessage(&amp;$message)</code></li>
@@ -153,15 +163,25 @@ $bot-&gt;processWebhookUpdate();
 </ul>
 <h2><a class="anchor" id="InlineKeyboard-Usage"></a>
 InlineKeyboard Usage</h2>
-<p>How to use the <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html" title="Inline Keyboard handler that create and handle inline keyboard buttons. ">InlineKeyboard</a> class: </p><pre class="fragment">$bot = new DanySpin97\PhpBotFramework\Bot("token");
+<p>How to use the <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html" title="Inline Keyboard handler that create and handle inline keyboard buttons. ">InlineKeyboard</a> class: </p><pre class="fragment">// Create the bot
+$bot = new DanySpin97\PhpBotFramework\Bot("token");
+
+// Create the inline keyboard object that will handle buttons
 $bot-&gt;inline_keyboard = new DanySpin97\PhpBotFramework\InlineKeyboard();
+
 $command_function = function($bot, $message) {
+        // Add a button to the inline keyboard
         $bot-&gt;inline_keyboard-&gt;addLevelButtons([
+             // with written "Click me!"
              'text' =&gt; 'Click me!',
+             // and that open the telegram site, if pressed
              'url' =&gt; 'telegram.me'
              ]);
+        // Then send a message, with our keyboard in the parameter $reply_markup of sendMessage
         $bot-&gt;sendMessage("This is a test message", $bot-&gt;inline_keyboard-&gt;get());
         }
+
+// Add the command
 $bot-&gt;addMessageCommand("start", $command_function);
 </pre><h2><a class="anchor" id="Multilanguage-section"></a>
 Multilanguage Bot</h2>
@@ -181,8 +201,8 @@ $bot-&gt;addMessageCommand("start", $start_function);
 <h1><a class="anchor" id="Bot-created"></a>
 Bot using this framework</h1>
 <ul>
-<li><a href="https://telegram.me/myaddressbookbot"></a></li>
-<li>[](https:(<a href="https://telegram.me/giveaways_bot">https://telegram.me/giveaways_bot</a>)</li>
+<li><a href="https://telegram.me/myaddressbookbot">@MyAddressBookBot</a></li>
+<li><a href="https://telegram.me/giveaways_bot">@Giveaways_bot</a></li>
 </ul>
 <h1><a class="anchor" id="Authors"></a>
 Authors</h1>

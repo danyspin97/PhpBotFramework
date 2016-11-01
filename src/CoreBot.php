@@ -11,14 +11,24 @@ namespace DanySpin97\PhpBotFramework;
  * Take control of your bot using the command-handler system or the update type based function.
  *
  * \subsection Example
- * A quick example that say "Hello" every time the user send "/start":
+ * A quick example, the bot will send "Hello" every time the user click "/start":
  *
- *     namespace DanySpin97\PhpBotFramework;
+ *     <?php
+ *
+ *     // Include the framework
  *     require './vendor/autoload.php';
- *     $bot = new Bot("token");
- *     $bot->addMessageCommand("/start", function($bot, $message) {
+ *
+ *     // Create the bot
+ *     $bot = new DanySpin97\PhpBotFramework\Bot("token");
+ *
+ *     // Add a command that will be triggered every time the user click /start
+ *     $bot->addMessageCommand("start",
+ *         function($bot, $message) {
  *             $bot->sendMessage("Hello");
- *             });
+ *         }
+ *     );
+ *
+ *     // Receive update from telegram using getUpdates
  *     $bot->getUpdatesLocal();
  *
  * \section Features
@@ -36,17 +46,17 @@ namespace DanySpin97\PhpBotFramework;
  * - Highly documented
  *
  * \section Requirements
- * - <b>Php 7.0</b> or greater
- * - <b>php-mbstring</b>
- * - <b>Composer</b> (to install the framework)
- * - <b>SSL certificate</b> (<i>required by webhook</i>)
- * - <b>Web server</b> (<i>required by webhook</i>)
+ * - Php 7.0 or greater
+ * - php-mbstring
+ * - Composer (to install the framework)
+ * - SSL certificate (<i>required by webhook</i>)
+ * - Web server (<i>required by webhook</i>)
  *
  * \section Installation
  * In your project folder:
  *
  *     composer require danyspin97/php-bot-framework
- *     composer install
+ *     composer install --no-dev
  *
  * \subsection Web-server
  * To use webhook for the bot, a web server and a SSL certificate are required.
@@ -55,6 +65,7 @@ namespace DanySpin97\PhpBotFramework;
  *
  * \section Usage
  * Add the scripting by adding command (addMessageCommand()) or by creating a class that inherits Bot.
+ * Each api call will have $chat_id set to the current user, use setChatID($chat_id) to change it.
  *
  * \subsection getUpdates
  * The bot ask for updates to telegram server.
@@ -76,18 +87,18 @@ namespace DanySpin97\PhpBotFramework;
  *
  *     $bot->addMessageCommand("/start", function($bot, $message) {
  *             $bot->sendMessage("I am your personal bot, try /help command");
- *             });
+ *     });
  *
  *     $help_function = function($bot, $message) {
  *         $bot->sendMessage("This is the help message")
- *         };
+ *     };
  *
  *     $bot->addMessageCommand("/help", $help_function);
  *
  * \subsection Bot-Intherited Inherit Bot Class
  * Create a new class that inherits Bot to handle all updates.
  *
- * EchoBot.php
+ * <code>EchoBot.php</code>
  *
  *     class EchoBot extends DanySpin97\PhpBotFramework\Bot {
  *         protected function processMessage(&$message) {
@@ -95,7 +106,7 @@ namespace DanySpin97\PhpBotFramework;
  *         }
  *     }
  *
- * main.php
+ * <code>main.php</code>
  *
  *     $bot = new EchoBot("token");
  *     $bot->processWebhookUpdate();
@@ -111,16 +122,39 @@ namespace DanySpin97\PhpBotFramework;
  *
  * How to use the InlineKeyboard class:
  *
+ *     // Create the bot
  *     $bot = new DanySpin97\PhpBotFramework\Bot("token");
+ *
+ *     // Create the inline keyboard object that will handle buttons
  *     $bot->inline_keyboard = new DanySpin97\PhpBotFramework\InlineKeyboard();
+ *
  *     $command_function = function($bot, $message) {
+ *             // Add a button to the inline keyboard
  *             $bot->inline_keyboard->addLevelButtons([
+ *                  // with written "Click me!"
  *                  'text' => 'Click me!',
+ *                  // and that open the telegram site, if pressed
  *                  'url' => 'telegram.me'
  *                  ]);
+ *             // Then send a message, with our keyboard in the parameter $reply_markup of sendMessage
  *             $bot->sendMessage("This is a test message", $bot->inline_keyboard->get());
  *             }
+ *
+ *     // Add the command
  *     $bot->addMessageCommand("start", $command_function);
+ *
+ * \subsection Sql-Database Sql Database
+ * The sql database is used to save offset from getUpdates and to save user language.
+ * To connect a sql database to the bot, a pdo connection is required.
+ * Here is a simple pdo connection that is passed to the bot:
+ *
+ *     $bot->pdo = new PDO('mysql:host=localhost;dbname=test', $user, $pass);
+ *
+ * \subsection Redis-database Redis Database
+ * Redis is used to save offset from getUpdates, to store language (both as cache and persistent) and to save bot state.
+ * To connect redis with the bot, craete a redis object.
+ *
+ *     $bot->redis = new Redis();
  *
  * \subsection Multilanguage-section Multilanguage Bot
  * This framework offers method to develop a multi language bot.
@@ -143,8 +177,8 @@ namespace DanySpin97\PhpBotFramework;
  * \ref Multilanguage [See here for more]
  *
  * \section Bot-created Bot using this framework
- * - [@MyAddressBookBot](https://telegram.me/myaddressbookbot)
- * - [@Giveaways_bot](https:(https://telegram.me/giveaways_bot)
+ * - [\@MyAddressBookBot](https://telegram.me/myaddressbookbot) ([Source](https://github.com/DanySpin97/MyAddressBookBot))
+ * - [\@Giveaways_bot](https://telegram.me/giveaways_bot)
  *
  * \section Authors
  * This framework is developed and manteined by Danilo Spinella.
