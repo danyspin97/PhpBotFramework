@@ -58,15 +58,19 @@ class InlineQueryResults {
 
     }
 
+    /**
+     * \brief Optimized version of newArticle that take reference for the first 4 parameters.
+     * @see newArticle
+     */
     public function newArticleKeyboard(&$title, &$message_text, &$description, array &$reply_markup, $parse_mode = 'HTML', $disable_web_preview = false) {
 
         array_push($this->results, [
             'type' => 'article',
             'id' => (string)$this->id_article,
-            'title' => &$title,
-            'message_text' => &$message_text,
-            'description' => &$description,
-            'reply_markup' => &$reply_markup,
+            'title' => $title,
+            'message_text' => $message_text,
+            'description' => $description,
+            'reply_markup' => $reply_markup,
             'parse_mode' => $parse_mode,
             'disable_web_page_preview' => $disable_web_preview
         ]);
