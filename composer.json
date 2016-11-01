@@ -22,8 +22,8 @@
     },
     "suggest": {
         "ext-mysql": "*",
-        "ext-pgsql": "*"
-        "ext-redis": "*",
+        "ext-pgsql": "*",
+        "ext-redis": "*"
     },
     "autoload": {
         "psr-4": {
