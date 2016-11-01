@@ -8,10 +8,10 @@ namespace DanySpin97\PhpBotFramework;
  */
 class InlineQueryResults {
 
-/**
- * \addtogroup InlineQueryResults InlineQueryResults
- * @{
- */
+    /**
+     * \addtogroup InlineQueryResults InlineQueryResults
+     * @{
+     */
 
     /** \brief Array of the results stored */
     private $results;
@@ -36,12 +36,12 @@ class InlineQueryResults {
      * @param $title Title of the result.
      * @param $message_text Text of the message to be sent.
      * @param $description <i>Optional</i>. Short description of the result
-     * @param reply_markup Inline keyboard object (Not JSON serialized, use getArray from InlineKeyboard class).
+     * @param $reply_markup Inline keyboard object (Not JSON serialized, use getArray from InlineKeyboard class).
      * @param $parse_mode <i>Optional</i>. Formattation of the message.
      * @param $disable_web_preview <i>Optional</i>. Disables link previews for links in the sent message
      * @return Id the the article added
      */
-    public function newArticle($title, $message_text, $description = '',  $inline_keyboard = null, $parse_mode = 'HTML', $disable_web_preview = false) {
+    public function newArticle($title, $message_text, $description = '', array $reply_markup = null, $parse_mode = 'HTML', $disable_web_preview = false) {
 
         array_push($this->results, [
             'type' => 'article',
@@ -50,14 +50,15 @@ class InlineQueryResults {
             'message_text' => $message_text,
             'description' => $description,
             'parse_mode' => $parse_mode,
-            'reply_markup' => $inline_keyboard,
+            'reply_markup' => $reply_markup,
             'disable_web_page_preview' => $disable_web_preview
         ]);
 
         return $this->id_article++;
+
     }
 
-    public function newArticleKeyboard(&$title, &$message_text, &$description, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_preview = false) {
+    public function newArticleKeyboard(&$title, &$message_text, &$description, array &$reply_markup, $parse_mode = 'HTML', $disable_web_preview = false) {
 
         array_push($this->results, [
             'type' => 'article',
@@ -65,7 +66,7 @@ class InlineQueryResults {
             'title' => &$title,
             'message_text' => &$message_text,
             'description' => &$description,
-            'reply_markup' => &$inline_keyboard,
+            'reply_markup' => &$reply_markup,
             'parse_mode' => $parse_mode,
             'disable_web_page_preview' => $disable_web_preview
         ]);
@@ -80,6 +81,7 @@ class InlineQueryResults {
     public function &getResults() {
 
         $this->results = json_encode($this->results);
+
         return $this->results;
 
     }

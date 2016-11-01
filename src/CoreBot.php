@@ -244,7 +244,7 @@ class CoreBot {
         curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($this->ch, CURLOPT_TIMEOUT, 60);
         curl_setopt($this->ch, CURLOPT_HEADER, 0);
-        curl_setopt($this->ch, CURLOPT_ENCODING,  '');
+        curl_setopt($this->ch, CURLOPT_ENCODING, '');
 
     }
 
@@ -415,7 +415,6 @@ class CoreBot {
 
         return $this->exec_curl_request($this->api_url . 'sendAudio?' . http_build_query($parameters));
 
-
     }
 
 
@@ -484,10 +483,10 @@ class CoreBot {
      * @param $text <i>Optional</i>. Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters.
      * @param $show_alert <i>Optional</i>. If true, an alert will be shown by the client instead of a notification at the top of the chat screen.
      * @param $url <i>Optional</i>. URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game – note that this will only work if the query comes from a callback_game button.
-Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
+     * Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
      * @return True on success.
      */
-    public function &answerCallbackQuery($text = '', $show_alert = false, string $url) : bool {
+    public function &answerCallbackQuery($text = '', $show_alert = false, string $url = '') : bool {
 
         $parameters = [
             'callback_query_id' => &$this->update['callback_query']['id'],
@@ -545,51 +544,51 @@ Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your
            'reply_markup' => &$inline_keyboard,
            'parse_mode' => &$parse_mode,
            'disable_web_page_preview' => &$disable_web_preview,
-       ];
+        ];
 
-       return $this->exec_curl_request($this->api_url . 'editMessageText?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->api_url . 'editMessageText?' . http_build_query($parameters));
 
     }
 
-   /*
-    * Edit only the inline keyboard of a message (https://core.telegram.org/bots/api#editmessagereplymarkup)ù
-    * @param
-    * $message_id Identifier of the message to edit
-    * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
-    */
+    /*
+     * Edit only the inline keyboard of a message (https://core.telegram.org/bots/api#editmessagereplymarkup)ù
+     * @param
+     * $message_id Identifier of the message to edit
+     * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
+     */
     public function &editMessageReplyMarkup($message_id, $inline_keyboard) {
 
-       $parameters = [
-           'chat_id' => &$this->chat_id,
-           'message_id' => &$message_id,
-           'reply_markup' => &$inline_keyboard,
-       ];
+        $parameters = [
+            'chat_id' => &$this->chat_id,
+            'message_id' => &$message_id,
+            'reply_markup' => &$inline_keyboard,
+        ];
 
-       $url = $this->api_url . 'editMessageReplyMarkup?' . http_build_query($parameters);
+        $url = $this->api_url . 'editMessageReplyMarkup?' . http_build_query($parameters);
 
-       return $this->exec_curl_request($url);
+        return $this->exec_curl_request($url);
+
     }
 
-   /*
-    * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
-    * @param
-    * $results Array on InlineQueryResult (https://core.telegram.org/bots/api#inlinequeryresult)
-    * $switch_pm_text Text to show on the button
-    */
+    /*
+     * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
+     * @param
+     * $results Array on InlineQueryResult (https://core.telegram.org/bots/api#inlinequeryresult)
+     * $switch_pm_text Text to show on the button
+     */
     public function &answerInlineQuerySwitchPM($results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
 
-       $parameters = [
-           'inline_query_id' => &$this->update['inline_query']['id'],
-           'switch_pm_text' => &$switch_pm_text,
-           'is_personal' => $is_personal,
-           'switch_pm_parameter' => $switch_pm_parameter,
-           'results' => &$results,
-           'cache_time' => $cache_time
-       ];
+        $parameters = [
+            'inline_query_id' => &$this->update['inline_query']['id'],
+            'switch_pm_text' => &$switch_pm_text,
+            'is_personal' => $is_personal,
+            'switch_pm_parameter' => $switch_pm_parameter,
+            'results' => &$results,
+            'cache_time' => $cache_time
+        ];
 
-       $url = $this->api_url . 'answerInlineQuery?' . http_build_query($parameters);
+        return $this->exec_curl_request($this->api_url . 'answerInlineQuery?' . http_build_query($parameters));
 
-       return $this->exec_curl_request($url);
     }
 
     /*
@@ -607,9 +606,8 @@ Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your
             'cache_time' => $cache_time
         ];
 
-        $url = $this->api_url . 'answerInlineQuery?' . http_build_query($parameters);
+        return $this->exec_curl_request($this->api_url . 'answerInlineQuery?' . http_build_query($parameters));
 
-        return $this->exec_curl_request($url);
     }
 
     /**

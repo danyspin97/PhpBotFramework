@@ -209,7 +209,7 @@ class InlineKeyboard {
         // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];
 
-        foreach($this->bot->localization['languages'] as $languages => $language_msg) {
+        foreach ($this->bot->localization['languages'] as $languages => $language_msg) {
 
             // If the language is the same as the one set for the current user in $bot
             if (strpos($languages, $this->bot->language) !== false) {
@@ -365,7 +365,7 @@ class InlineKeyboard {
                             ];
                     }
                 } else {
-                    $buttons = [ 
+                    $buttons = [
                             [
                                 'text' => '1',
                                 'callback_data' => $prefix . '/1'

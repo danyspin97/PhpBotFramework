@@ -94,7 +94,6 @@ class Bot extends CoreBot {
     /** \brief Descruct the class. */
     public function __destruct() {
 
-
         parent::__destruct();
 
         // Close redis connection if it is open
@@ -216,7 +215,7 @@ class Bot extends CoreBot {
                 foreach ($this->message_commands as $trigger) {
 
                     // Check corresponding
-                    if($trigger['length'] == $length && mb_strpos($trigger['command'], $this->text) !== false) {
+                    if ($trigger['length'] == $length && mb_strpos($trigger['command'], $this->text) !== false) {
 
                         // Execute script,
                         $trigger['script']($this, $update['message']);
@@ -346,8 +345,8 @@ class Bot extends CoreBot {
             // just set $offset as the same value
             $offset = $this->redis->get($variable_name);
 
-        // Else get the offset from the first update to update
         } else {
+        // Else get the offset from the id from the first update received
 
             $update = [];
 
@@ -417,7 +416,7 @@ class Bot extends CoreBot {
         $update = null;
 
         // Process all updates
-        while(true) {
+        while (true) {
 
             // Set parameter for the url call
             $parameters = [
@@ -429,7 +428,7 @@ class Bot extends CoreBot {
             $updates = $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters));
 
             // Parse all update to receive
-            foreach($updates as $key => $update) {
+            foreach ($updates as $key => $update) {
 
                 try {
 
