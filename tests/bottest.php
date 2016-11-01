@@ -2,11 +2,13 @@
 
 require './vendor/autoload.php';
 
-class BotTest extends PHPUnit_Framework_TestCase
-{
+use PHPUnit\Framework\TestCase;
+
+class BotTest extends TestCase {
     public $bot;
 
-    public function setUpBot() {
+    public function testBot() {
+
         $this->bot = new DanySpin97\PhpBotFramework\Bot("token");
 
     }
