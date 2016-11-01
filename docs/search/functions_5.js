@@ -5,7 +5,7 @@ var searchData=
   ['getbackbutton',['getBackButton',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#ae3079d11eca9b2d2f85a9ef1cda75249',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
   ['getbackskipkeyboard',['getBackSkipKeyboard',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#a63800be28692c118eb8d25133d00db8a',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
   ['getchat',['getChat',['../group__Api.html#gafa82cdd34831bb7e15cefb6471763755',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['getchatid',['getChatID',['../group__Bot.html#ga2c33b57fdccb63b5bc3cb6d8f9b793e4',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['getchatid',['getChatID',['../group__Bot.html#ga121a2ea466fd19c1dddeae86a4e085a0',1,'DanySpin97::PhpBotFramework::CoreBot']]],
   ['getchooselanguagekeyboard',['getChooseLanguageKeyboard',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#a44f577021e30662996b4cbaf4b334e32',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
   ['getdata',['getData',['../group__Bot.html#gacb883f40f30fdac64279d13f6a251be4',1,'DanySpin97::PhpBotFramework::Bot']]],
   ['getlanguagedatabase',['getLanguageDatabase',['../group__Multilanguage.html#gaec7d8c26f938ce49e00680b43b109b43',1,'DanySpin97::PhpBotFramework::Bot']]],

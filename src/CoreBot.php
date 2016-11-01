@@ -259,6 +259,34 @@ class CoreBot {
     /** @} */
 
     /**
+     * \addtogroup Bot Bot
+     * @{
+     */
+
+    /**
+     * \brief Get chat id of the current user.
+     * @return Chat id of the user.
+     */
+    public function &getChatID() {
+
+        return $this->chat_id;
+
+    }
+
+    /**
+     * \brief Set current chat id.
+     * \details Change the chat id which the bot execute api methods.
+     * @param $chat_id The new chat id to set.
+     */
+    public function setChatID($chat_id) {
+
+        $this->chat_id = $chat_id;
+
+    }
+
+    /** @} */
+
+    /**
      * \addtogroup Api Api Methods
      * @{
      */
@@ -655,7 +683,7 @@ class CoreBot {
 
         $http_code = intval(curl_getinfo($this->ch, CURLINFO_HTTP_CODE));
 
-        if ($http_code === 200) { 
+        if ($http_code === 200) {
             $response = json_decode($response, true);
             if (isset($response['desc'])) {
                 error_log("Request was successfull: {$response['description']}\n");

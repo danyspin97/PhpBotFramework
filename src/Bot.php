@@ -106,27 +106,6 @@ class Bot extends CoreBot {
     }
 
     /**
-     * \brief Get chat id of the current user.
-     * @return Chat id of the user.
-     */
-    public function &getChatID() : int {
-
-        return $this->chat_id;
-
-    }
-
-    /**
-     * \brief Set current chat id.
-     * \details Change the chat id which the bot execute api methods.
-     * @param $chat_id The new chat id to set.
-     */
-    public function setChatID($chat_id) {
-
-        $this->chat_id = $chat_id;
-
-    }
-
-    /**
      * \brief Get the text of the message (for updates of type "message").
      * @return The text of the current message, throw exception if the current update is not a message.
      */
@@ -500,11 +479,14 @@ class Bot extends CoreBot {
 
         }
 
+        // Prepare the query for updating the offset in the database
+        $sth = $this->pdo->prepare('UPDATE "' . $table_name . '" SET "' . $column_name . '" = :new_offset');
+
         while (true) {
 
             $updates = $this->getUpdates($offset, $limit, $timeout);
 
-            foreach($updates as $key => $update) {
+            foreach ($updates as $key => $update) {
 
                 try {
 
@@ -519,7 +501,6 @@ class Bot extends CoreBot {
             }
 
             // Update the offset on the database
-            $sth = $this->pdo->prepare('UPDATE "' . $table_name . '" SET "' . $column_name . '" = :new_offset');
             $sth->bindParam(':new_offset', $offset + sizeof($updates));
             $sth->execute();
         }
@@ -633,8 +614,11 @@ class Bot extends CoreBot {
 
         }
 
+        // Create the query to getting the language from database
+        static $language_query = 'SELECT language FROM ' . $this->user_table . ' WHERE ' . $this->id_column . ' = :chat_id';
+
         // Get the language from the bot
-        $sth = $this->pdo->prepare('SELECT language FROM "User" WHERE "chat_id" = :chat_id');
+        $sth = $this->pdo->prepare($language_query);
         $sth->bindParam(':chat_id', $this->chat_id);
 
         try {
@@ -753,8 +737,11 @@ class Bot extends CoreBot {
             throw new BotException('Database connection not set');
         }
 
+        // Create the query for updating the language in the sql database
+        static $update_language = 'UPDATE ' . $this->user_table . ' SET language = :language WHERE ' . $this->id_column . ' = :id';
+
         // Update the language in the database
-        $sth = $this->pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE ' . $this->id_column . ' = :id');
+        $sth = $this->pdo->prepare($update_language);
         $sth->bindParam(':language', $language);
         $sth->bindParam(':id', $this->chat_id);
 
