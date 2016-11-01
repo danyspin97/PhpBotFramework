@@ -1,6 +1,6 @@
 {
     "name": "danyspin97/php-bot-framework",
-    "description": "Php Bot Framework is a framework for Telegram Bots' APIs.",
+    "description": "PhpBotFramework is a framework for Telegram Bots' APIs.",
     "version": "1.0.0",
     "type": "library",
     "license": "LGPL-3.0+",
@@ -27,10 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "DanySpin97\\PhpBotFramework\\": ["src/framework"]
+            "DanySpin97\\PhpBotFramework\\": ["src/"]
         }
-    },
-    "archive": {
-        "exclude": ["/examples", "/templates", "/tests", "/*.md", "phpunit.xml"]
     }
 }

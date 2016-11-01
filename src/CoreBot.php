@@ -8,8 +8,9 @@ namespace DanySpin97\PhpBotFramework;
  * \section Description
  * PhpBotFramework a lightweight framework for Telegram Bot API.
  * Designed to be fast and easy to use, it provides all the features a user need.
- * Take control of your bot using the command-handler or the update type based function.
+ * Take control of your bot using the command-handler system or the update type based function.
  *
+ * \subsection Example
  * A quick example that say "Hello" every time the user send "/start":
  *
  *     namespace DanySpin97\PhpBotFramework;
@@ -35,8 +36,8 @@ namespace DanySpin97\PhpBotFramework;
  * - Highly documented
  *
  * \section Requirements
- * - <b>Php 7.0</b>
- * - <b>Php-mbstring</b>
+ * - <b>Php 7.0</b> or greater
+ * - <b>php-mbstring</b>
  * - <b>Composer</b> (to install the framework)
  * - <b>SSL certificate</b> (<i>required by webhook</i>)
  * - <b>Web server</b> (<i>required by webhook</i>)
@@ -62,7 +63,7 @@ namespace DanySpin97\PhpBotFramework;
  * - <code>getUpdatesDatabase()</code>
  * - <code>getUpdatesRedis()</code>
  *
- * The bot will process updates in a row, and will call </code>processUpdate()</code> for each.
+ * The bot will process updates in a row, and will call <code>processUpdate()</code> for each.
  * getUpdates handling is single-threaded so there will be only one object that will process updates, so the connection will be opened at the creation and used for the entire life of the bot.
  *
  * \subsection Webhook
@@ -106,6 +107,21 @@ namespace DanySpin97\PhpBotFramework;
  * - <code>processChosenInlineResult(&$chosen_inline_result)</code>
  * - <code>processEditedMessage(&$edited_message)</code>
  *
+ * \subsection InlineKeyboard-Usage InlineKeyboard Usage
+ *
+ * How to use the InlineKeyboard class:
+ *
+ *     $bot = new DanySpin97\PhpBotFramework\Bot("token");
+ *     $bot->inline_keyboard = new DanySpin97\PhpBotFramework\InlineKeyboard();
+ *     $command_function = function($bot, $message) {
+ *             $bot->inline_keyboard->addLevelButtons([
+ *                  'text' => 'Click me!',
+ *                  'url' => 'telegram.me'
+ *                  ]);
+ *             $bot->sendMessage("This is a test message", $bot->inline_keyboard->get());
+ *             }
+ *     $bot->addMessageCommand("start", $command_function);
+ *
  * \subsection Multilanguage-section Multilanguage Bot
  * This framework offers method to develop a multi language bot.
  * Here's an example:
@@ -131,10 +147,11 @@ namespace DanySpin97\PhpBotFramework;
  * - [@Giveaways_bot](https:(https://telegram.me/giveaways_bot)
  *
  * \section Authors
- * This framework was developed by Danilo Spinella.
+ * This framework is developed and manteined by Danilo Spinella.
  *
  * \section License
- * PhpBotFramework is released under GNU Lesser General Public License. You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL-3. Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the wrapper don't have to be.
+ * PhpBotFramework is released under GNU Lesser General Public License.
+ * You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL-3. Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the wrapper don't have to be.
  *
  */
 
@@ -171,9 +188,9 @@ class CoreBot {
 
 
     /**
-     * \constructor Contrusct an empty bot
-     * \details Construct a bot passing the token
-     * @param $token Token given by @botfather
+     * \brief Contrusct an empty bot.
+     * \details Construct a bot passing the token.
+     * @param $token Token given by @botfather.
      */
     public function __construct(string $token) {
 
@@ -197,7 +214,7 @@ class CoreBot {
 
     }
 
-    /** \brief Destroy the object */
+    /** \brief Destroy the object. */
     public function __destruct() {
 
         // Close connection
@@ -581,6 +598,8 @@ Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your
 
     }
 
+    /** @} */
+
     /**
      * \addtogroup Core Core(internal)
      * @{
@@ -630,4 +649,3 @@ Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your
 
 }
 
-/** @} */

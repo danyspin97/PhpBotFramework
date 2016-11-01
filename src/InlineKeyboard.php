@@ -21,7 +21,7 @@ class InlineKeyboard {
     protected $bot;
 
     /**
-     * \constructor Create an inline keyboard object.
+     * \brief Create an inline keyboard object.
      * @param $bot The bot that owns this object.
      * @param $buttons Buttons passed as inizialization.
      * @return The object created with the buttons passed.
@@ -204,7 +204,7 @@ class InlineKeyboard {
      * @param $json_serialized Get a JSON-serialized string or an array.
      * @return The buttons in the selected type.
      */
-    public function &getChooseLanguageKeyboard() {
+    public function &getChooseLanguageKeyboard($json_serialized = true) {
 
         // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];

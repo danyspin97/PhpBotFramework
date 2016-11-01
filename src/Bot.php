@@ -78,8 +78,8 @@ class Bot extends CoreBot {
      */
 
     /**
-     * \constructor Construct an empy bot
-     * \details Construct a bot with commands, multilanguage and status
+     * \brief Construct an empy bot.
+     * \details Construct a bot with commands, multilanguage and status.
      */
     public function __construct(string $token) {
 
@@ -91,8 +91,11 @@ class Bot extends CoreBot {
 
     }
 
-    /** \constructor Descruct the class */
+    /** \brief Descruct the class. */
     public function __destruct() {
+
+
+        parent::__destruct();
 
         // Close redis connection if it is open
         if (isset($this->redis)) {

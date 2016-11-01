@@ -4,21 +4,44 @@ namespace DanySpin97\PhpBotFramework;
 
 /**
  * \class InlineQueryResults InlineQueryResults
+ * \brief Handle and store results before sending them to an answerInlineQuery api call.
  */
 class InlineQueryResults {
 
-    // The results created by this class that will be sent as inline query
+/**
+ * \addtogroup InlineQueryResults InlineQueryResults
+ * @{
+ */
+
+    /** \brief Array of the results stored */
     private $results;
+
+    /** \brief Count the result so we can assign them an unique id */
     private $id_article;
 
+    /**
+     * \constructor Create an InlineQueryResult object. */
     public function __construct() {
 
+        // Initialize the array to empty
         $this->results = [];
+
         $this->id_article = 0;
 
     }
 
-    public function newArticle($title, $message_text, $description,  $inline_keyboard = null, $parse_mode = 'HTML', $disable_web_preview = false) {
+    /**
+     * \brief Add a result of type article article.
+     * \details Add a result that will be show to the user.
+     * @param $title Title of the result.
+     * @param $message_text Text of the message to be sent.
+     * @param $description <i>Optional</i>. Short description of the result
+     * @param reply_markup Inline keyboard object (Not JSON serialized, use getArray from InlineKeyboard class).
+     * @param $parse_mode <i>Optional</i>. Formattation of the message.
+     * @param $disable_web_preview <i>Optional</i>. Disables link previews for links in the sent message
+     * @return Id the the article added
+     */
+    public function newArticle($title, $message_text, $description = '',  $inline_keyboard = null, $parse_mode = 'HTML', $disable_web_preview = false) {
 
         array_push($this->results, [
             'type' => 'article',
@@ -50,6 +73,10 @@ class InlineQueryResults {
         return $this->id_article++;
     }
 
+    /**
+     * \brief Get all results created.
+     * @return JSON-serialized string containing the results.
+     */
     public function &getResults() {
 
         $this->results = json_encode($this->results);
@@ -57,3 +84,5 @@ class InlineQueryResults {
 
     }
 }
+
+/** @} */

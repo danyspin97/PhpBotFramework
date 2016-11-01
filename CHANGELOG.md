@@ -1,3 +1,9 @@
+# v1.0.0
+- Reworked processUpdate
+- Added command-handle system
+- Removed optimized api methods
+- Added doxygen documentation
+
 ## v0.3.6
 - Added try/cath in adjustOffsetRedis
 
