@@ -614,11 +614,8 @@ class Bot extends CoreBot {
 
         }
 
-        // Create the query to getting the language from database
-        static $language_query = 'SELECT language FROM ' . $this->user_table . ' WHERE ' . $this->id_column . ' = :chat_id';
-
         // Get the language from the bot
-        $sth = $this->pdo->prepare($language_query);
+        $sth = $this->pdo->prepare('SELECT language FROM ' . $this->user_table . ' WHERE ' . $this->id_column . ' = :chat_id');
         $sth->bindParam(':chat_id', $this->chat_id);
 
         try {
@@ -737,11 +734,8 @@ class Bot extends CoreBot {
             throw new BotException('Database connection not set');
         }
 
-        // Create the query for updating the language in the sql database
-        static $update_language = 'UPDATE ' . $this->user_table . ' SET language = :language WHERE ' . $this->id_column . ' = :id';
-
         // Update the language in the database
-        $sth = $this->pdo->prepare($update_language);
+        $sth = $this->pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE ' . $this->id_column . ' = :id');
         $sth->bindParam(':language', $language);
         $sth->bindParam(':id', $this->chat_id);
 

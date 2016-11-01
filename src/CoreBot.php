@@ -176,6 +176,9 @@ namespace DanySpin97\PhpBotFramework;
  *
  * \ref Multilanguage [See here for more]
  *
+ * \section Source
+ * The source is hosted on github and can be found [here](https://github.com/DanySpin97/PhpBotFramework)
+ *
  * \section Bot-created Bot using this framework
  * - [\@MyAddressBookBot](https://telegram.me/myaddressbookbot) ([Source](https://github.com/DanySpin97/MyAddressBookBot))
  * - [\@Giveaways_bot](https://telegram.me/giveaways_bot)
