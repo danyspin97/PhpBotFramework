@@ -144,7 +144,7 @@ Webhook</h2>
 <p>A web server will create an instance of the bot for every update received. If you want to use webhook call <code>processWebhookUpdate()</code> at the end of your bot. The bot will get data from php://input and process it using <code>processUpdate()</code>. Each instance of the bot will open its connection.</p>
 <h2><a class="anchor" id="Commands"></a>
 Commands</h2>
-<p>Script how the bot will answer to messages containing commands (like <code>/start</code>). </p><pre class="fragment">$bot-&gt;addMessageCommand("/start", function($bot, $message) {
+<p>Script how the bot will answer to messages containing commands (like <code>/start</code>). </p><pre class="fragment">$bot-&gt;addMessageCommand("start", function($bot, $message) {
         $bot-&gt;sendMessage("I am your personal bot, try /help command");
 });
 

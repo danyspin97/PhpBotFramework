@@ -85,7 +85,7 @@ namespace DanySpin97\PhpBotFramework;
  * \subsection Commands
  * Script how the bot will answer to messages containing commands (like <code>/start</code>).
  *
- *     $bot->addMessageCommand("/start", function($bot, $message) {
+ *     $bot->addMessageCommand("start", function($bot, $message) {
  *             $bot->sendMessage("I am your personal bot, try /help command");
  *     });
  *
