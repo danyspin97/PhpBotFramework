@@ -16,7 +16,11 @@ class Bot extends CoreBot {
      * @{
      */
 
+    /** \brief Store the command handled by the bot */
     private $message_commands;
+
+    /** \brief Does the bot has command set? Set by initBot */
+    private $message_set;
 
     /** @} */
 
@@ -159,6 +163,8 @@ class Bot extends CoreBot {
      */
     public function processWebhookUpdate() {
 
+        $this->initBot();
+
         $this->processUpdate(json_decode(file_get_contents('php://input'), true));
 
     }
@@ -169,6 +175,15 @@ class Bot extends CoreBot {
      * \addtogroup Core Core(Internal)
      * @{
      */
+
+    /**
+     * \brief Set some internal Data to work optimized
+     */
+    private function initBot() {
+
+        $this->message_set = !empty($this->message_commands);
+
+    }
 
     /**
      * \brief Dispatch each update to the right method (processMessage, processCallbackQuery, etc).
@@ -185,7 +200,7 @@ class Bot extends CoreBot {
             $this->chat_id = $update['message']['from']['id'];
             $this->text = $update['message']['text'];
 
-            if (isset($update['message']['entities']) && $update['message']['entities'][0]['type'] === 'bot_command') {
+            if ($this->message_set && isset($update['message']['entities']) && $update['message']['entities'][0]['type'] === 'bot_command') {
 
                 // The lenght of the command
                 $length = $update['message']['entities'][0]['length'];
@@ -341,6 +356,8 @@ class Bot extends CoreBot {
 
         }
 
+        $this->initBot();
+
         // Process all updates received
         while (true) {
 
@@ -393,6 +410,8 @@ class Bot extends CoreBot {
         $offset = $update[0]['update_id'];
 
         $update = null;
+
+        $this->initBot();
 
         // Process all updates
         while (true) {
@@ -481,6 +500,8 @@ class Bot extends CoreBot {
 
         // Prepare the query for updating the offset in the database
         $sth = $this->pdo->prepare('UPDATE "' . $table_name . '" SET "' . $column_name . '" = :new_offset');
+
+        $this->initBot();
 
         while (true) {
 
