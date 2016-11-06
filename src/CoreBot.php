@@ -102,7 +102,7 @@ namespace DanySpin97\PhpBotFramework;
  *
  *     $bot->addCallbackCommand("back", function($bot, $callback_query) {
  *             $bot->editMessageText($callback_query['message']['message_id'], "You pressed back");
- *    });
+ *     });
  *
  * Check Bot::addCallbackCommand() for more.
  *

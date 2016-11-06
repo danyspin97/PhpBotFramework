@@ -158,8 +158,8 @@ $bot-&gt;addMessageCommand("/help", $help_function);
 Callback commands</h2>
 <p>Script how the bot will answer to callback query containing a particular string as data. </p><pre class="fragment">$bot-&gt;addCallbackCommand("back", function($bot, $callback_query) {
         $bot-&gt;editMessageText($callback_query['message']['message_id'], "You pressed back");
-</pre><p> });</p>
-<p>Check <a class="el" href="group__Bot.html#gaef53e470d13fcb310f042f1c8233020c" title="Add a function that will be executed everytime a callback query contains a string as data...">Bot::addCallbackCommand()</a> for more.</p>
+});
+</pre><p>Check <a class="el" href="group__Bot.html#gaef53e470d13fcb310f042f1c8233020c" title="Add a function that will be executed everytime a callback query contains a string as data...">Bot::addCallbackCommand()</a> for more.</p>
 <h2><a class="anchor" id="Bot-Intherited"></a>
 Inherit Bot Class</h2>
 <p>Create a new class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> to handle all updates.</p>

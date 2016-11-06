@@ -23,4 +23,7 @@ before_script:
   - composer install --prefer-source --no-interaction --dev
 
 script:
-  - phpunit --configuration phpunit.xml
+  - phpunit  --coverage-clover=coverage.xml --configuration phpunit.xml
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
