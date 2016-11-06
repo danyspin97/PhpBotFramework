@@ -37,7 +37,7 @@ $bot->getUpdatesLocal();
 - Designed to be the fast and easy to use
 - Support for getUpdates and webhooks
 - Support for the most important API methods
-- Command-handle system
+- Command-handle system for messages and callback queries
 - Update type based processing
 - Easy inline keyboard creation
 - Inline query results handler

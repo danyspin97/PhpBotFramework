@@ -102,7 +102,7 @@ Features</h1>
 <li>Designed to be the fast and easy to use</li>
 <li>Support for getUpdates and webhooks</li>
 <li>Support for the most important API methods</li>
-<li>Command-handle system</li>
+<li>Command-handle system for messages and callback queries</li>
 <li>Update type based processing</li>
 <li>Easy inline keyboard creation</li>
 <li>Inline query results handler</li>
@@ -130,20 +130,20 @@ Web-server</h2>
 <p>To use webhook for the bot, a web server and a SSL certificate are required. Install one using your package manager (nginx or caddy reccomended). To get a SSL certificate you can user <a href="https://letsencrypt.org/">Let's Encrypt</a>.</p>
 <h1><a class="anchor" id="Usage"></a>
 Usage</h1>
-<p>Add the scripting by adding command (addMessageCommand()) or by creating a class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a>. Each api call will have $chat_id set to the current user, use setChatID($chat_id) to change it.</p>
+<p>Add the scripting by adding command (addMessageCommand()) or by creating a class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a>. Each api call will have <code>$chat_id</code> set to the current user, use <a class="el" href="group__Bot.html#ga9c7803e64b128a00e68535667941feb3" title="Set current chat id. ">CoreBot::setChatID()</a> to change it.</p>
 <h2><a class="anchor" id="getUpdates"></a>
 getUpdates</h2>
 <p>The bot ask for updates to telegram server. If you want to use getUpdates method to receive updates from telegram, add one of these function at the end of your bot:</p><ul>
-<li><code>getUpdatesLocal()</code></li>
-<li><code>getUpdatesDatabase()</code></li>
-<li><code>getUpdatesRedis()</code></li>
+<li><a class="el" href="group__Bot.html#gafbd201d6534fbba7aaae4ba42d9ace81" title="Get updates received by the bot, and hold the offset in $offset. ">Bot::getUpdatesLocal()</a></li>
+<li><a class="el" href="group__Bot.html#gab715326bb3b458ebf8dbda635f2c8520" title="Get updates received by the bot, using the sql database to store and get the last offset...">Bot::getUpdatesDatabase()</a></li>
+<li><a class="el" href="group__Bot.html#ga98083d5b9fd47fc57571ceb9be4edb66" title="Get updates received by the bot, using redis to save and get the last offset. ">Bot::getUpdatesRedis()</a></li>
 </ul>
-<p>The bot will process updates in a row, and will call <code>processUpdate()</code> for each. getUpdates handling is single-threaded so there will be only one object that will process updates, so the connection will be opened at the creation and used for the entire life of the bot.</p>
+<p>The bot will process updates in a row, and will call <a class="el" href="group__Core.html#ga632b8a7ec651c9c3b3192659ceea6290" title="Dispatch each update to the right method (processMessage, processCallbackQuery, etc). ">Bot::processUpdate()</a> for each. getUpdates handling is single-threaded so there will be only one object that will process updates. The connection will be opened at the creation and used for the entire life of the bot.</p>
 <h2><a class="anchor" id="Webhook"></a>
 Webhook</h2>
-<p>A web server will create an instance of the bot for every update received. If you want to use webhook call <code>processWebhookUpdate()</code> at the end of your bot. The bot will get data from php://input and process it using <code>processUpdate()</code>. Each instance of the bot will open its connection.</p>
-<h2><a class="anchor" id="Commands"></a>
-Commands</h2>
+<p>A web server will create an instance of the bot for every update received. If you want to use webhook call <a class="el" href="group__Bot.html#ga75d03f2426177b2e00012852647b3cb6" title="Get update and process it. ">Bot::processWebhookUpdate()</a> at the end of your bot. The bot will get data from <code>php://input</code> and process it using <a class="el" href="group__Core.html#ga632b8a7ec651c9c3b3192659ceea6290" title="Dispatch each update to the right method (processMessage, processCallbackQuery, etc). ">Bot::processUpdate()</a>. Each instance of the bot will open its connection.</p>
+<h2><a class="anchor" id="Message-commands"></a>
+Message commands</h2>
 <p>Script how the bot will answer to messages containing commands (like <code>/start</code>). </p><pre class="fragment">$bot-&gt;addMessageCommand("start", function($bot, $message) {
         $bot-&gt;sendMessage("I am your personal bot, try /help command");
 });
@@ -153,30 +153,45 @@ $help_function = function($bot, $message) {
 };
 
 $bot-&gt;addMessageCommand("/help", $help_function);
-</pre><h2><a class="anchor" id="Bot-Intherited"></a>
+</pre><p>Check <a class="el" href="group__Bot.html#ga51215f7e30f84fa3148c4afe22de24a3" title="Add a function that will be executed everytime a message contain the selected command. ">Bot::addMessageCommand()</a> for more.</p>
+<h2><a class="anchor" id="Callback-commands"></a>
+Callback commands</h2>
+<p>Script how the bot will answer to callback query containing a particular string as data. </p><pre class="fragment">$bot-&gt;addCallbackCommand("back", function($bot, $callback_query) {
+        $bot-&gt;editMessageText($callback_query['message']['message_id'], "You pressed back");
+</pre><p> });</p>
+<p>Check <a class="el" href="group__Bot.html#gaef53e470d13fcb310f042f1c8233020c" title="Add a function that will be executed everytime a callback query contains a string as data...">Bot::addCallbackCommand()</a> for more.</p>
+<h2><a class="anchor" id="Bot-Intherited"></a>
 Inherit Bot Class</h2>
 <p>Create a new class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> to handle all updates.</p>
-<p><code>EchoBot.php</code> </p><pre class="fragment">class EchoBot extends DanySpin97\PhpBotFramework\Bot {
-    protected function processMessage(&amp;$message) {
+<p><code>EchoBot.php</code> </p><pre class="fragment">// Create the class that will extends Bot class
+class EchoBot extends DanySpin97\PhpBotFramework\Bot {
+
+    // Add the function for processing messages
+    protected function processMessage($message) {
+
+        // Answer each message with the text received
         $this-&gt;sendMessage($this-&gt;getText());
+
     }
+
 }
-</pre><p><code>main.php</code> </p><pre class="fragment">$bot = new EchoBot("token");
+
+// Create an object of type EchoBot
+$bot = new EchoBot("token");
+
+// Process updates using webhook
 $bot-&gt;processWebhookUpdate();
 </pre><p>Override these method to make your bot handle each update type:</p><ul>
-<li><code>processMessage(&amp;$message)</code></li>
-<li><code>processCallbackQuery(&amp;$callback_query)</code></li>
-<li><code>processInlineQuery(&amp;$inline_query)</code></li>
-<li><code>processChosenInlineResult(&amp;$chosen_inline_result)</code></li>
-<li><code>processEditedMessage(&amp;$edited_message)</code></li>
+<li><a class="el" href="group__Bot.html#gad9e60bdc381210c76cf8bcd609c71ad4" title="Called every message received by the bot. ">Bot::processMessage</a>($message)</li>
+<li><a class="el" href="group__Bot.html#gaae57c80629abc330392327921b0be3ce" title="Called every callback query received by the bot. ">Bot::processCallbackQuery</a>($callback_query)</li>
+<li><a class="el" href="group__Bot.html#gaee812a0b42457ac10e41d54b93654c1b" title="Called every inline query received by the bot. ">Bot::processInlineQuery</a>($inline_query)</li>
+<li><a class="el" href="group__Bot.html#gaf1408f1e9e4f1a6c575bc2c4947c0e47" title="Called every chosen inline result received by the bot. ">Bot::processChosenInlineResult</a>($chosen_inline_result)</li>
+<li><a class="el" href="group__Bot.html#ga9c767babbbd7346d86767c91a31f2de4" title="Called every chosen edited message received by the bot. ">Bot::processEditedMessage</a>($edited_message)</li>
 </ul>
 <h2><a class="anchor" id="InlineKeyboard-Usage"></a>
 InlineKeyboard Usage</h2>
 <p>How to use the <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html" title="Inline Keyboard handler that create and handle inline keyboard buttons. ">InlineKeyboard</a> class: </p><pre class="fragment">// Create the bot
 $bot = new DanySpin97\PhpBotFramework\Bot("token");
-
-// Create the inline keyboard object that will handle buttons
-$bot-&gt;inline_keyboard = new DanySpin97\PhpBotFramework\InlineKeyboard();
 
 $command_function = function($bot, $message) {
         // Add a button to the inline keyboard
@@ -197,7 +212,7 @@ Sql Database</h2>
 <p>The sql database is used to save offset from getUpdates and to save user language. To connect a sql database to the bot, a pdo connection is required. Here is a simple pdo connection that is passed to the bot: </p><pre class="fragment">$bot-&gt;pdo = new PDO('mysql:host=localhost;dbname=test', $user, $pass);
 </pre><h2><a class="anchor" id="Redis-database"></a>
 Redis Database</h2>
-<p>Redis is used to save offset from getUpdates, to store language (both as cache and persistent) and to save bot state. To connect redis with the bot, craete a redis object. </p><pre class="fragment">$bot-&gt;redis = new Redis();
+<p>Redis is used to save offset from getUpdates, to store language (both as cache and persistent) and to save bot state. To connect redis with the bot, create a redis object. </p><pre class="fragment">$bot-&gt;redis = new Redis();
 </pre><h2><a class="anchor" id="Multilanguage-section"></a>
 Multilanguage Bot</h2>
 <p>This framework offers method to develop a multi language bot. Here's an example: </p><pre class="fragment">$bot-&gt;localization = [ 'en' =&gt;

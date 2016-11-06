@@ -12,22 +12,10 @@ namespace DanySpin97\PhpBotFramework;
 class Bot extends CoreBot {
 
     /**
-     * \addtogroup Core Core(internal)
-     * @{
-     */
-
-    /** \brief Store the command handled by the bot */
-    private $message_commands;
-
-    /** \brief Does the bot has command set? Set by initBot */
-    private $message_set;
-
-    /** @} */
-
-    /**
      * \modules Bot Bot
      * @{
      */
+
     /** \brief Text received in messages */
     private $text;
 
@@ -45,6 +33,25 @@ class Bot extends CoreBot {
 
     /** \brief Redis connection */
     public $redis;
+
+    /** @} */
+
+    /**
+     * \addtogroup Core Core(internal)
+     * @{
+     */
+
+    /** \brief Store the command triggered on message. */
+    private $message_commands;
+
+    /** \brief Does the bot has message commands? Set by initBot. */
+    private $message_commands_set;
+
+    /** \brief Store the command triggered on callback query. */
+    private $callback_commands;
+
+    /** \brief Does the bot has message commands? Set by initBot. */
+    private $callback_commands_set;
 
     /** @} */
 
@@ -92,6 +99,9 @@ class Bot extends CoreBot {
 
         // Initialize to an empty array
         $message_commands = [];
+        $callback_commands = [];
+
+        $this->inline_keyboard = new InlineKeyboard($this);
 
     }
 
@@ -113,7 +123,7 @@ class Bot extends CoreBot {
      * \brief Get the text of the message (for updates of type "message").
      * @return The text of the current message, throw exception if the current update is not a message.
      */
-    public function &getText() {
+    public function getText() {
 
         if (isset($this->text)) {
 
@@ -129,7 +139,7 @@ class Bot extends CoreBot {
      * \brief Get the data received from the callback query (for updates of type "callback_query").
      * @return The data of the current callback, throw exception if the current update is not a callback query.
      */
-    public function &getData() {
+    public function getData() {
 
         if (isset($this->data)) {
 
@@ -145,7 +155,7 @@ class Bot extends CoreBot {
      * \brief Get the query received from the inline query (for updates of type "inline_query").
      * @return The query sent by the user, throw exception if the current update is not an inline query.
      */
-    public function &getQuery() {
+    public function getQuery() {
 
         if (isset($this->query)) {
 
@@ -177,11 +187,20 @@ class Bot extends CoreBot {
      */
 
     /**
-     * \brief Set some internal Data to work optimized
+     * \brief Init variables to skip parsing commands if there aren't any.
+     * \details Called internnaly by
+     * - <code>getUpdatesLocal</code>
+     * - <code>getUpdatesRedis</code>
+     * - <code>getUpdatesDatabase</code>
+     * - <code>processWebhookUpdate</code>
      */
     private function initBot() {
 
-        $this->message_set = !empty($this->message_commands);
+        // Are there message commands?
+        $this->message_commands_set = !empty($this->message_commands);
+
+        // Are there callback commands?
+        $this->callback_commands_set = !empty($this->callback_commands);
 
     }
 
@@ -192,7 +211,7 @@ class Bot extends CoreBot {
      * @param $update Reference to the update received.
      * @return The id of the update processed.
      */
-    public function processUpdate(array &$update) : int {
+    public function processUpdate(array $update) : int {
 
         if (isset($update['message'])) {
 
@@ -200,16 +219,19 @@ class Bot extends CoreBot {
             $this->chat_id = $update['message']['from']['id'];
             $this->text = $update['message']['text'];
 
-            if ($this->message_set && isset($update['message']['entities']) && $update['message']['entities'][0]['type'] === 'bot_command') {
+            if ($this->message_commands_set && isset($update['message']['entities']) && $update['message']['entities'][0]['type'] === 'bot_command') {
 
                 // The lenght of the command
                 $length = $update['message']['entities'][0]['length'];
+
+                // Offset of the command
+                $offset = $update['message']['entities'][0]['offset'];
 
                 // For each command added by the user
                 foreach ($this->message_commands as $trigger) {
 
                     // Check corresponding
-                    if ($trigger['length'] == $length && mb_strpos($trigger['command'], $this->text) !== false) {
+                    if ($trigger['length'] == $length && mb_strpos($trigger['command'], $this->text, $offset) !== false) {
 
                         // Execute script,
                         $trigger['script']($this, $update['message']);
@@ -233,12 +255,40 @@ class Bot extends CoreBot {
             unset($this->text);
 
         } elseif (isset($update['callback_query'])) {
+            // If the update is a callback query
 
+            // Set variables
             $this->chat_id = $update['callback_query']['from']['id'];
             $this->data = $update['callback_query']['data'];
 
+            // Check for callback commands
+            if ($this->callback_commands_set) {
+
+                // Parse all commands
+                foreach ($this->callback_commands as $trigger) {
+
+                    // If command is found in callback data
+                    if (mb_strpos($trigger['data'], $this->data) !== false) {
+
+                        // Trigger the script
+                        $trigger['script']($this, $update['callback_query']);
+
+                        // Clear data
+                        unset($this->data);
+
+                        // and return the id of the current update
+                        return $update['update_id'];
+
+                    }
+
+                }
+
+            }
+
+            // Process the callback query through processCallbackQuery
             $this->processCallbackQuery($update['callback_query']);
 
+            // Unset data
             unset($this->data);
 
         } elseif (isset($update['inline_query'])) {
@@ -280,7 +330,7 @@ class Bot extends CoreBot {
      * $chat_id and $text(use getText to access it) set inside of this function.
      * @param $message Reference to the message received.
      */
-    protected function processMessage(&$message) {}
+    protected function processMessage($message) {}
 
     /**
      * \brief Called every callback query received by the bot.
@@ -288,7 +338,7 @@ class Bot extends CoreBot {
      * $chat_id and $data(use getData() to access it) set inside of this function.
      * @param $callback_query Reference to the callback query received.
      */
-    protected function processCallbackQuery(&$callback_query) {}
+    protected function processCallbackQuery($callback_query) {}
 
     /**
      * \brief Called every inline query received by the bot.
@@ -296,7 +346,7 @@ class Bot extends CoreBot {
      * $chat_id and $query(use getQuery() to access it) set inside of this function.
      * @param $inline_query Reference to the inline query received.
      */
-    protected function processInlineQuery(&$inline_query) {}
+    protected function processInlineQuery($inline_query) {}
 
     /**
      * \brief Called every chosen inline result received by the bot.
@@ -304,7 +354,7 @@ class Bot extends CoreBot {
      * $chat_id set inside of this function.
      * @param $chosen_inline_result Reference to the chosen inline result received.
      */
-    protected function processChosenInlineResult(&$chosen_inline_result) {}
+    protected function processChosenInlineResult($chosen_inline_result) {}
 
     /**
      * \brief Called every chosen edited message received by the bot.
@@ -312,7 +362,7 @@ class Bot extends CoreBot {
      * $chat_id set inside of this function.
      * @param $edited_message Reference to the edited message received.
      */
-    protected function processEditedMessage(&$edited_message) {}
+    protected function processEditedMessage($edited_message) {}
 
     /**
      * \brief Get updates received by the bot, using redis to save and get the last offset.
@@ -418,9 +468,9 @@ class Bot extends CoreBot {
 
             // Set parameter for the url call
             $parameters = [
-                    'offset' => &$offset,
-                    'limit' => &$limit,
-                    'timeout' => &$timeout
+                    'offset' => $offset,
+                    'limit' => $limit,
+                    'timeout' => $timeout
             ];
 
             $updates = $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters));
@@ -546,67 +596,21 @@ class Bot extends CoreBot {
 
     }
 
-    /** @} */
-
     /**
-     * \addtogroup Optmized Optmized Api Methods
-     * @{
+     * \brief Add a function that will be executed everytime a callback query contains a string as data
+     * \details Use this syntax:
+     *
+     *     addMessageCommand("menu", function($bot, $callback_query) {
+     *         $bot->editMessageText($callback_query['message']['message_id'], "This is the menu"); });
+     * @param $data The string that will trigger this function.
+     * @param $script The function that will be triggered by the callback query if it contains the $data string. Must take an object(the bot) and an array(the callback query received).
      */
+    public function addCallbackCommand(string $data, $script) {
 
-    /**
-     * \brief Optimized version of sendMessage that takes reference of $text and reference of $inline_keyboard.
-     * @see sendMessage
-     */
-    public function &sendMessageKeyboard(&$text, &$inline_keyboard, $parse_mode = 'HTML', $disable_web_preview = true, $disable_notification = false) {
-
-        $parameters = [
-            'chat_id' => &$this->chat_id,
-            'text' => &$text,
-            'parse_mode' => $parse_mode,
-            'reply_markup' => &$inline_keyboard,
-            'disable_web_page_preview' => &$disable_web_preview,
-            'disable_notification' => &$disable_notification
+        $this->callback_commands[] = [
+                'data' => $data,
+                'script' => $script,
         ];
-
-        return $this->exec_curl_request($this->api_url . 'sendMessage?' . http_build_query($parameters));
-
-    }
-
-    /**
-     * \brief Optimized version of editMessageText that takes reference of $text and $inline_keyboard.
-     * @see editMessageText
-     */
-    public function &editMessageTextKeyboard(&$text, &$inline_keyboard, &$message_id, $parse_mode = 'HTML', $disable_web_preview = false) {
-
-        $parameters = [
-            'chat_id' => &$this->chat_id,
-            'message_id' => &$message_id,
-            'text' => &$text,
-            'reply_markup' => &$inline_keyboard,
-            'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_preview,
-        ];
-
-        return $this->exec_curl_request($$this->api_url . 'editMessageText?' . http_build_query($parameters));
-
-    }
-
-    /**
-     * \brief Optimized version of answerInlineQuery that takes reference of $results.
-     * @see answerInlineQuery
-     */
-    public function &answerInlineQueryRef(&$results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
-
-        $parameters = [
-            'inline_query_id' => &$this->update['inline_query']['id'],
-            'switch_pm_text' => &$switch_pm_text,
-            'is_personal' => $is_personal,
-            'switch_pm_parameter' => &$switch_pm_parameter,
-            'results' => &$results,
-            'cache_time' => $cache_time
-        ];
-
-        return $this->exec_curl_request($this->api_url . 'answerInlineQuery?' . http_build_query($parameters));
 
     }
 
@@ -622,7 +626,7 @@ class Bot extends CoreBot {
      * @param $default_language <i>Optional</i>. Default language to return in case of errors.
      * @return Language set for the current user, $default_language on errors.
      */
-    public function &getLanguageDatabase($default_language = 'en') {
+    public function getLanguageDatabase($default_language = 'en') {
 
         // If we have no database
         if (!isset($this->database)) {
@@ -678,7 +682,7 @@ class Bot extends CoreBot {
      * @param $default_language <i>Optional</i>. Default language to return in case of errors.
      * @return Language for the current user, $default_language on errors.
      */
-    public function &getLanguageRedis($default_language = 'en') : string {
+    public function getLanguageRedis($default_language = 'en') : string {
 
         // If redis or pdo connection are not set
         if (!isset($this->redis)) {
@@ -714,7 +718,7 @@ class Bot extends CoreBot {
      * @param $expiring_time <i>Optional</i>. Set the expiring time for the language on redis each time it is took from the sql database.
      * @return Language for the current user, $default_language on errors.
      */
-    public function &getLanguageRedisAsCache($default_language = 'en', $expiring_time = '86400') : string {
+    public function getLanguageRedisAsCache($default_language = 'en', $expiring_time = '86400') : string {
 
         // If redis or pdo connection are not set
         if (!isset($this->redis) || !isset($this->pdo)) {
@@ -793,7 +797,7 @@ class Bot extends CoreBot {
      * @param $default_status <i>Optional</i>. The default status to return in case there is no status for the current user.
      * @return The status for the current user, $default_language if missing.
      */
-    public function &getStatus($default_status = -1) : int {
+    public function getStatus($default_status = -1) : int {
 
         if (!isset($this->redis)) {
 

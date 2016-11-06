@@ -26,9 +26,9 @@ class InlineKeyboard {
      * @param $buttons Buttons passed as inizialization.
      * @return The object created with the buttons passed.
      */
-    public function __construct(CoreBot $bot = null, array $buttons = array()) {
+    public function __construct(CoreBot &$bot = null, array $buttons = array()) {
 
-        $this->bot = &$bot;
+        $this->bot = $bot;
 
         // If $buttons is empty, initialize it with an empty array
         $this->inline_keyboard = $buttons;
@@ -40,7 +40,7 @@ class InlineKeyboard {
      * @param $clear_keyboard Remove all the buttons from this object.
      * @return JSON-serialized string with the buttons.
      */
-    public function &get($clear_keyboard = true) {
+    public function get($clear_keyboard = true) {
 
         // Check if it is empty
         if (empty($this->inline_keyboard)) {
@@ -131,14 +131,14 @@ class InlineKeyboard {
      * @param $json_serialized return a json serialized string, or an array.
      * @return A button with written "back".
      */
-    public function &getBackButton($json_serialized = true) {
+    public function getBackButton($json_serialized = true) {
 
         // Create the button
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
                     [
-                        'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
+                        'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
                         'callback_data' => 'back'
                     ]
                 ]
@@ -164,18 +164,18 @@ class InlineKeyboard {
      * @param $json_serialized return a json serialized string, or an array.
      * @return A button with written "back" and one with written "Skip".
      */
-    public function &getBackSkipKeyboard() {
+    public function getBackSkipKeyboard($json_serialized = true) {
 
         // Create the keyboard
         $inline_keyboard = [ 'inline_keyboard' =>
             [
                 [
                     [
-                        'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
+                        'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
                         'callback_data' => 'back'
                     ],
                     [
-                        'text' => &$this->bot->localization[$this->bot->language]['Skip_Button'],
+                        'text' => $this->bot->localization[$this->bot->language]['Skip_Button'],
                         'callback_data' => 'skip'
                     ]
                 ]
@@ -204,7 +204,7 @@ class InlineKeyboard {
      * @param $json_serialized Get a JSON-serialized string or an array.
      * @return The buttons in the selected type.
      */
-    public function &getChooseLanguageKeyboard($json_serialized = true) {
+    public function getChooseLanguageKeyboard($json_serialized = true) {
 
         // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];
@@ -242,7 +242,7 @@ class InlineKeyboard {
 
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => &$this->bot->localization[$this->bot->language]['Back_Button'],
+                'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
                 'callback_data' => 'back'
             ]
         ]);
@@ -261,7 +261,7 @@ class InlineKeyboard {
 
     /**
      * \brief */
-    public function &getCompositeListKeyboard($index, $list, $prefix) {
+    public function initilizeCompositeListKeyboard($index, $list, $prefix) {
 
         if (($list > 0) && ($index >= 0)) {
             if ($index == 0) {
@@ -833,8 +833,10 @@ class InlineKeyboard {
                 }
             }
         }
+
         $this->inline_keyboard[] = $buttons;
     }
+
 }
 
 /** @} */

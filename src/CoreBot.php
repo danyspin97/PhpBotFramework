@@ -35,7 +35,7 @@ namespace DanySpin97\PhpBotFramework;
  * - Designed to be the fast and easy to use
  * - Support for getUpdates and webhooks
  * - Support for the most important API methods
- * - Command-handle system
+ * - Command-handle system for messages and callback queries
  * - Update type based processing
  * - Easy inline keyboard creation
  * - Inline query results handler
@@ -65,24 +65,24 @@ namespace DanySpin97\PhpBotFramework;
  *
  * \section Usage
  * Add the scripting by adding command (addMessageCommand()) or by creating a class that inherits Bot.
- * Each api call will have $chat_id set to the current user, use setChatID($chat_id) to change it.
+ * Each api call will have <code>$chat_id</code> set to the current user, use CoreBot::setChatID() to change it.
  *
  * \subsection getUpdates
  * The bot ask for updates to telegram server.
  * If you want to use getUpdates method to receive updates from telegram, add one of these function at the end of your bot:
- * - <code>getUpdatesLocal()</code>
- * - <code>getUpdatesDatabase()</code>
- * - <code>getUpdatesRedis()</code>
+ * - Bot::getUpdatesLocal()
+ * - Bot::getUpdatesDatabase()
+ * - Bot::getUpdatesRedis()
  *
- * The bot will process updates in a row, and will call <code>processUpdate()</code> for each.
- * getUpdates handling is single-threaded so there will be only one object that will process updates, so the connection will be opened at the creation and used for the entire life of the bot.
+ * The bot will process updates in a row, and will call Bot::processUpdate() for each.
+ * getUpdates handling is single-threaded so there will be only one object that will process updates. The connection will be opened at the creation and used for the entire life of the bot.
  *
  * \subsection Webhook
  * A web server will create an instance of the bot for every update received.
- * If you want to use webhook call <code>processWebhookUpdate()</code> at the end of your bot. The bot will get data from php://input and process it using <code>processUpdate()</code>.
+ * If you want to use webhook call Bot::processWebhookUpdate() at the end of your bot. The bot will get data from <code>php://input</code> and process it using Bot::processUpdate().
  * Each instance of the bot will open its connection.
  *
- * \subsection Commands
+ * \subsection Message-commands Message commands
  * Script how the bot will answer to messages containing commands (like <code>/start</code>).
  *
  *     $bot->addMessageCommand("start", function($bot, $message) {
@@ -95,28 +95,47 @@ namespace DanySpin97\PhpBotFramework;
  *
  *     $bot->addMessageCommand("/help", $help_function);
  *
+ * Check Bot::addMessageCommand() for more.
+ *
+ * \subsection Callback-commands Callback commands
+ * Script how the bot will answer to callback query containing a particular string as data.
+ *
+ *     $bot->addCallbackCommand("back", function($bot, $callback_query) {
+ *             $bot->editMessageText($callback_query['message']['message_id'], "You pressed back");
+ *    });
+ *
+ * Check Bot::addCallbackCommand() for more.
+ *
  * \subsection Bot-Intherited Inherit Bot Class
  * Create a new class that inherits Bot to handle all updates.
  *
  * <code>EchoBot.php</code>
  *
+ *     // Create the class that will extends Bot class
  *     class EchoBot extends DanySpin97\PhpBotFramework\Bot {
- *         protected function processMessage(&$message) {
+ *
+ *         // Add the function for processing messages
+ *         protected function processMessage($message) {
+ *
+ *             // Answer each message with the text received
  *             $this->sendMessage($this->getText());
+ *
  *         }
+ *
  *     }
  *
- * <code>main.php</code>
- *
+ *     // Create an object of type EchoBot
  *     $bot = new EchoBot("token");
+ *
+ *     // Process updates using webhook
  *     $bot->processWebhookUpdate();
  *
  * Override these method to make your bot handle each update type:
- * - <code>processMessage(&$message)</code>
- * - <code>processCallbackQuery(&$callback_query)</code>
- * - <code>processInlineQuery(&$inline_query)</code>
- * - <code>processChosenInlineResult(&$chosen_inline_result)</code>
- * - <code>processEditedMessage(&$edited_message)</code>
+ * - Bot::processMessage($message)
+ * - Bot::processCallbackQuery($callback_query)
+ * - Bot::processInlineQuery($inline_query)
+ * - Bot::processChosenInlineResult($chosen_inline_result)
+ * - Bot::processEditedMessage($edited_message)
  *
  * \subsection InlineKeyboard-Usage InlineKeyboard Usage
  *
@@ -124,9 +143,6 @@ namespace DanySpin97\PhpBotFramework;
  *
  *     // Create the bot
  *     $bot = new DanySpin97\PhpBotFramework\Bot("token");
- *
- *     // Create the inline keyboard object that will handle buttons
- *     $bot->inline_keyboard = new DanySpin97\PhpBotFramework\InlineKeyboard();
  *
  *     $command_function = function($bot, $message) {
  *             // Add a button to the inline keyboard
@@ -152,7 +168,7 @@ namespace DanySpin97\PhpBotFramework;
  *
  * \subsection Redis-database Redis Database
  * Redis is used to save offset from getUpdates, to store language (both as cache and persistent) and to save bot state.
- * To connect redis with the bot, craete a redis object.
+ * To connect redis with the bot, create a redis object.
  *
  *     $bot->redis = new Redis();
  *
@@ -238,7 +254,7 @@ class CoreBot {
         }
 
         // Init variables
-        $this->token = &$token;
+        $this->token = $token;
         $this->api_url = 'https://api.telegram.org/bot' . $token . '/';
 
         // Init connection and config it
@@ -270,7 +286,7 @@ class CoreBot {
      * \brief Get chat id of the current user.
      * @return Chat id of the user.
      */
-    public function &getChatID() {
+    public function getChatID() {
 
         return $this->chat_id;
 
@@ -302,12 +318,12 @@ class CoreBot {
      * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
      * @return Array of updates (can be empty).
      */
-    protected function &getUpdates(int $offset = 0, int $limit = 100, int $timeout = 60) {
+    protected function getUpdates(int $offset = 0, int $limit = 100, int $timeout = 60) {
 
         $parameters = [
-            'offset' => &$offset,
-            'limit' => &$limit,
-            'timeout' => &$timeout,
+            'offset' => $offset,
+            'limit' => $limit,
+            'timeout' => $timeout,
         ];
 
         return $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters));
@@ -324,20 +340,16 @@ class CoreBot {
      * @param $disable_notification <i>Optional</i>. Sends the message silently.
      * @return On success,  the sent message.
      */
-    public function &sendMessage($text, string $reply_markup = null, int $reply_to = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false) {
-
-        if (!isset($this->chat_id)) {
-            throw new BotException('(sendMessage) Chat id is not set');
-        }
+    public function sendMessage($text, string $reply_markup = null, int $reply_to = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false) {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'text' => &$text,
-            'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_preview,
-            'reply_markup' => &$reply_markup,
-            'reply_to_message_id' => &$reply_to,
-            'disable_notification' => &$disable_notification
+            'chat_id' => $this->chat_id,
+            'text' => $text,
+            'parse_mode' => $parse_mode,
+            'disable_web_page_preview' => $disable_web_preview,
+            'reply_markup' => $reply_markup,
+            'reply_to_message_id' => $reply_to,
+            'disable_notification' => $disable_notification
         ];
 
         return $this->exec_curl_request($this->api_url . 'sendMessage?' . http_build_query($parameters));
@@ -352,17 +364,13 @@ class CoreBot {
      * @param $disable_notification <i>Optional</i>. Sends the message silently.
      * @return On success,  the sent message.
      */
-    public function &forwardMessage($from_chat_id, int $message_id, bool $disable_notification = false) {
-
-        if (!isset($this->chat_id)) {
-            throw new BotException('(sendMessage) Chat id is not set');
-        }
+    public function forwardMessage($from_chat_id, int $message_id, bool $disable_notification = false) {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'message_id' => &$message_id,
-            'from_chat_id' => &$from_chat_id,
-            'disable_notification' => &$disable_notification
+            'chat_id' => $this->chat_id,
+            'message_id' => $message_id,
+            'from_chat_id' => $from_chat_id,
+            'disable_notification' => $disable_notification
         ];
 
         return $this->exec_curl_request($this->api_url . 'forwardMessage?' . http_build_query($parameters));
@@ -378,14 +386,14 @@ class CoreBot {
      * @param $disable_notification <i>Optional<i>. Sends the message silently.
      * @return On success,  the sent message.
      */
-    public function &sendPhoto($photo, string $reply_markup = null, string $caption = '', bool $disable_notification = false) {
+    public function sendPhoto($photo, string $reply_markup = null, string $caption = '', bool $disable_notification = false) {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'photo' => &$photo,
-            'caption' => &$caption,
-            'reply_markup' => &$reply_markup,
-            'disable_notification' => &$disable_notification,
+            'chat_id' => $this->chat_id,
+            'photo' => $photo,
+            'caption' => $caption,
+            'reply_markup' => $reply_markup,
+            'disable_notification' => $disable_notification,
         ];
 
         return $this->exec_curl_request($this->api_url . 'sendPhoto?' . http_build_query($parameters));
@@ -398,7 +406,7 @@ class CoreBot {
      * Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
      * @param $audio Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data.
      * @param $caption <i>Optional</i>. Audio caption, 0-200 characters.
-     * @param reply_markup <i>Optional</i>. JSON-serialized object for keyboard.
+     * @param $reply_markup <i>Optional</i>. Reply markup of the message.
      * @param $duration <i>Optional</i>. Duration of the audio in seconds.
      * @param $performer <i>Optional</i>. Performer.
      * @param $title <i>Optional</i>. Track name.
@@ -406,18 +414,18 @@ class CoreBot {
      * @param $reply_to_message_id <i>Optional</i>. If the message is a reply, ID of the original message.
      * @return On success, the sent message.
      */
-    public function &sendAudio($audio, string $caption = null, string $reply_markup = null, int $duration = null, string $title = null, bool $disable_notification = false, int $reply_to_message_id = null) {
+    public function sendAudio($audio, string $caption = null, string $reply_markup = null, int $duration = null, string $title = null, bool $disable_notification = false, int $reply_to_message_id = null) {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'audio' => &$photo,
-            'caption' => &$caption,
-            'duration' => &$duration,
-            'performer' => &$performer,
-            'title' => &$title,
-            'reply_to_message_id' => &$reply_to_message_id,
-            'reply_markup' => &$reply_markup,
-            'disable_notification' => &$disable_notification,
+            'chat_id' => $this->chat_id,
+            'audio' => $photo,
+            'caption' => $caption,
+            'duration' => $duration,
+            'performer' => $performer,
+            'title' => $title,
+            'reply_to_message_id' => $reply_to_message_id,
+            'reply_markup' => $reply_markup,
+            'disable_notification' => $disable_notification,
         ];
 
         return $this->exec_curl_request($this->api_url . 'sendAudio?' . http_build_query($parameters));
@@ -429,19 +437,20 @@ class CoreBot {
      * \details Use this method to send general files. [Api reference](https://core.telegram.org/bots/api/#senddocument)
      * @param $document File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
      * @param <i>Optional</i>. Document caption (may also be used when resending documents by file_id), 0-200 characters.
-     * @param $reply_markup
+     *
+     * @param $reply_markup <i>Optional</i>. Reply markup of the message.
      * @param <i>Optional</i>. Sends the message silently.
      * @param <i>Optional</i>. If the message is a reply, ID of the original message.
      */
-    public function &senddocument($document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null) {
+    public function sendDocument($document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null) {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'document' => &$photo,
-            'caption' => &$caption,
-            'reply_to_message_id' => &$reply_to_message_id,
-            'reply_markup' => &$reply_markup,
-            'disable_notification' => &$disable_notification,
+            'chat_id' => $this->chat_id,
+            'document' => $photo,
+            'caption' => $caption,
+            'reply_to_message_id' => $reply_to_message_id,
+            'reply_markup' => $reply_markup,
+            'disable_notification' => $disable_notification,
         ];
 
         return $this->exec_curl_request($this->api_url . 'sendAudio?' . http_build_query($parameters));
@@ -453,20 +462,50 @@ class CoreBot {
      * \brief Send a sticker
      * \details Use this method to send .webp stickers. [Api reference](https://core.telegram.org/bots/api/#sendsticker)
      * @param $sticker Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data.
+     * @param $reply_markup <i>Optional</i>. Reply markup of the message.
      * @param $disable_notification Sends the message silently.
+     * @param <i>Optional</i>. If the message is a reply, ID of the original message.
      * @param On success, the sent message.
      */
-    public function &sendSticker($sticker, string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null) {
+    public function sendSticker($sticker, string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null) {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'sticker' => &$sticker,
+            'chat_id' => $this->chat_id,
+            'sticker' => $sticker,
             'disable_notification' => $disable_notification,
-            'reply_to_message_id' => &$reply_to_message_id,
-            'reply_markup' => &$reply_markup
+            'reply_to_message_id' => $reply_to_message_id,
+            'reply_markup' => $reply_markup
         ];
 
         return $this->exec_curl_request($this->api_url . 'sendSticker?' . http_build_query($parameters));
+
+    }
+
+    /**
+     * \brief Send audio files.
+     * \details Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document).o
+     * Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+     * @param $voice Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
+     * @param $caption <i>Optional</i>. Voice message caption, 0-200 characters
+     * @param $duration <i>Optional</i>. Duration of the voice message in seconds
+     * @param $reply_markup <i>Optional</i>. Reply markup of the message.
+     * @param $disable_notification <i>Optional</i>. Sends the message silently.
+     * @param $reply_to_message_id <i>Optional</i>. If the message is a reply, ID of the original message.
+     * @return On success, the sent message is returned.
+     */
+    public function sendVoice($voice, string $caption, int $duration, string $reply_markup = null, bool $disable_notification, int $reply_to_message_id = 0) {
+
+        $parameters = [
+            'chat_id' => $this->chat_id,
+            'voice' => $voice,
+            'caption' => $caption,
+            'duration' => $duration,
+            'disable_notification', $disable_notification,
+            'reply_to_message_id' => $reply_to_message_id,
+            'reply_markup' => $reply_markup
+        ];
+
+        return $this->exec_curl_request($this->api_url . 'sendVoice?' . http_build_query($parameters));
 
     }
 
@@ -482,11 +521,11 @@ class CoreBot {
      * - <code>find_location</code> for location data
      * @return True on success.
      */
-    public function &sendChatAction(string $action) : bool {
+    public function sendChatAction(string $action) : bool {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'action' => &$action
+            'chat_id' => $this->chat_id,
+            'action' => $action
         ];
 
         return $this->exec_curl_request($this->api_url . 'sendChatAction?' . http_build_query($parameters));
@@ -498,10 +537,10 @@ class CoreBot {
      * \details Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). [Api reference](https://core.telegram.org/bots/api#getchat)
      * @param Unique identifier for the target chat or username of the target supergroup or channel (in the format <code>@channelusername</code>)
      */
-    public function &getChat($chat_id) {
+    public function getChat($chat_id) {
 
         $parameters = [
-            'chat_id' => &$chat_id,
+            'chat_id' => $chat_id,
         ];
 
         return $this->exec_curl_request($this->api_url . 'getChat?' . http_build_query($parameters));
@@ -517,13 +556,13 @@ class CoreBot {
      * Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
      * @return True on success.
      */
-    public function &answerCallbackQuery($text = '', $show_alert = false, string $url = '') : bool {
+    public function answerCallbackQuery($text = '', $show_alert = false, string $url = '') : bool {
 
         $parameters = [
-            'callback_query_id' => &$this->update['callback_query']['id'],
-            'text' => &$text,
-            'show_alert' => &$show_alert,
-            'url' => &$url
+            'callback_query_id' => $this->update['callback_query']['id'],
+            'text' => $text,
+            'show_alert' => $show_alert,
+            'url' => $url
         ];
 
         return $this->exec_curl_request($this->api_url . 'answerCallbackQuery?' . http_build_query($parameters));
@@ -533,25 +572,21 @@ class CoreBot {
     /**
      * \brief Edit text of a message sent by the bot.
      * \details Use this method to edit text and game messages sent by the bot. [Api reference](https://core.telegram.org/bots/api#editmessagetext)
-     * @param $text New text of the message.
      * @param $message_id Unique identifier of the sent message.
+     * @param $text New text of the message.
      * @param $reply_markup Reply markup of the message will have (will be removed if this is null).
      * @param $parse_mode <i>Optional</i>. Send Markdown or HTML.
      * @param $disable_web_preview <i>Optional</i>. Disables link previews for links in this message.
      */
-    public function &editMessageText($text, int $message_id, $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = false) {
-
-        if (!isset($this->chat_id)) {
-            throw new BotException('(sendMessage) Chat id is not set');
-        }
+    public function editMessageText(int $message_id, $text, $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = false) {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'message_id' => &$message_id,
-            'text' => &$text,
-            'reply_markup' => &$reply_markup,
-            'parse_mode' => &$parse_mode,
-            'disable_web_page_preview' => &$disable_web_preview,
+            'chat_id' => $this->chat_id,
+            'message_id' => $message_id,
+            'text' => $text,
+            'reply_markup' => $reply_markup,
+            'parse_mode' => $parse_mode,
+            'disable_web_page_preview' => $disable_web_preview,
         ];
 
         return $this->exec_curl_request($this->api_url . 'editMessageText?' . http_build_query($parameters));
@@ -561,20 +596,20 @@ class CoreBot {
     /**
      * \brief Edit text of a message sent via the bot.
      * \details Use this method to edit text messages sent via the bot (for inline queries). [Api reference](https://core.telegram.org/bots/api#editmessagetext)
-     * @param $text New text of the message.
      * @param $inline_message_id  Identifier of the inline message.
+     * @param $text New text of the message.
      * @param $reply_markup Reply markup of the message will have (will be removed if this is null).
      * @param $parse_mode <i>Optional</i>. Send Markdown or HTML.
      * @param $disable_web_preview <i>Optional</i>. Disables link previews for links in this message.
      */
-    public function &editInlineMessageText($text, string $inline_message_id, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = false) {
+    public function editInlineMessageText(string $inline_message_id, $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = false) {
 
         $parameters = [
-           'inline_message_id' => &$inline_message_id,
-           'text' => &$text,
-           'reply_markup' => &$inline_keyboard,
-           'parse_mode' => &$parse_mode,
-           'disable_web_page_preview' => &$disable_web_preview,
+           'inline_message_id' => $inline_message_id,
+           'text' => $text,
+           'reply_markup' => $inline_keyboard,
+           'parse_mode' => $parse_mode,
+           'disable_web_page_preview' => $disable_web_preview,
         ];
 
         return $this->exec_curl_request($this->api_url . 'editMessageText?' . http_build_query($parameters));
@@ -587,17 +622,15 @@ class CoreBot {
      * $message_id Identifier of the message to edit
      * $inline_keyboard Inlike keyboard array (https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      */
-    public function &editMessageReplyMarkup($message_id, $inline_keyboard) {
+    public function editMessageReplyMarkup($message_id, $inline_keyboard) {
 
         $parameters = [
-            'chat_id' => &$this->chat_id,
-            'message_id' => &$message_id,
-            'reply_markup' => &$inline_keyboard,
+            'chat_id' => $this->chat_id,
+            'message_id' => $message_id,
+            'reply_markup' => $inline_keyboard,
         ];
 
-        $url = $this->api_url . 'editMessageReplyMarkup?' . http_build_query($parameters);
-
-        return $this->exec_curl_request($url);
+        return $this->exec_curl_request($this->api_url . 'editMessageReplyMarkup?' . http_build_query($parameters));
 
     }
 
@@ -607,14 +640,14 @@ class CoreBot {
      * $results Array on InlineQueryResult (https://core.telegram.org/bots/api#inlinequeryresult)
      * $switch_pm_text Text to show on the button
      */
-    public function &answerInlineQuerySwitchPM($results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
+    public function answerInlineQuerySwitchPM($results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
 
         $parameters = [
-            'inline_query_id' => &$this->update['inline_query']['id'],
-            'switch_pm_text' => &$switch_pm_text,
+            'inline_query_id' => $this->update['inline_query']['id'],
+            'switch_pm_text' => $switch_pm_text,
             'is_personal' => $is_personal,
             'switch_pm_parameter' => $switch_pm_parameter,
-            'results' => &$results,
+            'results' => $results,
             'cache_time' => $cache_time
         ];
 
@@ -628,10 +661,10 @@ class CoreBot {
      * @param
      * $switch_pm_text Text to show on the button
      */
-    public function &answerEmptyInlineQuerySwitchPM($switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
+    public function answerEmptyInlineQuerySwitchPM($switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
         $parameters = [
-            'inline_query_id' => &$this->update['inline_query']['id'],
-            'switch_pm_text' => &$switch_pm_text,
+            'inline_query_id' => $this->update['inline_query']['id'],
+            'switch_pm_text' => $switch_pm_text,
             'is_personal' => $is_personal,
             'switch_pm_parameter' => $switch_pm_parameter,
             'cache_time' => $cache_time
@@ -655,9 +688,9 @@ class CoreBot {
      * @param $parameters Parameters to add.
      * @return Depends on api method.
      */
-    public function &apiRequest(string $method, array $parameters) {
+    public function apiRequest(string $method, array $parameters) {
 
-        return $this->exec_curl_request($this->api_url . $method.'?'. http_build_query($parameters));
+        return $this->exec_curl_request($this->api_url . $method . '?' . http_build_query($parameters));
 
     }
 
@@ -671,8 +704,9 @@ class CoreBot {
     /** \brief Base core function to execute url request
      * @param $url The url to call using the curl session.
      */
-    protected function &exec_curl_request($url) {
+    protected function exec_curl_request($url) {
 
+        // Set the url
         curl_setopt($this->ch, CURLOPT_URL, $url);
 
         $response = curl_exec($this->ch);
