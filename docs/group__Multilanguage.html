@@ -92,6 +92,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga64ed17b2a28fd265bd7da9c48bdf8d9e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Multilanguage.html#ga64ed17b2a28fd265bd7da9c48bdf8d9e">DanySpin97\PhpBotFramework\Bot::setLanguageRedisAsCache</a> ($language, $expiring_time='86400')</td></tr>
 <tr class="memdesc:ga64ed17b2a28fd265bd7da9c48bdf8d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current user language in both redis, sql database and $language.  <a href="#ga64ed17b2a28fd265bd7da9c48bdf8d9e">More...</a><br /></td></tr>
 <tr class="separator:ga64ed17b2a28fd265bd7da9c48bdf8d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga87b10c818efdd660cb4a4047e02bff24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Multilanguage.html#ga87b10c818efdd660cb4a4047e02bff24">DanySpin97\PhpBotFramework\Bot::loadLocalization</a> ($dir='./localization')</td></tr>
+<tr class="memdesc:ga87b10c818efdd660cb4a4047e02bff24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load localization files (JSON-serialized) from a folder and set them in $local variable.  <a href="#ga87b10c818efdd660cb4a4047e02bff24">More...</a><br /></td></tr>
+<tr class="separator:ga87b10c818efdd660cb4a4047e02bff24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -99,10 +102,10 @@ Variables</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Multilanguage.html#gae8396ba4996f53cc66ca337c23a32f82">DanySpin97\PhpBotFramework\Bot::$language</a></td></tr>
 <tr class="memdesc:gae8396ba4996f53cc66ca337c23a32f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store the language for a multi-language bot. <br /></td></tr>
 <tr class="separator:gae8396ba4996f53cc66ca337c23a32f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3c867673169d851ee5b86700db8b8653"><td class="memItemLeft" align="right" valign="top"><a id="ga3c867673169d851ee5b86700db8b8653"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Multilanguage.html#ga3c867673169d851ee5b86700db8b8653">DanySpin97\PhpBotFramework\Bot::$localization</a></td></tr>
-<tr class="memdesc:ga3c867673169d851ee5b86700db8b8653"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store the array containing language. <br /></td></tr>
-<tr class="separator:ga3c867673169d851ee5b86700db8b8653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab1d8b5e58580e86b971d53a39640c47d"><td class="memItemLeft" align="right" valign="top"><a id="gab1d8b5e58580e86b971d53a39640c47d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Multilanguage.html#gab1d8b5e58580e86b971d53a39640c47d">DanySpin97\PhpBotFramework\Bot::$local</a></td></tr>
+<tr class="memdesc:gab1d8b5e58580e86b971d53a39640c47d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Store localization data. <br /></td></tr>
+<tr class="separator:gab1d8b5e58580e86b971d53a39640c47d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad3ac11c80d6956181f1dd04bb9f0f36b"><td class="memItemLeft" align="right" valign="top"><a id="gad3ac11c80d6956181f1dd04bb9f0f36b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Multilanguage.html#gad3ac11c80d6956181f1dd04bb9f0f36b">DanySpin97\PhpBotFramework\Bot::$user_table</a> = '&quot;User&quot;'</td></tr>
 <tr class="memdesc:gad3ac11c80d6956181f1dd04bb9f0f36b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table contaning bot users data in the sql database. <br /></td></tr>
@@ -203,6 +206,35 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Language for the current user, $default_language on errors. </dd></dl>
+
+</div>
+</div>
+<a id="ga87b10c818efdd660cb4a4047e02bff24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga87b10c818efdd660cb4a4047e02bff24">&sect;&nbsp;</a></span>loadLocalization()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DanySpin97\PhpBotFramework\Bot::loadLocalization </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$dir</em> = <code>'./localization'</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Load localization files (JSON-serialized) from a folder and set them in $local variable. </p>
+<p>Save all localization files, saved as json format, from a directory and put the contents in $local variable. Each file will be saved into $local with the first two letters of the filename as the index. Access the english data as $this-&gt;local["en"]["Your key"]. File <code>./localization/en.json</code>: </p><pre class="fragment">{"Hello_Msg": "Hello"}
+</pre><p>File <code>./localization/it.json</code>: </p><pre class="fragment">{"Hello_Msg": "Ciao"}
+</pre><p>Usage in <code><a class="el" href="group__Bot.html#gad9e60bdc381210c76cf8bcd609c71ad4" title="Called every message received by the bot. ">processMessage()</a></code>: </p><pre class="fragment">$sendMessage($this-&gt;local[$this-&gt;language]["Hello_Msg"]);
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$dir</td><td>Directory where the localization files are saved. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

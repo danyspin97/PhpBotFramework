@@ -97,6 +97,15 @@ namespace DanySpin97\PhpBotFramework;
  *
  * Check Bot::addMessageCommand() for more.
  *
+ * You can also use regex to check commands.
+ *
+ * The closure will be called if the commands if the expression evaluates to true. Here is an example:
+ *
+ *     $bot->addMessageCommandRegex("number/d",
+ *         $help_function);
+ *
+ * The closure will be called when the user send a command that match the regex like, in this example, both <code>/number1</code> or <code>/number135</code>.
+ *
  * \subsection Callback-commands Callback commands
  * Script how the bot will answer to callback query containing a particular string as data.
  *
@@ -118,7 +127,7 @@ namespace DanySpin97\PhpBotFramework;
  *         protected function processMessage($message) {
  *
  *             // Answer each message with the text received
- *             $this->sendMessage($this->getText());
+ *             $this->sendMessage($message['text']);
  *
  *         }
  *
@@ -136,6 +145,8 @@ namespace DanySpin97\PhpBotFramework;
  * - Bot::processInlineQuery($inline_query)
  * - Bot::processChosenInlineResult($chosen_inline_result)
  * - Bot::processEditedMessage($edited_message)
+ * - Bot::processChannelPost($post)
+ * - Bot::processEditedChannelPost($edited_post)
  *
  * \subsection InlineKeyboard-Usage InlineKeyboard Usage
  *
@@ -161,26 +172,36 @@ namespace DanySpin97\PhpBotFramework;
  *
  * \subsection Sql-Database Sql Database
  * The sql database is used to save offset from getUpdates and to save user language.
+ *
  * To connect a sql database to the bot, a pdo connection is required.
+ *
  * Here is a simple pdo connection that is passed to the bot:
  *
  *     $bot->pdo = new PDO('mysql:host=localhost;dbname=test', $user, $pass);
  *
  * \subsection Redis-database Redis Database
  * Redis is used to save offset from getUpdates, to store language (both as cache and persistent) and to save bot state.
+ *
  * To connect redis with the bot, create a redis object.
  *
  *     $bot->redis = new Redis();
  *
  * \subsection Multilanguage-section Multilanguage Bot
  * This framework offers method to develop a multi language bot.
+ *
  * Here's an example:
  *
- *     $bot->localization = [ 'en' =>
- *                                   [ 'Greetings_Msg' => 'Hello'],
- *                            'it' =>
- *                                   [ 'Greetings_Msg' => 'Ciao']];
+ * <code>en.json</code>:
  *
+ *     {"Greetings_Msg": "Hello"}
+ *
+ * <code>it.json</code>:
+ *
+ *     {"Greetings_Msg": "Ciao"}
+ *
+ * <code>Greetings.php</code>:
+ *
+ *     $bot->loadLocalization();
  *     $start_function = function($bot, $message) {
  *             $bot->sendMessage($this->localization[
  *                     $bot->getLanguageDatabase()]['Greetings_Msg'])
@@ -197,7 +218,7 @@ namespace DanySpin97\PhpBotFramework;
  *
  * \section Bot-created Bot using this framework
  * - [\@MyAddressBookBot](https://telegram.me/myaddressbookbot) ([Source](https://github.com/DanySpin97/MyAddressBookBot))
- * - [\@Giveaways_bot](https://telegram.me/giveaways_bot)
+ * - [\@Giveaways_bot](https://telegram.me/giveaways_bot) ([Source](https://github.com/DanySpin97/GiveawaysBot))
  *
  * \section Authors
  * This framework is developed and manteined by Danilo Spinella.
@@ -261,6 +282,7 @@ class CoreBot {
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($this->ch, CURLOPT_TIMEOUT, 60);
         curl_setopt($this->ch, CURLOPT_HEADER, 0);
         curl_setopt($this->ch, CURLOPT_ENCODING, '');
@@ -701,8 +723,9 @@ class CoreBot {
      * @{
      */
 
-    /** \brief Base core function to execute url request
+    /** \brief Core function to execute url request.
      * @param $url The url to call using the curl session.
+     * @return Url response, false on error.
      */
     protected function exec_curl_request($url) {
 

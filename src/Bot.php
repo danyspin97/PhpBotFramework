@@ -63,8 +63,8 @@ class Bot extends CoreBot {
     /** \brief Store the language for a multi-language bot */
     public $language;
 
-    /** \brief Store the array containing language */
-    public $localization;
+    /** \brief Store localization data */
+    public $local;
 
     /** \brief Table contaning bot users data in the sql database. */
     public $user_table = '"User"';
@@ -120,38 +120,6 @@ class Bot extends CoreBot {
     }
 
     /**
-     * \brief Get the text of the message (for updates of type "message").
-     * @return The text of the current message, throw exception if the current update is not a message.
-     */
-    public function getText() {
-
-        if (isset($this->text)) {
-
-            return $this->text;
-
-        }
-
-        throw new BotException("Text not set: wrong update type");
-
-    }
-
-    /**
-     * \brief Get the data received from the callback query (for updates of type "callback_query").
-     * @return The data of the current callback, throw exception if the current update is not a callback query.
-     */
-    public function getData() {
-
-        if (isset($this->data)) {
-
-            return $this->data;
-
-        }
-
-        throw new BotException("Data not set: wrong update type");
-
-    }
-
-    /**
      * \brief Get the query received from the inline query (for updates of type "inline_query").
      * @return The query sent by the user, throw exception if the current update is not an inline query.
      */
@@ -163,7 +131,7 @@ class Bot extends CoreBot {
 
         }
 
-        throw new BotException("Query not set: wrong update type");
+        throw new BotException("Query from inline query is not set: wrong update type");
     }
 
     /**
@@ -216,9 +184,10 @@ class Bot extends CoreBot {
         if (isset($update['message'])) {
 
             // Set data from the message
-            $this->chat_id = $update['message']['from']['id'];
-            $this->text = $update['message']['text'];
+            $this->chat_id = $update['message']['chat']['id'];
 
+            // If there are commands set by the user
+            // and there are bot commands in the message, checking message entities
             if ($this->message_commands_set && isset($update['message']['entities']) && $update['message']['entities'][0]['type'] === 'bot_command') {
 
                 // The lenght of the command
@@ -230,8 +199,27 @@ class Bot extends CoreBot {
                 // For each command added by the user
                 foreach ($this->message_commands as $trigger) {
 
-                    // Check corresponding
-                    if ($trigger['length'] == $length && mb_strpos($trigger['command'], $this->text, $offset) !== false) {
+                    // If the current command is a regex
+                    if ($trigger['regex_active']) {
+
+                        // Use preg_match to check if it is true
+                        $matched = preg_match('/' . $trigger['regex_rule'] . '/', substr($update['message']['text'], $offset + 1, $length));
+
+                    // else check if the command sent by the user is the same as the one we are expecting
+                    } else if ($trigger['length'] == $length && mb_strpos($trigger['command'], $update['message']['text'], $offset) !== false) {
+
+                        // We found a valid command
+                        $matched = true;
+
+                    } else {
+
+                        // We did not
+                        $matched = false;
+
+                    }
+
+                    // Check the results for the current command
+                    if ($matched) {
 
                         // Execute script,
                         $trigger['script']($this, $update['message']);
@@ -239,7 +227,7 @@ class Bot extends CoreBot {
                         // clear text variable
                         unset($this->text);
 
-                        // and return the id of the current update
+                        // and return the id of the current update to stop processing this update
                         return $update['update_id'];
 
                     }
@@ -251,15 +239,11 @@ class Bot extends CoreBot {
             // And process it
             $this->processMessage($update['message']);
 
-            // Clear text
-            unset($this->text);
-
         } elseif (isset($update['callback_query'])) {
             // If the update is a callback query
 
             // Set variables
-            $this->chat_id = $update['callback_query']['from']['id'];
-            $this->data = $update['callback_query']['data'];
+            $this->chat_id = $update['callback_query']['chat']['id'];
 
             // Check for callback commands
             if ($this->callback_commands_set) {
@@ -288,29 +272,40 @@ class Bot extends CoreBot {
             // Process the callback query through processCallbackQuery
             $this->processCallbackQuery($update['callback_query']);
 
-            // Unset data
-            unset($this->data);
-
         } elseif (isset($update['inline_query'])) {
 
-            $this->chat_id = $update['inline_query']['from']['id'];
+            $this->chat_id = $update['inline_query']['chat']['id'];
             $this->query = $update['inline_query']['query'];
 
             $this->processInlineQuery($update['inline_query']);
 
             unset($this->query);
 
+        } elseif (isset($update['channel_post'])) {
+
+            // Set data from the post
+            $this->chat_id = $update['channel_post']['chat']['id'];
+
+            $this->processChannelPost($update['channel_post']);
+
         } elseif (isset($update['edited_message'])) {
 
-            $this->chat_id = $update['edited_message']['from']['id'];
+            $this->chat_id = $update['edited_message']['chat']['id'];
 
             $this->processEditedMessage($update['edited_message']);
 
+        } elseif (isset($update['edited_channel_post'])) {
+
+            $this->chat_id = $update['edited_channel_post']['chat']['id'];
+
+            $this->processEditedChannelPost($update['edited_channel_post']);
+
         } elseif (isset($update['chosen_inline_result'])) {
 
-            $this->chat_id = $update['chosen_inline_result']['from']['id'];
+            $this->chat_id = $update['chosen_inline_result']['chat']['id'];
 
             $this->processInlineResult($update['chosen_inline_result']);
+
         }
 
         return $update['update_id'];
@@ -327,7 +322,7 @@ class Bot extends CoreBot {
     /**
      * \brief Called every message received by the bot.
      * \details Override it to script the bot answer for each message.
-     * $chat_id and $text(use getText to access it) set inside of this function.
+     * <code>$chat_id</code> set inside of this function.
      * @param $message Reference to the message received.
      */
     protected function processMessage($message) {}
@@ -335,7 +330,7 @@ class Bot extends CoreBot {
     /**
      * \brief Called every callback query received by the bot.
      * \details Override it to script the bot answer for each callback.
-     * $chat_id and $data(use getData() to access it) set inside of this function.
+     * <code>$chat_id</code> set inside of this function.
      * @param $callback_query Reference to the callback query received.
      */
     protected function processCallbackQuery($callback_query) {}
@@ -351,7 +346,7 @@ class Bot extends CoreBot {
     /**
      * \brief Called every chosen inline result received by the bot.
      * \details Override it to script the bot answer for each chosen inline result.
-     * $chat_id set inside of this function.
+     * <code>$chat_id</code> set inside of this function.
      * @param $chosen_inline_result Reference to the chosen inline result received.
      */
     protected function processChosenInlineResult($chosen_inline_result) {}
@@ -359,10 +354,26 @@ class Bot extends CoreBot {
     /**
      * \brief Called every chosen edited message received by the bot.
      * \details Override it to script the bot answer for each edited message.
-     * $chat_id set inside of this function.
-     * @param $edited_message Reference to the edited message received.
+     * <code>$chat_id</code> set inside of this function.
+     * @param $edited_message The message edited by the user.
      */
     protected function processEditedMessage($edited_message) {}
+
+    /**
+     * \brief Called every new post in the channel where the bot is in.
+     * \details Override it to script the bot answer for each post sent in a channel.
+     * <code>$chat_id</code> set inside of this function.
+     * @param $post The message sent in the channel.
+     */
+    protected function processChannelPost($post) {}
+
+    /**
+     * \brief Called every time a post get edited in the channel where the bot is in.
+     * \details Override it to script the bot answer for each post edited  in a channel.
+     * <code>$chat_id</code> set inside of this function.
+     * @param $post The message edited in the channel.
+     */
+    protected function processEditedChannelPost($edited_post) {}
 
     /**
      * \brief Get updates received by the bot, using redis to save and get the last offset.
@@ -586,12 +597,32 @@ class Bot extends CoreBot {
      * @param $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
      * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
      */
-    public function addMessageCommand(string $command, $script) {
+    public function addMessageCommand(string $command, \Closure $script) {
 
         $this->message_commands[] = [
-                'command' => '/' . $command,
                 'script' => $script,
-                'length' => mb_strlen($command) + 1
+                'command' => '/' . $command,
+                'length' => strlen($command) + 1,
+                'regex_active' => false
+        ];
+
+    }
+
+    /**
+     * \brief Add a function that will be executed everytime a message contain a command that match the regex
+     * \details Use this syntax:
+     *
+     *     addMessageCommandRegex("number\d", function($bot, $message, $result) {
+     *         $bot->sendMessage("You sent me a number"); });
+     * @param $regex_rule Regex rule that will called for evalueting the command received.
+     * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
+     */
+    public function addMessageCommandRegex(string $regex_rule, \Closure $script) {
+
+        $this->message_commands[] = [
+                'script' => $script,
+                'regex_active' => true,
+                'regex_rule' => $regex_rule
         ];
 
     }
@@ -784,6 +815,56 @@ class Bot extends CoreBot {
         $this->language = $language;
     }
 
+    /**
+     * \brief Load localization files (JSON-serialized) from a folder and set them in $local variable.
+     * \details Save all localization files, saved as json format, from a directory and put the contents in $local variable.
+     * Each file will be saved into $local with the first two letters of the filename as the index.
+     * Access the english data as $this->local["en"]["Your key"].
+     * File <code>./localization/en.json</code>:
+     *
+     *     {"Hello_Msg": "Hello"}
+     *
+     * File <code>./localization/it.json</code>:
+     *
+     *     {"Hello_Msg": "Ciao"}
+     *
+     * Usage in <code>processMessage()</code>:
+     *
+     *     $sendMessage($this->local[$this->language]["Hello_Msg"]);
+     *
+     * @param $dir Directory where the localization files are saved.
+     */
+    public function loadLocalization($dir = './localization') {
+
+        // Open directory
+        if ($handle = opendir($dir)) {
+
+            // Iterate over all files
+            while (false !== ($file = readdir($handle))) {
+
+                // If the file is a JSON data file
+                if (strlen($file) > 6 && substr($file, -5) === '.json') {
+
+                    try {
+
+                        // Add the contents of the file to the $local variable, after deserializng it from JSON format
+                        // The contents will be added with the 2 letter of the file as the index
+                        $this->local[substr($file, 0, 2)] = json_decode(file_get_contents("$dir/$file"), true);
+
+                    } catch (BotException $e) {
+
+                        echo $e->getMessage();
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
     /** @} */
 
     /**
@@ -828,6 +909,50 @@ class Bot extends CoreBot {
         $this->redis->set($this->chat_id . ':status', $status);
 
         $this->status = $status;
+
+    }
+
+    /** @} */
+
+    /**
+     * /addtogroup Users Users handling
+     * @{
+     */
+
+    public function broadcastMessage($text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false) {
+
+        if (!isset($this->pdo)) {
+
+            throw new BotException("Database connection not set");
+
+        }
+
+        $sth = $pdo->prepare("SELECT $this->{id_column} FROM $this->{user_table}");
+        try {
+
+            $sth->execute();
+
+        } catch (PDOException $e) {
+
+            echo $e->getMessage();
+
+        }
+
+        while($user = $sth->fetch()) {
+
+            $user_data = $this->getChat($user[$this->id_column]);
+
+            if ($user_data !== false) {
+
+                $this->setChatID($user[$this->id_column]);
+
+                $this->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview);
+
+            }
+
+        }
+
+        $sth = null;
 
     }
 
