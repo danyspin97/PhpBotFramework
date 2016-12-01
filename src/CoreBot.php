@@ -64,7 +64,7 @@ namespace DanySpin97\PhpBotFramework;
  * To get a SSL certificate you can user [Let's Encrypt](https://letsencrypt.org/).
  *
  * \section Usage
- * Add the scripting by adding command (addMessageCommand()) or by creating a class that inherits Bot.
+ * Add the scripting by adding command (Bot::addMessageCommand()) or by creating a class that inherits Bot.
  * Each api call will have <code>$chat_id</code> set to the current user, use CoreBot::setChatID() to change it.
  *
  * \subsection getUpdates

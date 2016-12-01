@@ -123,15 +123,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:gab715326bb3b458ebf8dbda635f2c8520"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Bot.html#gab715326bb3b458ebf8dbda635f2c8520">getUpdatesDatabase</a> (int $limit=100, int $timeout=0, string $table_name='telegram', string $column_name='bot_offset')</td></tr>
 <tr class="memdesc:gab715326bb3b458ebf8dbda635f2c8520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get updates received by the bot, using the sql database to store and get the last offset.  <a href="group__Bot.html#gab715326bb3b458ebf8dbda635f2c8520">More...</a><br /></td></tr>
 <tr class="separator:gab715326bb3b458ebf8dbda635f2c8520"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacb0379c944b18e2c64043523c4852846"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Bot.html#gacb0379c944b18e2c64043523c4852846">addMessageCommand</a> (string $command, \Closure $script)</td></tr>
-<tr class="memdesc:gacb0379c944b18e2c64043523c4852846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a function that will be executed everytime a message contain the selected command.  <a href="group__Bot.html#gacb0379c944b18e2c64043523c4852846">More...</a><br /></td></tr>
-<tr class="separator:gacb0379c944b18e2c64043523c4852846"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8ba09c740d3b76da8e902a80692bb935"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Bot.html#ga8ba09c740d3b76da8e902a80692bb935">addMessageCommandRegex</a> (string $regex_rule, \Closure $script)</td></tr>
-<tr class="memdesc:ga8ba09c740d3b76da8e902a80692bb935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a function that will be executed everytime a message contain a command that match the regex.  <a href="group__Bot.html#ga8ba09c740d3b76da8e902a80692bb935">More...</a><br /></td></tr>
-<tr class="separator:ga8ba09c740d3b76da8e902a80692bb935"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaef53e470d13fcb310f042f1c8233020c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Bot.html#gaef53e470d13fcb310f042f1c8233020c">addCallbackCommand</a> (string $data, $script)</td></tr>
-<tr class="memdesc:gaef53e470d13fcb310f042f1c8233020c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a function that will be executed everytime a callback query contains a string as data.  <a href="group__Bot.html#gaef53e470d13fcb310f042f1c8233020c">More...</a><br /></td></tr>
-<tr class="separator:gaef53e470d13fcb310f042f1c8233020c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2a30bcb9d99e359e269e623f7387ce21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Bot.html#ga2a30bcb9d99e359e269e623f7387ce21">addMessageCommand</a> (string $command, callable $script)</td></tr>
+<tr class="memdesc:ga2a30bcb9d99e359e269e623f7387ce21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a function that will be executed everytime a message contain the selected command.  <a href="group__Bot.html#ga2a30bcb9d99e359e269e623f7387ce21">More...</a><br /></td></tr>
+<tr class="separator:ga2a30bcb9d99e359e269e623f7387ce21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacd1710e953497738b5f63e9be87370e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Bot.html#gacd1710e953497738b5f63e9be87370e8">addMessageCommandRegex</a> (string $regex_rule, callable $script)</td></tr>
+<tr class="memdesc:gacd1710e953497738b5f63e9be87370e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a function that will be executed everytime a message contain a command that match the regex.  <a href="group__Bot.html#gacd1710e953497738b5f63e9be87370e8">More...</a><br /></td></tr>
+<tr class="separator:gacd1710e953497738b5f63e9be87370e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga51a41d8c661547709b49453de0a4d617"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Bot.html#ga51a41d8c661547709b49453de0a4d617">addCallbackCommand</a> (string $data, callable $script)</td></tr>
+<tr class="memdesc:ga51a41d8c661547709b49453de0a4d617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a function that will be executed everytime a callback query contains a string as data.  <a href="group__Bot.html#ga51a41d8c661547709b49453de0a4d617">More...</a><br /></td></tr>
+<tr class="separator:ga51a41d8c661547709b49453de0a4d617"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaed4ac30d321473c476a1e8fac00afac1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Multilanguage.html#gaed4ac30d321473c476a1e8fac00afac1">getLanguageDatabase</a> ($default_language='en')</td></tr>
 <tr class="memdesc:gaed4ac30d321473c476a1e8fac00afac1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current user language from the database, and set it in $language.  <a href="group__Multilanguage.html#gaed4ac30d321473c476a1e8fac00afac1">More...</a><br /></td></tr>
 <tr class="separator:gaed4ac30d321473c476a1e8fac00afac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,9 +153,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ga62343b2f096c8fc10d262b95765b74a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__State.html#ga62343b2f096c8fc10d262b95765b74a8">setStatus</a> ($status)</td></tr>
 <tr class="memdesc:ga62343b2f096c8fc10d262b95765b74a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the status of the bot in both redis and $status.  <a href="group__State.html#ga62343b2f096c8fc10d262b95765b74a8">More...</a><br /></td></tr>
 <tr class="separator:ga62343b2f096c8fc10d262b95765b74a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a796d86ee5a3125860d3b3dbfe4bc01a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html#a796d86ee5a3125860d3b3dbfe4bc01a1">broadcastMessage</a> ($text, string $reply_markup=null, string $parse_mode='HTML', bool $disable_web_preview=true, bool $disable_notification=false)</td></tr>
-<tr class="separator:a796d86ee5a3125860d3b3dbfe4bc01a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e09a29bb273a5aee4496aef31a6323a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Users-handle.html#ga5e09a29bb273a5aee4496aef31a6323a">addUser</a> ($chat_id)</td></tr>
+<tr class="memdesc:ga5e09a29bb273a5aee4496aef31a6323a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a user to the database.  <a href="group__Users-handle.html#ga5e09a29bb273a5aee4496aef31a6323a">More...</a><br /></td></tr>
+<tr class="separator:ga5e09a29bb273a5aee4496aef31a6323a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga796d86ee5a3125860d3b3dbfe4bc01a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Users-handle.html#ga796d86ee5a3125860d3b3dbfe4bc01a1">broadcastMessage</a> ($text, string $reply_markup=null, string $parse_mode='HTML', bool $disable_web_preview=true, bool $disable_notification=false)</td></tr>
+<tr class="memdesc:ga796d86ee5a3125860d3b3dbfe4bc01a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Broadcast a message to all user registred on the database.  <a href="group__Users-handle.html#ga796d86ee5a3125860d3b3dbfe4bc01a1">More...</a><br /></td></tr>
+<tr class="separator:ga796d86ee5a3125860d3b3dbfe4bc01a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classDanySpin97_1_1PhpBotFramework_1_1CoreBot"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classDanySpin97_1_1PhpBotFramework_1_1CoreBot')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1CoreBot.html">DanySpin97\PhpBotFramework\CoreBot</a></td></tr>
 <tr class="memitem:gacc9b98ad126f560279ff4c4884c265a3 inherit pub_methods_classDanySpin97_1_1PhpBotFramework_1_1CoreBot"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Core.html#gacc9b98ad126f560279ff4c4884c265a3">__construct</a> (string $token)</td></tr>
 <tr class="memdesc:gacc9b98ad126f560279ff4c4884c265a3 inherit pub_methods_classDanySpin97_1_1PhpBotFramework_1_1CoreBot"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contrusct an empty bot.  <a href="group__Core.html#gacc9b98ad126f560279ff4c4884c265a3">More...</a><br /></td></tr>
@@ -305,55 +308,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> class to handle updates and commandes. </p>
 <p>Class <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> to handle task like api request, or more specific api function(sendMessage, editMessageText, etc). Usage example in webhook.php </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a796d86ee5a3125860d3b3dbfe4bc01a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a796d86ee5a3125860d3b3dbfe4bc01a1">&sect;&nbsp;</a></span>broadcastMessage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">DanySpin97\PhpBotFramework\Bot::broadcastMessage </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>$reply_markup</em> = <code>null</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>$parse_mode</em> = <code>'HTML'</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>$disable_web_preview</em> = <code>true</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>$disable_notification</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>/addtogroup Users Users handling </p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/Bot.php</li>
 </ul>
 </div><!-- contents -->

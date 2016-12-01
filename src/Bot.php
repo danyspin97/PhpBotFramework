@@ -597,7 +597,7 @@ class Bot extends CoreBot {
      * @param $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
      * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
      */
-    public function addMessageCommand(string $command, \Closure $script) {
+    public function addMessageCommand(string $command, callable $script) {
 
         $this->message_commands[] = [
                 'script' => $script,
@@ -617,7 +617,7 @@ class Bot extends CoreBot {
      * @param $regex_rule Regex rule that will called for evalueting the command received.
      * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
      */
-    public function addMessageCommandRegex(string $regex_rule, \Closure $script) {
+    public function addMessageCommandRegex(string $regex_rule, callable $script) {
 
         $this->message_commands[] = [
                 'script' => $script,
@@ -636,7 +636,7 @@ class Bot extends CoreBot {
      * @param $data The string that will trigger this function.
      * @param $script The function that will be triggered by the callback query if it contains the $data string. Must take an object(the bot) and an array(the callback query received).
      */
-    public function addCallbackCommand(string $data, $script) {
+    public function addCallbackCommand(string $data, callable $script) {
 
         $this->callback_commands[] = [
                 'data' => $data,
@@ -915,19 +915,33 @@ class Bot extends CoreBot {
     /** @} */
 
     /**
-     * /addtogroup Users Users handling
+     * \addtogroup Users-handle Users handling
      * @{
      */
 
-    public function broadcastMessage($text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false) {
+    /** \brief Add a user to the database.
+     * \details Add a user to the database in Bot::$user_table table and Bot::$id_column column using Bot::$pdo connection.
+     * @param $chat_id chat_id of the user to add.
+     * @return True on success.
+     */
+    public function addUser($chat_id) : bool {
 
+        // Is there database connection?
         if (!isset($this->pdo)) {
 
             throw new BotException("Database connection not set");
 
         }
 
-        $sth = $pdo->prepare("SELECT $this->{id_column} FROM $this->{user_table}");
+        // Create insertion query and initialize variable
+        $query = "INSERT INTO $this->user_table ($this->id_column) VALUES (:chat_id)";
+
+        // Prepare the query
+        $sth = $this->pdo->prepare($query);
+
+        // Add the chat_id to the query
+        $sth->bindParam(':chat_id', $chat_id);
+
         try {
 
             $sth->execute();
@@ -938,20 +952,66 @@ class Bot extends CoreBot {
 
         }
 
+        $result = $sth->fetchColumn();
+
+        // Close statement
+        $sth = null;
+
+        // Return result
+        return $result;
+
+    }
+
+    /**
+     * \brief Broadcast a message to all user registred on the database.
+     * \details Send a message to all users subscribed, change Bot::$user_table and Bot::$id_column to match your database structure is.
+     * This method requires Bot::$pdo connection set.
+     * All parameters are the same as CoreBot::sendMessage.
+     * Because a limitation of Telegram Bot API the bot will have a delay after 20 messages sent in different chats.
+     * @see CoreBot::sendMessage
+     */
+    public function broadcastMessage($text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false) {
+
+        // Is there database connection?
+        if (!isset($this->pdo)) {
+
+            throw new BotException("Database connection not set");
+
+        }
+
+        // Prepare the query to get all chat_id from the database
+        $sth = $this->pdo->prepare("SELECT $this->id_column FROM $this->user_table");
+
+        try {
+
+            $sth->execute();
+
+        } catch (PDOException $e) {
+
+            echo $e->getMessage();
+
+        }
+
+        // Iterate over all the row got
         while($user = $sth->fetch()) {
 
+            // Call getChat to know that this users haven't blocked the bot
             $user_data = $this->getChat($user[$this->id_column]);
 
+            // Did they block it?
             if ($user_data !== false) {
 
+                // Change the chat_id for the next API method
                 $this->setChatID($user[$this->id_column]);
 
+                // Send the message
                 $this->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview);
 
             }
 
         }
 
+        // Close statement
         $sth = null;
 
     }

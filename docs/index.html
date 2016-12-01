@@ -130,7 +130,7 @@ Web-server</h2>
 <p>To use webhook for the bot, a web server and a SSL certificate are required. Install one using your package manager (nginx or caddy reccomended). To get a SSL certificate you can user <a href="https://letsencrypt.org/">Let's Encrypt</a>.</p>
 <h1><a class="anchor" id="Usage"></a>
 Usage</h1>
-<p>Add the scripting by adding command (addMessageCommand()) or by creating a class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a>. Each api call will have <code>$chat_id</code> set to the current user, use <a class="el" href="group__Bot.html#ga9c7803e64b128a00e68535667941feb3" title="Set current chat id. ">CoreBot::setChatID()</a> to change it.</p>
+<p>Add the scripting by adding command (<a class="el" href="group__Bot.html#ga2a30bcb9d99e359e269e623f7387ce21" title="Add a function that will be executed everytime a message contain the selected command. ">Bot::addMessageCommand()</a>) or by creating a class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a>. Each api call will have <code>$chat_id</code> set to the current user, use <a class="el" href="group__Bot.html#ga9c7803e64b128a00e68535667941feb3" title="Set current chat id. ">CoreBot::setChatID()</a> to change it.</p>
 <h2><a class="anchor" id="getUpdates"></a>
 getUpdates</h2>
 <p>The bot ask for updates to telegram server. If you want to use getUpdates method to receive updates from telegram, add one of these function at the end of your bot:</p><ul>
@@ -153,7 +153,7 @@ $help_function = function($bot, $message) {
 };
 
 $bot-&gt;addMessageCommand("/help", $help_function);
-</pre><p>Check <a class="el" href="group__Bot.html#gacb0379c944b18e2c64043523c4852846" title="Add a function that will be executed everytime a message contain the selected command. ">Bot::addMessageCommand()</a> for more.</p>
+</pre><p>Check <a class="el" href="group__Bot.html#ga2a30bcb9d99e359e269e623f7387ce21" title="Add a function that will be executed everytime a message contain the selected command. ">Bot::addMessageCommand()</a> for more.</p>
 <p>You can also use regex to check commands.</p>
 <p>The closure will be called if the commands if the expression evaluates to true. Here is an example: </p><pre class="fragment">$bot-&gt;addMessageCommandRegex("number/d",
     $help_function);
@@ -163,7 +163,7 @@ Callback commands</h2>
 <p>Script how the bot will answer to callback query containing a particular string as data. </p><pre class="fragment">$bot-&gt;addCallbackCommand("back", function($bot, $callback_query) {
         $bot-&gt;editMessageText($callback_query['message']['message_id'], "You pressed back");
 });
-</pre><p>Check <a class="el" href="group__Bot.html#gaef53e470d13fcb310f042f1c8233020c" title="Add a function that will be executed everytime a callback query contains a string as data...">Bot::addCallbackCommand()</a> for more.</p>
+</pre><p>Check <a class="el" href="group__Bot.html#ga51a41d8c661547709b49453de0a4d617" title="Add a function that will be executed everytime a callback query contains a string as data...">Bot::addCallbackCommand()</a> for more.</p>
 <h2><a class="anchor" id="Bot-Intherited"></a>
 Inherit Bot Class</h2>
 <p>Create a new class that inherits <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> to handle all updates.</p>

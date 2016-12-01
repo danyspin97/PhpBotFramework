@@ -7,6 +7,7 @@ var searchData=
   ['getchat',['getChat',['../group__Api.html#ga21ef1fbada1788b9173a837ef61739c0',1,'DanySpin97::PhpBotFramework::CoreBot']]],
   ['getchatid',['getChatID',['../group__Bot.html#ga41ecba18626f8f6bf0d15fcafc6cd8b0',1,'DanySpin97::PhpBotFramework::CoreBot']]],
   ['getchooselanguagekeyboard',['getChooseLanguageKeyboard',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#a503061fdfe6c8ea1ee552e76436484fe',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
+  ['gethashtags',['getHashtags',['../group__Utility-methods.html#ga2830826106233adb889fe6d0dae8a7a4',1,'DanySpin97::PhpBotFramework::Utility']]],
   ['getlanguagedatabase',['getLanguageDatabase',['../group__Multilanguage.html#gaed4ac30d321473c476a1e8fac00afac1',1,'DanySpin97::PhpBotFramework::Bot']]],
   ['getlanguageredis',['getLanguageRedis',['../group__Multilanguage.html#gadd3df874a2cca3205e3e84d35c41187b',1,'DanySpin97::PhpBotFramework::Bot']]],
   ['getlanguageredisascache',['getLanguageRedisAsCache',['../group__Multilanguage.html#gab3690275342ad2f6fbcbe7a9c03f5ab8',1,'DanySpin97::PhpBotFramework::Bot']]],
