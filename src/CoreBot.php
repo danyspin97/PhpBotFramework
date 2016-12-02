@@ -101,7 +101,7 @@ namespace DanySpin97\PhpBotFramework;
  *
  * The closure will be called if the commands if the expression evaluates to true. Here is an example:
  *
- *     $bot->addMessageCommandRegex("number/d",
+ *     $bot->addMessageCommandRegex("number\d",
  *         $help_function);
  *
  * The closure will be called when the user send a command that match the regex like, in this example, both <code>/number1</code> or <code>/number135</code>.

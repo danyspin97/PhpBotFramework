@@ -2,18 +2,18 @@
 
 namespace DanySpin97\PhpBotFramework;
 
-/**
- * \addtogroup InlineKeyboard InlineKeyboard
- * \brief Handle an inline keyboard to send along with messages.
- * @{
- */
-
 /** \class InlineKeyboard
  * \brief Inline Keyboard handler that create and handle inline keyboard buttons.
  * \details It stores the inline keyboard buttons added until get() is called.
  * It also provides some basic button to get, like Menu and Back buttons plus the dynamic-keyboard for menu browsing.
  */
 class InlineKeyboard {
+
+    /**
+     * \addtogroup InlineKeyboard InlineKeyboard
+     * \brief Handle an inline keyboard to send along with messages.
+     * @{
+     */
 
     /** \brief Store the array of InlineKeyboardButton */
     protected $inline_keyboard;
@@ -71,7 +71,7 @@ class InlineKeyboard {
      * @param $clean_keyboard Remove all the button from this object.
      * @return An array containing the buttons.
      */
-    public function &getArray($clean_keyboard = true) {
+    public function getArray($clean_keyboard = true) {
 
         // Check if it is empty
         if (empty($this->inline_keyboard)) {
@@ -210,7 +210,7 @@ class InlineKeyboard {
         // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];
 
-        foreach ($this->bot->localization['languages'] as $languages => $language_msg) {
+        foreach ($this->bot->local['languages'] as $languages => $language_msg) {
 
             // If the language is the same as the one set for the current user in $bot
             if (strpos($languages, $this->bot->language) !== false) {
@@ -228,7 +228,7 @@ class InlineKeyboard {
                 // Create a button with the language on the left and the language localizated for the current user in the right
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => $language_msg . '/' . $this->bot->localization[$this->bot->language][$languages],
+                        'text' => $language_msg . '/' . $this->bot->local[$this->bot->language][$languages],
                         'callback_data' => 'cl/' . $languages
                     ]
                 ]);
@@ -243,7 +243,7 @@ class InlineKeyboard {
 
         array_push($inline_keyboard['inline_keyboard'], [
             [
-                'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                'text' => $this->bot->local[$this->bot->language]['Back_Button'],
                 'callback_data' => 'back'
             ]
         ]);

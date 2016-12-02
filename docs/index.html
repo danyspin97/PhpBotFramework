@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="PhpBotFramework_Logo_small.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PhpBotFramework
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.1</span>
    </div>
    <div id="projectbrief">A framework for Telegram Bots&#39; APIs.</div>
   </td>
@@ -155,7 +155,7 @@ $help_function = function($bot, $message) {
 $bot-&gt;addMessageCommand("/help", $help_function);
 </pre><p>Check <a class="el" href="group__Bot.html#ga2a30bcb9d99e359e269e623f7387ce21" title="Add a function that will be executed everytime a message contain the selected command. ">Bot::addMessageCommand()</a> for more.</p>
 <p>You can also use regex to check commands.</p>
-<p>The closure will be called if the commands if the expression evaluates to true. Here is an example: </p><pre class="fragment">$bot-&gt;addMessageCommandRegex("number/d",
+<p>The closure will be called if the commands if the expression evaluates to true. Here is an example: </p><pre class="fragment">$bot-&gt;addMessageCommandRegex("number\d",
     $help_function);
 </pre><p>The closure will be called when the user send a command that match the regex like, in this example, both <code>/number1</code> or <code>/number135</code>.</p>
 <h2><a class="anchor" id="Callback-commands"></a>

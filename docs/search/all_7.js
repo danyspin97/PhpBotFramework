@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['get',['get',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#afd17e604a5caf5f6ef78defb6685502b',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['getarray',['getArray',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#a24b5dd3cd099e802164b8b2690cf2b59',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['getbackbutton',['getBackButton',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#a2901b9accbcb176bde4e5735d4ed6429',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['getbackskipkeyboard',['getBackSkipKeyboard',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#abb5d1cfc815a471430bf961222ae8b7f',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
+  ['get',['get',['../group__InlineKeyboard.html#gafd17e604a5caf5f6ef78defb6685502b',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
+  ['getarray',['getArray',['../group__InlineKeyboard.html#ga37234e04062beda0055d0b977e712230',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
+  ['getbackbutton',['getBackButton',['../group__InlineKeyboard.html#ga2901b9accbcb176bde4e5735d4ed6429',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
+  ['getbackskipkeyboard',['getBackSkipKeyboard',['../group__InlineKeyboard.html#gabb5d1cfc815a471430bf961222ae8b7f',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
   ['getchat',['getChat',['../group__Api.html#ga21ef1fbada1788b9173a837ef61739c0',1,'DanySpin97::PhpBotFramework::CoreBot']]],
   ['getchatid',['getChatID',['../group__Bot.html#ga41ecba18626f8f6bf0d15fcafc6cd8b0',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['getchooselanguagekeyboard',['getChooseLanguageKeyboard',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html#a503061fdfe6c8ea1ee552e76436484fe',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
+  ['getchooselanguagekeyboard',['getChooseLanguageKeyboard',['../group__InlineKeyboard.html#ga503061fdfe6c8ea1ee552e76436484fe',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
   ['gethashtags',['getHashtags',['../group__Utility-methods.html#ga2830826106233adb889fe6d0dae8a7a4',1,'DanySpin97::PhpBotFramework::Utility']]],
   ['getlanguagedatabase',['getLanguageDatabase',['../group__Multilanguage.html#gaed4ac30d321473c476a1e8fac00afac1',1,'DanySpin97::PhpBotFramework::Bot']]],
   ['getlanguageredis',['getLanguageRedis',['../group__Multilanguage.html#gadd3df874a2cca3205e3e84d35c41187b',1,'DanySpin97::PhpBotFramework::Bot']]],

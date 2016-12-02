@@ -28,7 +28,7 @@ class Bot extends CoreBot {
     private $query;
 
     /** \brief Store the inline keyboard */
-    public $inline_keyboard;
+    public $keyboard;
 
     /** \brief Pdo reference */
     public $pdo;
