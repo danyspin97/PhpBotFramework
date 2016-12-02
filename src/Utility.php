@@ -10,6 +10,7 @@ class Utility {
 
     /**
      * \addtogroup Utility-methods Utility methods
+     * \brief Helper methods.
      * @{
      */
 

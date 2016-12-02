@@ -10,6 +10,7 @@ class InlineQueryResults {
 
     /**
      * \addtogroup InlineQueryResults InlineQueryResults
+     * \brief Handle and store results before sending them to an answerInlineQuery api call.
      * @{
      */
 

@@ -76,6 +76,9 @@ $(function() {
 <div class="title">Users handling</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Handle bot users on the database.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -87,6 +90,7 @@ Functions</h2></td></tr>
 <tr class="separator:ga796d86ee5a3125860d3b3dbfe4bc01a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>Handle bot users on the database. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga5e09a29bb273a5aee4496aef31a6323a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga5e09a29bb273a5aee4496aef31a6323a">&sect;&nbsp;</a></span>addUser()</h2>
@@ -105,7 +109,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Add a user to the database. </p>
-<p>Add a user to the database in <a class="el" href="group__Multilanguage.html#gad3ac11c80d6956181f1dd04bb9f0f36b" title="Table contaning bot users data in the sql database. ">Bot::$user_table</a> table and <a class="el" href="group__Multilanguage.html#gadcc8b44f3a52ab4f353edcfb7f90a085" title="Name of the column that represents the user id in the sql database. ">Bot::$id_column</a> column using <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html#ab25c4a88f43d5eeb9402a96aa0090ff8" title="Pdo reference. ">Bot::$pdo</a> connection. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Add a user to the database in <a class="el" href="group__Multilanguage.html#gad3ac11c80d6956181f1dd04bb9f0f36b" title="Table contaning bot users data in the sql database. ">Bot::$user_table</a> table and <a class="el" href="group__Multilanguage.html#gadcc8b44f3a52ab4f353edcfb7f90a085" title="Name of the column that represents the user id in the sql database. ">Bot::$id_column</a> column using <a class="el" href="group__Bot.html#gab25c4a88f43d5eeb9402a96aa0090ff8" title="Pdo reference. ">Bot::$pdo</a> connection. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">$chat_id</td><td>chat_id of the user to add. </td></tr>
   </table>
@@ -160,7 +164,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Broadcast a message to all user registred on the database. </p>
-<p>Send a message to all users subscribed, change <a class="el" href="group__Multilanguage.html#gad3ac11c80d6956181f1dd04bb9f0f36b" title="Table contaning bot users data in the sql database. ">Bot::$user_table</a> and <a class="el" href="group__Multilanguage.html#gadcc8b44f3a52ab4f353edcfb7f90a085" title="Name of the column that represents the user id in the sql database. ">Bot::$id_column</a> to match your database structure is. This method requires <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html#ab25c4a88f43d5eeb9402a96aa0090ff8" title="Pdo reference. ">Bot::$pdo</a> connection set. All parameters are the same as <a class="el" href="group__Api.html#ga3a7f2d0760ba53561eb925e11f000f12" title="Send a text message. ">CoreBot::sendMessage</a>. Because a limitation of Telegram <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> API the bot will have a delay after 20 messages sent in different chats. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Api.html#ga3a7f2d0760ba53561eb925e11f000f12" title="Send a text message. ">CoreBot::sendMessage</a> </dd></dl>
+<p>Send a message to all users subscribed, change <a class="el" href="group__Multilanguage.html#gad3ac11c80d6956181f1dd04bb9f0f36b" title="Table contaning bot users data in the sql database. ">Bot::$user_table</a> and <a class="el" href="group__Multilanguage.html#gadcc8b44f3a52ab4f353edcfb7f90a085" title="Name of the column that represents the user id in the sql database. ">Bot::$id_column</a> to match your database structure is. This method requires <a class="el" href="group__Bot.html#gab25c4a88f43d5eeb9402a96aa0090ff8" title="Pdo reference. ">Bot::$pdo</a> connection set. All parameters are the same as <a class="el" href="group__Api.html#ga3a7f2d0760ba53561eb925e11f000f12" title="Send a text message. ">CoreBot::sendMessage</a>. Because a limitation of Telegram <a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> API the bot will have a delay after 20 messages sent in different chats. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Api.html#ga3a7f2d0760ba53561eb925e11f000f12" title="Send a text message. ">CoreBot::sendMessage</a> </dd></dl>
 
 </div>
 </div>

@@ -77,6 +77,9 @@ $(function() {
 <div class="title">State</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Create a state based bot using these methods.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -95,7 +98,75 @@ Variables</h2></td></tr>
 <tr class="separator:gae6f3c08b1e5ba847a2d43ef37bfccfff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<h2 class="groupheader">Function Documentation</h2>
+<p>Create a state based bot using these methods. </p>
+<p><a class="el" href="classDanySpin97_1_1PhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commandes. ">Bot</a> will answer in different way based on the state. Here is an example where we use save user credential using bot states: </p><pre class="fragment">&lt;?php
+
+// Include the framework
+require './vendor/autoload.php';
+
+// Define bot state
+define("SEND_USERNAME", 1);
+define("SEND_PASSWORD", 2);
+
+// Create the class for the bot that will handle login
+class LoginBot extends DanySpin97\PhpBotFramework\Bot {
+
+    // Add the function for processing messages
+    protected function processMessage($message) {
+
+        switch($this-&gt;getStatus()) {
+
+            // If we are expecting a username from the user
+            case SEND_USERNAME:
+
+                // Save the username
+
+                // Say the user to insert the password
+                $this-&gt;sendMessage("Please, send your password.");
+
+                // Update the bot state
+                $this-&gt;setStatus(SEND_PASSWORD);
+
+                break;
+
+            // Or if we are expecting a password from the user
+            case SEND_PASSWORD:
+
+                // Save the password
+
+                // Say the user he completed the process
+                $this-&gt;sendMessage("The registration is complete");
+
+                break;
+            }
+
+    }
+
+}
+
+// Create the bot
+$bot = new LoginBot("token");
+
+// Create redis object
+$bot-&gt;redis = new Redis();
+
+// Connect to redis database
+$bot-&gt;redis-&gt;connect('127.0.0.1');
+
+// Create the awnser to the &lt;code&gt;/start&lt;/code&gt; command
+$start_closure = function($bot, $message) {
+
+    // saying the user to enter a username
+    $bot-&gt;sendMessage("Please, send your username.");
+
+    // and update the status
+    $bot-&gt;setStatus(SEND_USERNAME);
+};
+
+// Add the answer
+$bot-&gt;addMessageCommand("start", $start_closure);
+
+$bot-&gt;getUpdatesLocal();</pre> <h2 class="groupheader">Function Documentation</h2>
 <a id="ga4c4ca9704b2ea9d31ca3d5256e56e420"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4c4ca9704b2ea9d31ca3d5256e56e420">&sect;&nbsp;</a></span>getStatus()</h2>
 
@@ -119,7 +190,7 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The status for the current user, $default_language if missing. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The status for the current user, $default_status if missing. </dd></dl>
 
 </div>
 </div>

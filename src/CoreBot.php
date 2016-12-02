@@ -248,6 +248,7 @@ class CoreBot {
 
     /**
      * \addtogroup Core Core(Internal)
+     * \brief Core of the framework.
      * @{
      */
 
@@ -329,6 +330,7 @@ class CoreBot {
 
     /**
      * \addtogroup Api Api Methods
+     * \brief All api methods to interface the bot with Telegram.
      * @{
      */
 

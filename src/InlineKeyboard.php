@@ -4,6 +4,7 @@ namespace DanySpin97\PhpBotFramework;
 
 /**
  * \addtogroup InlineKeyboard InlineKeyboard
+ * \brief Handle an inline keyboard to send along with messages.
  * @{
  */
 
