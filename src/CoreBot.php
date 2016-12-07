@@ -287,6 +287,8 @@ class CoreBot {
         curl_setopt($this->ch, CURLOPT_TIMEOUT, 60);
         curl_setopt($this->ch, CURLOPT_HEADER, 0);
         curl_setopt($this->ch, CURLOPT_ENCODING, '');
+        // DEBUG
+        //curl_setopt($this->ch, CURLOPT_VERBOSE, true);
 
     }
 
@@ -342,7 +344,7 @@ class CoreBot {
      * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
      * @return Array of updates (can be empty).
      */
-    protected function getUpdates(int $offset = 0, int $limit = 100, int $timeout = 60) {
+    public function getUpdates(int $offset = 0, int $limit = 100, int $timeout = 60) {
 
         $parameters = [
             'offset' => $offset,
@@ -351,6 +353,54 @@ class CoreBot {
         ];
 
         return $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters));
+
+    }
+
+    /**
+     * \brief Set updates received by the bot for getUpdates handling.
+     * \details List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. Specify an empty list to receive all updates regardless of type.
+     * Set it one time and it won't change until next setUpdateReturned call.
+     * @param $allowed_updates <i>Optional</i>. List of updates allowed.
+     */
+    public function setUpdateReturned(array $allowed_updates = []) {
+
+        // Parameter for getUpdates
+        $parameters = [
+            'offset' => 0,
+            'limit' => 1,
+            'timeout' => 0,
+        ];
+
+        // Start the list
+        $updates_string = '[';
+
+        // Flag to skip adding ", " to the string
+        $first_string = true;
+
+        // Iterate over the list
+        foreach ($allowed_updates as $index => $update) {
+
+            // Is it the first update added?
+            if (!$first_string) {
+
+                $updates_string .= ', "' . $update . '"';
+
+            } else {
+
+                $updates_string .= '"' . $update . '"';
+
+                // Set the flag to false cause we added an item
+                $first_string = false;
+
+            }
+
+        }
+
+        // Close string with the marker
+        $updates_string .= ']';
+
+        // Exec getUpdates
+        $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters) . '&allowed_updates=' . $updates_string);
 
     }
 

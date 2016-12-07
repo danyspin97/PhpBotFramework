@@ -18,8 +18,14 @@ class InlineKeyboard {
     /** \brief Store the array of InlineKeyboardButton */
     protected $inline_keyboard;
 
-    /** \brief Store a reference to the bot that is using this inline keyboard */
+    /** \brief Store a reference to the bot that is using this inline keyboard. */
     protected $bot;
+
+    /** \brief Store the current row. */
+    private $row;
+
+    /** \brief Store the current column. */
+    private $column;
 
     /**
      * \brief Create an inline keyboard object.
@@ -29,10 +35,15 @@ class InlineKeyboard {
      */
     public function __construct(CoreBot &$bot = null, array $buttons = array()) {
 
+        // Get bot reference
         $this->bot = $bot;
 
         // If $buttons is empty, initialize it with an empty array
         $this->inline_keyboard = $buttons;
+
+        // Set up vars
+        $this->row = 0;
+        $this->column = 0;
 
     }
 
@@ -102,7 +113,7 @@ class InlineKeyboard {
      * - callback_game
      *
      * Each call to this function add one or more button to a row. The next call add buttons on the next row.
-     * Each row allows 8 buttons per row and 12 columns.
+     * Each row allows 8 buttons per row and 12 columns total.
      * Use this function with this syntax:
      *
      *     addLevelButtons(['text' => 'Click me!', 'url' => 'https://telegram.me']);
@@ -115,7 +126,58 @@ class InlineKeyboard {
      */
     public function addLevelButtons(array ...$buttons) {
 
+        // Add buttons to the next row
         $this->inline_keyboard[] = $buttons;
+
+        // Switch to the next row
+        $this->changeRow();
+
+    }
+
+    /** \brief Add a button.
+     * \details The button will be added next to the last one or in the next row if the bot has reached the limit for the buttons per row.
+     *
+     * Each row allows 8 buttons per row and 12 columns total.
+     * Use this function with this syntax:
+     *
+     *     addButton('Click me!', 'url', 'https://telegram.me');
+     *
+     * @param $text Text showed on the button.
+     * @param $data_type The type of the button data.
+     * Select one from these types.
+     * - url
+     * - callback_data
+     * - switch_inline_query
+     * - switch_inline_query_current_chat
+     * - callback_game
+     * @param $data Data for the type selected.
+     */
+    public function addButton($text, string $data_type, $data) {
+
+        // If we get the end of the row
+        if ($this->column == 8) {
+
+            $this->changeRow();
+
+        }
+
+        // Add the button
+        $this->inline_keyboard[$this->row][$this->column] = ['text' => $text, $data_type => $data];
+
+        // Update column
+        $this->column++;
+
+    }
+
+    /**
+     * \brief Change row for the current keyboard.
+     * \details Buttons will be added in the next row from now on (until next InlineKeyboard::addLevelButtons() or InlineKeyboard::changeRow() call or InlineKeyboard::addButton() reaches the max).
+     */
+    public function changeRow() {
+
+        // Reset vars
+        $this->row++;
+        $this->column = 0;
 
     }
 
@@ -124,6 +186,10 @@ class InlineKeyboard {
 
         // Set the inline keyboard to an empty array
         $this->inline_keyboard = [];
+
+        // Reset vars
+        $this->row = 0;
+        $this->column = 0;
 
     }
 

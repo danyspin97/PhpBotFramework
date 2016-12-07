@@ -104,7 +104,7 @@ class Bot extends CoreBot {
         $message_commands = [];
         $callback_commands = [];
 
-        $this->inline_keyboard = new InlineKeyboard($this);
+        $this->keyboard = new InlineKeyboard($this);
 
     }
 
@@ -186,6 +186,7 @@ class Bot extends CoreBot {
 
         if (isset($update['message'])) {
 
+            echo "HURHWEIH";
             // Set data from the message
             $this->chat_id = $update['message']['chat']['id'];
 
@@ -246,16 +247,16 @@ class Bot extends CoreBot {
             // If the update is a callback query
 
             // Set variables
-            $this->chat_id = $update['callback_query']['chat']['id'];
+            $this->chat_id = $update['callback_query']['from']['id'];
 
             // Check for callback commands
-            if ($this->callback_commands_set) {
+            if (isset($update['callback_query']['data']) && $this->callback_commands_set) {
 
                 // Parse all commands
                 foreach ($this->callback_commands as $trigger) {
 
                     // If command is found in callback data
-                    if (mb_strpos($trigger['data'], $this->data) !== false) {
+                    if (mb_strpos($trigger['data'], $update['callback_query']['data']) !== false) {
 
                         // Trigger the script
                         $trigger['script']($this, $update['callback_query']);

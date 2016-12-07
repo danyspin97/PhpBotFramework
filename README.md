@@ -3,7 +3,6 @@
 [![Latest Stable Version](https://poser.pugx.org/danyspin97/php-bot-framework/v/stable)](https://packagist.org/packages/danyspin97/php-bot-framework)
 [![Build Status](https://travis-ci.org/DanySpin97/PhpBotFramework.svg?branch=master)](https://travis-ci.org/DanySpin97/PhpBotFramework)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6254e3eccc93497997dae21e57a452ac)](https://www.codacy.com/app/danyspin97/PhpBotFramework?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DanySpin97/PhpBotFramework&amp;utm_campaign=Badge_Grade)
-[![codecov](https://codecov.io/gh/DanySpin97/PhpBotFramework/branch/master/graph/badge.svg)](https://codecov.io/gh/DanySpin97/PhpBotFramework)
 [![License](https://poser.pugx.org/danyspin97/php-bot-framework/license)](https://packagist.org/packages/danyspin97/php-bot-framework)
 
 
@@ -67,8 +66,8 @@ composer install --no-dev
 Check the documentation [Here](https://danyspin97.github.io/PhpBotFramework/) for more.
 
 ## Bot using this wrapper
-- [@MyAddressBookBot](https://telegram.me/myaddressbookbot) ([Source](https://github.com/DanySpin97/MyAddressBookBot))
-- [@Giveaways_Bot](https://telegram.me/giveaways_bot)
+- [@MyAddressBookBot](https://telegram.me/myaddressbookbot) -> [Source](https://github.com/DanySpin97/MyAddressBookBot)
+- [@Giveaways_Bot](https://telegram.me/giveaways_bot) -> [Source](https://github.com/DanySpin97/GiveawaysBot)
 
 ## Author
 This Framework is developed and mantained by @DanySpin97.
