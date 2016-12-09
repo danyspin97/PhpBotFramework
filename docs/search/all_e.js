@@ -10,5 +10,6 @@ var searchData=
   ['setchatid',['setChatID',['../group__Bot.html#ga9c7803e64b128a00e68535667941feb3',1,'DanySpin97::PhpBotFramework::CoreBot']]],
   ['setlanguageredisascache',['setLanguageRedisAsCache',['../group__Multilanguage.html#ga64ed17b2a28fd265bd7da9c48bdf8d9e',1,'DanySpin97::PhpBotFramework::Bot']]],
   ['setstatus',['setStatus',['../group__State.html#ga62343b2f096c8fc10d262b95765b74a8',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['setupdatereturned',['setUpdateReturned',['../group__Api.html#ga27589aa271e46d805f05c7bb97653037',1,'DanySpin97::PhpBotFramework::CoreBot']]],
   ['state',['State',['../group__State.html',1,'']]]
 ];

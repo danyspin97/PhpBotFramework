@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="PhpBotFramework_Logo_small.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PhpBotFramework
-   &#160;<span id="projectnumber">1.1.1</span>
+   &#160;<span id="projectnumber">1.1.2</span>
    </div>
    <div id="projectbrief">A framework for Telegram Bots&#39; APIs.</div>
   </td>
@@ -85,6 +85,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga85847299397388bf998e787be68f523c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Api.html#ga85847299397388bf998e787be68f523c">DanySpin97\PhpBotFramework\CoreBot::getUpdates</a> (int $offset=0, int $limit=100, int $timeout=60)</td></tr>
 <tr class="memdesc:ga85847299397388bf998e787be68f523c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request bot updates.  <a href="#ga85847299397388bf998e787be68f523c">More...</a><br /></td></tr>
 <tr class="separator:ga85847299397388bf998e787be68f523c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga27589aa271e46d805f05c7bb97653037"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Api.html#ga27589aa271e46d805f05c7bb97653037">DanySpin97\PhpBotFramework\CoreBot::setUpdateReturned</a> (array $allowed_updates=[])</td></tr>
+<tr class="memdesc:ga27589aa271e46d805f05c7bb97653037"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set updates received by the bot for getUpdates handling.  <a href="#ga27589aa271e46d805f05c7bb97653037">More...</a><br /></td></tr>
+<tr class="separator:ga27589aa271e46d805f05c7bb97653037"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3a7f2d0760ba53561eb925e11f000f12"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Api.html#ga3a7f2d0760ba53561eb925e11f000f12">DanySpin97\PhpBotFramework\CoreBot::sendMessage</a> ($text, string $reply_markup=null, int $reply_to=null, string $parse_mode='HTML', bool $disable_web_preview=true, bool $disable_notification=false)</td></tr>
 <tr class="memdesc:ga3a7f2d0760ba53561eb925e11f000f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a text message.  <a href="#ga3a7f2d0760ba53561eb925e11f000f12">More...</a><br /></td></tr>
 <tr class="separator:ga3a7f2d0760ba53561eb925e11f000f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -372,9 +375,6 @@ apiRequest("sendMessage", $param);
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">DanySpin97\PhpBotFramework\CoreBot::getUpdates </td>
@@ -400,11 +400,6 @@ apiRequest("sendMessage", $param);
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Request bot updates. </p>
@@ -819,6 +814,32 @@ apiRequest("sendMessage", $param);
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>On success, the sent message is returned. </dd></dl>
+
+</div>
+</div>
+<a id="ga27589aa271e46d805f05c7bb97653037"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga27589aa271e46d805f05c7bb97653037">&sect;&nbsp;</a></span>setUpdateReturned()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DanySpin97\PhpBotFramework\CoreBot::setUpdateReturned </td>
+          <td>(</td>
+          <td class="paramtype">array&#160;</td>
+          <td class="paramname"><em>$allowed_updates</em> = <code>[]</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set updates received by the bot for getUpdates handling. </p>
+<p>List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. Specify an empty list to receive all updates regardless of type. Set it one time and it won't change until next setUpdateReturned call. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$allowed_updates</td><td><em>Optional</em>. List of updates allowed. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

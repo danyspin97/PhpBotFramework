@@ -24,7 +24,7 @@
   <td id="projectlogo"><img alt="Logo" src="PhpBotFramework_Logo_small.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PhpBotFramework
-   &#160;<span id="projectnumber">1.1.1</span>
+   &#160;<span id="projectnumber">1.1.2</span>
    </div>
    <div id="projectbrief">A framework for Telegram Bots&#39; APIs.</div>
   </td>
@@ -95,6 +95,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1a426eb2c9f438898fece4173ab06eb5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__InlineKeyboard.html#ga1a426eb2c9f438898fece4173ab06eb5">DanySpin97\PhpBotFramework\InlineKeyboard::addLevelButtons</a> (array ... $buttons)</td></tr>
 <tr class="memdesc:ga1a426eb2c9f438898fece4173ab06eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add buttons for the current row of buttons.  <a href="#ga1a426eb2c9f438898fece4173ab06eb5">More...</a><br /></td></tr>
 <tr class="separator:ga1a426eb2c9f438898fece4173ab06eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabfdbcccd12c05a1b77fa52f7ecacc56f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__InlineKeyboard.html#gabfdbcccd12c05a1b77fa52f7ecacc56f">DanySpin97\PhpBotFramework\InlineKeyboard::addButton</a> ($text, string $data_type, $data)</td></tr>
+<tr class="memdesc:gabfdbcccd12c05a1b77fa52f7ecacc56f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a button.  <a href="#gabfdbcccd12c05a1b77fa52f7ecacc56f">More...</a><br /></td></tr>
+<tr class="separator:gabfdbcccd12c05a1b77fa52f7ecacc56f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad5e9e2d0ee41e636debff4ecf7b6acfe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__InlineKeyboard.html#gad5e9e2d0ee41e636debff4ecf7b6acfe">DanySpin97\PhpBotFramework\InlineKeyboard::changeRow</a> ()</td></tr>
+<tr class="memdesc:gad5e9e2d0ee41e636debff4ecf7b6acfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change row for the current keyboard.  <a href="#gad5e9e2d0ee41e636debff4ecf7b6acfe">More...</a><br /></td></tr>
+<tr class="separator:gad5e9e2d0ee41e636debff4ecf7b6acfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf00c350e57fbabf5ad7d111c73dd2b11"><td class="memItemLeft" align="right" valign="top"><a id="gaf00c350e57fbabf5ad7d111c73dd2b11"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__InlineKeyboard.html#gaf00c350e57fbabf5ad7d111c73dd2b11">DanySpin97\PhpBotFramework\InlineKeyboard::clearKeyboard</a> ()</td></tr>
 <tr class="memdesc:gaf00c350e57fbabf5ad7d111c73dd2b11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove all the buttons from the current inline keyboard. <br /></td></tr>
@@ -164,6 +170,59 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="gabfdbcccd12c05a1b77fa52f7ecacc56f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabfdbcccd12c05a1b77fa52f7ecacc56f">&sect;&nbsp;</a></span>addButton()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DanySpin97\PhpBotFramework\InlineKeyboard::addButton </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>$data_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add a button. </p>
+<p>The button will be added next to the last one or in the next row if the bot has reached the limit for the buttons per row.</p>
+<p>Each row allows 8 buttons per row and 12 columns total. Use this function with this syntax: </p><pre class="fragment">addButton('Click me!', 'url', 'https://telegram.me');
+</pre><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$text</td><td>Text showed on the button. </td></tr>
+    <tr><td class="paramname">$data_type</td><td>The type of the button data. Select one from these types.<ul>
+<li>url</li>
+<li>callback_data</li>
+<li>switch_inline_query</li>
+<li>switch_inline_query_current_chat</li>
+<li>callback_game </li>
+</ul>
+</td></tr>
+    <tr><td class="paramname">$data</td><td>Data for the type selected. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga1a426eb2c9f438898fece4173ab06eb5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga1a426eb2c9f438898fece4173ab06eb5">&sect;&nbsp;</a></span>addLevelButtons()</h2>
 
@@ -188,7 +247,7 @@ Variables</h2></td></tr>
 <li>switch_inline_query_current_chat</li>
 <li>callback_game</li>
 </ul>
-<p>Each call to this function add one or more button to a row. The next call add buttons on the next row. Each row allows 8 buttons per row and 12 columns. Use this function with this syntax: </p><pre class="fragment">addLevelButtons(['text' =&gt; 'Click me!', 'url' =&gt; 'https://telegram.me']);
+<p>Each call to this function add one or more button to a row. The next call add buttons on the next row. Each row allows 8 buttons per row and 12 columns total. Use this function with this syntax: </p><pre class="fragment">addLevelButtons(['text' =&gt; 'Click me!', 'url' =&gt; 'https://telegram.me']);
 </pre><p>If you want to add more than a button, use this syntax: </p><pre class="fragment">addLevelButtons(['text' =&gt; 'Button 1', 'url' =&gt; 'https://telegram.me/gamedev_ita'], ['text' =&gt; 'Button 2', 'url' =&gt; 'https://telegram.me/animewallpaper']);
 </pre><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -196,6 +255,26 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="gad5e9e2d0ee41e636debff4ecf7b6acfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad5e9e2d0ee41e636debff4ecf7b6acfe">&sect;&nbsp;</a></span>changeRow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">DanySpin97\PhpBotFramework\InlineKeyboard::changeRow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Change row for the current keyboard. </p>
+<p>Buttons will be added in the next row from now on (until next <a class="el" href="group__InlineKeyboard.html#ga1a426eb2c9f438898fece4173ab06eb5" title="Add buttons for the current row of buttons. ">InlineKeyboard::addLevelButtons()</a> or <a class="el" href="group__InlineKeyboard.html#gad5e9e2d0ee41e636debff4ecf7b6acfe" title="Change row for the current keyboard. ">InlineKeyboard::changeRow()</a> call or <a class="el" href="group__InlineKeyboard.html#gabfdbcccd12c05a1b77fa52f7ecacc56f" title="Add a button. ">InlineKeyboard::addButton()</a> reaches the max). </p>
 
 </div>
 </div>
