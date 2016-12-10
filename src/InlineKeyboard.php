@@ -126,6 +126,14 @@ class InlineKeyboard {
      */
     public function addLevelButtons(array ...$buttons) {
 
+        // If the user has already added a button in this row
+        if ($this->column != 0) {
+
+             // Change row
+             $this->changeRow();
+
+        }
+
         // Add buttons to the next row
         $this->inline_keyboard[] = $buttons;
 
@@ -205,7 +213,7 @@ class InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                        'text' => $this->bot->local[$this->bot->language]['Back_Button'],
                         'callback_data' => 'back'
                     ]
                 ]
@@ -238,11 +246,11 @@ class InlineKeyboard {
             [
                 [
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Back_Button'],
+                        'text' => $this->bot->local[$this->bot->language]['Back_Button'],
                         'callback_data' => 'back'
                     ],
                     [
-                        'text' => $this->bot->localization[$this->bot->language]['Skip_Button'],
+                        'text' => $this->bot->local[$this->bot->language]['Skip_Button'],
                         'callback_data' => 'skip'
                     ]
                 ]
@@ -276,7 +284,7 @@ class InlineKeyboard {
         // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];
 
-        foreach ($this->bot->local['languages'] as $languages => $language_msg) {
+        foreach ($this->bot->local as $languages => $language_msg) {
 
             // If the language is the same as the one set for the current user in $bot
             if (strpos($languages, $this->bot->language) !== false) {
@@ -284,7 +292,7 @@ class InlineKeyboard {
                 // Just create a button with one language in it
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => $language_msg,
+                        'text' => $language_msg['Language'],
                         'callback_data' => 'same/language'
                     ]
                 ]);
@@ -294,7 +302,7 @@ class InlineKeyboard {
                 // Create a button with the language on the left and the language localizated for the current user in the right
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
-                        'text' => $language_msg . '/' . $this->bot->local[$this->bot->language][$languages],
+                        'text' => $language_msg['Language'] . '/' . $this->bot->local[$this->bot->language][$languages],
                         'callback_data' => 'cl/' . $languages
                     ]
                 ]);

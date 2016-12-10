@@ -186,7 +186,6 @@ class Bot extends CoreBot {
 
         if (isset($update['message'])) {
 
-            echo "HURHWEIH";
             // Set data from the message
             $this->chat_id = $update['message']['chat']['id'];
 
@@ -1022,20 +1021,21 @@ class Bot extends CoreBot {
         try {
 
             $sth->execute();
+            $success = true;
 
         } catch (PDOException $e) {
 
             echo $e->getMessage();
 
-        }
+            $success = false;
 
-        $result = $sth->fetchColumn();
+        }
 
         // Close statement
         $sth = null;
 
         // Return result
-        return $result;
+        return $success;
 
     }
 
