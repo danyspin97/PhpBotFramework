@@ -652,7 +652,7 @@ class CoreBot {
      * @param $parse_mode <i>Optional</i>. Send Markdown or HTML.
      * @param $disable_web_preview <i>Optional</i>. Disables link previews for links in this message.
      */
-    public function editMessageText(int $message_id, $text, $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = false) {
+    public function editMessageText(int $message_id, $text, $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true) {
 
         $parameters = [
             'chat_id' => $this->chat_id,

@@ -160,7 +160,7 @@ class InlineKeyboard {
      * - callback_game
      * @param $data Data for the type selected.
      */
-    public function addButton($text, string $data_type, $data) {
+    public function addButton($text, string $data_type, string $data) {
 
         // If we get the end of the row
         if ($this->column == 8) {
@@ -276,10 +276,11 @@ class InlineKeyboard {
      * The button will be one per row.
      * The text will be the language and the language localizatated for the current user with a slash between them.
      * The callback data for each button will be "cl/key" where key is the key in $localization['languages'].
+     * @param $prefix Prefix followed by '/' and the language index (en, it..).
      * @param $json_serialized Get a JSON-serialized string or an array.
      * @return The buttons in the selected type.
      */
-    public function getChooseLanguageKeyboard($json_serialized = true) {
+    public function getChooseLanguageKeyboard($prefix = 'cl', $json_serialized = true) {
 
         // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];
@@ -301,10 +302,10 @@ class InlineKeyboard {
 
                 // Create a button with the language on the left and the language localizated for the current user in the right
                 array_push($inline_keyboard['inline_keyboard'], [
-                    [
-                        'text' => $language_msg['Language'] . '/' . $this->bot->local[$this->bot->language][$languages],
-                        'callback_data' => 'cl/' . $languages
-                    ]
+                        [
+                            'text' => $language_msg['Language'] . '/' . $this->bot->local[$this->bot->language][$languages],
+                            'callback_data' => $prefix . '/' . $languages
+                        ]
                 ]);
 
             }
@@ -316,10 +317,10 @@ class InlineKeyboard {
         unset($language_msg);
 
         array_push($inline_keyboard['inline_keyboard'], [
-            [
-                'text' => $this->bot->local[$this->bot->language]['Back_Button'],
-                'callback_data' => 'back'
-            ]
+                [
+                    'text' => $this->bot->local[$this->bot->language]['Back_Button'],
+                    'callback_data' => 'back'
+                ]
         ]);
 
         if ($json_serialized) {
@@ -336,7 +337,7 @@ class InlineKeyboard {
 
     /**
      * \brief */
-    public function initilizeCompositeListKeyboard($index, $list, $prefix) {
+    public function initializeCompositeListKeyboard($index, $list, $prefix) {
 
         if (($list > 0) && ($index >= 0)) {
             if ($index == 0) {

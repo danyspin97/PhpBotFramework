@@ -953,7 +953,7 @@ class Bot extends CoreBot {
      * @param $default_status <i>Optional</i>. The default status to return in case there is no status for the current user.
      * @return The status for the current user, $default_status if missing.
      */
-    public function getStatus($default_status = -1) : int {
+    public function getStatus(int $default_status = -1) : int {
 
         if (!isset($this->redis)) {
 
@@ -979,7 +979,7 @@ class Bot extends CoreBot {
      * \details Throw exception if redis connection is missing.
      * @param $status The new status of the bot.
      */
-    public function setStatus($status) {
+    public function setStatus(int $status) {
 
         $this->redis->set($this->chat_id . ':status', $status);
 
