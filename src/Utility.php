@@ -80,7 +80,7 @@ class Utility {
 
     }
 
-    static public function paginateItems($items, int $index, $format_item, int $item_per_page = 3, $keyboard = null, $prefix = 'list', string $delimiter = DELIMITER) {
+    static public function paginateItems($items, int $index, &$keyboard, $format_item, int $item_per_page = 3, $prefix = 'list', string $delimiter = DELIMITER) {
 
         // Calc the position of the first item to show
         $item_position = ($index - 1) * $item_per_page + 1;
@@ -91,25 +91,20 @@ class Utility {
         // How many items did we display?
         $items_displayed = 0;
 
-        // If keyboard is valid
-        if (isset($keyboard)) {
+        // Get how many items did the database return
+        $items_number = $items->rowCount();
 
-            // Get how many items did the database return
-            $items_number = $items->rowCount();
+        // Get how many complete pages there are
+        $total_pages = intval($items_number / $item_per_page);
 
-            // Get how many complete pages there are
-            $total_pages = intval($items_number / $item_per_page);
+        // If there an incomplete page
+        if (($items_number % $item_per_page) != 0) {
 
-            // If there an incomplete page
-            if (($items_number % $item_per_page) != 0) {
-
-                $total_pages++;
-            }
-
-            // Initialize keyboard with the list
-            $keyboard->initializeCompositeListKeyboard($index, $total_pages, $prefix);
-
+            $total_pages++;
         }
+
+        // Initialize keyboard with the list
+        $keyboard->addListKeyboard($index, $total_pages, $prefix);
 
         // Initialize empty string
         $message = '';

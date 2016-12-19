@@ -337,7 +337,7 @@ class InlineKeyboard {
 
     /**
      * \brief */
-    public function initializeCompositeListKeyboard($index, $list, $prefix) {
+    public function addListKeyboard(int $index, int $list, $prefix = 'list') {
 
         if (($list > 0) && ($index >= 0)) {
             if ($index == 0) {
@@ -910,7 +910,19 @@ class InlineKeyboard {
             }
         }
 
-        $this->inline_keyboard[] = $buttons;
+        // If there are other buttons in this row (checking the column)
+        if ($this->column !== 0) {
+
+            // Go to the next
+            $this->changeRow();
+
+        }
+
+        $this->inline_keyboard[$this->row] = $buttons;
+
+        // We added a row
+        $this->changeRow();
+
     }
 
 }
