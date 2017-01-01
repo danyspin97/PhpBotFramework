@@ -247,6 +247,7 @@ class Bot extends CoreBot {
 
             // Set variables
             $this->chat_id = $update['callback_query']['from']['id'];
+            $this->_callback_query_id = $update['callback_query']['id'];
 
             // Check for callback commands
             if (isset($update['callback_query']['data']) && $this->callback_commands_set) {

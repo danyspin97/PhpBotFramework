@@ -261,6 +261,8 @@ class CoreBot {
     /** \brief Curl connection for request. */
     public $ch;
 
+    /** \brief Store id of the callback query received. */
+    protected $_callback_query_id;
 
     /**
      * \brief Contrusct an empty bot.
@@ -328,6 +330,27 @@ class CoreBot {
 
     }
 
+    /**
+     * \brief Get bot ID using getMe API method.
+     */
+    public function getBotID() : int {
+
+        // Get the id of the bot
+        static $bot_id;
+        $bot_id = ($this->getMe())['id'];
+
+        // If it is not valid
+        if(!isset($bot_id) || $bot_id == 0) {
+
+            // get it again
+            $bot_id = ($this->getMe())['id'];
+
+        }
+
+        return $bot_id ?? 0;
+
+    }
+
     /** @} */
 
     /**
@@ -335,6 +358,17 @@ class CoreBot {
      * \brief All api methods to interface the bot with Telegram.
      * @{
      */
+
+    /**
+     * \brief A simple method for testing your bot's auth token.
+     * \details Requires no parameters. Returns basic information about the bot in form of a User object. [Api reference](https://core.telegram.org/bots/api#getme)
+     */
+    public function getMe() {
+
+        return $this->exec_curl_request($this->api_url . 'getMe?');
+
+    }
+
 
     /**
      * \brief Request bot updates.
@@ -621,6 +655,22 @@ class CoreBot {
 
     }
 
+    /**
+     * \brief Use this method to get a list of administrators in a chat.
+     * @param Unique identifier for the target chat or username of the target supergroup or channel (in the format <code>@channelusername</code>)
+     * @return On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
+     */
+    public function getChatAdministrators($chat_id) {
+
+        $parameters = [
+            'chat_id' => $chat_id,
+        ];
+
+        return $this->exec_curl_request($this->api_url . 'getChatAdministrators?' . http_build_query($parameters));
+
+    }
+
+
     /* \brief Answer a callback query
      * \details Remove the updating cirle on an inline keyboard button and showing a message/alert to the user.
      * It will always answer the current callback query.
@@ -632,8 +682,14 @@ class CoreBot {
      */
     public function answerCallbackQuery($text = '', $show_alert = false, string $url = '') : bool {
 
+        if (!isset($this->_callback_query_id)) {
+
+            throw new BotException("Callback query id not set, wrong update");
+
+        }
+
         $parameters = [
-            'callback_query_id' => $this->update['callback_query']['id'],
+            'callback_query_id' => $this->_callback_query_id,
             'text' => $text,
             'show_alert' => $show_alert,
             'url' => $url
