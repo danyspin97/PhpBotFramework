@@ -264,6 +264,9 @@ class CoreBot {
     /** \brief Store id of the callback query received. */
     protected $_callback_query_id;
 
+    /** \brief Store id of the inline query received. */
+    protected $_inline_query_id;
+
     /**
      * \brief Contrusct an empty bot.
      * \details Construct a bot passing the token.
@@ -772,8 +775,14 @@ class CoreBot {
      */
     public function answerInlineQuerySwitchPM($results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
 
+        if (!isset($this->_inline_query_id)) {
+
+            throw new BotException("Inline query id not set, wrong update");
+
+        }
+
         $parameters = [
-            'inline_query_id' => $this->update['inline_query']['id'],
+            'inline_query_id' => $this->_inline_query_id,
             'switch_pm_text' => $switch_pm_text,
             'is_personal' => $is_personal,
             'switch_pm_parameter' => $switch_pm_parameter,
@@ -792,8 +801,15 @@ class CoreBot {
      * $switch_pm_text Text to show on the button
      */
     public function answerEmptyInlineQuerySwitchPM($switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
+
+        if (!isset($this->_inline_query_id)) {
+
+            throw new BotException("Inline query id not set, wrong update");
+
+        }
+
         $parameters = [
-            'inline_query_id' => $this->update['inline_query']['id'],
+            'inline_query_id' => $this->_inline_query_id,
             'switch_pm_text' => $switch_pm_text,
             'is_personal' => $is_personal,
             'switch_pm_parameter' => $switch_pm_parameter,

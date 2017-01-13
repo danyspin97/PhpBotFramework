@@ -278,12 +278,14 @@ class Bot extends CoreBot {
 
         } elseif (isset($update['inline_query'])) {
 
-            $this->chat_id = $update['inline_query']['chat']['id'];
+            $this->chat_id = $update['inline_query']['from']['id'];
             $this->query = $update['inline_query']['query'];
+            $this->_inline_query_id = $update['inline_query']['id'];
 
             $this->processInlineQuery($update['inline_query']);
 
             unset($this->query);
+            unset($this->_inline_query_id);
 
         } elseif (isset($update['channel_post'])) {
 
