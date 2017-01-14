@@ -24,4 +24,16 @@ class CoreBotTest extends TestCase {
 
         return;
     }
+
+    /**
+     * deleteWebhook()
+     * Delete webhook if the user configured one.
+     */
+    public function testDeleteWebhook() {
+        $response = $this->subject->deleteWebhook();
+
+        $this->assertEquals($response, 1);
+
+        return;
+    }
 }
