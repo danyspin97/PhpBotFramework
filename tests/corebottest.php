@@ -20,7 +20,7 @@ class CoreBotTest extends TestCase {
         $response = $this->subject->getWebhookInfo();
 
         $this->assertEquals(is_array($response), true);
-        $this->assertEquals($response['pending_update_count'], 0);
+        $this->assertArrayHasKey('pending_update_count', $response);
 
         return;
     }
@@ -32,7 +32,23 @@ class CoreBotTest extends TestCase {
     public function testDeleteWebhook() {
         $response = $this->subject->deleteWebhook();
 
-        $this->assertEquals($response, 1);
+        $this->assertEquals($response, true);
+
+        return;
+    }
+
+    /**
+     * setWebhook($params)
+     * Set bot's webhook.
+     */
+    public function testSetWebhook() {
+        $response = $this->subject->setWebhook([
+            'url' => 'https://example.com',
+            'max_connections' => 5
+        ]);
+
+        $this->assertEquals($response, true);
+        $this->subject->deleteWebhook();
 
         return;
     }

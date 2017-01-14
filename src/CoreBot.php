@@ -410,6 +410,18 @@ class CoreBot {
     }
 
     /**
+     * \brief Set bot's webhook.
+     * \details Set a webhook for the current bot in order to receive incoming
+     * updates via an outgoing webhook.
+     * @param $params See [Telegram API](https://core.telegram.org/bots/api#setwebhook) 
+     * for more information about the available parameters.
+     */
+    public function setWebhook(array $params) {
+        return $this->exec_curl_request($this->_api_url . 'setWebhook?'
+                                                       . http_build_query($params));
+    }
+
+    /**
      * \brief Set updates received by the bot for getUpdates handling.
      * \details List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. Specify an empty list to receive all updates regardless of type.
      * Set it one time and it won't change until next setUpdateReturned call.
