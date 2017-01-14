@@ -1,7 +1,7 @@
 <?php
 
 // Exception declration
-use DanySpin97\PhpBotFramework\BotException;
+namespace DanySpin97\PhpBotFramework;
 
 /**
  * \class Bot Bot
@@ -10,7 +10,7 @@ use DanySpin97\PhpBotFramework\BotException;
  * Usage example in webhook.php
  *
  */
-class DanySpin97\PhpBotFramework\Bot extends DanySpin97\PhpBotFramework\CoreBot {
+class Bot extends CoreBot {
 
     /**
      * \addtogroup Bot Bot
@@ -105,7 +105,7 @@ class DanySpin97\PhpBotFramework\Bot extends DanySpin97\PhpBotFramework\CoreBot 
         $this->message_commands = [];
         $this->callback_commands = [];
 
-        $this->keyboard = new DanySpin97\PhpBotFramework\InlineKeyboard($this);
+        $this->keyboard = new InlineKeyboard($this);
 
     }
 
