@@ -276,8 +276,9 @@ class CoreBot {
 
         // Check token is valid
         if (is_numeric($token) || $token === '') {
+
             throw new BotException('Token is not valid or empty');
-            return;
+
         }
 
         // Init variables
@@ -343,7 +344,7 @@ class CoreBot {
         $bot_id = ($this->getMe())['id'];
 
         // If it is not valid
-        if(!isset($bot_id) || $bot_id == 0) {
+        if (!isset($bot_id) || $bot_id == 0) {
 
             // get it again
             $bot_id = ($this->getMe())['id'];
@@ -398,7 +399,9 @@ class CoreBot {
      * \details Returns an hash which contains information about bot's webhook.
      */
     public function getWebhookInfo() {
+
         return $this->exec_curl_request($this->_api_url . 'getWebhookInfo');
+
     }
 
     /**
@@ -406,19 +409,23 @@ class CoreBot {
      * \details Delete bot's webhook if it exists.
      */
     public function deleteWebhook() {
+
         return $this->exec_curl_request($this->_api_url . 'deleteWebhook');
+
     }
 
     /**
      * \brief Set bot's webhook.
      * \details Set a webhook for the current bot in order to receive incoming
      * updates via an outgoing webhook.
-     * @param $params See [Telegram API](https://core.telegram.org/bots/api#setwebhook) 
+     * @param $params See [Telegram API](https://core.telegram.org/bots/api#setwebhook)
      * for more information about the available parameters.
      */
     public function setWebhook(array $params) {
+
         return $this->exec_curl_request($this->_api_url . 'setWebhook?'
-                                                       . http_build_query($params));
+            . http_build_query($params));
+
     }
 
     /**
@@ -553,11 +560,11 @@ class CoreBot {
      * @param $reply_to_message_id <i>Optional</i>. If the message is a reply, ID of the original message.
      * @return On success, the sent message.
      */
-    public function sendAudio($audio, string $caption = null, string $reply_markup = null, int $duration = null, string $title = null, bool $disable_notification = false, int $reply_to_message_id = null) {
+    public function sendAudio($audio, string $caption = null, string $reply_markup = null, int $duration = null, string $performer, string $title = null, bool $disable_notification = false, int $reply_to_message_id = null) {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
-            'audio' => $photo,
+            'audio' => $audio,
             'caption' => $caption,
             'duration' => $duration,
             'performer' => $performer,
@@ -585,7 +592,7 @@ class CoreBot {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
-            'document' => $photo,
+            'document' => $document,
             'caption' => $caption,
             'reply_to_message_id' => $reply_to_message_id,
             'reply_markup' => $reply_markup,
@@ -766,11 +773,11 @@ class CoreBot {
     public function editInlineMessageText(string $inline_message_id, $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = false) {
 
         $parameters = [
-           'inline_message_id' => $inline_message_id,
-           'text' => $text,
-           'reply_markup' => $inline_keyboard,
-           'parse_mode' => $parse_mode,
-           'disable_web_page_preview' => $disable_web_preview,
+            'inline_message_id' => $inline_message_id,
+            'text' => $text,
+            'reply_markup' => $reply_markup,
+            'parse_mode' => $parse_mode,
+            'disable_web_page_preview' => $disable_web_preview,
         ];
 
         return $this->exec_curl_request($this->_api_url . 'editMessageText?' . http_build_query($parameters));

@@ -3,7 +3,7 @@
 namespace DanySpin97\PhpBotFramework;
 
 define("DELIMITER", '::::::::::::::::::::::::::::::::::::::
-');
+    ');
 
 /**
  * \class Utility
@@ -25,7 +25,7 @@ class Utility {
      * @param $string The string to check for hashtags.
      * @return An array of valid hashtags, can be empty.
      */
-    static public function getHashtags(string $string) : array {
+    public static function getHashtags(string $string) : array {
 
         // Use regex to check
         if (preg_match_all("/(#\w+)/u", $string, $matches) != 0) {
@@ -47,7 +47,7 @@ class Utility {
      * @param $tag Formattation tag to remove.
      * @return The string, modified if there are usernames. Otherwise $string.
      */
-    static public function removeUsernameFormattation(string $string, string $tag) : string {
+    public static function removeUsernameFormattation(string $string, string $tag) : string {
 
         // Check if there are usernames in string using regex
         if (preg_match_all('/(@\w+)/u', $string, $matches) != 0) {
@@ -66,7 +66,7 @@ class Utility {
             $delimitator_end = '</' . $tag . '>';
 
             // For each username
-            for($i = 0; $i !== $count; $i++) {
+            for ($i = 0; $i !== $count; $i++) {
 
                 // Put the Delimitator_end before the username and the start one after it
                 $string = str_replace($usernames[$i], $delimitator_end . $usernames[$i] . $delimitator_start, $string);
@@ -84,7 +84,7 @@ class Utility {
 
         // Calc the position of the first item to show
         $item_position = ($index - 1) * $item_per_page + 1;
- 
+
         // Counter variable
         $cont = 1;
 
@@ -101,6 +101,7 @@ class Utility {
         if (($items_number % $item_per_page) != 0) {
 
             $total_pages++;
+
         }
 
         // Initialize keyboard with the list
@@ -122,11 +123,11 @@ class Utility {
                 // We displayed an item
                 $items_displayed++;
 
-            // If we displayed at least an item but still not how much we want
+                // If we displayed at least an item but still not how much we want
             } elseif ($items_displayed > 0 && $items_displayed < $item_per_page) {
 
                 // Add delimiter to the message
-                $message .= DELIMITER;
+                $message .= $delimiter;
 
                 // Format the item using closure
                 $message .= $format_item($item, $keyboard);
@@ -134,13 +135,13 @@ class Utility {
                 // We displayed an item
                 $items_displayed++;
 
-            // If we displayed all the item we wanted
+                // If we displayed all the item we wanted
             } elseif ($items_displayed === $item_per_page) {
 
                 // Exit the cycle
                 break;
 
-            // We are just iterating over an unwanted result
+                // We are just iterating over an unwanted result
             } else {
 
                 $cont++;

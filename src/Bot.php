@@ -1,6 +1,7 @@
 <?php
 
-namespace DanySpin97\PhpBotFramework;
+// Exception declration
+use DanySpin97\PhpBotFramework\BotException;
 
 /**
  * \class Bot Bot
@@ -9,7 +10,7 @@ namespace DanySpin97\PhpBotFramework;
  * Usage example in webhook.php
  *
  */
-class Bot extends CoreBot {
+class DanySpin97\PhpBotFramework\Bot extends DanySpin97\PhpBotFramework\CoreBot {
 
     /**
      * \addtogroup Bot Bot
@@ -101,10 +102,10 @@ class Bot extends CoreBot {
         parent::__construct($token);
 
         // Initialize to an empty array
-        $message_commands = [];
-        $callback_commands = [];
+        $this->message_commands = [];
+        $this->callback_commands = [];
 
-        $this->keyboard = new InlineKeyboard($this);
+        $this->keyboard = new DanySpin97\PhpBotFramework\InlineKeyboard($this);
 
     }
 
@@ -364,7 +365,7 @@ class Bot extends CoreBot {
 
             $this->_chat_id = $update['chosen_inline_result']['chat']['id'];
 
-            $this->processInlineResult($update['chosen_inline_result']);
+            $this->processChosenInlineResult($update['chosen_inline_result']);
 
         }
 
@@ -393,117 +394,129 @@ class Bot extends CoreBot {
          * <code>$chat_id</code> and <code>$data</code>, if set in the callback query(use getCallbackData() to access it) set inside of this function.
          * @param $callback_query Reference to the callback query received.
          */
-        protected function processCallbackQuery($callback_query) {}
+        protected function processCallbackQuery($callback_query) {
 
-        /**
-         * \brief Called every inline query received by the bot.
-         * \details Override it to script the bot answer for each inline query.
-         * $chat_id and $query(use getInlineQuery() to access it) set inside of this function.
-         * @param $inline_query Reference to the inline query received.
-         */
-        protected function processInlineQuery($inline_query) {}
+        }
 
-        /**
-         * \brief Called every chosen inline result received by the bot.
-         * \details Override it to script the bot answer for each chosen inline result.
-         * <code>$chat_id</code> set inside of this function.
-         * @param $chosen_inline_result Reference to the chosen inline result received.
-         */
-        protected function processChosenInlineResult($chosen_inline_result) {}
+    /**
+     * \brief Called every inline query received by the bot.
+     * \details Override it to script the bot answer for each inline query.
+     * $chat_id and $query(use getInlineQuery() to access it) set inside of this function.
+     * @param $inline_query Reference to the inline query received.
+     */
+    protected function processInlineQuery($inline_query) {
 
-        /**
-         * \brief Called every chosen edited message received by the bot.
-         * \details Override it to script the bot answer for each edited message.
-         * <code>$chat_id</code> set inside of this function.
-         * @param $edited_message The message edited by the user.
-         */
-        protected function processEditedMessage($edited_message) {}
+    }
 
-        /**
-         * \brief Called every new post in the channel where the bot is in.
-         * \details Override it to script the bot answer for each post sent in a channel.
-         * <code>$chat_id</code> set inside of this function.
-         * @param $post The message sent in the channel.
-         */
-        protected function processChannelPost($post) {}
+    /**
+     * \brief Called every chosen inline result received by the bot.
+     * \details Override it to script the bot answer for each chosen inline result.
+     * <code>$chat_id</code> set inside of this function.
+     * @param $chosen_inline_result Reference to the chosen inline result received.
+     */
+    protected function processChosenInlineResult($chosen_inline_result) {
 
-        /**
-         * \brief Called every time a post get edited in the channel where the bot is in.
-         * \details Override it to script the bot answer for each post edited  in a channel.
-         * <code>$chat_id</code> set inside of this function.
-         * @param $post The message edited in the channel.
-         */
-        protected function processEditedChannelPost($edited_post) {}
+    }
 
-        /**
-         * \brief Get updates received by the bot, using redis to save and get the last offset.
-         * \details It check if an offset exists on redis, then get it, or call getUpdates to set it.
-         * Then it start an infinite loop where it process updates and update the offset on redis.
-         * Each update is surrounded by a try/catch.
-         * @see getUpdates
-         * @param $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
-         * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
-         * @param $offset_key <i>Optional</i>. Name of the variable where the offset is saved on Redis
-         */
-        public function getUpdatesRedis(int $limit = 100, int $timeout = 60, string $offset_key = 'offset') {
+    /**
+     * \brief Called every chosen edited message received by the bot.
+     * \details Override it to script the bot answer for each edited message.
+     * <code>$chat_id</code> set inside of this function.
+     * @param $edited_message The message edited by the user.
+     */
+    protected function processEditedMessage($edited_message) {
 
-            // Check redis connection
-            if (!isset($this->redis)) {
+    }
 
-                throw new BotException("Redis connection is not set");
+    /**
+     * \brief Called every new post in the channel where the bot is in.
+     * \details Override it to script the bot answer for each post sent in a channel.
+     * <code>$chat_id</code> set inside of this function.
+     * @param $post The message sent in the channel.
+     */
+    protected function processChannelPost($post) {
 
-            }
+    }
 
-            // If offset is already set in redis
-            if ($this->redis->exists($variable_name)) {
+    /**
+     * \brief Called every time a post get edited in the channel where the bot is in.
+     * \details Override it to script the bot answer for each post edited  in a channel.
+     * <code>$chat_id</code> set inside of this function.
+     * @param $post The message edited in the channel.
+     */
+    protected function processEditedChannelPost($edited_post) {
 
-                // just set $offset as the same value
-                $offset = $this->redis->get($variable_name);
+    }
 
-            } else {
-                // Else get the offset from the id from the first update received
+    /**
+     * \brief Get updates received by the bot, using redis to save and get the last offset.
+     * \details It check if an offset exists on redis, then get it, or call getUpdates to set it.
+     * Then it start an infinite loop where it process updates and update the offset on redis.
+     * Each update is surrounded by a try/catch.
+     * @see getUpdates
+     * @param $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
+     * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
+     * @param $offset_key <i>Optional</i>. Name of the variable where the offset is saved on Redis
+     */
+    public function getUpdatesRedis(int $limit = 100, int $timeout = 60, string $offset_key = 'offset') {
 
-                $update = [];
+        // Check redis connection
+        if (!isset($this->redis)) {
 
-                do {
-                    $update = $this->getUpdates(0, 1);
-                } while (empty($update));
+            throw new BotException("Redis connection is not set");
 
-                $offset = $update[0]['update_id'];
+        }
 
-                $this->redis->set($variable_name, $offset);
+        // If offset is already set in redis
+        if ($this->redis->exists($variable_name)) {
 
-                $update = null;
+            // just set $offset as the same value
+            $offset = $this->redis->get($variable_name);
 
-            }
+        } else {
+            // Else get the offset from the id from the first update received
 
-            $this->initBot();
+            do {
 
-            // Process all updates received
-            while (true) {
+                $update = $this->getUpdates(0, 1);
 
-                $updates = $this->getUpdates($offset, $limit, $timeout);
+            } while (empty($update));
 
-                // Parse all updates received
-                foreach ($updates as $key => $update) {
+            $offset = $update[0]['update_id'];
 
-                    try {
+            $this->redis->set($variable_name, $offset);
 
-                        $this->processUpdate($update);
+            $update = null;
 
-                    } catch (BotException $e) {
+        }
 
-                        echo $e->getMessage();
+        $this->initBot();
 
-                    }
+        // Process all updates received
+        while (true) {
+
+            $updates = $this->getUpdates($offset, $limit, $timeout);
+
+            // Parse all updates received
+            foreach ($updates as $key => $update) {
+
+                try {
+
+                    $this->processUpdate($update);
+
+                } catch (BotException $e) {
+
+                    echo $e->getMessage();
 
                 }
 
-                // Update the offset in redis
-                $this->redis->set($variable_name, $offset + count($updates));
             }
 
+            // Update the offset in redis
+            $this->redis->set($variable_name, $offset + count($updates));
         }
+
+    }
 
     /**
      * \brief Get updates received by the bot, and hold the offset in $offset.
@@ -607,10 +620,10 @@ class Bot extends CoreBot {
         // Get the offset from the first update to update
         if ($offset === false) {
 
-            $update = [];
-
             do {
+
                 $update = $this->getUpdates(0, 1);
+
             } while (empty($update));
 
             $offset = $update[0]['update_id'];
@@ -1127,7 +1140,7 @@ class Bot extends CoreBot {
         }
 
         // Iterate over all the row got
-        while($user = $sth->fetch()) {
+        while ($user = $sth->fetch()) {
 
             // Call getChat to know that this users haven't blocked the bot
             $user_data = $this->getChat($user[$this->id_column]);
@@ -1139,7 +1152,7 @@ class Bot extends CoreBot {
                 $this->setChatID($user[$this->id_column]);
 
                 // Send the message
-                $this->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview);
+                $this->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview, $disable_notification);
 
             }
 
