@@ -19,13 +19,13 @@ class Bot extends CoreBot {
      */
 
     /** \brief Text received in messages */
-    private $text;
+    protected $_text;
 
     /** \brief Data received in callback query */
-    private $data;
+    protected $_data;
 
     /** \brief Query sent by the user in the inline query */
-    private $query;
+    protected $_query;
 
     /** \brief Store the inline keyboard */
     public $keyboard;
@@ -123,14 +123,46 @@ class Bot extends CoreBot {
     }
 
     /**
+     * \brief Get the text of the message, if set (for updates of type "message").
+     * @return Text of the message, empty string if not set.
+     */
+    public function getMessageText() : string {
+
+        if (isset($this->_text)) {
+
+            return $this->_text;
+
+        }
+
+        return '';
+
+    }
+
+    /**
+     * \brief Get the data of callback query, if set (for updates of type "callback_query").
+     * @return Data of the callback query, empty string if not set.
+     */
+    public function getCallbackData() : string {
+
+        if (isset($this->_data)) {
+
+            return $this->_data;
+
+        }
+
+        return '';
+
+    }
+
+    /**
      * \brief Get the query received from the inline query (for updates of type "inline_query").
      * @return The query sent by the user, throw exception if the current update is not an inline query.
      */
-    public function getQuery() {
+    public function getInlineQuery() : string {
 
-        if (isset($this->query)) {
+        if (isset($this->_query)) {
 
-            return $this->query;
+            return $this->_query;
 
         }
 
@@ -187,7 +219,14 @@ class Bot extends CoreBot {
         if (isset($update['message'])) {
 
             // Set data from the message
-            $this->chat_id = $update['message']['chat']['id'];
+            $this->_chat_id = $update['message']['chat']['id'];
+
+            // If the message contains text
+            if (isset($update['message']['text'])) {
+
+                $this->_text = $update['message']['text'];
+
+            }
 
             // If there are commands set by the user
             // and there are bot commands in the message, checking message entities
@@ -208,7 +247,7 @@ class Bot extends CoreBot {
                         // Use preg_match to check if it is true
                         $matched = preg_match('/' . $trigger['regex_rule'] . '/', substr($update['message']['text'], $offset + 1, $length));
 
-                    // else check if the command sent by the user is the same as the one we are expecting
+                        // else check if the command sent by the user is the same as the one we are expecting
                     } else if ($trigger['length'] == $length && mb_strpos($trigger['command'], $update['message']['text'], $offset) !== false) {
 
                         // We found a valid command
@@ -228,7 +267,7 @@ class Bot extends CoreBot {
                         $trigger['script']($this, $update['message']);
 
                         // clear text variable
-                        unset($this->text);
+                        unset($this->_text);
 
                         // and return the id of the current update to stop processing this update
                         return $update['update_id'];
@@ -242,27 +281,38 @@ class Bot extends CoreBot {
             // And process it
             $this->processMessage($update['message']);
 
-        } elseif (isset($update['callback_query'])) {
+            // clear text variable
+            unset($this->_text);
+
             // If the update is a callback query
+        } elseif (isset($update['callback_query'])) {
 
             // Set variables
-            $this->chat_id = $update['callback_query']['from']['id'];
+            $this->_chat_id = $update['callback_query']['from']['id'];
             $this->_callback_query_id = $update['callback_query']['id'];
 
+            // If data is set for the current callback query
+            if (isset($update['callback_query']['data'])) {
+
+                $this->_data = $update['callback_query']['data'];
+
+            }
+
             // Check for callback commands
-            if (isset($update['callback_query']['data']) && $this->callback_commands_set) {
+            if (isset($this->_data) && $this->callback_commands_set) {
 
                 // Parse all commands
                 foreach ($this->callback_commands as $trigger) {
 
                     // If command is found in callback data
-                    if (mb_strpos($trigger['data'], $update['callback_query']['data']) !== false) {
+                    if (strpos($trigger['data'], $this->_data) !== false) {
 
                         // Trigger the script
                         $trigger['script']($this, $update['callback_query']);
 
                         // Clear data
-                        unset($this->data);
+                        unset($this->_data);
+                        unset($this->_callback_query_id);
 
                         // and return the id of the current update
                         return $update['update_id'];
@@ -276,39 +326,43 @@ class Bot extends CoreBot {
             // Process the callback query through processCallbackQuery
             $this->processCallbackQuery($update['callback_query']);
 
+            // Unset callback query variables
+            unset($this->_callback_query_id);
+            unset($this->_data);
+
         } elseif (isset($update['inline_query'])) {
 
-            $this->chat_id = $update['inline_query']['from']['id'];
-            $this->query = $update['inline_query']['query'];
+            $this->_chat_id = $update['inline_query']['from']['id'];
+            $this->_query = $update['inline_query']['query'];
             $this->_inline_query_id = $update['inline_query']['id'];
 
             $this->processInlineQuery($update['inline_query']);
 
-            unset($this->query);
+            unset($this->_query);
             unset($this->_inline_query_id);
 
         } elseif (isset($update['channel_post'])) {
 
             // Set data from the post
-            $this->chat_id = $update['channel_post']['chat']['id'];
+            $this->_chat_id = $update['channel_post']['chat']['id'];
 
             $this->processChannelPost($update['channel_post']);
 
         } elseif (isset($update['edited_message'])) {
 
-            $this->chat_id = $update['edited_message']['chat']['id'];
+            $this->_chat_id = $update['edited_message']['chat']['id'];
 
             $this->processEditedMessage($update['edited_message']);
 
         } elseif (isset($update['edited_channel_post'])) {
 
-            $this->chat_id = $update['edited_channel_post']['chat']['id'];
+            $this->_chat_id = $update['edited_channel_post']['chat']['id'];
 
             $this->processEditedChannelPost($update['edited_channel_post']);
 
         } elseif (isset($update['chosen_inline_result'])) {
 
-            $this->chat_id = $update['chosen_inline_result']['chat']['id'];
+            $this->_chat_id = $update['chosen_inline_result']['chat']['id'];
 
             $this->processInlineResult($update['chosen_inline_result']);
 
@@ -328,128 +382,128 @@ class Bot extends CoreBot {
     /**
      * \brief Called every message received by the bot.
      * \details Override it to script the bot answer for each message.
-     * <code>$chat_id</code> set inside of this function.
+     * <code>$chat_id</code> and <code>$text</code>, if the message contains text(use getMessageText() to access it), set inside of this function.
      * @param $message Reference to the message received.
      */
     protected function processMessage($message) {}
 
-    /**
-     * \brief Called every callback query received by the bot.
-     * \details Override it to script the bot answer for each callback.
-     * <code>$chat_id</code> set inside of this function.
-     * @param $callback_query Reference to the callback query received.
-     */
-    protected function processCallbackQuery($callback_query) {}
+        /**
+         * \brief Called every callback query received by the bot.
+         * \details Override it to script the bot answer for each callback.
+         * <code>$chat_id</code> and <code>$data</code>, if set in the callback query(use getCallbackData() to access it) set inside of this function.
+         * @param $callback_query Reference to the callback query received.
+         */
+        protected function processCallbackQuery($callback_query) {}
 
-    /**
-     * \brief Called every inline query received by the bot.
-     * \details Override it to script the bot answer for each inline query.
-     * $chat_id and $query(use getQuery() to access it) set inside of this function.
-     * @param $inline_query Reference to the inline query received.
-     */
-    protected function processInlineQuery($inline_query) {}
+        /**
+         * \brief Called every inline query received by the bot.
+         * \details Override it to script the bot answer for each inline query.
+         * $chat_id and $query(use getInlineQuery() to access it) set inside of this function.
+         * @param $inline_query Reference to the inline query received.
+         */
+        protected function processInlineQuery($inline_query) {}
 
-    /**
-     * \brief Called every chosen inline result received by the bot.
-     * \details Override it to script the bot answer for each chosen inline result.
-     * <code>$chat_id</code> set inside of this function.
-     * @param $chosen_inline_result Reference to the chosen inline result received.
-     */
-    protected function processChosenInlineResult($chosen_inline_result) {}
+        /**
+         * \brief Called every chosen inline result received by the bot.
+         * \details Override it to script the bot answer for each chosen inline result.
+         * <code>$chat_id</code> set inside of this function.
+         * @param $chosen_inline_result Reference to the chosen inline result received.
+         */
+        protected function processChosenInlineResult($chosen_inline_result) {}
 
-    /**
-     * \brief Called every chosen edited message received by the bot.
-     * \details Override it to script the bot answer for each edited message.
-     * <code>$chat_id</code> set inside of this function.
-     * @param $edited_message The message edited by the user.
-     */
-    protected function processEditedMessage($edited_message) {}
+        /**
+         * \brief Called every chosen edited message received by the bot.
+         * \details Override it to script the bot answer for each edited message.
+         * <code>$chat_id</code> set inside of this function.
+         * @param $edited_message The message edited by the user.
+         */
+        protected function processEditedMessage($edited_message) {}
 
-    /**
-     * \brief Called every new post in the channel where the bot is in.
-     * \details Override it to script the bot answer for each post sent in a channel.
-     * <code>$chat_id</code> set inside of this function.
-     * @param $post The message sent in the channel.
-     */
-    protected function processChannelPost($post) {}
+        /**
+         * \brief Called every new post in the channel where the bot is in.
+         * \details Override it to script the bot answer for each post sent in a channel.
+         * <code>$chat_id</code> set inside of this function.
+         * @param $post The message sent in the channel.
+         */
+        protected function processChannelPost($post) {}
 
-    /**
-     * \brief Called every time a post get edited in the channel where the bot is in.
-     * \details Override it to script the bot answer for each post edited  in a channel.
-     * <code>$chat_id</code> set inside of this function.
-     * @param $post The message edited in the channel.
-     */
-    protected function processEditedChannelPost($edited_post) {}
+        /**
+         * \brief Called every time a post get edited in the channel where the bot is in.
+         * \details Override it to script the bot answer for each post edited  in a channel.
+         * <code>$chat_id</code> set inside of this function.
+         * @param $post The message edited in the channel.
+         */
+        protected function processEditedChannelPost($edited_post) {}
 
-    /**
-     * \brief Get updates received by the bot, using redis to save and get the last offset.
-     * \details It check if an offset exists on redis, then get it, or call getUpdates to set it.
-     * Then it start an infinite loop where it process updates and update the offset on redis.
-     * Each update is surrounded by a try/catch.
-     * @see getUpdates
-     * @param $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
-     * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
-     * @param $offset_key <i>Optional</i>. Name of the variable where the offset is saved on Redis
-     */
-    public function getUpdatesRedis(int $limit = 100, int $timeout = 60, string $offset_key = 'offset') {
+        /**
+         * \brief Get updates received by the bot, using redis to save and get the last offset.
+         * \details It check if an offset exists on redis, then get it, or call getUpdates to set it.
+         * Then it start an infinite loop where it process updates and update the offset on redis.
+         * Each update is surrounded by a try/catch.
+         * @see getUpdates
+         * @param $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
+         * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
+         * @param $offset_key <i>Optional</i>. Name of the variable where the offset is saved on Redis
+         */
+        public function getUpdatesRedis(int $limit = 100, int $timeout = 60, string $offset_key = 'offset') {
 
-        // Check redis connection
-        if (!isset($this->redis)) {
+            // Check redis connection
+            if (!isset($this->redis)) {
 
-            throw new BotException("Redis connection is not set");
-
-        }
-
-        // If offset is already set in redis
-        if ($this->redis->exists($variable_name)) {
-
-            // just set $offset as the same value
-            $offset = $this->redis->get($variable_name);
-
-        } else {
-        // Else get the offset from the id from the first update received
-
-            $update = [];
-
-            do {
-                $update = $this->getUpdates(0, 1);
-            } while (empty($update));
-
-            $offset = $update[0]['update_id'];
-
-            $this->redis->set($variable_name, $offset);
-
-            $update = null;
-
-        }
-
-        $this->initBot();
-
-        // Process all updates received
-        while (true) {
-
-            $updates = $this->getUpdates($offset, $limit, $timeout);
-
-            // Parse all updates received
-            foreach ($updates as $key => $update) {
-
-                try {
-
-                    $this->processUpdate($update);
-
-                } catch (BotException $e) {
-
-                    echo $e->getMessage();
-
-                }
+                throw new BotException("Redis connection is not set");
 
             }
 
-            // Update the offset in redis
-            $this->redis->set($variable_name, $offset + count($updates));
-        }
+            // If offset is already set in redis
+            if ($this->redis->exists($variable_name)) {
 
-    }
+                // just set $offset as the same value
+                $offset = $this->redis->get($variable_name);
+
+            } else {
+                // Else get the offset from the id from the first update received
+
+                $update = [];
+
+                do {
+                    $update = $this->getUpdates(0, 1);
+                } while (empty($update));
+
+                $offset = $update[0]['update_id'];
+
+                $this->redis->set($variable_name, $offset);
+
+                $update = null;
+
+            }
+
+            $this->initBot();
+
+            // Process all updates received
+            while (true) {
+
+                $updates = $this->getUpdates($offset, $limit, $timeout);
+
+                // Parse all updates received
+                foreach ($updates as $key => $update) {
+
+                    try {
+
+                        $this->processUpdate($update);
+
+                    } catch (BotException $e) {
+
+                        echo $e->getMessage();
+
+                    }
+
+                }
+
+                // Update the offset in redis
+                $this->redis->set($variable_name, $offset + count($updates));
+            }
+
+        }
 
     /**
      * \brief Get updates received by the bot, and hold the offset in $offset.
@@ -470,7 +524,7 @@ class Bot extends CoreBot {
             // Get updates from telegram
             $update = $this->getUpdates(0, 1);
 
-        // While in the array received there aren't updates
+            // While in the array received there aren't updates
         } while (empty($update));
 
         // Set the offset to the first update recevied
@@ -485,12 +539,12 @@ class Bot extends CoreBot {
 
             // Set parameter for the url call
             $parameters = [
-                    'offset' => $offset,
-                    'limit' => $limit,
-                    'timeout' => $timeout
+                'offset' => $offset,
+                'limit' => $limit,
+                'timeout' => $timeout
             ];
 
-            $updates = $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters));
+            $updates = $this->exec_curl_request($this->_api_url . 'getUpdates?' . http_build_query($parameters));
 
             // Parse all update to receive
             foreach ($updates as $key => $update) {
@@ -528,7 +582,7 @@ class Bot extends CoreBot {
      */
     public function getUpdatesDatabase(int $limit = 100, int $timeout = 0, string $table_name = 'telegram', string $column_name = 'bot_offset') {
 
-        if (!isset($this->database)) {
+        if (!isset($this->_database)) {
 
             throw new BotException("Database connection is not set");
 
@@ -606,10 +660,10 @@ class Bot extends CoreBot {
     public function addMessageCommand(string $command, callable $script) {
 
         $this->message_commands[] = [
-                'script' => $script,
-                'command' => '/' . $command,
-                'length' => strlen($command) + 1,
-                'regex_active' => false
+            'script' => $script,
+            'command' => '/' . $command,
+            'length' => strlen($command) + 1,
+            'regex_active' => false
         ];
 
     }
@@ -626,9 +680,9 @@ class Bot extends CoreBot {
     public function addMessageCommandRegex(string $regex_rule, callable $script) {
 
         $this->message_commands[] = [
-                'script' => $script,
-                'regex_active' => true,
-                'regex_rule' => $regex_rule
+            'script' => $script,
+            'regex_active' => true,
+            'regex_rule' => $regex_rule
         ];
 
     }
@@ -645,8 +699,8 @@ class Bot extends CoreBot {
     public function addCallbackCommand(string $data, callable $script) {
 
         $this->callback_commands[] = [
-                'data' => $data,
-                'script' => $script,
+            'data' => $data,
+            'script' => $script,
         ];
 
     }
@@ -666,7 +720,7 @@ class Bot extends CoreBot {
     public function getLanguageDatabase($default_language = 'en') {
 
         // If we have no database
-        if (!isset($this->database)) {
+        if (!isset($this->_database)) {
 
             // Set the language to english
             $this->language = $default_language;
@@ -678,7 +732,7 @@ class Bot extends CoreBot {
 
         // Get the language from the bot
         $sth = $this->pdo->prepare('SELECT language FROM ' . $this->user_table . ' WHERE ' . $this->id_column . ' = :chat_id');
-        $sth->bindParam(':chat_id', $this->chat_id);
+        $sth->bindParam(':chat_id', $this->_chat_id);
 
         try {
 
@@ -730,10 +784,10 @@ class Bot extends CoreBot {
         }
 
         // Does it exists on redis?
-        if ($this->redis->exists($this->chat_id . ':language')) {
+        if ($this->redis->exists($this->_chat_id . ':language')) {
 
             // Get the value
-            $this->language = $this->redis->get($this->chat_id . ':language');
+            $this->language = $this->redis->get($this->_chat_id . ':language');
             return $this->language;
 
         }
@@ -766,16 +820,16 @@ class Bot extends CoreBot {
         }
 
         // Does it exists on redis?
-        if ($this->redis->exists($this->chat_id . ':language')) {
+        if ($this->redis->exists($this->_chat_id . ':language')) {
 
             // Get the value
-            $this->language = $this->redis->get($this->chat_id . ':language');
+            $this->language = $this->redis->get($this->_chat_id . ':language');
             return $this->language;
 
         }
 
         // Set the value from the db
-        $this->redis->setEx($this->chat_id . ':language', $expiring_time, $this->getLanguageDatabase($default_language));
+        $this->redis->setEx($this->_chat_id . ':language', $expiring_time, $this->getLanguageDatabase($default_language));
 
         // and return it
         return $this->language;
@@ -792,14 +846,14 @@ class Bot extends CoreBot {
     public function setLanguageRedisAsCache($language, $expiring_time = '86400') {
 
         // Check database connection
-        if (!isset($this->database) && !isset($this->redis)) {
+        if (!isset($this->_database) && !isset($this->redis)) {
             throw new BotException('Database connection not set');
         }
 
         // Update the language in the database
         $sth = $this->pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE ' . $this->id_column . ' = :id');
         $sth->bindParam(':language', $language);
-        $sth->bindParam(':id', $this->chat_id);
+        $sth->bindParam(':id', $this->_chat_id);
 
         try {
 
@@ -815,7 +869,7 @@ class Bot extends CoreBot {
         $sth = null;
 
         // Set the language in redis with expiring
-        $this->redis->setEx($this->chat_id . ':language', $expiring_time, $language);
+        $this->redis->setEx($this->_chat_id . ':language', $expiring_time, $language);
 
         // Set language in the bot variable
         $this->language = $language;
@@ -964,15 +1018,15 @@ class Bot extends CoreBot {
 
         }
 
-        if ($this->redis->exists($this->chat_id . ':status')) {
+        if ($this->redis->exists($this->_chat_id . ':status')) {
 
-            $this->status = $this->redis->get($this->chat_id . ':status');
+            $this->status = $this->redis->get($this->_chat_id . ':status');
 
             return $this->status;
 
         }
 
-        $this->redis->set($this->chat_id . ':status', $default_status);
+        $this->redis->set($this->_chat_id . ':status', $default_status);
         $this->status = $default_status;
         return $default_status;
 
@@ -984,7 +1038,7 @@ class Bot extends CoreBot {
      */
     public function setStatus(int $status) {
 
-        $this->redis->set($this->chat_id . ':status', $status);
+        $this->redis->set($this->_chat_id . ':status', $status);
 
         $this->status = $status;
 

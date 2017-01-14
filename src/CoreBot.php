@@ -65,7 +65,7 @@ namespace DanySpin97\PhpBotFramework;
  *
  * \section Usage
  * Add the scripting by adding command (Bot::addMessageCommand()) or by creating a class that inherits Bot.
- * Each api call will have <code>$chat_id</code> set to the current user, use CoreBot::setChatID() to change it.
+ * Each api call will have <code>$_chat_id</code> set to the current user, use CoreBot::setChatID() to change it.
  *
  * \subsection getUpdates
  * The bot ask for updates to telegram server.
@@ -143,7 +143,7 @@ namespace DanySpin97\PhpBotFramework;
  * - Bot::processMessage($message)
  * - Bot::processCallbackQuery($callback_query)
  * - Bot::processInlineQuery($inline_query)
- * - Bot::processChosenInlineResult($chosen_inline_result)
+ * - Bot::processChosenInlineResult($_chosen_inline_result)
  * - Bot::processEditedMessage($edited_message)
  * - Bot::processChannelPost($post)
  * - Bot::processEditedChannelPost($edited_post)
@@ -242,7 +242,7 @@ class CoreBot {
      */
 
     /** \brief Chat_id of the user that interacted with the bot */
-    protected $chat_id;
+    protected $_chat_id;
 
     /** @} */
 
@@ -256,10 +256,10 @@ class CoreBot {
     private $token;
 
     /** \brief Url request (containing $token). */
-    protected $api_url;
+    protected $_api_url;
 
     /** \brief Curl connection for request. */
-    public $ch;
+    protected $_ch;
 
     /** \brief Store id of the callback query received. */
     protected $_callback_query_id;
@@ -282,18 +282,18 @@ class CoreBot {
 
         // Init variables
         $this->token = $token;
-        $this->api_url = 'https://api.telegram.org/bot' . $token . '/';
+        $this->_api_url = 'https://api.telegram.org/bot' . $token . '/';
 
         // Init connection and config it
-        $this->ch = curl_init();
-        curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($this->ch, CURLOPT_TIMEOUT, 60);
-        curl_setopt($this->ch, CURLOPT_HEADER, 0);
-        curl_setopt($this->ch, CURLOPT_ENCODING, '');
+        $this->_ch = curl_init();
+        curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($this->_ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($this->_ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($this->_ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($this->_ch, CURLOPT_HEADER, 0);
+        curl_setopt($this->_ch, CURLOPT_ENCODING, '');
         // DEBUG
-        //curl_setopt($this->ch, CURLOPT_VERBOSE, true);
+        //curl_setopt($this->_ch, CURLOPT_VERBOSE, true);
 
     }
 
@@ -301,7 +301,7 @@ class CoreBot {
     public function __destruct() {
 
         // Close connection
-        curl_close($this->ch);
+        curl_close($this->_ch);
 
     }
 
@@ -318,18 +318,18 @@ class CoreBot {
      */
     public function getChatID() {
 
-        return $this->chat_id;
+        return $this->_chat_id;
 
     }
 
     /**
      * \brief Set current chat id.
      * \details Change the chat id which the bot execute api methods.
-     * @param $chat_id The new chat id to set.
+     * @param $_chat_id The new chat id to set.
      */
-    public function setChatID($chat_id) {
+    public function setChatID($_chat_id) {
 
-        $this->chat_id = $chat_id;
+        $this->_chat_id = $_chat_id;
 
     }
 
@@ -368,7 +368,7 @@ class CoreBot {
      */
     public function getMe() {
 
-        return $this->exec_curl_request($this->api_url . 'getMe?');
+        return $this->exec_curl_request($this->_api_url . 'getMe?');
 
     }
 
@@ -389,7 +389,7 @@ class CoreBot {
             'timeout' => $timeout,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'getUpdates?' . http_build_query($parameters));
 
     }
 
@@ -437,7 +437,7 @@ class CoreBot {
         $updates_string .= ']';
 
         // Exec getUpdates
-        $this->exec_curl_request($this->api_url . 'getUpdates?' . http_build_query($parameters) . '&allowed_updates=' . $updates_string);
+        $this->exec_curl_request($this->_api_url . 'getUpdates?' . http_build_query($parameters) . '&allowed_updates=' . $updates_string);
 
     }
 
@@ -454,7 +454,7 @@ class CoreBot {
     public function sendMessage($text, string $reply_markup = null, int $reply_to = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'text' => $text,
             'parse_mode' => $parse_mode,
             'disable_web_page_preview' => $disable_web_preview,
@@ -463,7 +463,7 @@ class CoreBot {
             'disable_notification' => $disable_notification
         ];
 
-        return $this->exec_curl_request($this->api_url . 'sendMessage?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'sendMessage?' . http_build_query($parameters));
 
     }
 
@@ -478,13 +478,13 @@ class CoreBot {
     public function forwardMessage($from_chat_id, int $message_id, bool $disable_notification = false) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'message_id' => $message_id,
             'from_chat_id' => $from_chat_id,
             'disable_notification' => $disable_notification
         ];
 
-        return $this->exec_curl_request($this->api_url . 'forwardMessage?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'forwardMessage?' . http_build_query($parameters));
 
     }
 
@@ -500,14 +500,14 @@ class CoreBot {
     public function sendPhoto($photo, string $reply_markup = null, string $caption = '', bool $disable_notification = false) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'photo' => $photo,
             'caption' => $caption,
             'reply_markup' => $reply_markup,
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'sendPhoto?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'sendPhoto?' . http_build_query($parameters));
 
     }
 
@@ -528,7 +528,7 @@ class CoreBot {
     public function sendAudio($audio, string $caption = null, string $reply_markup = null, int $duration = null, string $title = null, bool $disable_notification = false, int $reply_to_message_id = null) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'audio' => $photo,
             'caption' => $caption,
             'duration' => $duration,
@@ -539,7 +539,7 @@ class CoreBot {
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'sendAudio?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'sendAudio?' . http_build_query($parameters));
 
     }
 
@@ -556,7 +556,7 @@ class CoreBot {
     public function sendDocument($document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'document' => $photo,
             'caption' => $caption,
             'reply_to_message_id' => $reply_to_message_id,
@@ -564,7 +564,7 @@ class CoreBot {
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'sendAudio?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'sendAudio?' . http_build_query($parameters));
 
     }
 
@@ -581,14 +581,14 @@ class CoreBot {
     public function sendSticker($sticker, string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'sticker' => $sticker,
             'disable_notification' => $disable_notification,
             'reply_to_message_id' => $reply_to_message_id,
             'reply_markup' => $reply_markup
         ];
 
-        return $this->exec_curl_request($this->api_url . 'sendSticker?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'sendSticker?' . http_build_query($parameters));
 
     }
 
@@ -607,7 +607,7 @@ class CoreBot {
     public function sendVoice($voice, string $caption, int $duration, string $reply_markup = null, bool $disable_notification, int $reply_to_message_id = 0) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'voice' => $voice,
             'caption' => $caption,
             'duration' => $duration,
@@ -616,7 +616,7 @@ class CoreBot {
             'reply_markup' => $reply_markup
         ];
 
-        return $this->exec_curl_request($this->api_url . 'sendVoice?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'sendVoice?' . http_build_query($parameters));
 
     }
 
@@ -635,11 +635,11 @@ class CoreBot {
     public function sendChatAction(string $action) : bool {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'action' => $action
         ];
 
-        return $this->exec_curl_request($this->api_url . 'sendChatAction?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'sendChatAction?' . http_build_query($parameters));
 
     }
 
@@ -648,13 +648,13 @@ class CoreBot {
      * \details Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). [Api reference](https://core.telegram.org/bots/api#getchat)
      * @param Unique identifier for the target chat or username of the target supergroup or channel (in the format <code>@channelusername</code>)
      */
-    public function getChat($chat_id) {
+    public function getChat($_chat_id) {
 
         $parameters = [
-            'chat_id' => $chat_id,
+            'chat_id' => $_chat_id,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'getChat?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'getChat?' . http_build_query($parameters));
 
     }
 
@@ -663,13 +663,13 @@ class CoreBot {
      * @param Unique identifier for the target chat or username of the target supergroup or channel (in the format <code>@channelusername</code>)
      * @return On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
      */
-    public function getChatAdministrators($chat_id) {
+    public function getChatAdministrators($_chat_id) {
 
         $parameters = [
-            'chat_id' => $chat_id,
+            'chat_id' => $_chat_id,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'getChatAdministrators?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'getChatAdministrators?' . http_build_query($parameters));
 
     }
 
@@ -698,7 +698,7 @@ class CoreBot {
             'url' => $url
         ];
 
-        return $this->exec_curl_request($this->api_url . 'answerCallbackQuery?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'answerCallbackQuery?' . http_build_query($parameters));
 
     }
 
@@ -714,7 +714,7 @@ class CoreBot {
     public function editMessageText(int $message_id, $text, $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'message_id' => $message_id,
             'text' => $text,
             'reply_markup' => $reply_markup,
@@ -722,7 +722,7 @@ class CoreBot {
             'disable_web_page_preview' => $disable_web_preview,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'editMessageText?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'editMessageText?' . http_build_query($parameters));
 
     }
 
@@ -745,7 +745,7 @@ class CoreBot {
            'disable_web_page_preview' => $disable_web_preview,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'editMessageText?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'editMessageText?' . http_build_query($parameters));
 
     }
 
@@ -758,12 +758,12 @@ class CoreBot {
     public function editMessageReplyMarkup($message_id, $inline_keyboard) {
 
         $parameters = [
-            'chat_id' => $this->chat_id,
+            'chat_id' => $this->_chat_id,
             'message_id' => $message_id,
             'reply_markup' => $inline_keyboard,
         ];
 
-        return $this->exec_curl_request($this->api_url . 'editMessageReplyMarkup?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'editMessageReplyMarkup?' . http_build_query($parameters));
 
     }
 
@@ -790,7 +790,7 @@ class CoreBot {
             'cache_time' => $cache_time
         ];
 
-        return $this->exec_curl_request($this->api_url . 'answerInlineQuery?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'answerInlineQuery?' . http_build_query($parameters));
 
     }
 
@@ -816,7 +816,7 @@ class CoreBot {
             'cache_time' => $cache_time
         ];
 
-        return $this->exec_curl_request($this->api_url . 'answerInlineQuery?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . 'answerInlineQuery?' . http_build_query($parameters));
 
     }
 
@@ -825,7 +825,7 @@ class CoreBot {
      * \details Use this method for custom api calls using this syntax:
      *
      *     $param = [
-     *             'chat_id' => $chat_id,
+     *             'chat_id' => $_chat_id,
      *             'text' => 'Hello!'
      *     ];
      *     apiRequest("sendMessage", $param);
@@ -836,7 +836,7 @@ class CoreBot {
      */
     public function apiRequest(string $method, array $parameters) {
 
-        return $this->exec_curl_request($this->api_url . $method . '?' . http_build_query($parameters));
+        return $this->exec_curl_request($this->_api_url . $method . '?' . http_build_query($parameters));
 
     }
 
@@ -854,18 +854,18 @@ class CoreBot {
     protected function exec_curl_request($url) {
 
         // Set the url
-        curl_setopt($this->ch, CURLOPT_URL, $url);
+        curl_setopt($this->_ch, CURLOPT_URL, $url);
 
-        $response = curl_exec($this->ch);
+        $response = curl_exec($this->_ch);
 
         if ($response === false) {
-            $errno = curl_errno($this->ch);
-            $error = curl_error($this->ch);
+            $errno = curl_errno($this->_ch);
+            $error = curl_error($this->_ch);
             error_log("Curl returned error $errno: $error\n");
             return false;
         }
 
-        $http_code = intval(curl_getinfo($this->ch, CURLINFO_HTTP_CODE));
+        $http_code = intval(curl_getinfo($this->_ch, CURLINFO_HTTP_CODE));
 
         if ($http_code === 200) {
             $response = json_decode($response, true);
