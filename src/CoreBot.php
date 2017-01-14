@@ -394,6 +394,14 @@ class CoreBot {
     }
 
     /**
+     * \brief Get information about bot's webhook.
+     * \details Returns an hash which contains information about bot's webhook.
+     */
+    public function getWebhookInfo() {
+        return $this->exec_curl_request($this->_api_url . 'getWebhookInfo');
+    }
+
+    /**
      * \brief Set updates received by the bot for getUpdates handling.
      * \details List the types of updates you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. Specify an empty list to receive all updates regardless of type.
      * Set it one time and it won't change until next setUpdateReturned call.
