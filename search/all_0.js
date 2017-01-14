@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['_24_5fapi_5furl',['$_api_url',['../group__Core.html#gad9358a02a731ea2a12672b360dc1a4cb',1,'DanySpin97::PhpBotFramework::CoreBot']]],
+  ['_24_5fcallback_5fquery_5fid',['$_callback_query_id',['../group__Core.html#ga9bf4e167d8e07ba8a39badd23e90a50c',1,'DanySpin97::PhpBotFramework::CoreBot']]],
+  ['_24_5fch',['$_ch',['../group__Core.html#ga89ea6570fe66ad526e8e70159613ed55',1,'DanySpin97::PhpBotFramework::CoreBot']]],
+  ['_24_5fchat_5fid',['$_chat_id',['../group__Bot.html#gad570e96c9b1bd50d45f7ec891e1b6923',1,'DanySpin97::PhpBotFramework::CoreBot']]],
+  ['_24_5fdata',['$_data',['../group__Bot.html#gaf48eb4947ab7cf803af2a45c407ee418',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24_5finline_5fquery_5fid',['$_inline_query_id',['../group__Core.html#ga4d47f5d7c6b6f83629cd919161ff6a95',1,'DanySpin97::PhpBotFramework::CoreBot']]],
+  ['_24_5fquery',['$_query',['../group__Bot.html#ga6e5e788a25beddd39646f8ab999e2a2e',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24_5ftext',['$_text',['../group__Bot.html#ga89cecfbd1b60e647aecb26e1478394eb',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24bot',['$bot',['../group__InlineKeyboard.html#gab103a23c409d2686b3bbae17bd54eca2',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
+  ['_24id_5fcolumn',['$id_column',['../group__Multilanguage.html#gadcc8b44f3a52ab4f353edcfb7f90a085',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24inline_5fkeyboard',['$inline_keyboard',['../group__InlineKeyboard.html#ga93cea0409b8114ae51b512d37d0c33a4',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
+  ['_24keyboard',['$keyboard',['../group__Bot.html#gaf2e8c4a7c25d932023e7f7e233f62b49',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24language',['$language',['../group__Multilanguage.html#gae8396ba4996f53cc66ca337c23a32f82',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24local',['$local',['../group__Multilanguage.html#gab1d8b5e58580e86b971d53a39640c47d',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24pdo',['$pdo',['../group__Bot.html#gab25c4a88f43d5eeb9402a96aa0090ff8',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24redis',['$redis',['../group__Bot.html#ga304f37dd93b46c412296d7196a5863e0',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24status',['$status',['../group__State.html#gae6f3c08b1e5ba847a2d43ef37bfccfff',1,'DanySpin97::PhpBotFramework::Bot']]],
+  ['_24user_5ftable',['$user_table',['../group__Multilanguage.html#gad3ac11c80d6956181f1dd04bb9f0f36b',1,'DanySpin97::PhpBotFramework::Bot']]]
+];
