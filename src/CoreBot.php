@@ -258,8 +258,8 @@ class CoreBot {
     /** \brief Url request (containing $token). */
     protected $_api_url;
 
-    /** \brief Curl connection for request. */
-    protected $_ch;
+    /** \brief Implements interface for execute HTTP requests. */
+    protected $http;
 
     /** \brief Store id of the callback query received. */
     protected $_callback_query_id;
@@ -286,24 +286,14 @@ class CoreBot {
         $this->_api_url = 'https://api.telegram.org/bot' . $token . '/';
 
         // Init connection and config it
-        $this->_ch = curl_init();
-        curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($this->_ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($this->_ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($this->_ch, CURLOPT_TIMEOUT, 60);
-        curl_setopt($this->_ch, CURLOPT_HEADER, 0);
-        curl_setopt($this->_ch, CURLOPT_ENCODING, '');
-        // DEBUG
-        //curl_setopt($this->_ch, CURLOPT_VERBOSE, true);
+        $this->http = new \GuzzleHttp\Client([
+            'base_uri' => $this->_api_url,
+            'connect_timeout' => 5,
+            'verify' => false,
+            'timeout' => 60
+        ]);
 
-    }
-
-    /** \brief Destroy the object. */
-    public function __destruct() {
-
-        // Close connection
-        curl_close($this->_ch);
-
+        return;
     }
 
     /** @} */
@@ -369,7 +359,7 @@ class CoreBot {
      */
     public function getMe() {
 
-        return $this->exec_curl_request($this->_api_url . 'getMe?');
+        return $this->exec_curl_request('getMe?');
 
     }
 
@@ -390,7 +380,7 @@ class CoreBot {
             'timeout' => $timeout,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'getUpdates?' . http_build_query($parameters));
+        return $this->exec_curl_request('getUpdates?' . http_build_query($parameters));
 
     }
 
@@ -400,7 +390,7 @@ class CoreBot {
      */
     public function getWebhookInfo() {
 
-        return $this->exec_curl_request($this->_api_url . 'getWebhookInfo');
+        return $this->exec_curl_request('getWebhookInfo');
 
     }
 
@@ -410,7 +400,7 @@ class CoreBot {
      */
     public function deleteWebhook() {
 
-        return $this->exec_curl_request($this->_api_url . 'deleteWebhook');
+        return $this->exec_curl_request('deleteWebhook');
 
     }
 
@@ -423,8 +413,7 @@ class CoreBot {
      */
     public function setWebhook(array $params) {
 
-        return $this->exec_curl_request($this->_api_url . 'setWebhook?'
-            . http_build_query($params));
+        return $this->exec_curl_request('setWebhook?' . http_build_query($params));
 
     }
 
@@ -472,7 +461,8 @@ class CoreBot {
         $updates_string .= ']';
 
         // Exec getUpdates
-        $this->exec_curl_request($this->_api_url . 'getUpdates?' . http_build_query($parameters) . '&allowed_updates=' . $updates_string);
+        $this->exec_curl_request('getUpdates?' . http_build_query($parameters)
+                                               . '&allowed_updates=' . $updates_string);
 
     }
 
@@ -498,7 +488,7 @@ class CoreBot {
             'disable_notification' => $disable_notification
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'sendMessage?' . http_build_query($parameters));
+        return $this->exec_curl_request('sendMessage?' . http_build_query($parameters));
 
     }
 
@@ -519,7 +509,7 @@ class CoreBot {
             'disable_notification' => $disable_notification
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'forwardMessage?' . http_build_query($parameters));
+        return $this->exec_curl_request('forwardMessage?' . http_build_query($parameters));
 
     }
 
@@ -542,7 +532,7 @@ class CoreBot {
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'sendPhoto?' . http_build_query($parameters));
+        return $this->exec_curl_request('sendPhoto?' . http_build_query($parameters));
 
     }
 
@@ -574,7 +564,7 @@ class CoreBot {
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'sendAudio?' . http_build_query($parameters));
+        return $this->exec_curl_request('sendAudio?' . http_build_query($parameters));
 
     }
 
@@ -599,7 +589,7 @@ class CoreBot {
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'sendAudio?' . http_build_query($parameters));
+        return $this->exec_curl_request('sendAudio?' . http_build_query($parameters));
 
     }
 
@@ -623,7 +613,7 @@ class CoreBot {
             'reply_markup' => $reply_markup
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'sendSticker?' . http_build_query($parameters));
+        return $this->exec_curl_request('sendSticker?' . http_build_query($parameters));
 
     }
 
@@ -651,7 +641,7 @@ class CoreBot {
             'reply_markup' => $reply_markup
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'sendVoice?' . http_build_query($parameters));
+        return $this->exec_curl_request('sendVoice?' . http_build_query($parameters));
 
     }
 
@@ -674,7 +664,7 @@ class CoreBot {
             'action' => $action
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'sendChatAction?' . http_build_query($parameters));
+        return $this->exec_curl_request('sendChatAction?' . http_build_query($parameters));
 
     }
 
@@ -689,7 +679,7 @@ class CoreBot {
             'chat_id' => $_chat_id,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'getChat?' . http_build_query($parameters));
+        return $this->exec_curl_request('getChat?' . http_build_query($parameters));
 
     }
 
@@ -704,7 +694,7 @@ class CoreBot {
             'chat_id' => $_chat_id,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'getChatAdministrators?' . http_build_query($parameters));
+        return $this->exec_curl_request('getChatAdministrators?' . http_build_query($parameters));
 
     }
 
@@ -733,7 +723,7 @@ class CoreBot {
             'url' => $url
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'answerCallbackQuery?' . http_build_query($parameters));
+        return $this->exec_curl_request('answerCallbackQuery?' . http_build_query($parameters));
 
     }
 
@@ -757,7 +747,7 @@ class CoreBot {
             'disable_web_page_preview' => $disable_web_preview,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'editMessageText?' . http_build_query($parameters));
+        return $this->exec_curl_request('editMessageText?' . http_build_query($parameters));
 
     }
 
@@ -780,7 +770,7 @@ class CoreBot {
             'disable_web_page_preview' => $disable_web_preview,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'editMessageText?' . http_build_query($parameters));
+        return $this->exec_curl_request('editMessageText?' . http_build_query($parameters));
 
     }
 
@@ -798,7 +788,7 @@ class CoreBot {
             'reply_markup' => $inline_keyboard,
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'editMessageReplyMarkup?' . http_build_query($parameters));
+        return $this->exec_curl_request('editMessageReplyMarkup?' . http_build_query($parameters));
 
     }
 
@@ -825,7 +815,7 @@ class CoreBot {
             'cache_time' => $cache_time
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'answerInlineQuery?' . http_build_query($parameters));
+        return $this->exec_curl_request('answerInlineQuery?' . http_build_query($parameters));
 
     }
 
@@ -851,7 +841,7 @@ class CoreBot {
             'cache_time' => $cache_time
         ];
 
-        return $this->exec_curl_request($this->_api_url . 'answerInlineQuery?' . http_build_query($parameters));
+        return $this->exec_curl_request('answerInlineQuery?' . http_build_query($parameters));
 
     }
 
@@ -871,7 +861,7 @@ class CoreBot {
      */
     public function apiRequest(string $method, array $parameters) {
 
-        return $this->exec_curl_request($this->_api_url . $method . '?' . http_build_query($parameters));
+        return $this->exec_curl_request($method . '?' . http_build_query($parameters));
 
     }
 
@@ -886,34 +876,24 @@ class CoreBot {
      * @param $url The url to call using the curl session.
      * @return Url response, false on error.
      */
-    protected function exec_curl_request($url) {
-
-        // Set the url
-        curl_setopt($this->_ch, CURLOPT_URL, $url);
-
-        $response = curl_exec($this->_ch);
-
-        if ($response === false) {
-            $errno = curl_errno($this->_ch);
-            $error = curl_error($this->_ch);
-            error_log("Curl returned error $errno: $error\n");
-            return false;
-        }
-
-        $http_code = intval(curl_getinfo($this->_ch, CURLINFO_HTTP_CODE));
+    public function exec_curl_request($url, $method = 'POST') {
+        $response = $this->http->request($method, $url);
+        $http_code = $response->getStatusCode();
 
         if ($http_code === 200) {
-            $response = json_decode($response, true);
+            $response = json_decode($response->getBody(), true);
+
             if (isset($response['desc'])) {
                 error_log("Request was successfull: {$response['description']}\n");
             }
+
             return $response['result'];
         } elseif ($http_code >= 500) {
             // do not wat to DDOS server if something goes wrong
             sleep(10);
             return false;
         } elseif ($http_code !== 200) {
-            $response = json_decode($response, true);
+            $response = json_decode($response->getBody(), true);
             error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
             if ($http_code === 401) {
                 throw new BotException('Invalid access token provided');

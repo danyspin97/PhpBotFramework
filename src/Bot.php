@@ -111,9 +111,6 @@ class Bot extends CoreBot {
 
     /** \brief Descruct the class. */
     public function __destruct() {
-
-        parent::__destruct();
-
         // Close redis connection if it is open
         if (isset($this->redis)) {
 
