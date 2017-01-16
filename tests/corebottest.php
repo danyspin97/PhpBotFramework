@@ -9,7 +9,7 @@ class CoreBotTest extends TestCase {
 
     public function __construct() {
         if ($this->token == 'YOUR_BOT_TOKEN') {
-            echo "You need a valid bot token to run tests/corebottest.php\n";
+            echo "You need a valid bot token to run tests/corebottest.php.\n";
             exit(1);
         }
 

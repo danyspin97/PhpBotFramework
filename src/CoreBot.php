@@ -876,7 +876,7 @@ class CoreBot {
      * @param $url The url to call using the curl session.
      * @return Url response, false on error.
      */
-    public function exec_curl_request($url, $method = 'POST') {
+    protected function exec_curl_request($url, $method = 'POST') {
         $response = $this->http->request($method, $url);
         $http_code = $response->getStatusCode();
 
