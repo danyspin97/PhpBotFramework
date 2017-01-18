@@ -8,8 +8,11 @@
     "authors": [
         {
             "name": "Dany Spin",
-            "homepage": "https://github.com/danyspin97",
-            "role": "Developer"
+            "homepage": "https://github.com/danyspin97"
+        },
+        {
+          "name": "Dom Corvasce",
+          "homepage": "https://github.com/domcorvasce"
         }
     ],
     "require": {
@@ -26,7 +29,7 @@
     },
     "autoload": {
         "psr-4": {
-            "DanySpin97\\PhpBotFramework\\": ["src/"]
+            "DanySpin97\\PhpBotFramework\\": "src/"
         }
     }
 }
