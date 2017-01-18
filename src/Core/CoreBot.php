@@ -877,6 +877,7 @@ class CoreBot {
      * @return Url response, false on error.
      */
     protected function exec_curl_request($url, $method = 'POST') {
+
         $response = $this->http->request($method, $url);
         $http_code = $response->getStatusCode();
 
@@ -892,7 +893,7 @@ class CoreBot {
             // do not wat to DDOS server if something goes wrong
             sleep(10);
             return false;
-        } elseif ($http_code !== 200) {
+        } else {
             $response = json_decode($response->getBody(), true);
             error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
             if ($http_code === 401) {
