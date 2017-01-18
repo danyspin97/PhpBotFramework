@@ -1,7 +1,8 @@
 <?php
 
-namespace DanySpin97\PhpBotFramework;
+namespace PhpBotFramework;
 
+use Entities\InlineKeyboard;
 
 /**
  * \mainpage

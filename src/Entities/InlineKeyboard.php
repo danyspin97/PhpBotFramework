@@ -1,6 +1,6 @@
 <?php
 
-namespace DanySpin97\PhpBotFramework;
+namespace PhpBotFramework;
 
 /** \class InlineKeyboard
  * \brief Inline Keyboard handler that create and handle inline keyboard buttons.

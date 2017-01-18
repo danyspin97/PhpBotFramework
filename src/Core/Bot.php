@@ -1,6 +1,10 @@
 <?php
 
-namespace DanySpin97\PhpBotFramework;
+namespace PhpBotFramework;
+
+use Exceptions\BotException;
+
+use Entities\InlineKeyboard;
 
 /**
  * \class Bot Bot
@@ -9,7 +13,7 @@ namespace DanySpin97\PhpBotFramework;
  * Usage example in webhook.php
  *
  */
-class Bot extends CoreBot {
+class Bot extends Core\CoreBot {
 
     use LongPolling,
         MessageCommand,

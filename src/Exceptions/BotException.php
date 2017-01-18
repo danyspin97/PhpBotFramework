@@ -1,5 +1,5 @@
 <?php
 
-namespace DanySpin97\PhpBotFramework;
+namespace PhpBotFramework;
 
 class BotException extends \Exception {}

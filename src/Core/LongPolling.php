@@ -1,6 +1,6 @@
 <?php
 
-namespace DanySpin97\PhpBotFramework;
+namespace PhpBotFramework;
 
 trait LongPolling {
 
