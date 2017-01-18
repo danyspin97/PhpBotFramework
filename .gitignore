@@ -1,4 +1,3 @@
-/*.php
-/composer.lock
-/composer.phar
-/vendor
+*.php
+composer.phar
+vendor/
