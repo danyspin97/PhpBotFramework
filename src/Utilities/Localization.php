@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBotFramework;
+namespace PhpBotFramework\Utilities;
 
 trait Localization {
 

@@ -1,8 +1,10 @@
 <?php
 
-namespace PhpBotFramework;
+namespace PhpBotFramework\Core;
 
-use Entities\InlineKeyboard;
+use \PhpBotFramework\Exceptions\BotException;
+
+use \PhpBotFramework\Entities\InlineKeyboard;
 
 /**
  * \mainpage

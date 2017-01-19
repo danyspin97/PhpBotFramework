@@ -13,7 +13,7 @@ class CoreBotTest extends TestCase {
             exit(1);
         }
 
-        $this->subject = new PhpBotFramework\Core\Bot($this->token);
+        $this->subject = new PhpBotFramework\Bot($this->token);
     }
 
     /**

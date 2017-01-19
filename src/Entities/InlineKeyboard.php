@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBotFramework;
+namespace PhpBotFramework\Entities;
 
 /** \class InlineKeyboard
  * \brief Inline Keyboard handler that create and handle inline keyboard buttons.
@@ -33,7 +33,8 @@ class InlineKeyboard {
      * @param $buttons Buttons passed as inizialization.
      * @return The object created with the buttons passed.
      */
-    public function __construct(Bot &$bot = null, array $buttons = array()) {
+    public function __construct(\PhpBotFramework\Bot &$bot = null,
+                                array $buttons = array()) {
 
         // Get bot reference
         $this->bot = $bot;
