@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpBotFramework\Utilities;
+namespace PhpBotFramework\Database;
 
 trait DatabaseHandler {
 

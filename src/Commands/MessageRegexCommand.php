@@ -4,7 +4,7 @@ namespace PhpBotFramework\Commands;
 
 use PhpBotFramework\Entities\Message;
 
-trait MessageCommand {
+trait MessageRegexCommand {
 
     /**
      * \addtogroup Commands
@@ -13,35 +13,34 @@ trait MessageCommand {
      */
 
     /** \brief (<i>Internal</i>)Store the command triggered on message. */
-    protected $_message_commands;
+    protected $_message_regex_commands;
 
     /**
-     * \brief Add a function that will be executed everytime a message contain the selected command
+     * \brief Add a function that will be executed everytime a message contain a command that match the regex
      * \details Use this syntax:
      *
-     *     addMessageCommand("start", function($bot, $message) {
-     *         $bot->sendMessage("Hi"); });
-     * @param $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
+     *     addMessageCommandRegex("number\d", function($bot, $message, $result) {
+     *         $bot->sendMessage("You sent me a number"); });
+     * @param $regex_rule Regex rule that will called for evalueting the command received.
      * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
      */
-    public function addMessageCommand(string $command, callable $script) {
+    public function addMessageCommandRegex(string $regex_rule, callable $script) {
 
         $this->_message_commands[] = [
             'script' => $script,
-            'command' => '/' . $command,
-            'length' => strlen($command) + 1,
+            'regex_rule' => $regex_rule
         ];
 
     }
 
     /**
-     * \brief (<i>Internal</i>)Process a message checking if it trigger any MessageCommand.
+     * \brief (<i>Internal</i>) Process the message to check if it triggers a command of this type.
      * @param $message Message to process.
-     * @return True if the message triggered any command.
+     * @return True if the message triggered a command.
      */
-    protected function processMessageCommand(array $message) : bool {
+    protected function processMessageRegexCommand(array $message) : bool {
 
-        // If the message contains a bot command at the start
+        // and there are bot commands in the message, checking message entities
         if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
 
             // The lenght of the command
@@ -53,24 +52,24 @@ trait MessageCommand {
             // For each command added by the user
             foreach ($this->_message_commands as $trigger) {
 
-                // If we found a valid command
-                if ($trigger['length'] == $length && mb_strpos($trigger['command'], $message['text'], $offset) !== false) {
+                // Use preg_match to check if it is true
+                if (preg_match('/' . $trigger['regex_rule'] . '/', substr($message['text'], $offset + 1, $length))) {
 
-                    // Set chat_id
                     $this->_chat_id = $message['chat']['id'];
 
-                    // Execute script,
+                    // Trigger the script
                     $trigger['script']($this, new Message($message));
 
-                    // Return
+                    // The message triggered a command, return true
                     return true;
+
                 }
 
             }
 
         }
 
-        // No command were triggered, return false
+        // No command were triggered
         return false;
 
     }
