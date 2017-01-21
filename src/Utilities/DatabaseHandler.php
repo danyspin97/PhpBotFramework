@@ -5,8 +5,8 @@ namespace PhpBotFramework\Utilities;
 trait DatabaseHandler {
     /**
      * \brief Open a database connection using PDO.
-     * \details Provides a simpler way to initialize a database connection 
-     *  and create a PDO instance.
+     * \details Provides a simpler way to initialize a database connection
+     * and create a PDO instance.
      * @param $params Parameters for initialize connection.
      * @return True on success.
      */
@@ -18,7 +18,7 @@ trait DatabaseHandler {
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             return true;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             echo 'Unable to connect to database, an error occured:' . $e->getMessage();
         }
 
