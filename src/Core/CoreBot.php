@@ -9,12 +9,27 @@ use \PhpBotFramework\Entities\InlineKeyboard;
 /**
  * \mainpage
  * \section Description
- * PhpBotFramework a lightweight framework for Telegram Bot API.
- * Designed to be fast and easy to use, it provides all the features a user need.
- * Take control of your bot using the command-handler system or the update type based function.
+ * PhpBotFramework is a lightweight framework for [Telegram Bot API](https://core.telegram.org/bots/api).
+ * Designed to be fast and easy to use, it provides all the features a user need in order to start 
+ * developing Telegram bots..
  *
- * \subsection Example
- * A quick example, the bot will send "Hello" every time the user click "/start":
+ * \section Installation
+ * You can install PhpBotFramework using **Composer**.
+ *
+ * Go to your project's folder and type:
+ *
+ *     composer require danyspin97/php-bot-framework
+ *     composer install --no-dev
+ *
+ * \section Usage
+ * You can start working on your bot creating a new instance of Bot or by creating a 
+ * class that inherits from it.
+ *
+ * Each API call will have <code>$_chat_id</code> set to the current user:
+ * you can use CoreBot::setChatID() to change it.
+ *
+ * Below an example bot you can look to:
+ *
  *
  *     <?php
  *
@@ -22,53 +37,40 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  *     require './vendor/autoload.php';
  *
  *     // Create the bot
- *     $bot = new DanySpin97\PhpBotFramework\Bot("token");
+ *     $bot = new PhpBotFramework\Bot("token");
  *
- *     // Add a command that will be triggered every time the user click /start
+ *     // Add a command that will be triggered every time the user send /start
  *     $bot->addMessageCommand("start",
  *         function($bot, $message) {
- *             $bot->sendMessage("Hello");
+ *             $bot->sendMessage("Hello, folks!");
  *         }
  *     );
  *
- *     // Receive update from telegram using getUpdates
+ *     // Receive updates from Telegram using getUpdates
  *     $bot->getUpdatesLocal();
  *
  * \section Features
- * - Designed to be the fast and easy to use
- * - Support for getUpdates and webhooks
+ * - Modular: take only what you need
+ * - Flexible HTTP requests with [Guzzle](https://github.com/guzzle/guzzle)
+ * - Designed to be fast and easy to use
+ * - Support for local updates and webhooks
  * - Support for the most important API methods
  * - Command-handle system for messages and callback queries
  * - Update type based processing
- * - Easy inline keyboard creation
+ * - Easy **inline keyboard** creation
  * - Inline query results handler
- * - Sql database support
+ * - Database support and facilities
  * - Redis support
- * - Support for multilanguage bot
- * - Support for bot state
- * - Highly documented
+ * - Support for multilanguage bots
+ * - Support for bot states
+ * - Highly-documented
  *
  * \section Requirements
- * - Php 7.0 or greater
+ * - PHP >= 7.0
  * - php-mbstring
  * - Composer (to install the framework)
- * - SSL certificate (<i>required by webhook</i>)
- * - Web server (<i>required by webhook</i>)
- *
- * \section Installation
- * In your project folder:
- *
- *     composer require danyspin97/php-bot-framework
- *     composer install --no-dev
- *
- * \subsection Web-server
- * To use webhook for the bot, a web server and a SSL certificate are required.
- * Install one using your package manager (nginx or caddy reccomended).
- * To get a SSL certificate you can user [Let's Encrypt](https://letsencrypt.org/).
- *
- * \section Usage
- * Add the scripting by adding command (Bot::addMessageCommand()) or by creating a class that inherits Bot.
- * Each api call will have <code>$_chat_id</code> set to the current user, use CoreBot::setChatID() to change it.
+ * - Web server: *required for webhook* (we recommend [nginx](http://nginx.org/))
+ * - SSL certificate: *required for webhook* (follow [these steps](https://devcenter.heroku.com/articles/ssl-certificate-self) to make a self-signed certificate or use [Let's Encrypt](https://letsencrypt.org/))
  *
  * \subsection getUpdates
  * The bot ask for updates to telegram server.
@@ -173,62 +175,84 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  *     // Add the command
  *     $bot->addMessageCommand("start", $command_function);
  *
- * \subsection Sql-Database Sql Database
- * The sql database is used to save offset from getUpdates and to save user language.
+ * \section Sql-Database Database
+ * A database is required in order to save offsets (if you use local updates) 
+ * and save user's language.
  *
- * To connect a sql database to the bot, a pdo connection is required.
+ * We implemented a simpler way to connect to a database which is based on PDO:
  *
- * Here is a simple pdo connection that is passed to the bot:
+ *     $bot->connect([
+ *         'adapter' => 'pgsql',
+ *         'username' => 'sysuser',
+ *         'password' => 'myshinypassword',
+ *         'dbname' => 'my_shiny_bot'
+ *     ]);
  *
- *     $bot->pdo = new PDO('mysql:host=localhost;dbname=test', $user, $pass);
+ * This method will istantiate a new PDO connection and a new PDO object you can
+ * access through `$bot->pdo`.
+ *
+ * If no adapter and host are specified: `mysql` and `localhost` are assigned.
  *
  * \subsection Redis-database Redis Database
- * Redis is used to save offset from getUpdates, to store language (both as cache and persistent) and to save bot state.
+ * **Redis** is used across PhpBotFramework in order to save offsets for local updates,
+ * to store user's language (both as cache and persistent) and save bot states.
  *
- * To connect redis with the bot, create a redis object.
+ * Redis and the main database are complementary so you need to set both.
+ *
+ * All you need to do is create a new Redis object:
  *
  *     $bot->redis = new Redis();
  *
- * \subsection Multilanguage-section Multilanguage Bot
- * This framework offers method to develop a multi language bot.
+ * \section Multilanguage-section Multi-language Bot
+ * This framework offers methods and facilities for develop a multi-language bot.
  *
- * Here's an example:
+ * All you need to do is create a `localization` folder in your project's root folder
+ * and store there the JSON files with bot's messages:
  *
- * <code>en.json</code>:
+ * <code>localization/en.json</code>:
  *
- *     {"Greetings_Msg": "Hello"}
+ *     { "Welcome_Message": "Hello, folks!" }
  *
- * <code>it.json</code>:
+ * <code>localization/it.json</code>:
  *
- *     {"Greetings_Msg": "Ciao"}
+ *     { "Welcome_Message": "Ciao, gente!" }
  *
- * <code>Greetings.php</code>:
+ * <code>main.php</code>:
  *
+ *     // ...
+ *     // Load JSON files
  *     $bot->loadLocalization();
+ *
  *     $start_function = function($bot, $message) {
- *             $bot->sendMessage($this->localization[
- *                     $bot->getLanguageDatabase()]['Greetings_Msg'])
+ *         // Fetch user's language from database
+ *         $user_language = $bot->getLanguageDatabase();
+ *         $bot->sendMessage($this->localization[$user_language]['Greetings_Msg']);
  *     };
  *
  *     $bot->addMessageCommand("start", $start_function);
  *
- * The bot will get the language from the database, then the bot will send the message localizated for the user.
- *
- * \ref Multilanguage [See here for more]
+ * So you can have a wonderful (multi-language) bot with a small effort.
  *
  * \section Source
- * The source is hosted on github and can be found [here](https://github.com/DanySpin97/PhpBotFramework).
+ * **PhpBotFramework** is an open-source project so everyone can contribute to it.
  *
- * \section Bot-created Bot using this framework
- * - [\@MyAddressBookBot](https://telegram.me/myaddressbookbot) ([Source](https://github.com/DanySpin97/MyAddressBookBot))
- * - [\@Giveaways_bot](https://telegram.me/giveaways_bot) ([Source](https://github.com/DanySpin97/GiveawaysBot))
+ * It's currently hosted on GitHub [here](https://github.com/DanySpin97/PhpBotFramework).
+ *
+ * \section Createdwith-section Made with PhpBotFramework
+ *
+ * - [MyAddressBookBot](https://github.com/DanySpin97/MyAddressBookBot): [Try it on Telegram](https://telegram.me/myaddressbookbot)
+ * - [Giveaways_Bot](https://github.com/DanySpin97/GiveawaysBot): [Try it on Telegram](https://telegram.me/giveaways_bot)
+ *
  *
  * \section Authors
- * This framework is developed and manteined by Danilo Spinella.
+ * This framework is developed and mantained by [Danilo Spinella](https://github.com/DanySpin97).
  *
  * \section License
- * PhpBotFramework is released under GNU Lesser General Public License.
- * You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL-3. Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the wrapper don't have to be.
+ * PhpBotFramework is released under [GNU Lesser General Public License v3](https://www.gnu.org/licenses/lgpl-3.0.en.html).
+ *
+ * You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL-3.
+ *
+ * Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the wrapper don't have to be.
  *
  */
 
@@ -911,4 +935,3 @@ class CoreBot {
     /** @} */
 
 }
-
