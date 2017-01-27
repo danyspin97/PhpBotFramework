@@ -7,9 +7,9 @@
 [![License](https://poser.pugx.org/danyspin97/php-bot-framework/license)](https://packagist.org/packages/danyspin97/php-bot-framework)
 
 
-*Php Bot Framework* is a framework for Telegram Bot API.
-Designed to be fast and easy to use, it provides all the features a user need.
-Take control of your bot using the command-handler system or the update type based function.
+*PhpBotFramework* is a reliable and complete framework for [Telegram Bot API](https://core.telegram.org/bots/api).
+
+Designed to be fast and easy to use, it provides all the features a user need in order to start developing Telegram bots.
 
 ## Usage
 
@@ -20,43 +20,47 @@ Take control of your bot using the command-handler system or the update type bas
 require './vendor/autoload.php';
 
 // Create a bot
-$bot = new DanySpin97\PhpBotFramework\Bot("token");
+$bot = new PhpBotFramework\Bot("token");
 
-// Add a command that will be triggered everytime the user click "/start"
+// Add a command that will be triggered everytime the user send `/start`
 $bot->addMessageCommand("start",
     function($bot, $message) {
-        // Reply with "Hello"
-        $bot->sendMessage("Hello");
+        // Reply with a message
+        $bot->sendMessage("Hello, folks!");
     }
 );
 
-// Received updates from telegram using getUpdates
+// Receive updates from Telegram using getUpdates
 $bot->getUpdatesLocal();
 ```
 
 ## Features
-- Designed to be the fast and easy to use
-- Support for getUpdates and webhooks
+- Modular: take only what you need
+- Flexible HTTP requests with [Guzzle](https://github.com/guzzle/guzzle)
+- Designed to be fast and easy to use
+- Support for local updates and webhooks
 - Support for the most important API methods
 - Command-handle system for messages and callback queries
 - Update type based processing
-- Easy inline keyboard creation
-- Inline query results handler
-- Sql database support
+- Easy **inline keyboard** creation
+- Inline query results' handler
+- Database support and facilities
 - Redis support
-- Support for multilanguage bot
-- Support for bot state
-- Highly documented
+- Support for multilanguage bots
+- Support for bot states
+- Highly-documented
 
 ## Requisites
-- Php 7.0 or greater
+- PHP >= 7.0
 - php-mbstring
 - Composer (to install this package and the required ones)
-- Web server (*required for webhook*) ([nginx](http://nginx.org/) reccomended)
-- SSL certificate (*required for webhook*) (follow [these steps](https://devcenter.heroku.com/articles/ssl-certificate-self) to make a self-signed certificate or use [Let's Encrypt](https://letsencrypt.org/))
+- Web server: *required for webhook* (we recommend [nginx](http://nginx.org/))
+- SSL certificate: *required for webhook* (follow [these steps](https://devcenter.heroku.com/articles/ssl-certificate-self) to make a self-signed certificate or use [Let's Encrypt](https://letsencrypt.org/))
 
 ## Installation
-To use this framework go in your project folder and execute these commands:
+You can install PhpBotFramework using **Composer**.
+
+Go to your project's folder and type:
 
 ```shell
 composer require danyspin97/php-bot-framework
@@ -64,15 +68,16 @@ composer install --no-dev
 ```
 
 ## Documentation
-Check the documentation [Here](https://danyspin97.github.io/PhpBotFramework/) for more.
+Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for learning more about PhpBotFramework.
 
-## Bot using this wrapper
-- [@MyAddressBookBot](https://telegram.me/myaddressbookbot) -> [Source](https://github.com/DanySpin97/MyAddressBookBot)
-- [@Giveaways_Bot](https://telegram.me/giveaways_bot) -> [Source](https://github.com/DanySpin97/GiveawaysBot)
+## Made with PhpBotFramework
+- [MyAddressBookBot](https://github.com/DanySpin97/MyAddressBookBot): [Try it on Telegram](https://telegram.me/myaddressbookbot)
+- [Giveaways_Bot](https://github.com/DanySpin97/GiveawaysBot): [Try it on Telegram](https://telegram.me/giveaways_bot)
 
 ## Author
-This Framework is developed and mantained by @DanySpin97.
+This framework is developed and mantained by [DanySpin97](https://github.com/DanySpin97).
 
-## [License](https://www.gnu.org/licenses/lgpl-3.0.en.html)
-PhpBotFramework is released under GNU Lesser General Public License.
+## License
+PhpBotFramework is released under [GNU Lesser General Public License v3](https://www.gnu.org/licenses/lgpl-3.0.en.html).
+
 You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL-3. Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the framework don't have to be.
