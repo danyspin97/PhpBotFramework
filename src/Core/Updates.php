@@ -4,6 +4,8 @@ namespace PhpBotFramework\Core;
 
 trait Updates {
 
+    abstract protected function exec_curl_request($url, $method);
+
     /**
      * \addtogroup Api Api Methods
      * @{
@@ -77,37 +79,9 @@ trait Updates {
             'timeout' => 0,
         ];
 
-        // Start the list
-        $updates_string = '[';
-
-        // Flag to skip adding ", " to the string
-        $first_string = true;
-
-        // Iterate over the list
-        foreach ($allowed_updates as $index => $update) {
-
-            // Is it the first update added?
-            if (!$first_string) {
-
-                $updates_string .= ', "' . $update . '"';
-
-            } else {
-
-                $updates_string .= '"' . $update . '"';
-
-                // Set the flag to false cause we added an item
-                $first_string = false;
-
-            }
-
-        }
-
-        // Close string with the marker
-        $updates_string .= ']';
-
         // Exec getUpdates
         $this->exec_curl_request('getUpdates?' . http_build_query($parameters)
-                                               . '&allowed_updates=' . $updates_string);
+                                               . '&allowed_updates=' . json_encode($allowed_updates));
 
     }
 

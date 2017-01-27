@@ -4,6 +4,13 @@ namespace PhpBotFramework\Core;
 
 trait Chat {
 
+    abstract protected function exec_curl_request($url, $method);
+
+    /**
+     * \addtogroup Bot
+     * @{
+     */
+
     /**
      * \addtogroup Api Api Methods
      * @{
@@ -48,6 +55,8 @@ trait Chat {
         return $this->exec_curl_request('getChatAdministrators?' . http_build_query($parameters));
 
     }
+
+    /** @} */
 
     /** @} */
 

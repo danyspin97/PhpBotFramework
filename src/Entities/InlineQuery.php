@@ -2,7 +2,18 @@
 
 namespace PhpBotFramework\Entities;
 
+/**
+ * \addtogroup Entities Entities
+ * @{
+ */
+
+/** \class CallbackQuery
+ * \brief This object represents an incoming inline query.
+ * \details When the user sends an empty query, your bot could return some default or trending results.
+ */
 class InlineQuery implements \ArrayAccess {
+
+    /** @} */
 
     use EntityAccess;
 

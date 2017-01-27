@@ -4,6 +4,8 @@ namespace PhpBotFramework\Core;
 
 trait Inline {
 
+    abstract protected function exec_curl_request($url, $method);
+
     /**
      * \addtogroup Core Core(Internal)
      * @{

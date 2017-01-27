@@ -43,17 +43,11 @@ trait MessageRegexCommand {
         // and there are bot commands in the message, checking message entities
         if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
 
-            // The lenght of the command
-            $length = $message['entities'][0]['length'];
-
-            // Offset of the command
-            $offset = $message['entities'][0]['offset'];
-
             // For each command added by the user
             foreach ($this->_message_commands as $trigger) {
 
                 // Use preg_match to check if it is true
-                if (preg_match('/' . $trigger['regex_rule'] . '/', substr($message['text'], $offset + 1, $length))) {
+                if (preg_match("/{$trigger['regex_rule']}/", substr($message['text'], $message['entities'][0]['offset'] + 1, $message['entities'][0]['length']))) {
 
                     $this->_chat_id = $message['chat']['id'];
 

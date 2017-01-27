@@ -2,7 +2,13 @@
 
 namespace PhpBotFramework\Entities;
 
+/**
+ * \addtogroup Core
+ * @{
+ */
 trait EntityAccess {
+
+    /** @} */
 
     /** \brief Contains the array passed __construct */
     private $container;

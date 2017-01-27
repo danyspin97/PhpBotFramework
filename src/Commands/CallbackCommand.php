@@ -4,7 +4,21 @@ namespace PhpBotFramework\Commands;
 
 use PhpBotFramework\Entities\CallbackQuery;
 
+/**
+ * \addtogroup Modules
+ * @{
+ */
+
+/** \class CallbackCommand
+ */
 trait CallbackCommand {
+
+    /** @} */
+
+    /**
+     * \addtogroup Bot Bot
+     * @{
+     */
 
     /**
      * \addtogroup Commands
@@ -48,6 +62,7 @@ trait CallbackCommand {
                 // If command is found in callback data
                 if (strpos($trigger['data'], $callback_query['data']) !== false) {
 
+                    // Set chat id
                     $this->_chat_id = $callback_query['message']['chat']['id'];
 
                     // Trigger the script
@@ -64,6 +79,8 @@ trait CallbackCommand {
         return false;
 
     }
+
+    /** @} */
 
     /** @} */
 

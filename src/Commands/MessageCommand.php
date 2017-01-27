@@ -44,17 +44,11 @@ trait MessageCommand {
         // If the message contains a bot command at the start
         if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
 
-            // The lenght of the command
-            $length = $message['entities'][0]['length'];
-
-            // Offset of the command
-            $offset = $message['entities'][0]['offset'];
-
             // For each command added by the user
             foreach ($this->_message_commands as $trigger) {
 
-                // If we found a valid command
-                if ($trigger['length'] == $length && mb_strpos($trigger['command'], $message['text'], $offset) !== false) {
+                // If we found a valid command (check first lenght, then use strpos)
+                if ($trigger['length'] == $message['entities'][0]['length'] && mb_strpos($trigger['command'], $message['text'], $message['entities'][0]['offset']) !== false) {
 
                     // Set chat_id
                     $this->_chat_id = $message['chat']['id'];

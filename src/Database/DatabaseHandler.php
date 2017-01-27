@@ -2,7 +2,10 @@
 
 namespace PhpBotFramework\Database;
 
+use PDOException;
+
 trait DatabaseHandler {
+
     /**
      * \brief Open a database connection using PDO.
      * \details Provides a simpler way to initialize a database connection

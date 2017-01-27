@@ -8,14 +8,15 @@ use PhpBotFramework\Entities\InlineKeyboard;
 
 class Bot extends Core\BaseBot {
 
-    use Commands\CommandHandler,
-        Commands\MessageCommand,
+    use Commands\MessageCommand,
         Commands\MessageRegexCommand,
         Commands\CallbackCommand,
         Database\LongPolling,
         Database\DatabaseHandler,
-        Utilities\BotState,
-        Utilities\Localization;
+        Localization\File,
+        Localization\Language,
+        Localization\LocalizatedString,
+        Utilities\BotState;
 
     /**
      * \addtogroup Bot Bot
@@ -69,27 +70,9 @@ class Bot extends Core\BaseBot {
 
     }
 
-    /**
-     * \addtogroup Core Core(Internal)
-     * @{
-     */
+    /** @} */
 
-    /**
-     * \brief Init variables to skip parsing commands if there aren't any.
-     * \details Called internnaly by
-     * - <code>getUpdatesLocal</code>
-     * - <code>getUpdatesRedis</code>
-     * - <code>getUpdatesDatabase</code>
-     * - <code>processWebhookUpdate</code>
-     */
-    private function initBot() {
+    /** @} */
 
-        // Are there message commands?
-        $this->_message_commands_set = !empty($this->_message_commands);
-
-        // Are there callback commands?
-        $this->_callback_commands_set = !empty($this->_callback_commands);
-
-    }
 
 }

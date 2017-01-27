@@ -4,6 +4,8 @@ namespace PhpBotFramework\Core;
 
 trait Edit {
 
+    abstract protected function exec_curl_request($url, $method);
+
     /**
      * \addtogroup Api Api Methods
      * @{

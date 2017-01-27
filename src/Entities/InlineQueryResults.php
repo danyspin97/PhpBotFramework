@@ -3,6 +3,11 @@
 namespace PhpBotFramework\Entities;
 
 /**
+ * \addtogroup Entities Entities
+ * @{
+ */
+
+/**
  * \class InlineQueryResults InlineQueryResults
  * \brief Handle and store results before sending them to an answerInlineQuery api call.
  */
@@ -74,6 +79,9 @@ class InlineQueryResults {
         return $encoded_results;
 
     }
-}
 
-/** @} */
+    /** @} */
+
+    /** @} */
+
+}

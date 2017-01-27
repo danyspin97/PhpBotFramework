@@ -3,16 +3,16 @@
 namespace PhpBotFramework\Entities;
 
 /**
+ * \addtogroup Utility-classes Utility class
+ * \brief Static methods grouped by class and context.
+ * @{
+ */
+
+/**
  * \class Text
  * \brief Contains text helper methods
  */
 class Text {
-
-    /**
-     * \addtogroup Utility-methods Utility methods
-     * \brief Helper methods.
-     * @{
-     */
 
     /**
      * \brief Get hashtag contained in a string.
@@ -90,5 +90,7 @@ class Text {
         return $string;
 
     }
+
+    /** @} */
 
 }

@@ -13,6 +13,8 @@ use PhpBotFramework\Exceptions\BotException;
  */
 class BaseBot extends CoreBot {
 
+    use \PhpBotFramework\Commands\CommandHandler;
+
     /**
      * \addtogroup Core Core(Internal)
      * @{
@@ -57,12 +59,7 @@ class BaseBot extends CoreBot {
 
         $this->_is_webhook = true;
 
-        // If CommandHandler trait is used and initCommands method exists
-        if (method_exists($this, 'initCommands')) {
-
-            $this->initCommands();
-
-        } 
+        $this->initCommands();
 
         $this->processUpdate(json_decode(file_get_contents('php://input'), true));
 
@@ -95,12 +92,7 @@ class BaseBot extends CoreBot {
 
         $update = null;
 
-        // If CommandHandler trait is used and initCommands method exists
-        if (method_exists($this, 'initCommands')) {
-
-            $this->initCommands();
-
-        }
+        $this->initCommands();
 
         // Process all updates
         while (true) {

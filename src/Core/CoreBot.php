@@ -233,11 +233,19 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  */
 
 /**
+ * \addtogroup Core Core(Internal)
+ * \brief Core of the framework.
+ * @{
+ */
+
+/**
  * \class CoreBot
  * \brief Core of the framework
  * \details Contains data used by the bot to works, curl request handling, and all api methods (sendMessage, editMessageText, etc).
  */
 class CoreBot {
+
+    /** @} */
 
     use Updates,
         Send,
@@ -261,9 +269,6 @@ class CoreBot {
      * @{
      */
 
-    /** \brief The bot token (given by @BotFather). */
-    private $token;
-
     /** \brief Url request (containing $token). */
     protected $_api_url;
 
@@ -284,9 +289,7 @@ class CoreBot {
 
         }
 
-        // Init variables
-        $this->token = $token;
-        $this->_api_url = 'https://api.telegram.org/bot' . $token . '/';
+        $this->_api_url = "https://api.telegram.org/bot$token/";
 
         // Init connection and config it
         $this->_http = new \GuzzleHttp\Client([
@@ -297,7 +300,6 @@ class CoreBot {
             'http_errors' => false
         ]);
 
-        return;
     }
 
     /** @} */

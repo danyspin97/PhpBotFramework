@@ -2,7 +2,17 @@
 
 namespace PhpBotFramework\Entities;
 
+/**
+ * \addtogroup Entities Entities
+ * @{
+ */
+
+/** \class Message
+ * \brief This object represents a message.
+ */
 class Message implements \ArrayAccess {
+
+    /** @} */
 
     use EntityAccess;
 
