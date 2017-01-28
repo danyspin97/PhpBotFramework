@@ -74,6 +74,23 @@ Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for lea
 - [MyAddressBookBot](https://github.com/DanySpin97/MyAddressBookBot): [Try it on Telegram](https://telegram.me/myaddressbookbot)
 - [Giveaways_Bot](https://github.com/DanySpin97/GiveawaysBot): [Try it on Telegram](https://telegram.me/giveaways_bot)
 
+## Testing
+
+PhpBotFramework comes with a test suite you can run using **PHPUnit**.
+
+You need a valid bot token and chat ID in order to run tests:
+
+```shell
+export BOT_TOKEN=YOURBOTTOKEN
+export CHAT_ID=YOURCHATID
+```
+
+After you've set the necessary, you can run the test suite typing:
+
+```shell
+phpunit
+```
+
 ## Author
 This framework is developed and mantained by [DanySpin97](https://github.com/DanySpin97).
 
