@@ -1,0 +1,26 @@
+dist: trusty
+sudo: required
+language: php
+
+php:
+  - '7.0'
+
+services:
+  - postgresql
+  - redis-server
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+notifications:
+  on_success: never
+  on_failure: always
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+
+script:
+  - phpunit  --coverage-clover=coverage.xml --configuration phpunit.xml
