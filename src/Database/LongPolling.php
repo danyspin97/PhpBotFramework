@@ -75,6 +75,100 @@ trait LongPolling {
 
         $this->initCommands();
 
+         // Process all updates received
+        while (true) {
+
+            $updates = $this->getUpdates($offset, $limit, $timeout);
+
+            // Parse all updates received
+            foreach ($updates as $key => $update) {
+
+                try {
+
+                    $this->processUpdate($update);
+
+                } catch (BotException $e) {
+
+                    echo $e->getMessage();
+
+                }
+
+            }
+
+            // Update the offset in redis
+            $this->redis->set($offset_key, $offset + count($updates));
+
+        }
+
+    }
+
+    /**
+     * \brief (<i>Internal</i>) Get first update offset in database.
+     * \details Called by getUpdatesDatabase to get the offset saved in database or to get it from telegram and save it in database.
+     * @param $table_name Name of the table where offset is saved in the database
+     * @param $column_name Name of the column where the offset is saved in the database
+     * @return Id of the first update to process.
+     */
+    protected function getUpdateOffsetDatabase(string $table_name, string $column_name) : int {
+
+        // Get the offset from the database
+        $sth = $this->pdo->prepare('SELECT ' . $column_name . ' FROM ' . $table_name);
+
+        try {
+
+            $sth->execute();
+
+        } catch (PDOException $e) {
+
+            echo $e->getMessage();
+
+        }
+
+        $offset = $sth->fetchColumn();
+
+        $sth = null;
+
+        // Get the offset from the first update to update
+        if ($offset === false) {
+
+            do {
+
+                $update = $this->getUpdates(0, 1);
+
+            } while (empty($update));
+
+            $offset = $update[0]['update_id'];
+
+        }
+
+        return $offset;
+
+    }
+
+    /**
+     * \brief Get updates received by the bot, using the sql database to store and get the last offset.
+     * \details It check if an offset exists on redis, then get it, or call getUpdates to set it.
+     * Then it start an infinite loop where it process updates and update the offset on redis.
+     * Each update is surrounded by a try/catch.
+     * @see getUpdates
+     * @param $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
+     * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
+     * @param $table_name <i>Optional</i>. Name of the table where offset is saved in the database
+     * @param $column_name <i>Optional</i>. Name of the column where the offset is saved in the database
+     */
+    public function getUpdatesDatabase(int $limit = 100, int $timeout = 0, string $table_name = 'telegram', string $column_name = 'bot_offset') {
+
+        if (!isset($this->_database)) {
+
+            throw new BotException("Database connection is not set");
+
+        }
+
+        // Get offset from database
+        $this->getUpdateOffsetDatabase($table_name, $column_name);
+
+        $this->initCommands();
+
         // Prepare the query for updating the offset in the database
         $sth = $this->pdo->prepare('UPDATE "' . $table_name . '" SET "' . $column_name . '" = :new_offset');
 
