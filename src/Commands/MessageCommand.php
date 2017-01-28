@@ -2,6 +2,8 @@
 
 namespace PhpBotFramework\Commands;
 
+use PhpBotFramework\Entities\Message;
+
 trait MessageCommand {
 
     /**
@@ -10,11 +12,8 @@ trait MessageCommand {
      * @{
      */
 
-    /** \brief Store the command triggered on message. */
+    /** \brief (<i>Internal</i>)Store the command triggered on message. */
     protected $_message_commands;
-
-    /** \brief Does the bot has message commands? Set by initBot. */
-    protected $_message_commands_set;
 
     /**
      * \brief Add a function that will be executed everytime a message contain the selected command
@@ -31,29 +30,43 @@ trait MessageCommand {
             'script' => $script,
             'command' => '/' . $command,
             'length' => strlen($command) + 1,
-            'regex_active' => false
         ];
 
     }
 
     /**
-     * \brief Add a function that will be executed everytime a message contain a command that match the regex
-     * \details Use this syntax:
-     *
-     *     addMessageCommandRegex("number\d", function($bot, $message, $result) {
-     *         $bot->sendMessage("You sent me a number"); });
-     * @param $regex_rule Regex rule that will called for evalueting the command received.
-     * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
+     * \brief (<i>Internal</i>)Process a message checking if it trigger any MessageCommand.
+     * @param $message Message to process.
+     * @return True if the message triggered any command.
      */
-    public function addMessageCommandRegex(string $regex_rule, callable $script) {
+    protected function processMessageCommand(array $message) : bool {
 
-        $this->_message_commands[] = [
-            'script' => $script,
-            'regex_active' => true,
-            'regex_rule' => $regex_rule
-        ];
+        // If the message contains a bot command at the start
+        if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
+
+            // For each command added by the user
+            foreach ($this->_message_commands as $trigger) {
+
+                // If we found a valid command (check first lenght, then use strpos)
+                if ($trigger['length'] == $message['entities'][0]['length'] && mb_strpos($trigger['command'], $message['text'], $message['entities'][0]['offset']) !== false) {
+
+                    // Set chat_id
+                    $this->_chat_id = $message['chat']['id'];
+
+                    // Execute script,
+                    $trigger['script']($this, new Message($message));
+
+                    // Return
+                    return true;
+                }
+
+            }
+
+        }
+
+        // No command were triggered, return false
+        return false;
 
     }
-
 
 }

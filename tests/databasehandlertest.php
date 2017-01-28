@@ -4,7 +4,8 @@ require './vendor/autoload.php';
 use PHPUnit\Framework\TestCase;
 
 class DatabaseHandlerTest extends TestCase {
-    use PhpBotFramework\Utilities\DatabaseHandler;
+
+    use PhpBotFramework\Database\DatabaseHandler;
 
     /*
      * stringify($params)

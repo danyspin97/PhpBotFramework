@@ -2,7 +2,23 @@
 
 namespace PhpBotFramework\Commands;
 
+use PhpBotFramework\Entities\CallbackQuery;
+
+/**
+ * \addtogroup Modules
+ * @{
+ */
+
+/** \class CallbackCommand
+ */
 trait CallbackCommand {
+
+    /** @} */
+
+    /**
+     * \addtogroup Bot Bot
+     * @{
+     */
 
     /**
      * \addtogroup Commands
@@ -11,9 +27,6 @@ trait CallbackCommand {
 
     /** \brief Store the command triggered on callback query. */
     protected $_callback_commands;
-
-    /** \brief Does the bot has message commands? Set by initBot. */
-    protected $_callback_commands_set;
 
     /**
      * \brief Add a function that will be executed everytime a callback query contains a string as data
@@ -32,6 +45,42 @@ trait CallbackCommand {
         ];
 
     }
+
+    /**
+     * \brief (<i>Internal</i>) Process the callback query and check if it triggers a command of this type.
+     * @param $callback_query Callback query to process.
+     * @return True if the callback query triggered a command.
+     */
+    protected function processCallbackCommand(array $callback_query) : bool {
+
+        // Check for callback commands
+        if (isset($callback_query['data'])) {
+
+            // Iterate over all commands
+            foreach ($this->_callback_commands as $trigger) {
+
+                // If command is found in callback data
+                if (strpos($trigger['data'], $callback_query['data']) !== false) {
+
+                    // Set chat id
+                    $this->_chat_id = $callback_query['message']['chat']['id'];
+
+                    // Trigger the script
+                    $trigger['script']($this, new CallbackQuery($callback_query));
+
+                    // The callback triggered a command, return true
+                    return true;
+                }
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    /** @} */
 
     /** @} */
 

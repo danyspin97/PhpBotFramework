@@ -2,6 +2,11 @@
 
 namespace PhpBotFramework\Entities;
 
+/**
+ * \addtogroup Entities Entities
+ * @{
+ */
+
 /** \class InlineKeyboard
  * \brief Inline Keyboard handler that create and handle inline keyboard buttons.
  * \details It stores the inline keyboard buttons added until get() is called.
@@ -926,6 +931,9 @@ class InlineKeyboard {
 
     }
 
+    /** @} */
+
+    /** @} */
+
 }
 
-/** @} */

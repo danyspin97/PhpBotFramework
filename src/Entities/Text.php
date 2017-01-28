@@ -3,16 +3,16 @@
 namespace PhpBotFramework\Entities;
 
 /**
+ * \addtogroup Utility-classes Utility class
+ * \brief Static methods grouped by class and context.
+ * @{
+ */
+
+/**
  * \class Text
  * \brief Contains text helper methods
  */
 class Text {
-
-    /**
-     * \addtogroup Utility-methods Utility methods
-     * \brief Helper methods.
-     * @{
-     */
 
     /**
      * \brief Get hashtag contained in a string.
@@ -35,6 +35,20 @@ class Text {
 
         // Return an array of hashtags
         return $hashtags ?? [];
+    }
+
+    // http://www.mendoweb.be/blog/php-convert-string-to-camelcase-string/<Paste>
+    public static function camelCase($str, array $noStrip = [])
+{
+        // non-alpha and non-numeric characters become spaces
+        $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);
+        $str = trim($str);
+        // uppercase the first character of each word
+        $str = ucwords($str);
+        $str = str_replace(" ", "", $str);
+        $str = lcfirst($str);
+
+        return $str;
     }
 
     /**
@@ -76,5 +90,7 @@ class Text {
         return $string;
 
     }
+
+    /** @} */
 
 }
