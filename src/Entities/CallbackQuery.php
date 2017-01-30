@@ -18,6 +18,10 @@ class CallbackQuery implements \ArrayAccess {
 
     use EntityAccess;
 
+    /**
+     * \brief Get data parameter if it is set.
+     * @return $data if set or empty string otherwise.
+     */
     public function getData() : string {
 
         // Get text of the message if any
@@ -25,6 +29,10 @@ class CallbackQuery implements \ArrayAccess {
 
     }
 
+    /**
+     * \brief Get chat id of the chat in which the message attached to this callback has been send.
+     * @return $chat_id Chat id of the chat.
+     */
     public function getChatID() {
 
         // Return the chat id
@@ -32,6 +40,10 @@ class CallbackQuery implements \ArrayAccess {
 
     }
 
+    /**
+     * \brief Get message attached to this callback.
+     * @return $message Message class object attached to this callback.
+     */
     public function getMessage() {
 
         if (!is_a($this->container, 'PhpBotFramework\Entities\Message')) {
@@ -44,12 +56,21 @@ class CallbackQuery implements \ArrayAccess {
 
     }
 
+    /**
+     * \brief (<i>Internal</i>) Get parameter to set to the bot.
+     * \details Each time the bot receive a callback query the parameter _callback_query_id will be set to the id of this callback.
+     * @return Array with the parameter name as "var" index, and the id in "id" index.
+     */
     public function getBotParameter() : array {
 
         return ['var' => '_callback_query_id', 'id' => $this->container['id']];
 
     }
 
+    /**
+     * \brief Get if of this callback query.
+     * @return $id Id of the callback.
+     */
     public function getID() : int {
 
         return $this->container['id'];
