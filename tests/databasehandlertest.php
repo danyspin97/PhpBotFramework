@@ -13,6 +13,7 @@ class DatabaseHandlerTest extends TestCase {
      * could be passed to PDO in order to connect to a database.
      */
     public function testStringify() {
+
         $response = $this->stringify([
             'adapter' => 'pgsql',
             'host' => 'lh',
@@ -21,6 +22,7 @@ class DatabaseHandlerTest extends TestCase {
 
         $this->assertEquals($response, 'pgsql:host=lh;dbname=test');
         return;
+
     }
 
     public function testShouldBePresentDefaultAdapter() {

@@ -3,6 +3,11 @@
 require './vendor/autoload.php';
 use PHPUnit\Framework\TestCase;
 
+// Defines images url
+define('TREE_IMAGE', 'http://www.planwallpaper.com/static/images/2022725-wallpaper_625864_Iz6NK8G.jpg');
+define('EYES_IMAGE', 'http://www.planwallpaper.com/static/images/wallpapers-7020-7277-hd-wallpapers.jpg');
+define('PANDA_IMAGE', 'http://www.planwallpaper.com/static/images/wallpaper-11628192.jpg');
+
 class CoreBotTest extends TestCase {
 
     public function testCreateCoreBot() {
@@ -50,6 +55,7 @@ class CoreBotTest extends TestCase {
     /**
      * @param string $text Text of the message to send
      * @param string $parse_mode Parse mode of the message to send
+     * @param CoreBot $bot Bot object that will send the photo
      *
      * @depends testCreateCoreBot
      * @dataProvider providerMessageText
@@ -68,6 +74,40 @@ class CoreBotTest extends TestCase {
     }
 
     /**
+     * @param string $photo Photo to send
+     * @param string $caption Caption to sen along with the photo
+     * @param CoreBot $bot Bot object that will send the photo
+     *
+     * @depends testCreateCoreBot
+     * @dataProvider providerPhoto
+     */
+    public function testSendPhoto($photo, $caption, $bot) {
+
+        // Send the photo
+        $new_photo = $bot->sendPhoto($photo, null, $caption);
+
+        // Does the message sent contains a photo?
+        $this->assertArrayHasKey('photo', $new_photo);
+
+        // The photo sent has a caption?
+        $this->assertArrayHasKey('caption', $new_photo);
+
+        // Are the caption equals?
+        $this->assertEquals($new_photo['caption'], $caption);
+
+    }
+
+    public function providerPhoto() {
+
+        return [
+            'tree' => [TREE_IMAGE, 'What a fantastic tree.'],
+            'eyes' => [EYES_IMAGE, 'Blue is the new black.'],
+            'panda' => [PANDA_IMAGE, 'Oohh, there is a panda!']
+        ];
+
+    }
+
+    /**
      * getWebhookInfo()
      * It can be used to get information about your bot's webhooks.
      * Returns an hash which contains all the data.
@@ -75,12 +115,14 @@ class CoreBotTest extends TestCase {
      * @depends testCreateCoreBot
      */
     public function testGetWebhookInfo($bot) {
+
         $response = $bot->getWebhookInfo();
 
         $this->assertEquals(is_array($response), true);
         $this->assertArrayHasKey('pending_update_count', $response);
 
         return;
+
     }
 
     /**

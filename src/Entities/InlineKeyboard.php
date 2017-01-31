@@ -2,6 +2,8 @@
 
 namespace PhpBotFramework\Entities;
 
+use PhpBotFramework\Exceptions\BotException;
+
 /**
  * \addtogroup Entities Entities
  * @{
