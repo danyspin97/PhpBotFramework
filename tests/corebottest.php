@@ -66,7 +66,7 @@ class CoreBotTest extends TestCase {
         $new_message = $bot->sendMessage($text, null, null, $parse_mode);
 
         // Is the response an array?
-        $this->assertEquals(is_array($new_message), true);
+        $this->assertInstanceOf('PhpBotFramework\Entities\Message', $new_message);
 
         // Does the array have the text key?
         $this->assertArrayHasKey('text', $new_message);

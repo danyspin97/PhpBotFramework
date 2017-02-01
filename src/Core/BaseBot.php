@@ -33,13 +33,9 @@ class BaseBot extends CoreBot {
         parent::__construct($token);
 
         // Add alias for entity classes
-        class_alias('PhpBotFramework\Entities\Message', 'Message');
-        class_alias('PhpBotFramework\Entities\CallbackQuery', 'CallbackQuery');
-        class_alias('PhpBotFramework\Entities\InlineQuery', 'InlineQuery');
-        class_alias('PhpBotFramework\Entities\ChosenInlineResult', 'ChosenInlineResult');
-        class_alias('Message', 'EditedMessage');
-        class_alias('Message', 'ChannelPost');
-        class_alias('Message', 'EditedChannelPost');
+        class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\EditedMessage');
+        class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\ChannelPost');
+        class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\EditedChannelPost');
 
     }
 
@@ -156,7 +152,8 @@ class BaseBot extends CoreBot {
 
             if (isset($update[$offset])) {
 
-                $object = new $class($update[$offset]);
+                $object_class = "PhpBotFramework\Entities\\$class";
+                $object = new $object_class($update[$offset]);
 
                 $this->_chat_id = $object->getChatID();
 

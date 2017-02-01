@@ -4,7 +4,7 @@ namespace PhpBotFramework\Core;
 
 trait Inline {
 
-    abstract protected function exec_curl_request($url, $method);
+    abstract protected function execRequest(string $url, string $method);
 
     /**
      * \addtogroup Core Core(Internal)
@@ -48,7 +48,7 @@ trait Inline {
             'url' => $url
         ];
 
-        return $this->exec_curl_request('answerCallbackQuery?' . http_build_query($parameters));
+        return $this->execRequest('answerCallbackQuery?' . http_build_query($parameters));
 
     }
 
@@ -76,7 +76,7 @@ trait Inline {
             'cache_time' => $cache_time
         ];
 
-        return $this->exec_curl_request('answerInlineQuery?' . http_build_query($parameters));
+        return $this->execRequest('answerInlineQuery?' . http_build_query($parameters));
 
     }
 
@@ -102,7 +102,7 @@ trait Inline {
             'cache_time' => $cache_time
         ];
 
-        return $this->exec_curl_request('answerInlineQuery?' . http_build_query($parameters));
+        return $this->execRequest('answerInlineQuery?' . http_build_query($parameters));
 
     }
 

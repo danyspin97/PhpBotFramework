@@ -10,7 +10,7 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  * \mainpage
  * \section Description
  * PhpBotFramework is a lightweight framework for [Telegram Bot API](https://core.telegram.org/bots/api).
- * Designed to be fast and easy to use, it provides all the features a user need in order to start 
+ * Designed to be fast and easy to use, it provides all the features a user need in order to start
  * developing Telegram bots..
  *
  * \section Installation
@@ -22,7 +22,7 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  *     composer install --no-dev
  *
  * \section Usage
- * You can start working on your bot creating a new instance of Bot or by creating a 
+ * You can start working on your bot creating a new instance of Bot or by creating a
  * class that inherits from it.
  *
  * Each API call will have <code>$_chat_id</code> set to the current user:
@@ -122,13 +122,13 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  * \section Webhook-section Webhook
  * An alternative way to receive updates is using **webhooks**.
  *
- * Everytime a user interacts with the bot, Telegram servers send the update through 
+ * Everytime a user interacts with the bot, Telegram servers send the update through
  * a POST request to a URL chose by you.
  *
  * A web server will create an instance of the bot for every update received.
  *
  * If you want to use webhook: call Bot::processWebhookUpdate() at the end of your bot.
- * 
+ *
  * The bot will get data from <code>php://input</code> and process it using Bot::processUpdate().
  * Each instance of the bot will open its connection.
  *
@@ -176,7 +176,7 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  *
  * \section InlineKeyboard-Usage Inline keyboards
  *
- * Telegram implements something called [inline keyboards](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating) which allows users to send commands to a 
+ * Telegram implements something called [inline keyboards](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating) which allows users to send commands to a
  * bot tapping on buttons instead of typing text.
  *
  * PhpBotFrameworks supports **inline keyboard** and you can easily integrate it with your bot:
@@ -199,7 +199,7 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  *     $bot->addMessageCommand("start", $command_function);
  *
  * \section Sql-Database Database
- * A database is required in order to save offsets (if you use local updates) 
+ * A database is required in order to save offsets (if you use local updates)
  * and save user's language.
  *
  * We implemented a simpler way to connect to a database which is based on PDO:
@@ -432,7 +432,7 @@ class CoreBot {
      */
     public function apiRequest(string $method, array $parameters) {
 
-        return $this->exec_curl_request($method . '?' . http_build_query($parameters));
+        return $this->execRequest($method . '?' . http_build_query($parameters));
 
     }
 
@@ -443,12 +443,37 @@ class CoreBot {
      * @{
      */
 
+    protected function processRequest(string $method, array $param, string $class = '') {
+
+        $response = $this->execRequest("$method?" . http_build_query($param));
+
+        if ($response === false) {
+
+            return false;
+
+        }
+
+        // if (!$this->_async)
+        if ($class !== '') {
+
+            if ($class ==)
+
+            $object_class = "PhpBotFramework\Entities\\$class";
+
+            return new $object_class($response);
+
+        }
+
+        return $response;
+    }
+
+
     /** \brief Core function to execute HTTP request.
      * @param $url The request's URL.
      * @param $method The request's HTTP method, POST by default.
      * @return Url response, false on error.
      */
-    protected function exec_curl_request($url, $method = 'POST') {
+    protected function execRequest(string $url, string $method = 'POST') {
 
         $response = $this->_http->request($method, $url);
         $http_code = $response->getStatusCode();
