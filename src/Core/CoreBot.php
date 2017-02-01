@@ -456,8 +456,6 @@ class CoreBot {
         // if (!$this->_async)
         if ($class !== '') {
 
-            if ($class ==)
-
             $object_class = "PhpBotFramework\Entities\\$class";
 
             return new $object_class($response);
