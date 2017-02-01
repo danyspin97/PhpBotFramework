@@ -19,7 +19,7 @@
             <directory suffix=".php" processUncoveredFilesFromWhitelist="true">./src</directory>
             <exclude>
                 <directory suffix=".php">./src/Exception</directory>
-            </exclude>       <whitelist processUncoveredFilesFromWhitelist="true">
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
