@@ -70,6 +70,25 @@ composer install --no-dev
 ## Documentation
 Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for learning more about PhpBotFramework.
 
+## FAQ
+
+- **Why we don't implement asynchronous requests?**:
+
+   We use [Guzzle](https://github.com/guzzle/guzzle) in order to fire HTTP requests to Telegram Bot API.
+
+   Unfortunately it doesn't implement real asynchronous requests but **a sort of**.
+
+   Take a look to [this issue](https://github.com/guzzle/guzzle/issues/1127) for more information.
+
+- **How can I pass chat ID to a method?**:
+
+  Easy: you can't.
+  
+  Most of the frameworks out there requires you to specify the chat ID for every method's call but 
+  PhpBotFramework is "smart" enough to set it as the current user, group or channel.
+  
+  If you want change the chat ID you can still use [setChatID](https://danyspin97.github.io/PhpBotFramework/group__Bot.html).
+
 ## Made with PhpBotFramework
 - [MyAddressBookBot](https://github.com/DanySpin97/MyAddressBookBot): [Try it on Telegram](https://telegram.me/myaddressbookbot)
 - [Giveaways_Bot](https://github.com/DanySpin97/GiveawaysBot): [Try it on Telegram](https://telegram.me/giveaways_bot)
