@@ -72,7 +72,7 @@ Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for lea
 
 ## FAQ
 
-- **Why we don't implement asynchronous requests?**:
+- **Why we don't implement asynchronous requests?**
 
    We use [Guzzle](https://github.com/guzzle/guzzle) in order to fire HTTP requests to Telegram Bot API.
 
@@ -80,7 +80,7 @@ Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for lea
 
    Take a look to [this issue](https://github.com/guzzle/guzzle/issues/1127) for more information.
 
-- **How can I pass chat ID to a method?**:
+- **How can I pass chat ID to a method?**
 
   Easy: you can't.
   
