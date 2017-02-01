@@ -13,6 +13,12 @@ trait LongPolling {
      * @{
      */
 
+    /** Redis connection. */
+    public $redis;
+
+    /** Pdo connection to the database. */
+    public $pdo;
+
     /**
      * \addtogroup LongPollingDatabase Long polling With Database
      * \brief Use getUpdates saving and getting offset in redis/sql-database.

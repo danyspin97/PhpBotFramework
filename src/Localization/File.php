@@ -31,11 +31,11 @@ trait File {
 
     /**
      * \brief Load a localization file into the localized strings array.
-     * @param $lang Language to load.
-     * @param $dir Directory in which there are the JSON files.
-     * @return True if loaded. False if already loaded.
+     * @param string $lang Language to load.
+     * @param string $dir Directory in which there are the JSON files.
+     * @return bool True if loaded. False if already loaded.
      */
-    protected function loadSingleLanguage(string $lang = 'en', $dir = './localization') : bool {
+    protected function loadSingleLanguage(string $lang = 'en', string $dir = './localization') : bool {
 
         // Name of the file
         $filename = "$dir/$lang";
@@ -59,9 +59,9 @@ trait File {
      * \brief Load all localization files (JSON-serialized) from a folder and set them in $local variable.
      * \details Save all localization files, saved as json format, from a directory and put the contents in $local variable.
      * Each file will be saved into $local with the first two letters of the filename as the index.
-     * @param $dir Directory where the localization files are saved.
+     * @param string $dir Directory where the localization files are saved.
      */
-    public function loadLocalization($dir = './localization') {
+    public function loadLocalization(string $dir = './localization') {
 
         // Open directory
         if ($handle = opendir($dir)) {
@@ -92,7 +92,7 @@ trait File {
 
     }
 
-    public function setLocalizationDir($dir) {
+    public function setLocalizationDir(string $dir) {
 
         $this->localization_dir = $dir;
 

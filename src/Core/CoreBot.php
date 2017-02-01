@@ -316,16 +316,18 @@ class CoreBot {
      * @{
      */
 
-    /** \brief Chat_id of the user that interacted with the bot */
-    protected $_chat_id;
-
-    /** @} */
-
     /**
      * \addtogroup Core Core(Internal)
      * \brief Core of the framework.
      * @{
      */
+
+    /** \brief Chat_id of the user that interacted with the bot. */
+    protected $_chat_id;
+
+    /** \brief Bot id. */
+    protected $_bot_id;
+
     /** \brief Url request (containing $token). */
     protected $_api_url;
 
@@ -368,7 +370,7 @@ class CoreBot {
 
     /**
      * \brief Get chat ID of the current user.
-     * @return Chat ID of the user.
+     * @return int Chat ID of the user.
      */
     public function getChatID() {
 
@@ -379,32 +381,29 @@ class CoreBot {
     /**
      * \brief Set current chat ID.
      * \details Change the chat ID on which the bot acts.
-     * @param $_chat_id The new chat ID to set.
+     * @param $chat_id The new chat ID to set.
      */
-    public function setChatID($_chat_id) {
+    public function setChatID($chat_id) {
 
-        $this->_chat_id = $_chat_id;
+        $this->_chat_id = $chat_id;
 
     }
 
     /**
      * \brief Get bot ID using `getMe` method.
+     * @return int Bot id, 0 on errors.
      */
     public function getBotID() : int {
 
-        // Get the id of the bot
-        static $bot_id;
-        $bot_id = ($this->getMe())['id'];
-
         // If it is not valid
-        if (!isset($bot_id) || $bot_id == 0) {
+        if (!isset($this->_bot_id) || $this->_bot_id == 0) {
 
             // get it again
-            $bot_id = ($this->getMe())['id'];
+            $this->_bot_id = ($this->getMe())['id'];
 
         }
 
-        return $bot_id ?? 0;
+        return $this->_bot_id ?? 0;
 
     }
 
@@ -443,6 +442,14 @@ class CoreBot {
      * @{
      */
 
+    /**
+     * \brief Process an api method by taking method and parameter.
+     * \details optionally create a object of $class class name with the response as constructor param.
+     * @param string $method Method to call.
+     * @param array $param Parameter for the method.
+     * @param string $class Class name of the object to create using response.
+     * @return mixed Response or object of $class class name.
+     */
     protected function processRequest(string $method, array $param, string $class = '') {
 
         $response = $this->execRequest("$method?" . http_build_query($param));
@@ -453,7 +460,6 @@ class CoreBot {
 
         }
 
-        // if (!$this->_async)
         if ($class !== '') {
 
             $object_class = "PhpBotFramework\Entities\\$class";
@@ -463,42 +469,42 @@ class CoreBot {
         }
 
         return $response;
+
     }
 
 
     /** \brief Core function to execute HTTP request.
      * @param $url The request's URL.
-     * @param $method The request's HTTP method, POST by default.
-     * @return Url response, false on error.
+     * @return Array|false Url response decoded from JSON, false on error.
      */
-    protected function execRequest(string $url, string $method = 'POST') {
+    protected function execRequest(string $url) {
 
-        $response = $this->_http->request($method, $url);
+        $response = $this->_http->request('POST', $url);
         $http_code = $response->getStatusCode();
 
         if ($http_code === 200) {
+
             $response = json_decode($response->getBody(), true);
 
-            if (isset($response['desc'])) {
-                error_log("Request was successfull: {$response['description']}\n");
-            }
-
             return $response['result'];
+
         } elseif ($http_code >= 500) {
+
             // do not wat to DDOS server if something goes wrong
             sleep(10);
             return false;
+
         } else {
+
             $response = json_decode($response->getBody(), true);
             error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
-            if ($http_code === 401) {
-                throw new BotException('Invalid access token provided');
-            }
             return false;
+
         }
 
-        return $response;
     }
+
+    /** @} */
 
     /** @} */
 

@@ -12,6 +12,9 @@ trait Language {
     /** \brief Store the language for a multi-language bot */
     public $language;
 
+    /** Pdo connection to the database. */
+    public $pdo;
+
     /** \brief Table contaning bot users data in the sql database. */
     public $user_table = '"User"';
 

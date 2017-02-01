@@ -4,7 +4,7 @@ namespace PhpBotFramework\Core;
 
 trait Inline {
 
-    abstract protected function execRequest(string $url, string $method);
+    abstract protected function execRequest(string $url);
 
     /**
      * \addtogroup Core Core(Internal)

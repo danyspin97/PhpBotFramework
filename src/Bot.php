@@ -12,7 +12,8 @@ class Bot extends Core\BaseBot {
         Commands\MessageRegexCommand,
         Commands\CallbackCommand,
         Database\LongPolling,
-        Database\DatabaseHandler,
+        Database\Handler,
+        Database\User,
         Localization\File,
         Localization\Language,
         Localization\LocalizatedString,
@@ -37,6 +38,7 @@ class Bot extends Core\BaseBot {
     /**
      * \brief Construct an empty bot.
      * \details Construct a bot that can handle updates, localization, database connection and handling, redis database.
+     * @param string $token Bot token given by BotFather.
      */
     public function __construct(string $token) {
 
@@ -71,8 +73,5 @@ class Bot extends Core\BaseBot {
     }
 
     /** @} */
-
-    /** @} */
-
 
 }

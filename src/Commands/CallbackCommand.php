@@ -15,6 +15,9 @@ trait CallbackCommand {
 
     /** @} */
 
+    /** \brief Chat id of the current user/group/channel. */
+    protected $_chat_id;
+
     /**
      * \addtogroup Bot Bot
      * @{

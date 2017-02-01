@@ -6,7 +6,7 @@ use PhpBotFramework\Entities\Message;
 
 trait Send {
 
-    abstract protected function execRequest(string $url, string $method);
+    abstract protected function execRequest(string $url);
 
     abstract protected function processRequest(string $method, array $param, string $class);
 

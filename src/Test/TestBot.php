@@ -4,11 +4,13 @@ namespace PhpBotFramework\Test;
 
 use PhpBotFramework\Bot;
 
+use PhpBotFramework\Entities\Message;
+
 class TestBot extends Bot {
 
     use FakeUpdate;
 
-    public function processMessage($message) {
+    public function processMessage(Message $message) {
 
         $this->setChatID(getenv("CHAT_ID"));
 

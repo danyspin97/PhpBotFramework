@@ -4,7 +4,19 @@ namespace PhpBotFramework\Commands;
 
 use PhpBotFramework\Entities\Message;
 
+/**
+ * \addtogroup Modules
+ * @{
+ */
+
+/** \class MessageRegexCommand
+ */
 trait MessageRegexCommand {
+
+    /** @} */
+
+    /** \brief Chat id of the current user/group/channel. */
+    protected $_chat_id;
 
     /**
      * \addtogroup Commands

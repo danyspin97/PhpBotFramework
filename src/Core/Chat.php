@@ -4,7 +4,7 @@ namespace PhpBotFramework\Core;
 
 trait Chat {
 
-    abstract protected function execRequest(string $url, string $method);
+    abstract protected function execRequest(string $url);
 
     /**
      * \addtogroup Bot
@@ -48,10 +48,10 @@ trait Chat {
      * @param string $chat_id Unique identifier for the target chat or username of the target supergroup or channel (in the format <code>@channelusername</code>)
      * @return Array|false On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
      */
-    public function getChatAdministrators($_chat_id) {
+    public function getChatAdministrators($chat_id) {
 
         $parameters = [
-            'chat_id' => $_chat_id,
+            'chat_id' => $chat_id,
         ];
 
         return $this->execRequest('getChatAdministrators?' . http_build_query($parameters));

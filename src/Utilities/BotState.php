@@ -84,11 +84,14 @@ trait BotState {
     /** \brief Status of the bot to handle data inserting and menu-like bot. */
     public $status;
 
+    /** \brief Redis connection. */
+    public $redis;
+
     /**
      * \brief Get current user status from redis and set it in status variable.
      * \details Throw exception if redis connection is missing.
-     * @param $default_status <i>Optional</i>. The default status to return in case there is no status for the current user.
-     * @return The status for the current user, $default_status if missing.
+     * @param int $default_status <i>Optional</i>. The default status to return in case there is no status for the current user.
+     * @return int The status for the current user, $default_status if missing.
      */
     public function getStatus(int $default_status = -1) : int {
 
@@ -114,7 +117,7 @@ trait BotState {
 
     /** \brief Set the status of the bot in both redis and $status.
      * \details Throw exception if redis connection is missing.
-     * @param $status The new status of the bot.
+     * @param int $status The new status of the bot.
      */
     public function setStatus(int $status) {
 

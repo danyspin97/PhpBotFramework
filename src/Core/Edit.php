@@ -4,7 +4,7 @@ namespace PhpBotFramework\Core;
 
 trait Edit {
 
-    abstract protected function execRequest(string $url, string $method);
+    abstract protected function execRequest(string $url);
 
     /**
      * \addtogroup Api Api Methods

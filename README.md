@@ -80,14 +80,12 @@ Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for lea
 
    Take a look to [this issue](https://github.com/guzzle/guzzle/issues/1127) for more information.
 
-- **How can I pass chat ID to a method?**
+- **Why there is no chat__id to pass for api methods?**
 
-  Easy: you can't.
-  
-  Most of the frameworks out there requires you to specify the chat ID for every method's call but 
-  PhpBotFramework is "smart" enough to set it as the current user, group or channel.
-  
-  If you want change the chat ID you can still use [setChatID](https://danyspin97.github.io/PhpBotFramework/group__Bot.html).
+  PhpBotFramework is "smart" enough to set it as the current user, group or channel id.
+  Most of the frameworks out there requires you to specify the chat ID for every method's call but PhpBotFramework will call next api method to whom sent the update.
+
+  You can still change it by using [setChatID](https://danyspin97.github.io/PhpBotFramework/group__Bot.html).
 
 ## Made with PhpBotFramework
 - [MyAddressBookBot](https://github.com/DanySpin97/MyAddressBookBot): [Try it on Telegram](https://telegram.me/myaddressbookbot)
@@ -107,11 +105,11 @@ export CHAT_ID=YOURCHATID
 After you've set the necessary, you can run the test suite typing:
 
 ```shell
-phpunit
+php vendor/bin/phpunit
 ```
 
 ## Author
-This framework is developed and mantained by [DanySpin97](https://github.com/DanySpin97).
+This framework is developed and mantained by @DanySpin97 and @DomCorvasce.
 
 ## License
 PhpBotFramework is released under [GNU Lesser General Public License v3](https://www.gnu.org/licenses/lgpl-3.0.en.html).

@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class DatabaseHandlerTest extends TestCase {
 
-    use PhpBotFramework\Database\DatabaseHandler;
+    use PhpBotFramework\Database\Handler;
 
     /*
      * stringify($params)

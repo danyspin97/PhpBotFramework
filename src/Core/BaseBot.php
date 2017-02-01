@@ -4,6 +4,11 @@ namespace PhpBotFramework\Core;
 
 use PhpBotFramework\Exceptions\BotException;
 
+use PhpBotFramework\Entities\Message;
+use PhpBotFramework\Entities\CallbackQuery;
+use PhpBotFramework\Entities\ChosenInlineResult;
+use PhpBotFramework\Entities\InlineQuery;
+
 /**
  * \class Bot Bot
  * \brief Bot class to handle updates and commandes.
@@ -67,40 +72,23 @@ class BaseBot extends CoreBot {
      * then it start an infinite loop where it processes updates and keep $offset on the update_id of the last update received.
      * Each processUpdate() method call is surrounded by a try/catch.
      * @see getUpdates
-     * @param $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
-     * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
+     * @param int $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
+     * @param int $timeout <i>Optional</i>. Timeout in seconds for long polling.
      */
     public function getUpdatesLocal(int $limit = 100, int $timeout = 60) {
 
-        $update = [];
-
         // While there aren't updates to process
-        do {
-
-            // Get updates from telegram
-            $update = $this->getUpdates(0, 1);
-
-            // While in the array received there aren't updates
-        } while (empty($update));
+        while (empty($update = $this->getUpdates(0, 1)));
 
         // Set the offset to the first update recevied
         $offset = $update[0]['update_id'];
-
-        $update = null;
 
         $this->initCommands();
 
         // Process all updates
         while (true) {
 
-            // Set parameter for the url call
-            $parameters = [
-                'offset' => $offset,
-                'limit' => $limit,
-                'timeout' => $timeout
-            ];
-
-            $updates = $this->exec_curl_request($this->_api_url . 'getUpdates?' . http_build_query($parameters));
+            $updates = $this->execRequest("getUpdates?offset=$offset&limit=$limit&timeout=$timeout");
 
             // Parse all update to receive
             foreach ($updates as $key => $update) {
@@ -135,8 +123,8 @@ class BaseBot extends CoreBot {
     /**
      * \brief Dispatch each update to the right method (processMessage, processCallbackQuery, etc).
      * \details Set $chat_id for each update, $text, $data and $query are set for each update that contains them.
-     * @param $update Reference to the update received.
-     * @return The id of the update processed.
+     * @param array $update Reference to the update received.
+     * @return int The id of the update processed.
      */
     protected function processUpdate(array $update) : int {
 
@@ -185,9 +173,9 @@ class BaseBot extends CoreBot {
      * \brief Called every message received by the bot.
      * \details Override it to script the bot answer for each message.
      * <code>$chat_id</code> and <code>$text</code>, if the message contains text(use getMessageText() to access it), set inside of this function.
-     * @param $message Reference to the message received.
+     * @param Message $message Reference to the message received.
      */
-    protected function processMessage($message) {
+    protected function processMessage(Message $message) {
 
     }
 
@@ -195,9 +183,9 @@ class BaseBot extends CoreBot {
      * \brief Called every callback query received by the bot.
      * \details Override it to script the bot answer for each callback.
      * <code>$chat_id</code> and <code>$data</code>, if set in the callback query(use getCallbackData() to access it) set inside of this function.
-     * @param $callback_query Reference to the callback query received.
+     * @param CallbackQuery $callback_query Reference to the callback query received.
      */
-    protected function processCallbackQuery($callback_query) {
+    protected function processCallbackQuery(CallbackQuery $callback_query) {
 
     }
 
@@ -205,9 +193,9 @@ class BaseBot extends CoreBot {
      * \brief Called every inline query received by the bot.
      * \details Override it to script the bot answer for each inline query.
      * $chat_id and $query(use getInlineQuery() to access it) set inside of this function.
-     * @param $inline_query Reference to the inline query received.
+     * @param InlineQuery $inline_query Reference to the inline query received.
      */
-    protected function processInlineQuery($inline_query) {
+    protected function processInlineQuery(InlineQuery $inline_query) {
 
     }
 
@@ -215,9 +203,9 @@ class BaseBot extends CoreBot {
      * \brief Called every chosen inline result received by the bot.
      * \details Override it to script the bot answer for each chosen inline result.
      * <code>$chat_id</code> set inside of this function.
-     * @param $chosen_inline_result Reference to the chosen inline result received.
+     * @param ChosenInlineResult $chosen_inline_result Reference to the chosen inline result received.
      */
-    protected function processChosenInlineResult($chosen_inline_result) {
+    protected function processChosenInlineResult(ChosenInlineResult $chosen_inline_result) {
 
     }
 
@@ -225,9 +213,9 @@ class BaseBot extends CoreBot {
      * \brief Called every chosen edited message received by the bot.
      * \details Override it to script the bot answer for each edited message.
      * <code>$chat_id</code> set inside of this function.
-     * @param $edited_message The message edited by the user.
+     * @param Message $edited_message The message edited by the user.
      */
-    protected function processEditedMessage($edited_message) {
+    protected function processEditedMessage(Message $edited_message) {
 
     }
 
@@ -235,9 +223,9 @@ class BaseBot extends CoreBot {
      * \brief Called every new post in the channel where the bot is in.
      * \details Override it to script the bot answer for each post sent in a channel.
      * <code>$chat_id</code> set inside of this function.
-     * @param $post The message sent in the channel.
+     * @param Message $post The message sent in the channel.
      */
-    protected function processChannelPost($post) {
+    protected function processChannelPost(Message $post) {
 
     }
 
@@ -245,9 +233,9 @@ class BaseBot extends CoreBot {
      * \brief Called every time a post get edited in the channel where the bot is in.
      * \details Override it to script the bot answer for each post edited  in a channel.
      * <code>$chat_id</code> set inside of this function.
-     * @param $post The message edited in the channel.
+     * @param Message $post The message edited in the channel.
      */
-    protected function processEditedChannelPost($edited_post) {
+    protected function processEditedChannelPost(Message $edited_post) {
 
     }
 
