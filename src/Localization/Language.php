@@ -1,8 +1,25 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Localization;
 
-trait Language {
+trait Language
+{
 
     /**
      * \addtogroup Localization Localization
@@ -26,17 +43,16 @@ trait Language {
      * @param $default_language <i>Optional</i>. Default language to return in case of errors.
      * @return Language set for the current user, $default_language on errors.
      */
-    public function getLanguageDatabase($default_language = 'en') {
+    public function getLanguageDatabase($default_language = 'en')
+    {
 
         // If we have no database
         if (!isset($this->_database)) {
-
             // Set the language to english
             $this->language = $default_language;
 
             // Return english
             return $default_language;
-
         }
 
         // Get the language from the bot
@@ -44,13 +60,9 @@ trait Language {
         $sth->bindParam(':chat_id', $this->_chat_id);
 
         try {
-
             $sth->execute();
-
         } catch (PDOException $e) {
-
             echo $e->getMessage();
-
         }
 
         $row = $sth->fetch();
@@ -59,13 +71,11 @@ trait Language {
 
         // If we got the language
         if (isset($row['language'])) {
-
             // Set the language in the bot
             $this->language = $row['language'];
 
             // And return it
             return $row['language'];
-
         }
 
         // If we couldn't get it, set the language to english
@@ -73,7 +83,6 @@ trait Language {
 
         // and return english
         return $this->language;
-
     }
 
     /**
@@ -85,23 +94,20 @@ trait Language {
      * @param $expiring_time <i>Optional</i>. Set the expiring time for the language on redis each time it is took from the sql database.
      * @return Language for the current user, $default_language on errors.
      */
-    public function getLanguageRedis($default_language = 'en', $expiring_time = '86400') : string {
+    public function getLanguageRedis($default_language = 'en', $expiring_time = '86400') : string
+    {
 
         // If redis or pdo connection are not set
         if (!isset($this->redis) || !isset($this->pdo)) {
-
             // return default language
             return $default_language;
-
         }
 
         // Does it exists on redis?
         if ($this->redis->exists($this->_chat_id . ':language')) {
-
             // Get the value
             $this->language = $this->redis->get($this->_chat_id . ':language');
             return $this->language;
-
         }
 
         // Set the value from the db
@@ -109,7 +115,6 @@ trait Language {
 
         // and return it
         return $this->language;
-
     }
 
     /**
@@ -119,7 +124,8 @@ trait Language {
      * @param $expiring_time <i>Optional</i>. Time for the language key in redis to expire.
      * @return On sucess, return true, throw exception otherwise.
      */
-    public function setLanguageRedis($language, $expiring_time = '86400') {
+    public function setLanguageRedis($language, $expiring_time = '86400')
+    {
 
         // Check database connection
         if (!isset($this->_database) && !isset($this->redis)) {
@@ -132,13 +138,9 @@ trait Language {
         $sth->bindParam(':id', $this->_chat_id);
 
         try {
-
             $sth->execute();
-
         } catch (PDOException $e) {
-
             throw new BotException($e->getMessage());
-
         }
 
         // Destroy statement
@@ -149,9 +151,7 @@ trait Language {
 
         // Set language in the bot variable
         $this->language = $language;
-
     }
 
     /** @} */
-
 }

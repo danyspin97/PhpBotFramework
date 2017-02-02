@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Core;
 
 use PhpBotFramework\Exceptions\BotException;
@@ -16,8 +32,8 @@ use PhpBotFramework\Entities\InlineQuery;
  * Usage example in webhook.php
  *
  */
-class BaseBot extends CoreBot {
-
+class BaseBot extends CoreBot
+{
     use \PhpBotFramework\Commands\CommandHandler;
 
     /**
@@ -32,8 +48,8 @@ class BaseBot extends CoreBot {
      * \brief Construct an empty base bot.
      * \details Construct a base bot that can handle updates.
      */
-    public function __construct(string $token) {
-
+    public function __construct(string $token)
+    {
         // Parent constructor
         parent::__construct($token);
 
@@ -41,7 +57,6 @@ class BaseBot extends CoreBot {
         class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\EditedMessage');
         class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\ChannelPost');
         class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\EditedChannelPost');
-
     }
 
     /** @} */
@@ -56,14 +71,13 @@ class BaseBot extends CoreBot {
      * \details Call this method if you are using webhook.
      * It will get update from php::\input, check it and then process it using processUpdate.
      */
-    public function processWebhookUpdate() {
-
+    public function processWebhookUpdate()
+    {
         $this->_is_webhook = true;
 
         $this->initCommands();
 
         $this->processUpdate(json_decode(file_get_contents('php://input'), true));
-
     }
 
     /**
@@ -75,10 +89,11 @@ class BaseBot extends CoreBot {
      * @param int $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
      * @param int $timeout <i>Optional</i>. Timeout in seconds for long polling.
      */
-    public function getUpdatesLocal(int $limit = 100, int $timeout = 60) {
-
+    public function getUpdatesLocal(int $limit = 100, int $timeout = 60)
+    {
         // While there aren't updates to process
-        while (empty($update = $this->getUpdates(0, 1)));
+        while (empty($update = $this->getUpdates(0, 1))) {
+        }
 
         // Set the offset to the first update recevied
         $offset = $update[0]['update_id'];
@@ -87,30 +102,21 @@ class BaseBot extends CoreBot {
 
         // Process all updates
         while (true) {
-
             $updates = $this->execRequest("getUpdates?offset=$offset&limit=$limit&timeout=$timeout");
 
             // Parse all update to receive
             foreach ($updates as $key => $update) {
-
                 try {
-
                     // Process one at a time
                     $this->processUpdate($update);
-
                 } catch (BotException $e) {
-
                     echo $e->getMessage();
-
                 }
-
             }
 
             // Update the offset
             $offset += sizeof($updates);
-
         }
-
     }
 
     /** @} */
@@ -126,8 +132,8 @@ class BaseBot extends CoreBot {
      * @param array $update Reference to the update received.
      * @return int The id of the update processed.
      */
-    protected function processUpdate(array $update) : int {
-
+    protected function processUpdate(array $update) : int
+    {
         static $updates_type = ['message' => 'Message',
             'callback_query' => 'CallbackQuery',
             'inline_query' => 'InlineQuery',
@@ -137,29 +143,22 @@ class BaseBot extends CoreBot {
             'chosen_inline_result' => 'ChosenInlineResult'];
 
         foreach ($updates_type as $offset => $class) {
-
             if (isset($update[$offset])) {
-
                 $object_class = "PhpBotFramework\Entities\\$class";
                 $object = new $object_class($update[$offset]);
 
                 $this->_chat_id = $object->getChatID();
 
                 if (method_exists($object, 'getBotParameter')) {
-
                     $var = $object->getBotParameter();
                     $this->{$var['var']} = $var['id'];
-
                 }
 
                 $this->{"process$class"}($object);
 
                 return $update['update_id'];
-
             }
-
         }
-
     }
 
     /** @} */
@@ -175,8 +174,8 @@ class BaseBot extends CoreBot {
      * <code>$chat_id</code> and <code>$text</code>, if the message contains text(use getMessageText() to access it), set inside of this function.
      * @param Message $message Reference to the message received.
      */
-    protected function processMessage(Message $message) {
-
+    protected function processMessage(Message $message)
+    {
     }
 
     /**
@@ -185,8 +184,8 @@ class BaseBot extends CoreBot {
      * <code>$chat_id</code> and <code>$data</code>, if set in the callback query(use getCallbackData() to access it) set inside of this function.
      * @param CallbackQuery $callback_query Reference to the callback query received.
      */
-    protected function processCallbackQuery(CallbackQuery $callback_query) {
-
+    protected function processCallbackQuery(CallbackQuery $callback_query)
+    {
     }
 
     /**
@@ -195,8 +194,8 @@ class BaseBot extends CoreBot {
      * $chat_id and $query(use getInlineQuery() to access it) set inside of this function.
      * @param InlineQuery $inline_query Reference to the inline query received.
      */
-    protected function processInlineQuery(InlineQuery $inline_query) {
-
+    protected function processInlineQuery(InlineQuery $inline_query)
+    {
     }
 
     /**
@@ -205,8 +204,8 @@ class BaseBot extends CoreBot {
      * <code>$chat_id</code> set inside of this function.
      * @param ChosenInlineResult $chosen_inline_result Reference to the chosen inline result received.
      */
-    protected function processChosenInlineResult(ChosenInlineResult $chosen_inline_result) {
-
+    protected function processChosenInlineResult(ChosenInlineResult $chosen_inline_result)
+    {
     }
 
     /**
@@ -215,8 +214,8 @@ class BaseBot extends CoreBot {
      * <code>$chat_id</code> set inside of this function.
      * @param Message $edited_message The message edited by the user.
      */
-    protected function processEditedMessage(Message $edited_message) {
-
+    protected function processEditedMessage(Message $edited_message)
+    {
     }
 
     /**
@@ -225,8 +224,8 @@ class BaseBot extends CoreBot {
      * <code>$chat_id</code> set inside of this function.
      * @param Message $post The message sent in the channel.
      */
-    protected function processChannelPost(Message $post) {
-
+    protected function processChannelPost(Message $post)
+    {
     }
 
     /**
@@ -235,10 +234,9 @@ class BaseBot extends CoreBot {
      * <code>$chat_id</code> set inside of this function.
      * @param Message $post The message edited in the channel.
      */
-    protected function processEditedChannelPost(Message $edited_post) {
-
+    protected function processEditedChannelPost(Message $edited_post)
+    {
     }
 
     /** @} */
-
 }

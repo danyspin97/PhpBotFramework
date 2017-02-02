@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Commands;
 
 use PhpBotFramework\Entities\CallbackQuery;
@@ -11,8 +27,8 @@ use PhpBotFramework\Entities\CallbackQuery;
 
 /** \class CallbackCommand
  */
-trait CallbackCommand {
-
+trait CallbackCommand
+{
     /** @} */
 
     /** \brief Chat id of the current user/group/channel. */
@@ -40,13 +56,12 @@ trait CallbackCommand {
      * @param $data The string that will trigger this function.
      * @param $script The function that will be triggered by the callback query if it contains the $data string. Must take an object(the bot) and an array(the callback query received).
      */
-    public function addCallbackCommand(string $data, callable $script) {
-
+    public function addCallbackCommand(string $data, callable $script)
+    {
         $this->_callback_commands[] = [
             'data' => $data,
             'script' => $script,
         ];
-
     }
 
     /**
@@ -54,17 +69,14 @@ trait CallbackCommand {
      * @param $callback_query Callback query to process.
      * @return True if the callback query triggered a command.
      */
-    protected function processCallbackCommand(array $callback_query) : bool {
-
+    protected function processCallbackCommand(array $callback_query) : bool
+    {
         // Check for callback commands
         if (isset($callback_query['data'])) {
-
             // Iterate over all commands
             foreach ($this->_callback_commands as $trigger) {
-
                 // If command is found in callback data
                 if (strpos($trigger['data'], $callback_query['data']) !== false) {
-
                     // Set chat id
                     $this->_chat_id = $callback_query['message']['chat']['id'];
 
@@ -74,17 +86,13 @@ trait CallbackCommand {
                     // The callback triggered a command, return true
                     return true;
                 }
-
             }
-
         }
 
         return false;
-
     }
 
     /** @} */
 
     /** @} */
-
 }

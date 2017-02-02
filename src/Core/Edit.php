@@ -1,8 +1,25 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Core;
 
-trait Edit {
+trait Edit
+{
 
     abstract protected function execRequest(string $url);
 
@@ -21,7 +38,8 @@ trait Edit {
      * @param bool $disable_web_preview <i>Optional</i>. Disables link previews for links in this message.
      * @return Message|false Message edited, false otherwise.
      */
-    public function editMessageText(int $message_id, string $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true) {
+    public function editMessageText(int $message_id, string $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -33,7 +51,6 @@ trait Edit {
         ];
 
         return $this->processRequest('editMessageText', $parameters, 'Message');
-
     }
 
     /**
@@ -46,7 +63,8 @@ trait Edit {
      * @param bool $disable_web_preview <i>Optional</i>. Disables link previews for links in this message.
      * @return bool True on success.
      */
-    public function editInlineMessageText(string $inline_message_id, string $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = false) : bool {
+    public function editInlineMessageText(string $inline_message_id, string $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = false) : bool
+    {
 
         $parameters = [
             'inline_message_id' => $inline_message_id,
@@ -57,7 +75,6 @@ trait Edit {
         ];
 
         return $this->execRequest('editMessageText?' . http_build_query($parameters));
-
     }
 
     /**
@@ -67,7 +84,8 @@ trait Edit {
      * @param string $inline_keyboard Inlike keyboard array. [Api reference](https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * @return Message|false Message edited, false otherwise.
      */
-    public function editMessageReplyMarkup(int $message_id, string $inline_keyboard) {
+    public function editMessageReplyMarkup(int $message_id, string $inline_keyboard)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -76,9 +94,7 @@ trait Edit {
         ];
 
         return $this->processRequest('editMessageReplyMarkup', $parameters, 'Message');
-
     }
 
     /** @} */
-
 }

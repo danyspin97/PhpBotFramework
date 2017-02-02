@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Entities;
 
 use PhpBotFramework\Exceptions\BotException;
@@ -14,7 +30,8 @@ use PhpBotFramework\Exceptions\BotException;
  * \details It stores the inline keyboard buttons added until get() is called.
  * It also provides some basic button to get, like Menu and Back buttons plus the dynamic-keyboard for menu browsing.
  */
-class InlineKeyboard {
+class InlineKeyboard
+{
 
     /**
      * \addtogroup InlineKeyboard InlineKeyboard
@@ -40,8 +57,10 @@ class InlineKeyboard {
      * @param $buttons Buttons passed as inizialization.
      * @return The object created with the buttons passed.
      */
-    public function __construct(\PhpBotFramework\Bot &$bot = null,
-                                array $buttons = array()) {
+    public function __construct(
+        \PhpBotFramework\Bot &$bot = null,
+        array $buttons = array()
+    ) {
 
         // Get bot reference
         $this->bot = $bot;
@@ -52,7 +71,6 @@ class InlineKeyboard {
         // Set up vars
         $this->row = 0;
         $this->column = 0;
-
     }
 
     /**
@@ -60,13 +78,12 @@ class InlineKeyboard {
      * @param $clear_keyboard Remove all the buttons from this object.
      * @return JSON-serialized string with the buttons.
      */
-    public function get($clear_keyboard = true) {
+    public function get($clear_keyboard = true)
+    {
 
         // Check if it is empty
         if (empty($this->inline_keyboard)) {
-
             throw new BotException("Inline keyboard is empty");
-
         }
 
         // Create a new array to put our buttons
@@ -76,13 +93,10 @@ class InlineKeyboard {
         $reply_markup = json_encode($reply_markup);
 
         if ($clear_keyboard) {
-
             $this->clearKeyboard();
-
         }
 
         return $reply_markup;
-
     }
 
     /**
@@ -90,22 +104,19 @@ class InlineKeyboard {
      * @param $clean_keyboard Remove all the button from this object.
      * @return An array containing the buttons.
      */
-    public function getArray($clean_keyboard = true) {
+    public function getArray($clean_keyboard = true)
+    {
 
         // Check if it is empty
         if (empty($this->inline_keyboard)) {
-
             throw new BotException("Inline keyboard is empty");
-
         }
 
         // Create a new array to put the buttons
         $reply_markup = ['inline_keyboard' => $this->inline_keyboard];
 
         if ($clean_keyboard) {
-
             $this->clearKeyboard();
-
         }
 
         return $reply_markup;
@@ -132,14 +143,13 @@ class InlineKeyboard {
      *
      * @param ...$buttons One or more arrays, each one represent a button.
      */
-    public function addLevelButtons(array ...$buttons) {
+    public function addLevelButtons(array ...$buttons)
+    {
 
         // If the user has already added a button in this row
         if ($this->column != 0) {
-
              // Change row
              $this->changeRow();
-
         }
 
         // Add buttons to the next row
@@ -147,7 +157,6 @@ class InlineKeyboard {
 
         // Switch to the next row
         $this->changeRow();
-
     }
 
     /** \brief Add a button.
@@ -168,13 +177,12 @@ class InlineKeyboard {
      * - callback_game
      * @param $data Data for the type selected.
      */
-    public function addButton($text, string $data_type, string $data) {
+    public function addButton($text, string $data_type, string $data)
+    {
 
         // If we get the end of the row
         if ($this->column == 8) {
-
             $this->changeRow();
-
         }
 
         // Add the button
@@ -182,23 +190,23 @@ class InlineKeyboard {
 
         // Update column
         $this->column++;
-
     }
 
     /**
      * \brief Change row for the current keyboard.
      * \details Buttons will be added in the next row from now on (until next InlineKeyboard::addLevelButtons() or InlineKeyboard::changeRow() call or InlineKeyboard::addButton() reaches the max).
      */
-    public function changeRow() {
+    public function changeRow()
+    {
 
         // Reset vars
         $this->row++;
         $this->column = 0;
-
     }
 
     /** \brief Remove all the buttons from the current inline keyboard. */
-    public function clearKeyboard() {
+    public function clearKeyboard()
+    {
 
         // Set the inline keyboard to an empty array
         $this->inline_keyboard = [];
@@ -206,7 +214,6 @@ class InlineKeyboard {
         // Reset vars
         $this->row = 0;
         $this->column = 0;
-
     }
 
     /**
@@ -214,7 +221,8 @@ class InlineKeyboard {
      * @param $json_serialized return a json serialized string, or an array.
      * @return A button with written "back".
      */
-    public function getBackButton($json_serialized = true) {
+    public function getBackButton($json_serialized = true)
+    {
 
         // Create the button
         $inline_keyboard = [ 'inline_keyboard' =>
@@ -230,15 +238,10 @@ class InlineKeyboard {
 
         // Does we need it as json-serialized?
         if ($json_serialized) {
-
             return json_encode($inline_keyboard);
-
         } else {
-
             return $inline_keyboard;
-
         }
-
     }
 
     /**
@@ -247,7 +250,8 @@ class InlineKeyboard {
      * @param $json_serialized return a json serialized string, or an array.
      * @return A button with written "back" and one with written "Skip".
      */
-    public function getBackSkipKeyboard($json_serialized = true) {
+    public function getBackSkipKeyboard($json_serialized = true)
+    {
 
         // Create the keyboard
         $inline_keyboard = [ 'inline_keyboard' =>
@@ -267,15 +271,10 @@ class InlineKeyboard {
 
         // Does we need it as json-serialized?
         if ($json_serialized) {
-
             return json_encode($inline_keyboard);
-
         } else {
-
             return $inline_keyboard;
-
         }
-
     }
 
     /**
@@ -288,16 +287,15 @@ class InlineKeyboard {
      * @param $json_serialized Get a JSON-serialized string or an array.
      * @return The buttons in the selected type.
      */
-    public function getChooseLanguageKeyboard($prefix = 'cl', $json_serialized = true) {
+    public function getChooseLanguageKeyboard($prefix = 'cl', $json_serialized = true)
+    {
 
         // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];
 
         foreach ($this->bot->local as $languages => $language_msg) {
-
             // If the language is the same as the one set for the current user in $bot
             if (strpos($languages, $this->bot->language) !== false) {
-
                 // Just create a button with one language in it
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
@@ -305,9 +303,7 @@ class InlineKeyboard {
                         'callback_data' => 'same/language'
                     ]
                 ]);
-
             } else {
-
                 // Create a button with the language on the left and the language localizated for the current user in the right
                 array_push($inline_keyboard['inline_keyboard'], [
                         [
@@ -315,9 +311,7 @@ class InlineKeyboard {
                             'callback_data' => $prefix . '/' . $languages
                         ]
                 ]);
-
             }
-
         }
 
         // Unset the variables from the foreach
@@ -332,20 +326,16 @@ class InlineKeyboard {
         ]);
 
         if ($json_serialized) {
-
             return json_encode($inline_keyboard);
-
         } else {
-
             return $inline_keyboard;
-
         }
-
     }
 
     /**
      * \brief */
-    public function addListKeyboard(int $index, int $list, $prefix = 'list') {
+    public function addListKeyboard(int $index, int $list, $prefix = 'list')
+    {
 
         if (($list > 0) && ($index >= 0)) {
             if ($index == 0) {
@@ -456,7 +446,7 @@ class InlineKeyboard {
                             ]
                     ];
                 }
-            } else if ($index == 1) {
+            } elseif ($index == 1) {
                 if ($list > 1) {
                     if ($list > 2) {
                         if ($list > 3) {
@@ -765,7 +755,7 @@ class InlineKeyboard {
                                 'callback_data' => 'null'
                             ]
                         ];
-                } else if ($list == 5) {
+                } elseif ($list == 5) {
                     $buttons = [
                             [
                                 'text' => '1',
@@ -789,7 +779,7 @@ class InlineKeyboard {
                             ]
                         ];
                 }
-            } else if ($index == 5 && $list == 5) {
+            } elseif ($index == 5 && $list == 5) {
                 $buttons = [
                         [
                             'text' => '1',
@@ -888,7 +878,7 @@ class InlineKeyboard {
                                 'callback_data' => $prefix . "/$list"
                             ]
                         ];
-                } else if ($index == $list) {
+                } elseif ($index == $list) {
                     $indexm = $index - 1;
                     $indexmm = $index - 2;
                     $indexmmm = $index - 3;
@@ -920,22 +910,17 @@ class InlineKeyboard {
 
         // If there are other buttons in this row (checking the column)
         if ($this->column !== 0) {
-
             // Go to the next
             $this->changeRow();
-
         }
 
         $this->inline_keyboard[$this->row] = $buttons;
 
         // We added a row
         $this->changeRow();
-
     }
 
     /** @} */
 
     /** @} */
-
 }
-

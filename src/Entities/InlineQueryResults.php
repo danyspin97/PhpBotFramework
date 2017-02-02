@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Entities;
 
 /**
@@ -11,7 +27,8 @@ namespace PhpBotFramework\Entities;
  * \class InlineQueryResults InlineQueryResults
  * \brief Handle and store results before sending them to an answerInlineQuery api call.
  */
-class InlineQueryResults {
+class InlineQueryResults
+{
 
     /**
      * \addtogroup InlineQueryResults InlineQueryResults
@@ -27,13 +44,13 @@ class InlineQueryResults {
 
     /**
      * \constructor Create an InlineQueryResult object. */
-    public function __construct() {
+    public function __construct()
+    {
 
         // Initialize the array to empty
         $this->results = [];
 
         $this->id_article = 0;
-
     }
 
     /**
@@ -47,7 +64,8 @@ class InlineQueryResults {
      * @param $disable_web_preview <i>Optional</i>. Disables link previews for links in the sent message
      * @return Id the the article added
      */
-    public function newArticle($title, $message_text, $description = '', array $reply_markup = null, $parse_mode = 'HTML', $disable_web_preview = false) {
+    public function newArticle($title, $message_text, $description = '', array $reply_markup = null, $parse_mode = 'HTML', $disable_web_preview = false)
+    {
 
         array_push($this->results, [
             'type' => 'article',
@@ -61,14 +79,14 @@ class InlineQueryResults {
         ]);
 
         return $this->id_article++;
-
     }
 
     /**
      * \brief Get all results created.
      * @return JSON-serialized string containing the results.
      */
-    public function getResults() {
+    public function getResults()
+    {
 
         // Encode the results to get a JSON-serialized object
         $encoded_results = json_encode($this->results);
@@ -77,11 +95,9 @@ class InlineQueryResults {
         $this->results = [];
 
         return $encoded_results;
-
     }
 
     /** @} */
 
     /** @} */
-
 }

@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Core;
 
 use \PhpBotFramework\Exceptions\BotException;
@@ -301,8 +317,8 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  * \brief Core of the framework
  * \details Contains data used by the bot to works, curl request handling, and all api methods (sendMessage, editMessageText, etc).
  */
-class CoreBot {
-
+class CoreBot
+{
     /** @} */
 
     use Updates,
@@ -339,13 +355,11 @@ class CoreBot {
      * \details Initialize a new bot passing its token.
      * @param $token Bot's token given by @botfather.
      */
-    public function __construct(string $token) {
-
+    public function __construct(string $token)
+    {
         // Check token is valid
         if (is_numeric($token) || $token === '') {
-
             throw new BotException('Token is not valid or empty');
-
         }
 
         $this->_api_url = "https://api.telegram.org/bot$token/";
@@ -358,7 +372,6 @@ class CoreBot {
             'timeout' => 60,
             'http_errors' => false
         ]);
-
     }
 
     /** @} */
@@ -372,10 +385,9 @@ class CoreBot {
      * \brief Get chat ID of the current user.
      * @return int Chat ID of the user.
      */
-    public function getChatID() {
-
+    public function getChatID()
+    {
         return $this->_chat_id;
-
     }
 
     /**
@@ -383,28 +395,24 @@ class CoreBot {
      * \details Change the chat ID on which the bot acts.
      * @param $chat_id The new chat ID to set.
      */
-    public function setChatID($chat_id) {
-
+    public function setChatID($chat_id)
+    {
         $this->_chat_id = $chat_id;
-
     }
 
     /**
      * \brief Get bot ID using `getMe` method.
      * @return int Bot id, 0 on errors.
      */
-    public function getBotID() : int {
-
+    public function getBotID() : int
+    {
         // If it is not valid
         if (!isset($this->_bot_id) || $this->_bot_id == 0) {
-
             // get it again
             $this->_bot_id = ($this->getMe())['id'];
-
         }
 
         return $this->_bot_id ?? 0;
-
     }
 
     /** @} */
@@ -429,10 +437,9 @@ class CoreBot {
      * @param $parameters Parameters to add.
      * @return Depends on api method.
      */
-    public function apiRequest(string $method, array $parameters) {
-
+    public function apiRequest(string $method, array $parameters)
+    {
         return $this->execRequest($method . '?' . http_build_query($parameters));
-
     }
 
     /** @} */
@@ -450,26 +457,21 @@ class CoreBot {
      * @param string $class Class name of the object to create using response.
      * @return mixed Response or object of $class class name.
      */
-    protected function processRequest(string $method, array $param, string $class = '') {
-
+    protected function processRequest(string $method, array $param, string $class = '')
+    {
         $response = $this->execRequest("$method?" . http_build_query($param));
 
         if ($response === false) {
-
             return false;
-
         }
 
         if ($class !== '') {
-
             $object_class = "PhpBotFramework\Entities\\$class";
 
             return new $object_class($response);
-
         }
 
         return $response;
-
     }
 
 
@@ -477,35 +479,27 @@ class CoreBot {
      * @param $url The request's URL.
      * @return Array|false Url response decoded from JSON, false on error.
      */
-    protected function execRequest(string $url) {
-
+    protected function execRequest(string $url)
+    {
         $response = $this->_http->request('POST', $url);
         $http_code = $response->getStatusCode();
 
         if ($http_code === 200) {
-
             $response = json_decode($response->getBody(), true);
 
             return $response['result'];
-
         } elseif ($http_code >= 500) {
-
             // do not wat to DDOS server if something goes wrong
             sleep(10);
             return false;
-
         } else {
-
             $response = json_decode($response->getBody(), true);
             error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
             return false;
-
         }
-
     }
 
     /** @} */
 
     /** @} */
-
 }

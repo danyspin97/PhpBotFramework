@@ -3,7 +3,8 @@
 require './vendor/autoload.php';
 use PHPUnit\Framework\TestCase;
 
-class DatabaseHandlerTest extends TestCase {
+class DatabaseHandlerTest extends TestCase
+{
 
     use PhpBotFramework\Database\Handler;
 
@@ -12,7 +13,8 @@ class DatabaseHandlerTest extends TestCase {
      * Taken an associate array, transform it in a string so it 
      * could be passed to PDO in order to connect to a database.
      */
-    public function testStringify() {
+    public function testStringify()
+    {
 
         $response = $this->stringify([
             'adapter' => 'pgsql',
@@ -22,10 +24,10 @@ class DatabaseHandlerTest extends TestCase {
 
         $this->assertEquals($response, 'pgsql:host=lh;dbname=test');
         return;
-
     }
 
-    public function testShouldBePresentDefaultAdapter() {
+    public function testShouldBePresentDefaultAdapter()
+    {
         $params = $this->mergeWithDefaults([ 'dbname' => 'test' ]);
         $response = $this->stringify($params);
 

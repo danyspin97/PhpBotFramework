@@ -1,8 +1,25 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Database;
 
-trait LongPolling {
+trait LongPolling
+{
 
     abstract public function getUpdates(int $offset = 0, int $limit = 100, int $timeout = 60);
 
@@ -31,21 +48,18 @@ trait LongPolling {
      * @param $offset_key Name of the variable where the offset is saved on Redis
      * @return Id of the first update to process.
      */
-    protected function getUpdateOffsetRedis(string $offset_key) : int {
+    protected function getUpdateOffsetRedis(string $offset_key) : int
+    {
 
         // If offset is already set in redis
         if ($this->redis->exists($offset_key)) {
-
             // return the value saved
             return $this->redis->get($offset_key);
 
             // Else get the offset from the id from the first update received
         } else {
-
             do {
-
                 $update = $this->getUpdates(0, 1);
-
             } while (empty($update));
 
             $offset = $update[0]['update_id'];
@@ -53,9 +67,7 @@ trait LongPolling {
             $this->redis->set($offset_key, $offset);
 
             return $offset_key;
-
         }
-
     }
 
     /**
@@ -68,13 +80,12 @@ trait LongPolling {
      * @param $timeout <i>Optional</i>. Timeout in seconds for long polling.
      * @param $offset_key <i>Optional</i>. Name of the variable where the offset is saved on Redis
      */
-    public function getUpdatesRedis(int $limit = 100, int $timeout = 60, string $offset_key = 'offset') {
+    public function getUpdatesRedis(int $limit = 100, int $timeout = 60, string $offset_key = 'offset')
+    {
 
         // Check redis connection
         if (!isset($this->redis)) {
-
             throw new BotException("Redis connection is not set");
-
         }
 
         $offset = $this->getUpdateOffsetRedis();
@@ -83,29 +94,20 @@ trait LongPolling {
 
          // Process all updates received
         while (true) {
-
             $updates = $this->getUpdates($offset, $limit, $timeout);
 
             // Parse all updates received
             foreach ($updates as $key => $update) {
-
                 try {
-
                     $this->processUpdate($update);
-
                 } catch (BotException $e) {
-
                     echo $e->getMessage();
-
                 }
-
             }
 
             // Update the offset in redis
             $this->redis->set($offset_key, $offset + count($updates));
-
         }
-
     }
 
     /**
@@ -115,19 +117,16 @@ trait LongPolling {
      * @param $column_name Name of the column where the offset is saved in the database
      * @return Id of the first update to process.
      */
-    protected function getUpdateOffsetDatabase(string $table_name, string $column_name) : int {
+    protected function getUpdateOffsetDatabase(string $table_name, string $column_name) : int
+    {
 
         // Get the offset from the database
         $sth = $this->pdo->prepare('SELECT ' . $column_name . ' FROM ' . $table_name);
 
         try {
-
             $sth->execute();
-
         } catch (PDOException $e) {
-
             echo $e->getMessage();
-
         }
 
         $offset = $sth->fetchColumn();
@@ -136,19 +135,14 @@ trait LongPolling {
 
         // Get the offset from the first update to update
         if ($offset === false) {
-
             do {
-
                 $update = $this->getUpdates(0, 1);
-
             } while (empty($update));
 
             $offset = $update[0]['update_id'];
-
         }
 
         return $offset;
-
     }
 
     /**
@@ -162,12 +156,11 @@ trait LongPolling {
      * @param $table_name <i>Optional</i>. Name of the table where offset is saved in the database
      * @param $column_name <i>Optional</i>. Name of the column where the offset is saved in the database
      */
-    public function getUpdatesDatabase(int $limit = 100, int $timeout = 0, string $table_name = 'telegram', string $column_name = 'bot_offset') {
+    public function getUpdatesDatabase(int $limit = 100, int $timeout = 0, string $table_name = 'telegram', string $column_name = 'bot_offset')
+    {
 
         if (!isset($this->_database)) {
-
             throw new BotException("Database connection is not set");
-
         }
 
         // Get offset from database
@@ -179,33 +172,23 @@ trait LongPolling {
         $sth = $this->pdo->prepare('UPDATE "' . $table_name . '" SET "' . $column_name . '" = :new_offset');
 
         while (true) {
-
             $updates = $this->getUpdates($offset, $limit, $timeout);
 
             foreach ($updates as $key => $update) {
-
                 try {
-
                     $this->processUpdate($update);
-
                 } catch (BotException $e) {
-
                     echo $e->getMessage();
-
                 }
-
             }
 
             // Update the offset on the database
             $sth->bindParam(':new_offset', $offset + sizeof($updates));
             $sth->execute();
-
         }
-
     }
 
     /** @} */
 
     /** @} */
-
 }

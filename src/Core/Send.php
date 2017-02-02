@@ -1,10 +1,27 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Core;
 
 use PhpBotFramework\Entities\Message;
 
-trait Send {
+trait Send
+{
 
     abstract protected function execRequest(string $url);
 
@@ -25,7 +42,8 @@ trait Send {
      * @param $disable_notification <i>Optional</i>. Sends the message silently.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendMessage($text, string $reply_markup = null, int $reply_to = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false) {
+    public function sendMessage($text, string $reply_markup = null, int $reply_to = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -38,7 +56,6 @@ trait Send {
         ];
 
         return $this->processRequest('sendMessage', $parameters, 'Message');
-
     }
 
     /**
@@ -49,7 +66,8 @@ trait Send {
      * @param $disable_notification <i>Optional</i>. Sends the message silently.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function forwardMessage($from_chat_id, int $message_id, bool $disable_notification = false) {
+    public function forwardMessage($from_chat_id, int $message_id, bool $disable_notification = false)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -59,7 +77,6 @@ trait Send {
         ];
 
         return $this->processRequest('forwardMessage', $parameters, 'Message');
-
     }
 
     /**
@@ -71,7 +88,8 @@ trait Send {
      * @param $disable_notification <i>Optional<i>. Sends the message silently.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendPhoto($photo, string $reply_markup = null, string $caption = '', bool $disable_notification = false) {
+    public function sendPhoto($photo, string $reply_markup = null, string $caption = '', bool $disable_notification = false)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -82,7 +100,6 @@ trait Send {
         ];
 
         return $this->processRequest('sendPhoto', $parameters, 'Message');
-
     }
 
     /**
@@ -99,7 +116,8 @@ trait Send {
      * @param $reply_to_message_id <i>Optional</i>. If the message is a reply, ID of the original message.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendAudio($audio, string $caption = null, string $reply_markup = null, int $duration = null, string $performer, string $title = null, bool $disable_notification = false, int $reply_to_message_id = null) {
+    public function sendAudio($audio, string $caption = null, string $reply_markup = null, int $duration = null, string $performer, string $title = null, bool $disable_notification = false, int $reply_to_message_id = null)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -114,7 +132,6 @@ trait Send {
         ];
 
         return $this->processRequest('sendAudio', $parameters, 'Message');
-
     }
 
     /**
@@ -128,7 +145,8 @@ trait Send {
      * @param int $reply_to_message_id <i>Optional</i>. If the message is a reply, ID of the original message.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendDocument($document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null) {
+    public function sendDocument($document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -140,7 +158,6 @@ trait Send {
         ];
 
         return $this->processRequest('sendDocument', $parameters, 'Message');
-
     }
 
 
@@ -154,7 +171,8 @@ trait Send {
      * @param bool On success, the sent message.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendSticker($sticker, string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null) {
+    public function sendSticker($sticker, string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -165,7 +183,6 @@ trait Send {
         ];
 
         return $this->processRequest('sendSticker', $parameters, 'Message');
-
     }
 
     /**
@@ -180,7 +197,8 @@ trait Send {
      * @param int $reply_to_message_id <i>Optional</i>. If the message is a reply, ID of the original message.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendVoice($voice, string $caption, int $duration, string $reply_markup = null, bool $disable_notification, int $reply_to_message_id = 0) {
+    public function sendVoice($voice, string $caption, int $duration, string $reply_markup = null, bool $disable_notification, int $reply_to_message_id = 0)
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -193,7 +211,6 @@ trait Send {
         ];
 
         return $this->processRequest('sendVoice', $parameters, 'Message');
-
     }
 
     /**
@@ -208,7 +225,8 @@ trait Send {
      * - <code>find_location</code> for location data
      * @return bool True on success.
      */
-    public function sendChatAction(string $action) : bool {
+    public function sendChatAction(string $action) : bool
+    {
 
         $parameters = [
             'chat_id' => $this->_chat_id,
@@ -216,9 +234,7 @@ trait Send {
         ];
 
         return $this->execRequest('sendChatAction?' . http_build_query($parameters));
-
     }
 
     /** @} */
-
 }

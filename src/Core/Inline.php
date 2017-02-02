@@ -1,8 +1,25 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Core;
 
-trait Inline {
+trait Inline
+{
 
     abstract protected function execRequest(string $url);
 
@@ -33,12 +50,11 @@ trait Inline {
      * Otherwise, you may use links like telegram.me/your_bot?start=XXXX that open your bot with a parameter.
      * @return True on success.
      */
-    public function answerCallbackQuery($text = '', $show_alert = false, string $url = '') : bool {
+    public function answerCallbackQuery($text = '', $show_alert = false, string $url = '') : bool
+    {
 
         if (!isset($this->_callback_query_id)) {
-
             throw new BotException("Callback query id not set, wrong update");
-
         }
 
         $parameters = [
@@ -49,7 +65,6 @@ trait Inline {
         ];
 
         return $this->execRequest('answerCallbackQuery?' . http_build_query($parameters));
-
     }
 
 
@@ -59,12 +74,11 @@ trait Inline {
      * $results Array on InlineQueryResult (https://core.telegram.org/bots/api#inlinequeryresult)
      * $switch_pm_text Text to show on the button
      */
-    public function answerInlineQuerySwitchPM($results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
+    public function answerInlineQuerySwitchPM($results, $switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300)
+    {
 
         if (!isset($this->_inline_query_id)) {
-
             throw new BotException("Inline query id not set, wrong update");
-
         }
 
         $parameters = [
@@ -77,7 +91,6 @@ trait Inline {
         ];
 
         return $this->execRequest('answerInlineQuery?' . http_build_query($parameters));
-
     }
 
     /*
@@ -86,12 +99,11 @@ trait Inline {
      * @param
      * $switch_pm_text Text to show on the button
      */
-    public function answerEmptyInlineQuerySwitchPM($switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300) {
+    public function answerEmptyInlineQuerySwitchPM($switch_pm_text, $switch_pm_parameter = '', $is_personal = true, $cache_time = 300)
+    {
 
         if (!isset($this->_inline_query_id)) {
-
             throw new BotException("Inline query id not set, wrong update");
-
         }
 
         $parameters = [
@@ -103,9 +115,7 @@ trait Inline {
         ];
 
         return $this->execRequest('answerInlineQuery?' . http_build_query($parameters));
-
     }
 
     /** @} */
-
 }

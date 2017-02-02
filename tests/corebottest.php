@@ -8,9 +8,11 @@ define('TREE_IMAGE', 'http://www.planwallpaper.com/static/images/2022725-wallpap
 define('EYES_IMAGE', 'http://www.planwallpaper.com/static/images/wallpapers-7020-7277-hd-wallpapers.jpg');
 define('PANDA_IMAGE', 'http://www.planwallpaper.com/static/images/wallpaper-11628192.jpg');
 
-class CoreBotTest extends TestCase {
+class CoreBotTest extends TestCase
+{
 
-    public function testCreateCoreBot() {
+    public function testCreateCoreBot()
+    {
 
         // Get token from env variable
         $token = getenv("BOT_TOKEN");
@@ -21,13 +23,13 @@ class CoreBotTest extends TestCase {
         }
 
         return new PhpBotFramework\Core\CoreBot($token);
-
     }
 
     /**
      * @depends testCreateCoreBot
      */
-    public function testSetChatIDAndGetChatIDReturnSameID($bot) {
+    public function testSetChatIDAndGetChatIDReturnSameID($bot)
+    {
 
         $chat_id = getenv("CHAT_ID");
 
@@ -36,20 +38,19 @@ class CoreBotTest extends TestCase {
 
         // Assert that getChatID returns the same chat_id set with setChatID
         $this->assertEquals($chat_id, $bot->getChatID());
-
     }
 
     /**
      * provider for test
      */
-    public function providerMessageText() {
+    public function providerMessageText()
+    {
 
         return [
             'no_markdown' => ["First message <i>with</i> *no* markdown", ""],
             'HTML' => ["Second message with <i>html</i> _markdown_", "HTML"],
             'Markdown' => ["Third message <b>with</b> *markdown*", "Markdown"]
         ];
-
     }
 
     /**
@@ -60,7 +61,8 @@ class CoreBotTest extends TestCase {
      * @depends testCreateCoreBot
      * @dataProvider providerMessageText
      */
-    public function testSendingMessageWillReturnTheSentMessage($text, $parse_mode, $bot) {
+    public function testSendingMessageWillReturnTheSentMessage($text, $parse_mode, $bot)
+    {
 
         // Send a message
         $new_message = $bot->sendMessage($text, null, null, $parse_mode);
@@ -70,7 +72,6 @@ class CoreBotTest extends TestCase {
 
         // Does the array have the text key?
         $this->assertArrayHasKey('text', $new_message);
-
     }
 
     /**
@@ -81,7 +82,8 @@ class CoreBotTest extends TestCase {
      * @depends testCreateCoreBot
      * @dataProvider providerPhoto
      */
-    public function testSendPhoto($photo, $caption, $bot) {
+    public function testSendPhoto($photo, $caption, $bot)
+    {
 
         // Send the photo
         $new_photo = $bot->sendPhoto($photo, null, $caption);
@@ -94,17 +96,16 @@ class CoreBotTest extends TestCase {
 
         // Are the caption equals?
         $this->assertEquals($new_photo['caption'], $caption);
-
     }
 
-    public function providerPhoto() {
+    public function providerPhoto()
+    {
 
         return [
             'tree' => [TREE_IMAGE, 'What a fantastic tree.'],
             'eyes' => [EYES_IMAGE, 'Blue is the new black.'],
             'panda' => [PANDA_IMAGE, 'Oohh, there is a panda!']
         ];
-
     }
 
     /**
@@ -114,7 +115,8 @@ class CoreBotTest extends TestCase {
      *
      * @depends testCreateCoreBot
      */
-    public function testGetWebhookInfo($bot) {
+    public function testGetWebhookInfo($bot)
+    {
 
         $response = $bot->getWebhookInfo();
 
@@ -122,7 +124,6 @@ class CoreBotTest extends TestCase {
         $this->assertArrayHasKey('pending_update_count', $response);
 
         return;
-
     }
 
     /**
@@ -156,5 +157,4 @@ class CoreBotTest extends TestCase {
 
         return;
     }*/
-
 }

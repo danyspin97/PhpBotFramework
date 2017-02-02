@@ -1,8 +1,25 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Utilities;
 
-trait BotState {
+trait BotState
+{
 
     /**
      * \addtogroup State
@@ -93,40 +110,35 @@ trait BotState {
      * @param int $default_status <i>Optional</i>. The default status to return in case there is no status for the current user.
      * @return int The status for the current user, $default_status if missing.
      */
-    public function getStatus(int $default_status = -1) : int {
+    public function getStatus(int $default_status = -1) : int
+    {
 
         if (!isset($this->redis)) {
-
             throw new BotException('Redis connection not set');
-
         }
 
         if ($this->redis->exists($this->_chat_id . ':status')) {
-
             $this->status = $this->redis->get($this->_chat_id . ':status');
 
             return $this->status;
-
         }
 
         $this->redis->set($this->_chat_id . ':status', $default_status);
         $this->status = $default_status;
         return $default_status;
-
     }
 
     /** \brief Set the status of the bot in both redis and $status.
      * \details Throw exception if redis connection is missing.
      * @param int $status The new status of the bot.
      */
-    public function setStatus(int $status) {
+    public function setStatus(int $status)
+    {
 
         $this->redis->set($this->_chat_id . ':status', $status);
 
         $this->status = $status;
-
     }
 
     /** @} */
-
 }

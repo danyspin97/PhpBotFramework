@@ -1,8 +1,25 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Database;
 
-trait User {
+trait User
+{
 
     abstract function getChat($chat_id);
 
@@ -33,13 +50,12 @@ trait User {
      * @param int $chat_id chat_id of the user to add.
      * @return bool True on success.
      */
-    public function addUser($chat_id) : bool {
+    public function addUser($chat_id) : bool
+    {
 
         // Is there database connection?
         if (!isset($this->pdo)) {
-
             throw new BotException("Database connection not set");
-
         }
 
         // Create insertion query and initialize variable
@@ -52,16 +68,12 @@ trait User {
         $sth->bindParam(':chat_id', $chat_id);
 
         try {
-
             $sth->execute();
             $success = true;
-
         } catch (PDOException $e) {
-
             echo $e->getMessage();
 
             $success = false;
-
         }
 
         // Close statement
@@ -69,7 +81,6 @@ trait User {
 
         // Return result
         return $success;
-
     }
 
     /**
@@ -80,54 +91,43 @@ trait User {
      * Because a limitation of Telegram Bot API the bot will have a delay after 20 messages sent in different chats.
      * @see CoreBot::sendMessage
      */
-    public function broadcastMessage(string $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false) {
+    public function broadcastMessage(string $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false)
+    {
 
         // Is there database connection?
         if (!isset($this->pdo)) {
-
             throw new BotException("Database connection not set");
-
         }
 
         // Prepare the query to get all chat_id from the database
         $sth = $this->pdo->prepare("SELECT $this->id_column FROM $this->user_table");
 
         try {
-
             $sth->execute();
-
         } catch (PDOException $e) {
-
             echo $e->getMessage();
-
         }
 
         // Iterate over all the row got
         while ($user = $sth->fetch()) {
-
             // Call getChat to know that this users haven't blocked the bot
             $user_data = $this->getChat($user[$this->id_column]);
 
             // Did they block it?
             if ($user_data !== false) {
-
                 // Change the chat_id for the next API method
                 $this->setChatID($user[$this->id_column]);
 
                 // Send the message
                 $this->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview, $disable_notification);
-
             }
-
         }
 
         // Close statement
         $sth = null;
-
     }
 
     /** @} */
 
     /** @} */
-
 }

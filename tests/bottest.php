@@ -7,9 +7,11 @@ use PhpBotFramework\Entities\Message;
 
 define('MESSAGES', 1);
 
-class BotTest extends TestCase {
+class BotTest extends TestCase
+{
 
-    public function testCreateBot() {
+    public function testCreateBot()
+    {
 
         // Get token from env variable
         $token = getenv("BOT_TOKEN");
@@ -20,7 +22,6 @@ class BotTest extends TestCase {
         }
 
         return new PhpBotFramework\Test\TestBot($token);
-
     }
 
     /**
@@ -30,28 +31,25 @@ class BotTest extends TestCase {
      * @depends testCreateBot
      * @dataProvider providerFakeMessages
      */
-    public function testProcessFakeMessage($message, $bot) {
+    public function testProcessFakeMessage($message, $bot)
+    {
 
         $bot->processFakeUpdate($message);
-
     }
 
-    public function providerFakeMessages() {
+    public function providerFakeMessages()
+    {
 
         $messages = [];
 
-        for($i = 1; $i < MESSAGES + 1; $i++) {
-
+        for ($i = 1; $i < MESSAGES + 1; $i++) {
             $json_data = file_get_contents('tests/message_' . $i . '.json');
 
             $array = json_decode($json_data, true);
 
             $messages[] = $array;
-
         }
 
         return [$messages];
-
     }
-
 }
