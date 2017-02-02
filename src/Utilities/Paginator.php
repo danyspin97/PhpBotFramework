@@ -49,7 +49,7 @@ class Paginator
 
         // Iterate over all results
         while ($item = $items->fetch()) {
-            // If we have to display the first item of the page and we 
+            // If we have to display the first item of the page and we
             // found the item to show (using the position calculated before)
             if ($items_displayed === 0 && $counter === $item_position) {
                 $message .= $format_item($item, $keyboard);
