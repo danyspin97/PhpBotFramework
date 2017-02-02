@@ -39,7 +39,7 @@ class Bot extends Core\BaseBot
     /**
      * \addtogroup Bot Bot
      * \brief Properties and methods to handle your Telegram's bot.
-     * \details Here are listed all the properties and methods that will help 
+     * \details Here are listed all the properties and methods that will help
      * the developers during creation of basic bot's features.
      * @{
      */
@@ -55,7 +55,7 @@ class Bot extends Core\BaseBot
 
     /**
      * \brief Construct an empty bot.
-     * \details Construct a bot that can handle updates, localization, database 
+     * \details Construct a bot that can handle updates, localization, database
      * connection and handling and Redis.
      *
      * @param string $token Bot token given by BotFather.

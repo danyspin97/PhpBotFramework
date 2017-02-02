@@ -102,7 +102,7 @@ trait BotState
     /**
      * \brief Get current user status from Redis and set it in status variable.
      * \details Throws an exception if the Redis connection is missing.
-     * @param int $default_status <i>Optional</i>. The default status to return 
+     * @param int $default_status <i>Optional</i>. The default status to return
      * if there is no status for the current user.
      * @return int The status for the current user, $default_status if missing.
      */
