@@ -40,15 +40,16 @@ class Bot extends Core\BaseBot
 
     /**
      * \addtogroup Bot Bot
-     * \brief Properties and methods to handle the TelegramBot.
-     * \details Here are listed all the properties and methods that will help the developer create the basic bot functions.
+     * \brief Properties and methods to handle your Telegram's bot.
+     * \details Here are listed all the properties and methods that will help
+     * the developers during creation of basic bot's features.
      * @{
      */
 
     /** \brief Store the inline keyboard */
     public $keyboard;
 
-    /** \brief Pdo reference */
+    /** \brief PDO reference to manage database */
     public $pdo;
 
     /** \brief Redis connection */
@@ -56,15 +57,15 @@ class Bot extends Core\BaseBot
 
     /**
      * \brief Construct an empty bot.
-     * \details Construct a bot that can handle updates, localization, database connection and handling, redis database.
+     * \details Construct a bot that can handle updates, localization, database
+     * connection and handling and Redis.
+     *
      * @param string $token Bot token given by BotFather.
      */
     public function __construct(string $token)
     {
-        // Parent constructor
         parent::__construct($token);
 
-        // Initialize to an empty array
         $this->_message_commands = [];
         $this->_callback_commands = [];
 
@@ -74,12 +75,10 @@ class Bot extends Core\BaseBot
     /** \brief Descruct the bot. */
     public function __destruct()
     {
-        // Close redis connection if it is open
         if (isset($this->redis)) {
             $this->redis->close();
         }
 
-        // Close database connection if it is open
         if (isset($this->pdo)) {
             $this->pdo = null;
         }

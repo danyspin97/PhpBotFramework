@@ -21,7 +21,7 @@ namespace PhpBotFramework\Test;
 use PhpBotFramework\Entities\Message;
 
 /* \class FakeUpdate
- * \brief Contains abstrataction methods for processing fake updates.
+ * \brief Contains abstract methods for processing fake updates.
  */
 trait FakeUpdate
 {
@@ -33,7 +33,6 @@ trait FakeUpdate
      */
     public function processFakeUpdate($update)
     {
-
         $this->processUpdate($update);
     }
 }
