@@ -49,8 +49,8 @@ trait MessageCommand
      *
      *     addMessageCommand("start", function($bot, $message) {
      *         $bot->sendMessage("Hi"); });
-     * @param $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
-     * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
+     * @param string $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
+     * @param callable $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
      */
     public function addMessageCommand(string $command, callable $script)
     {
@@ -63,8 +63,8 @@ trait MessageCommand
 
     /**
      * \brief (<i>Internal</i>)Process a message checking if it trigger any MessageCommand.
-     * @param $message Message to process.
-     * @return True if the message triggered any command.
+     * @param string $message Message to process.
+     * @return bool True if the message triggered any command.
      */
     protected function processMessageCommand(array $message) : bool
     {

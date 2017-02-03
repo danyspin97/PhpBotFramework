@@ -67,8 +67,8 @@ trait CommandHandler
 
     /**
      * \brief Process updates handling first commands, and then general methods (e.g. BaseBot::processMessage())
-     * @param $update Update to process.
-     * @return Id of the update processed.
+     * @param array $update Update to process.
+     * @return int Id of the update processed.
      */
     protected function processUpdate(array $update) : int
     {
@@ -85,7 +85,12 @@ trait CommandHandler
         return parent::processUpdate($update);
     }
 
-    // Use to sort _command_types based on prior
+    /**
+        * \brief (<i>Internal</i>) Sort an array based on <code>prior</code> index value.
+     * @param array $a First array.
+     * @param array $b Second array.
+     * @return int 1 If $a > $b, -1 if $a < $b, 0 otherwise.
+     */
     public static function sortingPrior($a, $b)
     {
         if ($a['prior'] > $b['prior']) {

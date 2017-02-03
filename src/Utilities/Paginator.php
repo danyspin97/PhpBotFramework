@@ -18,12 +18,10 @@
 
 namespace PhpBotFramework\Utilities;
 
-define("DELIMITER", '::::::::::::::::::::::::::::::::::::::
-    ');
+define("DELIMITER", "::::::::::::::::::::::::::::::::::::::\n");
 
 class Paginator
 {
-
     public static function paginateItems($items, int $index, &$keyboard, $format_item, int $item_per_page = 3, $prefix = 'list', string $delimiter = DELIMITER)
     {
 

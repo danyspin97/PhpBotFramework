@@ -20,34 +20,45 @@ namespace PhpBotFramework\Database;
 
 use PDOException;
 
-define('DATA_CONNECTION_FILE', './data/connection.json');
+define('PDO_DEFAULT_ADAPTER', 'mysql');
 
+/**
+ * \addtogroup Modules
+ * @{
+ */
+
+/** \class Handler Handler Database connection handler
+ */
 trait Handler
 {
+    /** @} */
+
+    /** Pdo connection to the database. */
+    public $pdo;
 
     /**
      * \addtogroup Bot Bot
      * @{
      */
 
-    /** Pdo connection to the database. */
-    public $pdo;
-
     /**
      * \brief Open a database connection using PDO.
      * \details Provides a simpler way to initialize a database connection
      * and create a PDO instance.
-     * @param $params Parameters for initialize connection.
-     * @return True on success.
+     * @param array $params Parameters for initialize connection.
+     * Index required:
+     *     - <code>username</code>
+     *     - <code>password</code> (can be a null string)
+     * Optional index:
+     *     - <code>adapter</code> <b>Default</b>: <code>mysql</code>
+     *     - <code>host</code> <b>Default</b>: <code>localhost</code>
+     *     - <code>options</code> (<i>Array of options passed when creating pdo object</i>)
+     * @return bool True when the connection is succefully created.
      */
-    public function connect(array $params = []) : bool
+    public function connect(array $params) : bool
     {
-        if (empty($params) && file_exists('DATA_CONNECTION_FILE')) {
-            $params = json_decode(file_get_contents('DATA_CONNECTION_FILE'), true);
-        }
-
         try {
-            $config = $this->stringify($this->mergeWithDefaults($params));
+            $config = $this->getDNS($this->mergeWithDefaults($params));
 
             $this->pdo = new \PDO($config, $params['username'], $params['password'], $params['option']);
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -60,16 +71,21 @@ trait Handler
         return false;
     }
 
-    protected function mergeWithDefaults($params)
+    /** \brief (<i>Internal</i>) Add default connection value to parameter passed to pdo.
+     * @param array $params Parameter for PDO connection.
+     * @return array Parameter with defaults value.
+     */
+    protected function addDefaultValue(array $params) : array
     {
-        $DEFAULTS = [ 'adapter' => 'mysql', 'host' => 'localhost' ];
-        return array_merge($DEFAULTS, $params);
+        static $defaults = [ 'adapter' => PDO_DEFAULT_ADAPTER, 'host' => 'localhost' ];
+        return array_merge($defaults, $params);
     }
 
-    /** \brief Returns a string that can passed to PDO in order to open connection.
+    /** \brief (<i>Internal</i>) Returns a string that can passed to PDO as DNS parameter in order to open connection.
      * @param array $params Array containing parameter of the connection
+     * @return string Parameters contained in array $params sanitized in a string that can be passed as DNS param of PDO object creation.
      */
-    protected function stringify($params) : string
+    protected function getDNS($params) : string
     {
         $response = $params['adapter'] . ':';
         unset($params['adapter']);

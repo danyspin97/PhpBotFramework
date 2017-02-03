@@ -53,8 +53,8 @@ trait CallbackCommand
      *
      *     addMessageCommand("menu", function($bot, $callback_query) {
      *         $bot->editMessageText($callback_query['message']['message_id'], "This is the menu"); });
-     * @param $data The string that will trigger this function.
-     * @param $script The function that will be triggered by the callback query if it contains the $data string. Must take an object(the bot) and an array(the callback query received).
+     * @param string $data The string that will trigger this function.
+     * @param callable $script The function that will be triggered by the callback query if it contains the $data string. Must take an object(the bot) and an array(the callback query received).
      */
     public function addCallbackCommand(string $data, callable $script)
     {
@@ -66,8 +66,8 @@ trait CallbackCommand
 
     /**
      * \brief (<i>Internal</i>) Process the callback query and check if it triggers a command of this type.
-     * @param $callback_query Callback query to process.
-     * @return True if the callback query triggered a command.
+     * @param array $callback_query Callback query to process.
+     * @return bool True if the callback query triggered a command.
      */
     protected function processCallbackCommand(array $callback_query) : bool
     {

@@ -20,11 +20,13 @@ namespace PhpBotFramework;
 
 use PhpBotFramework\Exceptions\BotException;
 
-use PhpBotFramework\Entities\InlineKeyboard;
+// Use inline keyboard with localizated buttons
+use PhpBotFramework\Localization\Button;
 
+/** \class Bot Bot class that contains all modules.
+ */
 class Bot extends Core\BaseBot
 {
-
     use Commands\MessageCommand,
         Commands\MessageRegexCommand,
         Commands\CallbackCommand,
@@ -59,7 +61,6 @@ class Bot extends Core\BaseBot
      */
     public function __construct(string $token)
     {
-
         // Parent constructor
         parent::__construct($token);
 
@@ -67,13 +68,12 @@ class Bot extends Core\BaseBot
         $this->_message_commands = [];
         $this->_callback_commands = [];
 
-        $this->keyboard = new InlineKeyboard($this);
+        $this->keyboard = new Button($this);
     }
 
     /** \brief Descruct the bot. */
     public function __destruct()
     {
-
         // Close redis connection if it is open
         if (isset($this->redis)) {
             $this->redis->close();

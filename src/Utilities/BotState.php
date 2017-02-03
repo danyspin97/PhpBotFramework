@@ -112,7 +112,6 @@ trait BotState
      */
     public function getStatus(int $default_status = -1) : int
     {
-
         if (!isset($this->redis)) {
             throw new BotException('Redis connection not set');
         }
@@ -134,7 +133,6 @@ trait BotState
      */
     public function setStatus(int $status)
     {
-
         $this->redis->set($this->_chat_id . ':status', $status);
 
         $this->status = $status;

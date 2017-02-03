@@ -18,12 +18,23 @@
 
 namespace PhpBotFramework\Database;
 
+/**
+ * \addtogroup Modules
+ * @{
+ */
+
+/** \class User
+ */
 trait User
 {
+    /** @} */
 
     abstract function getChat($chat_id);
 
     abstract function setChatID($chat_id);
+
+    /** Pdo connection to the database. */
+    public $pdo;
 
     /**
      * \addtogroup Bot Bot
@@ -36,9 +47,6 @@ trait User
      * @{
      */
 
-    /** Pdo connection to the database. */
-    public $pdo;
-
     /** \brief Table contaning bot users data in the sql database. */
     public $user_table = '"User"';
 
@@ -47,7 +55,7 @@ trait User
 
     /** \brief Add a user to the database.
      * \details Add a user to the database in Bot::$user_table table and Bot::$id_column column using Bot::$pdo connection.
-     * @param int $chat_id chat_id of the user to add.
+     * @param string|int $chat_id chat_id of the user to add.
      * @return bool True on success.
      */
     public function addUser($chat_id) : bool
