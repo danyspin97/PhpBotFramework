@@ -20,8 +20,6 @@ namespace PhpBotFramework\Entities;
 
 use PhpBotFramework\Exceptions\BotException;
 
-use PhpBotFramework\Localization\Button;
-
 /**
  * \addtogroup Entities Entities
  * @{
@@ -34,8 +32,6 @@ use PhpBotFramework\Localization\Button;
  */
 class InlineKeyboard
 {
-    use Button;
-
     /**
      * \addtogroup InlineKeyboard InlineKeyboard
      * \brief Handle an inline keyboard to send along with messages.
