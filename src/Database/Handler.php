@@ -85,7 +85,7 @@ trait Handler
      * @param array $params Array containing parameter of the connection
      * @return string Parameters contained in array $params sanitized in a string that can be passed as DNS param of PDO object creation.
      */
-    protected function getDNS($params) : string
+    protected function getDns($params) : string
     {
         $response = $params['adapter'] . ':';
         unset($params['adapter']);

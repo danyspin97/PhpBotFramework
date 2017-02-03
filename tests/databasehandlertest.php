@@ -13,25 +13,22 @@ class DatabaseHandlerTest extends TestCase
      * Taken an associate array, transform it in a string so it 
      * could be passed to PDO in order to connect to a database.
      */
-    public function testStringify()
+    public function testDndString()
     {
-
-        $response = $this->stringify([
+        $response = $this->getDns([
             'adapter' => 'pgsql',
             'host' => 'lh',
             'dbname' => 'test'
         ]);
 
         $this->assertEquals($response, 'pgsql:host=lh;dbname=test');
-        return;
     }
 
     public function testShouldBePresentDefaultAdapter()
     {
-        $params = $this->mergeWithDefaults([ 'dbname' => 'test' ]);
-        $response = $this->stringify($params);
+        $params = $this->addDefaultValue([ 'dbname' => 'test' ]);
+        $response = $this->getDns($params);
 
         $this->assertEquals($response, 'mysql:host=localhost;dbname=test');
-        return;
     }
 }
