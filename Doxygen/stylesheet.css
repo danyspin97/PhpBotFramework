@@ -1,12 +1,22 @@
-/* Page */
+/*
+ * Some parts of this stylesheet was originally write by Rain C. Mitchell.
+ * You can get the original code at https://github.com/rainmitch/darktheme
+ */
+
+/*
+ * Page
+ * ==========================================================================
+ */
 html { font-size: 1em; }
 
-html, body {
+html, body
+{
   width: 100%;
   height: 100%;
 }
 
-body {
+body
+{
   max-width: 960px;
   display: block;
   margin: 0 auto;
@@ -15,13 +25,8 @@ body {
   color: #ccc;
 }
 
-body,
-table,
-div,
-p,
-dl,
-p.reference,
-p.definition {
+body, table, div, dl, p, p.reference, p.definition
+{
   font-weight: 300;
   line-height: 1.45;
 
@@ -29,13 +34,60 @@ p.definition {
   font-family: 'Source Serif Pro', 'FreeSerif', 'DroidSerif', serif;
 }
 
-p {
+p
+{
   margin-bottom: 1.3em;
   font-size: 1.15em;
 }
 
-/* Code fragments */
-pre.fragment {
+a { color: #03a9f4 !important; }
+
+a:hover { background: #333; }
+
+hr { border-top: none; }
+
+/*
+ * Heading
+ * ==========================================================================
+ */
+h1, h2, h3, h4
+{
+  margin: 1.2em 0 0.5em;
+  font-weight: inherit;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.441em; }
+
+h2 { font-size: 1.953em; }
+
+h3 { font-size: 1.563em; }
+
+h4 { font-size: 1.25em; }
+
+small, .font_small { font-size: 0.8em; }
+
+
+/*
+ * Header
+ * ==========================================================================
+ */
+div.header
+{
+  background-color: #333;
+  border: 0;
+
+  font: inherit;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+/*
+ * Code samples
+ * ==========================================================================
+ */
+pre.fragment
+{
   background-color: #222;
   border: 0;
 
@@ -49,18 +101,12 @@ pre.fragment {
   padding: 15px;
 }
 
-/* Header */
-div.header {
-  background-color: #333;
-  border: 0;
-
-  font: inherit;
-  font-weight: bold;
-  font-size: 1.25em;
-}
-
-/* Title area */
-#titlearea {
+/*
+ * Title area
+ * ==========================================================================
+ */
+#titlearea
+{
   width: 100%;
 
   -webkit-box-sizing: border-box;
@@ -68,62 +114,42 @@ div.header {
       -ms-box-sizing: border-box;
           box-sizing: border-box;
   padding: 15px;
+
+  display: inline-block;
+  border-bottom: none;
+  background: #222;
 }
 
-#titlearea tbody {
-  display: block;
-}
+#titlearea tbody { display: block; }
 
-#projectlogo img {
-  width: 128px;
-}
+#projectlogo img { width: 128px; }
 
 #projectname,
 #projectnumber,
-#projectbrief {
+#projectbrief
+{
   font-weight: 400 !important;
   font-family: 'Source Serif Pro', 'FreeSerif', 'DroidSerif', 'Georgia', serif !important;
 }
 
 /* Reduce title's size on mobile devices */
-@media only screen and (max-width: 768px) {
-  #projectname {
+@media only screen and (max-width: 768px)
+{
+  #projectname
+  {
     font-size: 2em !important;
   }
 }
 
-/* Menu */
+/*
+ * Menu
+ * ==========================================================================
+ */
 #main-menu li a { color: #4caf50 !important; }
 #main-menu li .sub-arrow { background-color: inherit; }
 
-/* Heading */
-h1, h2, h3, h4 {
-  margin: 1.2em 0 0.5em;
-  font-weight: inherit;
-  line-height: 1.2;
-}
-
-h1 {
-  font-size: 2.441em;
-}
-
-h2 { font-size: 1.953em; }
-
-h3 { font-size: 1.563em; }
-
-h4 { font-size: 1.25em; }
-
-small, .font_small { font-size: 0.8em; }
-
-/*
- * The next part was originally write by Rain C. Mitchell
- * Learn more here: https://github.com/rainmitch/darktheme
- */
-
 .headertitle { background: #333; }
 div.contents { color: #ccc; }
-
-a { color: #03a9f4 !important; }
 
 .navpath ul
 {
@@ -131,7 +157,8 @@ a { color: #03a9f4 !important; }
   border: 0;
 }
 
-div.center {
+div.center
+{
   background-color: #444;
 
   -webkit-box-sizing: border-box;
@@ -154,6 +181,10 @@ div.center {
   font-size: 1em;
 }
 
+/*
+ * Methods' explaination boxes
+ * ==========================================================================
+ */
 .memtitle
 {
   border: 0;
@@ -165,8 +196,8 @@ div.center {
 
 .memproto
 {
-  border: 1px solid #222;
-  border-bottom: 0;
+  border: 0;
+  border-bottom: 1px solid #333;
 
   background-image: none;
   background-color: #222;
@@ -180,8 +211,6 @@ small { color: white; }
 
 .memdoc
 {
-  width: 100%;
-
   border: 1px solid #222;
   background-image: none;
   background-color: #222;
@@ -192,10 +221,7 @@ small { color: white; }
 td.memItemRight,
 td.memItemLeft,
 td.mdescLeft,
-td.mdescRight
-{
-  background: #333;
-}
+td.mdescRight { background: #333; }
 
 td.memSeparator
 {
@@ -203,53 +229,23 @@ td.memSeparator
   border-bottom: 2px solid #4caf50;
 }
 
+/*
+ * Other
+ * ==========================================================================
+ */
 h2.groupheader
 {
   color: #4caf50;
   border: none;
 }
 
-div#top
-{
-  border-bottom: thick solid #4caf50;
-}
+div#top { border-bottom: thick solid #4caf50; }
 
-hr
-{
-  border-top: none;
-}
+#MSearchResultsWindow { background: #333; }
 
-#MSearchResultsWindow
-{
-  background: #333;
-}
+.directory tr.even { background-color: #333; }
 
-
-.sm-dox ul a, .sm-dox ul a:hover, .sm-dox ul a:focus, .sm-dox ul a:active, .sm-dox ul a.highlighted
-{
-  background: #333;
-  color: #ccc;
-}
-
-.sm-dox ul
-{
-  background: #333;
-}
-
-.directory tr.even
-{
-  background-color: #333;
-}
-
-a:hover
-{
-  background: #333;
-}
-
-.SRScope
-{
-  color: white;
-}
+.SRScope { color: white; }
 
 div#SRResults
 {
@@ -257,11 +253,10 @@ div#SRResults
   background: blue;
 }
 
-#titlearea
+.sm-dox ul a, .sm-dox ul a:hover, .sm-dox ul a:focus, .sm-dox ul a:active, .sm-dox ul a.highlighted
 {
-  display: inline-block;
-  border-bottom: none;
-  background: #222;
+  background: #333;
+  color: #ccc;
 }
 
 .sm-dox a
@@ -271,12 +266,8 @@ div#SRResults
   color: #4caf50;
 }
 
-.sm-dox
-{
-  padding: 0px;
-}
+.sm-dox { padding: 0px; }
 
-.sm
-{
-  background: #222;
-}
+.sm { background: #222; }
+
+.sm-dox ul { background: #333; }
