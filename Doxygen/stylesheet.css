@@ -11,7 +11,7 @@ body {
   display: block;
   margin: 0 auto;
 
-  background-color: #222;
+  background-color: #333;
   color: #ccc;
 }
 
@@ -36,7 +36,7 @@ p {
 
 /* Code fragments */
 pre.fragment {
-  background-color: #444;
+  background-color: #222;
   border: 0;
 
   font-family: 'Monaco', 'Source Code Pro', 'Roboto Mono', monospace;
@@ -51,7 +51,7 @@ pre.fragment {
 
 /* Header */
 div.header {
-  background-color: #222;
+  background-color: #333;
   border: 0;
 
   font: inherit;
@@ -120,7 +120,7 @@ small, .font_small { font-size: 0.8em; }
  * Learn more here: https://github.com/rainmitch/darktheme
  */
 
-.headertitle { background: #222; }
+.headertitle { background: #333; }
 div.contents { color: #ccc; }
 
 a { color: #03a9f4 !important; }
@@ -129,6 +129,16 @@ a { color: #03a9f4 !important; }
 {
   background: #222;
   border: 0;
+}
+
+div.center {
+  background-color: #444;
+
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 15px;
 }
 
 .navpath li { background-image: none; }
@@ -140,13 +150,17 @@ a { color: #03a9f4 !important; }
   color: #4caf50;
 }
 
+.navpath li.navelem a.el {
+  font-size: 1em;
+}
+
 .memtitle
 {
-  border: 1px solid #03a9f4;
+  border: 0;
   border-bottom: 0;
 
   background-image: none;
-  background-color: #03a9f4;
+  background-color: inherit;
 }
 
 .memproto
@@ -166,6 +180,8 @@ small { color: white; }
 
 .memdoc
 {
+  width: 100%;
+
   border: 1px solid #222;
   background-image: none;
   background-color: #222;
