@@ -344,7 +344,7 @@ class CoreBot
     /** \brief Bot id. */
     protected $_bot_id;
 
-    /** \brief Url request (containing $token). */
+    /** \brief API endpoint (containing $token). */
     protected $_api_url;
 
     /** \brief Implements interface for execute HTTP requests. */
@@ -357,7 +357,7 @@ class CoreBot
      */
     public function __construct(string $token)
     {
-        // Check token is valid
+        // Check if token is valid
         if (is_numeric($token) || $token === '') {
             throw new BotException('Token is not valid or empty');
         }
@@ -424,7 +424,7 @@ class CoreBot
      */
 
     /**
-     * \brief Exec any api request using this method.
+     * \brief Execute any API request using this method.
      * \details Use this method for custom api calls using this syntax:
      *
      *     $param = [
@@ -450,7 +450,7 @@ class CoreBot
      */
 
     /**
-     * \brief Process an api method by taking method and parameter.
+     * \brief Process an API method by taking method and parameter.
      * \details optionally create a object of $class class name with the response as constructor param.
      * @param string $method Method to call.
      * @param array $param Parameter for the method.

@@ -28,22 +28,22 @@ trait Inline
      * @{
      */
 
-    /** \brief Store id of the callback query received. */
+    /** \brief Store ID of the callback query received. */
     protected $_callback_query_id;
 
-    /** \brief Store id of the inline query received. */
+    /** \brief Store ID of the inline query received. */
     protected $_inline_query_id;
 
     /** @} */
 
     /**
-     * \addtogroup Api Api Methods
+     * \addtogroup API API Methods
      * @{
      */
 
     /* \brief Answer a callback query
-     * \details Remove the updating cirle on an inline keyboard button and showing a message/alert to the user.
-     * It will always answer the current callback query.
+     * \details Remove the 'updating' circle icon on an inline keyboard button showing a message/alert to the user.
+     * It'll always answer the current callback query.
      * @param $text <i>Optional</i>. Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters.
      * @param $show_alert <i>Optional</i>. If true, an alert will be shown by the client instead of a notification at the top of the chat screen.
      * @param $url <i>Optional</i>. URL that will be opened by the user's client. If you have created a Game and accepted the conditions via @Botfather, specify the URL that opens your game – note that this will only work if the query comes from a callback_game button.
@@ -69,7 +69,8 @@ trait Inline
 
 
     /*
-     * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
+     * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the
+     * private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
      * @param
      * $results Array on InlineQueryResult (https://core.telegram.org/bots/api#inlinequeryresult)
      * $switch_pm_text Text to show on the button
@@ -94,7 +95,8 @@ trait Inline
     }
 
     /*
-     * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
+     * Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to
+     * the private chat with the bot, on the top of the results (https://core.telegram.org/bots/api#answerinlinequery)
      * without showing any results to the user
      * @param
      * $switch_pm_text Text to show on the button

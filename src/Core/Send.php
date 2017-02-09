@@ -34,7 +34,7 @@ trait Send
 
     /**
      * \brief Send a text message.
-     * \details Use this method to send text messages. [Api reference](https://core.telegram.org/bots/api#sendmessage)
+     * \details Use this method to send text messages. [API reference](https://core.telegram.org/bots/api#sendmessage)
      * @param $text Text of the message.
      * @param $reply_markup <i>Optional</i>. Reply_markup of the message.
      * @param $parse_mode <i>Optional</i>. Parse mode of the message.
@@ -60,7 +60,7 @@ trait Send
 
     /**
      * \brief Forward a message.
-     * \details Use this method to forward messages of any kind. [Api reference](https://core.telegram.org/bots/api#forwardmessage)
+     * \details Use this method to forward messages of any kind. [API reference](https://core.telegram.org/bots/api#forwardmessage)
      * @param $from_chat_id The chat where the original message was sent.
      * @param $message_id Message identifier (id).
      * @param $disable_notification <i>Optional</i>. Sends the message silently.
@@ -81,7 +81,7 @@ trait Send
 
     /**
      * \brief Send a photo.
-     * \details Use this method to send photos. [Api reference](https://core.telegram.org/bots/api#sendphoto)
+     * \details Use this method to send photos. [API reference](https://core.telegram.org/bots/api#sendphoto)
      * @param $photo Photo to send, can be a file_id or a string referencing the location of that image.
      * @param $reply_markup <i>Optional</i>. Reply markup of the message.
      * @param $caption <i>Optional</i>. Photo caption (may also be used when resending photos by file_id), 0-200 characters.
@@ -104,7 +104,7 @@ trait Send
 
     /**
      * \brief Send an audio.
-     * \details Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. [Api reference](https://core.telegram.org/bots/api/#sendaudio)
+     * \details Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. [API reference](https://core.telegram.org/bots/api/#sendaudio)
      * Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
      * @param $audio Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data.
      * @param $caption <i>Optional</i>. Audio caption, 0-200 characters.
@@ -136,7 +136,7 @@ trait Send
 
     /**
      * \brief Send a document.
-     * \details Use this method to send general files. [Api reference](https://core.telegram.org/bots/api/#senddocument)
+     * \details Use this method to send general files. [API reference](https://core.telegram.org/bots/api/#senddocument)
      * @param mixed $document File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
      * @param string $caption <i>Optional</i>. Document caption (may also be used when resending documents by file_id), 0-200 characters.
      *
@@ -163,7 +163,7 @@ trait Send
 
     /**
      * \brief Send a sticker
-     * \details Use this method to send .webp stickers. [Api reference](https://core.telegram.org/bots/api/#sendsticker)
+     * \details Use this method to send .webp stickers. [API reference](https://core.telegram.org/bots/api/#sendsticker)
      * @param mixed $sticker Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a .webp file from the Internet, or upload a new one using multipart/form-data.
      * @param string $reply_markup <i>Optional</i>. Reply markup of the message.
      * @param bool $disable_notification Sends the message silently.
@@ -214,8 +214,11 @@ trait Send
     }
 
     /**
-     * \brief Say the user what action is the bot doing.
-     * \details Use this method when you need to tell the user that something is happening on the bot's side. The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status). [Api reference](https://core.telegram.org/bots/api#sendchataction)
+     * \brief Say the user what action bot's going to do.
+     * \details Use this method when you need to tell the user that something is happening on the bot's side.
+     * The status is set for 5 seconds or less (when a message arrives from your bot,
+     * Telegram clients clear its typing status). [API reference](https://core.telegram.org/bots/api#sendchataction)
+     *
      * @param string $action Type of action to broadcast. Choose one, depending on what the user is about to receive:
      * - <code>typing</code> for text messages
      * - <code>upload_photo</code> for photos

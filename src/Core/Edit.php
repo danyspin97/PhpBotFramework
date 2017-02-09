@@ -30,7 +30,7 @@ trait Edit
 
     /**
      * \brief Edit text of a message sent by the bot.
-     * \details Use this method to edit text and game messages sent by the bot. [Api reference](https://core.telegram.org/bots/api#editmessagetext)
+     * \details Use this method to edit text and game messages sent by the bot. [API reference](https://core.telegram.org/bots/api#editmessagetext)
      * @param int $message_id Unique identifier of the sent message.
      * @param string $text New text of the message.
      * @param string $reply_markup Reply markup of the message will have (will be removed if this is null).
@@ -55,7 +55,7 @@ trait Edit
 
     /**
      * \brief Edit text of a message sent via the bot.
-     * \details Use this method to edit text messages sent via the bot (for inline queries). [Api reference](https://core.telegram.org/bots/api#editmessagetext)
+     * \details Use this method to edit text messages sent via the bot (for inline queries). [API reference](https://core.telegram.org/bots/api#editmessagetext)
      * @param string $inline_message_id  Identifier of the inline message.
      * @param string $text New text of the message.
      * @param string $reply_markup Reply markup of the message will have (will be removed if this is null).
@@ -79,9 +79,9 @@ trait Edit
 
     /**
      * \brief Edit only the inline keyboard of a message.
-     * \details[Api reference](https://core.telegram.org/bots/api#editmessagereplymarkup)
+     * \details[API reference](https://core.telegram.org/bots/api#editmessagereplymarkup)
      * @param int $message_id Identifier of the message to edit
-     * @param string $inline_keyboard Inlike keyboard array. [Api reference](https://core.telegram.org/bots/api#inlinekeyboardmarkup)
+     * @param string $inline_keyboard Inlike keyboard array. [API reference](https://core.telegram.org/bots/api#inlinekeyboardmarkup)
      * @return Message|false Message edited, false otherwise.
      */
     public function editMessageReplyMarkup(int $message_id, string $inline_keyboard)

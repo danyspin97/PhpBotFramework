@@ -28,8 +28,8 @@ use PhpBotFramework\Entities\InlineQuery;
 /**
  * \class Bot Bot
  * \brief Bot class to handle updates and commandes.
- * \details Class Bot to handle task like api request, or more specific api function(sendMessage, editMessageText, etc).
- * Usage example in webhook.php
+ * \details Class Bot to handle task like API request, or more specific API method like sendMessage, editMessageText, etc..
+ * An example of its usage is available in webhook.php
  *
  */
 class BaseBot extends CoreBot
@@ -41,7 +41,6 @@ class BaseBot extends CoreBot
      * @{
      */
 
-    /** \brief Is the bot using webhook? */
     protected $_is_webhook;
 
     /**
@@ -50,7 +49,6 @@ class BaseBot extends CoreBot
      */
     public function __construct(string $token)
     {
-        // Parent constructor
         parent::__construct($token);
 
         // Add alias for entity classes
@@ -68,15 +66,14 @@ class BaseBot extends CoreBot
 
     /**
      * \brief Get update and process it.
-     * \details Call this method if you are using webhook.
-     * It will get update from php::\input, check it and then process it using processUpdate.
+     * \details Call this method if user is using webhook.
+     * It'll get bot's update from php::\input, check it and then process it using processUpdate.
      */
     public function processWebhookUpdate()
     {
         $this->_is_webhook = true;
 
         $this->initCommands();
-
         $this->processUpdate(json_decode(file_get_contents('php://input'), true));
     }
 
@@ -95,16 +92,13 @@ class BaseBot extends CoreBot
         while (empty($update = $this->getUpdates(0, 1))) {
         }
 
-        // Set the offset to the first update recevied
         $offset = $update[0]['update_id'];
-
         $this->initCommands();
 
         // Process all updates
         while (true) {
             $updates = $this->execRequest("getUpdates?offset=$offset&limit=$limit&timeout=$timeout");
 
-            // Parse all update to receive
             foreach ($updates as $key => $update) {
                 try {
                     // Process one at a time
@@ -114,7 +108,6 @@ class BaseBot extends CoreBot
                 }
             }
 
-            // Update the offset
             $offset += sizeof($updates);
         }
     }
