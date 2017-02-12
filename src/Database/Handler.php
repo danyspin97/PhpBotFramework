@@ -33,7 +33,7 @@ trait Handler
 {
     /** @} */
 
-    /** Pdo connection to the database. */
+    /** PDO connection to the database. */
     public $pdo;
 
     /**
@@ -43,7 +43,7 @@ trait Handler
 
     /**
      * \brief Open a database connection using PDO.
-     * \details Provides a simpler way to initialize a database connection
+     * \details Provides a simple way to initialize a database connection
      * and create a PDO instance.
      * @param array $params Parameters for initialize connection.
      * Index required:
@@ -52,7 +52,7 @@ trait Handler
      * Optional index:
      *     - <code>adapter</code> <b>Default</b>: <code>mysql</code>
      *     - <code>host</code> <b>Default</b>: <code>localhost</code>
-     *     - <code>options</code> (<i>Array of options passed when creating pdo object</i>)
+     *     - <code>options</code> (<i>Array of options passed when creating PDO object</i>)
      * @return bool True when the connection is succefully created.
      */
     public function connect(array $params) : bool
@@ -71,7 +71,7 @@ trait Handler
         return false;
     }
 
-    /** \brief (<i>Internal</i>) Add default connection value to parameter passed to pdo.
+    /** \brief (<i>Internal</i>) Add default connection value to parameter passed to PDO.
      * @param array $params Parameter for PDO connection.
      * @return array Parameter with defaults value.
      */
