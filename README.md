@@ -110,7 +110,7 @@ php vendor/bin/phpunit
 ```
 
 ## Author
-This framework is developed and mantained by [@DanySpin97](https://github.com/DanySpin97) and [@DomCorvasce](https://github.com/domcorvasce).
+This framework is developed and mantained by [Danilo Spinella](https://github.com/DanySpin97) and [Dom Corvasce](https://github.com/domcorvasce).
 
 ## License
 PhpBotFramework is released under [GNU Lesser General Public License v3](https://www.gnu.org/licenses/lgpl-3.0.en.html).
