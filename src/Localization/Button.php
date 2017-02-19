@@ -22,7 +22,8 @@ use PhpBotFramework\Core\CoreBot;
 use PhpBotFramework\Entities\InlineKeyboard;
 
 /** \class Button Button Inline keyboard with localizated buttons. */
-class Button extends InlineKeyboard {
+class Button extends InlineKeyboard
+{
 
     /**
      * \addtogroup InlineKeyboard InlineKeyboard

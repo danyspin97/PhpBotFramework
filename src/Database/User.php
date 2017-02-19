@@ -91,9 +91,14 @@ trait User
      * Because a limitation of Telegram Bot API the bot will have a delay after 20 messages sent in different chats.
      * @see CoreBot::sendMessage
      */
-    public function broadcastMessage(string $text, string $reply_markup = null, string $parse_mode = 'HTML',
-                                     bool $disable_web_preview = true, bool $disable_notification = false)
-    {
+    public function broadcastMessage(
+        string $text,
+        string $reply_markup = null,
+        string $parse_mode = 'HTML',
+        bool $disable_web_preview = true,
+        bool $disable_notification = false
+    ) {
+    
 
         if (!isset($this->pdo)) {
             throw new BotException("Database connection not set");

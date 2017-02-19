@@ -35,7 +35,7 @@ class Bot extends Core\BaseBot
         Database\User,
         Localization\File,
         Localization\Language,
-        Localization\LocalizatedString,
+        Localization\LocalizedString,
         Utilities\BotState;
 
     /**
