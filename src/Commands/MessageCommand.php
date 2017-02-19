@@ -1,10 +1,38 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Commands;
 
 use PhpBotFramework\Entities\Message;
 
-trait MessageCommand {
+/**
+ * \addtogroup Modules
+ * @{
+ */
+
+/** \class MessageCommand
+ */
+trait MessageCommand
+{
+    /** @} */
+
+    /** \brief Chat id of the current user/group/channel. */
+    protected $_chat_id;
 
     /**
      * \addtogroup Commands
@@ -21,35 +49,31 @@ trait MessageCommand {
      *
      *     addMessageCommand("start", function($bot, $message) {
      *         $bot->sendMessage("Hi"); });
-     * @param $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
-     * @param $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
+     * @param string $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
+     * @param callable $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
      */
-    public function addMessageCommand(string $command, callable $script) {
-
+    public function addMessageCommand(string $command, callable $script)
+    {
         $this->_message_commands[] = [
             'script' => $script,
             'command' => '/' . $command,
             'length' => strlen($command) + 1,
         ];
-
     }
 
     /**
      * \brief (<i>Internal</i>)Process a message checking if it trigger any MessageCommand.
-     * @param $message Message to process.
-     * @return True if the message triggered any command.
+     * @param string $message Message to process.
+     * @return bool True if the message triggered any command.
      */
-    protected function processMessageCommand(array $message) : bool {
-
+    protected function processMessageCommand(array $message) : bool
+    {
         // If the message contains a bot command at the start
         if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
-
             // For each command added by the user
             foreach ($this->_message_commands as $trigger) {
-
                 // If we found a valid command (check first lenght, then use strpos)
                 if ($trigger['length'] == $message['entities'][0]['length'] && mb_strpos($trigger['command'], $message['text'], $message['entities'][0]['offset']) !== false) {
-
                     // Set chat_id
                     $this->_chat_id = $message['chat']['id'];
 
@@ -59,14 +83,10 @@ trait MessageCommand {
                     // Return
                     return true;
                 }
-
             }
-
         }
 
         // No command were triggered, return false
         return false;
-
     }
-
 }

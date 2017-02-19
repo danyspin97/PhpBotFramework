@@ -16,34 +16,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PhpBotFramework\Entities;
+namespace PhpBotFramework\Test;
 
-/**
- * \addtogroup Entities Entities
- * @{
- */
+use PhpBotFramework\Bot;
 
-/** \class Message
- * \brief This object represents a message.
- */
-class Message implements \ArrayAccess
+use PhpBotFramework\Entities\Message;
+
+class TestBot extends Bot
 {
 
-    /** @} */
+    use FakeUpdate;
 
-    use EntityAccess;
-
-    public function getText() : string
+    public function processMessage(Message $message)
     {
 
-        // Get text of the message if any
-        return isset($this->container['text']) ? $this->container['text'] : null;
-    }
+        $this->setChatID(getenv("CHAT_ID"));
 
-    public function getChatID()
-    {
-
-        // Return the chat id
-        return $this->container['chat']['id'];
+        $this->sendMessage("Message from <b>{$message['from']['first_name']}</b> saying: <i>{$message['text']}</i>");
     }
 }

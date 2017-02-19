@@ -16,34 +16,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PhpBotFramework\Entities;
+namespace PhpBotFramework\Test;
 
-/**
- * \addtogroup Entities Entities
- * @{
- */
+use PhpBotFramework\Entities\Message;
 
-/** \class Message
- * \brief This object represents a message.
+/* \class FakeUpdate
+ * \brief Contains abstract methods for processing fake updates.
  */
-class Message implements \ArrayAccess
+trait FakeUpdate
 {
 
-    /** @} */
-
-    use EntityAccess;
-
-    public function getText() : string
+    /**
+     * \brief Process fake update for tests.
+     * @param array $update Fake update given by tests.
+     * @return int Id of the update processed.
+     */
+    public function processFakeUpdate($update)
     {
-
-        // Get text of the message if any
-        return isset($this->container['text']) ? $this->container['text'] : null;
-    }
-
-    public function getChatID()
-    {
-
-        // Return the chat id
-        return $this->container['chat']['id'];
+        $this->processUpdate($update);
     }
 }

@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/DanySpin97/PhpBotFramework.svg?branch=master)](https://travis-ci.org/DanySpin97/PhpBotFramework)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6254e3eccc93497997dae21e57a452ac)](https://www.codacy.com/app/danyspin97/PhpBotFramework?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DanySpin97/PhpBotFramework&amp;utm_campaign=Badge_Grade)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/DanySpin97/PhpBotFramework/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/DanySpin97/PhpBotFramework/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/DanySpin97/PhpBotFramework/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/DanySpin97/PhpBotFramework/?branch=master)
 [![License](https://poser.pugx.org/danyspin97/php-bot-framework/license)](https://packagist.org/packages/danyspin97/php-bot-framework)
 
 
@@ -70,12 +71,46 @@ composer install --no-dev
 ## Documentation
 Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for learning more about PhpBotFramework.
 
+## FAQ
+
+- **Why we don't implement asynchronous requests?**
+
+   We use [Guzzle](https://github.com/guzzle/guzzle) in order to fire HTTP requests to Telegram Bot API.
+
+   Unfortunately it doesn't implement real asynchronous requests but **a sort of**.
+
+   Take a look to [this issue](https://github.com/guzzle/guzzle/issues/1127) for more information.
+
+- **Why there is no chat__id to pass for api methods?**
+
+  PhpBotFramework is "smart" enough to set it as the current user, group or channel id.
+  Most of the frameworks out there requires you to specify the chat ID for every method's call but PhpBotFramework will call next api method to whom sent the update.
+
+  You can still change it by using [setChatID](https://danyspin97.github.io/PhpBotFramework/group__Bot.html).
+
 ## Made with PhpBotFramework
 - [MyAddressBookBot](https://github.com/DanySpin97/MyAddressBookBot): [Try it on Telegram](https://telegram.me/myaddressbookbot)
 - [Giveaways_Bot](https://github.com/DanySpin97/GiveawaysBot): [Try it on Telegram](https://telegram.me/giveaways_bot)
 
+## Testing
+
+PhpBotFramework comes with a test suite you can run using **PHPUnit**.
+
+You need a valid bot token and chat ID in order to run tests:
+
+```shell
+export BOT_TOKEN=YOURBOTTOKEN
+export CHAT_ID=YOURCHATID
+```
+
+After you've set the necessary, you can run the test suite typing:
+
+```shell
+php vendor/bin/phpunit
+```
+
 ## Author
-This framework is developed and mantained by [DanySpin97](https://github.com/DanySpin97).
+This framework is developed and mantained by [Danilo Spinella](https://github.com/DanySpin97) and [Dom Corvasce](https://github.com/domcorvasce).
 
 ## License
 PhpBotFramework is released under [GNU Lesser General Public License v3](https://www.gnu.org/licenses/lgpl-3.0.en.html).

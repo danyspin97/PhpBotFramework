@@ -1,12 +1,25 @@
 <?php
 
 require './vendor/autoload.php';
+use PHPUnit\Framework\TestCase;
 
-class KeyboardTest extends PHPUnit_Framework_TestCase
+class KeyboardTest extends TestCase
 {
-    public function testInlineKeyboard() {
-        $keyboard = new PhpBotFramework\Entities\InlineKeyboard();
-        $keyboard->addLevelButtons(['text' => 'First', 'callback_data' => '1'], ['text' => 'Second', 'callback_data' => '2']);
-        $keyboard->get();
+
+    public $keyboard;
+
+    public function setUp()
+    {
+
+        $this->keyboard = new PhpBotFramework\Entities\InlineKeyboard();
+    }
+
+    public function testInlineKeyboard()
+    {
+
+        $this->keyboard->addLevelButtons(['text' => 'First', 'callback_data' => '1'], ['text' => 'Second', 'callback_data' => '2']);
+
+        $this->assertEquals(json_decode($this->keyboard->get(false), true), $this->keyboard->getArray());
+        ;
     }
 }

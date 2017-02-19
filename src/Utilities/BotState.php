@@ -1,14 +1,32 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Utilities;
 
-trait BotState {
+trait BotState
+{
 
     /**
      * \addtogroup State
-     * \brief Create a state based bot using these methods.
-     * \details Bot will answer in different way based on the state.
-     * Here is an example where we use save user credential using bot states:
+     * \brief Create a state-based bot using these methods.
+     * \details The bot will answer in different ways based on its internal state.
+     *
+     * Below an example where we save user's credentials using bot states:
      *
      *     <?php
      *
@@ -20,7 +38,7 @@ trait BotState {
      *     define("SEND_PASSWORD", 2);
      *
      *     // Create the class for the bot that will handle login
-     *     class LoginBot extends DanySpin97\PhpBotFramework\Bot {
+     *     class LoginBot extends PhpBotFramework\Bot {
      *
      *         // Add the function for processing messages
      *         protected function processMessage($message) {
@@ -29,8 +47,6 @@ trait BotState {
      *
      *                 // If we are expecting a username from the user
      *                 case SEND_USERNAME:
-     *
-     *                     // Save the username
      *
      *                     // Say the user to insert the password
      *                     $this->sendMessage("Please, send your password.");
@@ -55,13 +71,9 @@ trait BotState {
      *
      *     }
      *
-     *     // Create the bot
      *     $bot = new LoginBot("token");
      *
-     *     // Create redis object
      *     $bot->redis = new Redis();
-     *
-     *     // Connect to redis database
      *     $bot->redis->connect('127.0.0.1');
      *
      *     // Create the awnser to the <code>/start</code> command
@@ -81,49 +93,47 @@ trait BotState {
      * @{
      */
 
-    /** \brief Status of the bot to handle data inserting and menu-like bot. */
+    /** \brief Represents status used to handle data like inserting and menu-like bot. */
     public $status;
 
+    /** \brief Redis connection. */
+    public $redis;
+
     /**
-     * \brief Get current user status from redis and set it in status variable.
-     * \details Throw exception if redis connection is missing.
-     * @param $default_status <i>Optional</i>. The default status to return in case there is no status for the current user.
-     * @return The status for the current user, $default_status if missing.
+     * \brief Get current user status from Redis and set it in status variable.
+     * \details Throws an exception if the Redis connection is missing.
+     * @param int $default_status <i>Optional</i>. The default status to return
+     * if there is no status for the current user.
+     * @return int The status for the current user, $default_status if missing.
      */
-    public function getStatus(int $default_status = -1) : int {
-
+    public function getStatus(int $default_status = -1) : int
+    {
         if (!isset($this->redis)) {
-
             throw new BotException('Redis connection not set');
-
         }
 
         if ($this->redis->exists($this->_chat_id . ':status')) {
-
             $this->status = $this->redis->get($this->_chat_id . ':status');
 
             return $this->status;
-
         }
 
         $this->redis->set($this->_chat_id . ':status', $default_status);
         $this->status = $default_status;
-        return $default_status;
 
+        return $default_status;
     }
 
-    /** \brief Set the status of the bot in both redis and $status.
-     * \details Throw exception if redis connection is missing.
-     * @param $status The new status of the bot.
+    /** \brief Set the status of the bot in both Redis and $status.
+     * \details Throws an exception if the Redis connection is missing.
+     * @param int $status The new status of the bot.
      */
-    public function setStatus(int $status) {
-
+    public function setStatus(int $status)
+    {
         $this->redis->set($this->_chat_id . ':status', $status);
 
         $this->status = $status;
-
     }
 
     /** @} */
-
 }

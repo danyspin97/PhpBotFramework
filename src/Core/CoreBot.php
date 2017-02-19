@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Core;
 
 use \PhpBotFramework\Exceptions\BotException;
@@ -10,7 +26,7 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  * \mainpage
  * \section Description
  * PhpBotFramework is a lightweight framework for [Telegram Bot API](https://core.telegram.org/bots/api).
- * Designed to be fast and easy to use, it provides all the features a user need in order to start 
+ * Designed to be fast and easy to use, it provides all the features a user need in order to start
  * developing Telegram bots..
  *
  * \section Installation
@@ -22,7 +38,7 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  *     composer install --no-dev
  *
  * \section Usage
- * You can start working on your bot creating a new instance of Bot or by creating a 
+ * You can start working on your bot creating a new instance of Bot or by creating a
  * class that inherits from it.
  *
  * Each API call will have <code>$_chat_id</code> set to the current user:
@@ -122,13 +138,13 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  * \section Webhook-section Webhook
  * An alternative way to receive updates is using **webhooks**.
  *
- * Everytime a user interacts with the bot, Telegram servers send the update through 
+ * Everytime a user interacts with the bot, Telegram servers send the update through
  * a POST request to a URL chose by you.
  *
  * A web server will create an instance of the bot for every update received.
  *
  * If you want to use webhook: call Bot::processWebhookUpdate() at the end of your bot.
- * 
+ *
  * The bot will get data from <code>php://input</code> and process it using Bot::processUpdate().
  * Each instance of the bot will open its connection.
  *
@@ -176,7 +192,7 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  *
  * \section InlineKeyboard-Usage Inline keyboards
  *
- * Telegram implements something called [inline keyboards](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating) which allows users to send commands to a 
+ * Telegram implements something called [inline keyboards](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating) which allows users to send commands to a
  * bot tapping on buttons instead of typing text.
  *
  * PhpBotFrameworks supports **inline keyboard** and you can easily integrate it with your bot:
@@ -199,7 +215,7 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  *     $bot->addMessageCommand("start", $command_function);
  *
  * \section Sql-Database Database
- * A database is required in order to save offsets (if you use local updates) 
+ * A database is required in order to save offsets (if you use local updates)
  * and save user's language.
  *
  * We implemented a simpler way to connect to a database which is based on PDO:
@@ -266,6 +282,17 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  * - [MyAddressBookBot](https://github.com/DanySpin97/MyAddressBookBot): [Try it on Telegram](https://telegram.me/myaddressbookbot)
  * - [Giveaways_Bot](https://github.com/DanySpin97/GiveawaysBot): [Try it on Telegram](https://telegram.me/giveaways_bot)
  *
+ * \section Testing
+ * PhpBotFramework comes with a test suite you can run using **PHPUnit**.
+ *
+ * You need a valid bot token and chat ID in order to run tests:
+ *
+ *      export BOT_TOKEN=YOURBOTTOKEN
+ *      export CHAT_ID=YOURCHATID
+ *
+ * After you've set the necessary, you can run the test suite typing:
+ *
+ *      phpunit
  *
  * \section Authors
  * This framework is developed and mantained by [Danilo Spinella](https://github.com/DanySpin97).
@@ -290,8 +317,8 @@ use \PhpBotFramework\Entities\InlineKeyboard;
  * \brief Core of the framework
  * \details Contains data used by the bot to works, curl request handling, and all api methods (sendMessage, editMessageText, etc).
  */
-class CoreBot {
-
+class CoreBot
+{
     /** @} */
 
     use Updates,
@@ -305,17 +332,19 @@ class CoreBot {
      * @{
      */
 
-    /** \brief Chat_id of the user that interacted with the bot */
-    protected $_chat_id;
-
-    /** @} */
-
     /**
      * \addtogroup Core Core(Internal)
      * \brief Core of the framework.
      * @{
      */
-    /** \brief Url request (containing $token). */
+
+    /** \brief Chat_id of the user that interacted with the bot. */
+    protected $_chat_id;
+
+    /** \brief Bot id. */
+    protected $_bot_id;
+
+    /** \brief API endpoint (containing $token). */
     protected $_api_url;
 
     /** \brief Implements interface for execute HTTP requests. */
@@ -326,13 +355,11 @@ class CoreBot {
      * \details Initialize a new bot passing its token.
      * @param $token Bot's token given by @botfather.
      */
-    public function __construct(string $token) {
-
-        // Check token is valid
+    public function __construct(string $token)
+    {
+        // Check if token is valid
         if (is_numeric($token) || $token === '') {
-
             throw new BotException('Token is not valid or empty');
-
         }
 
         $this->_api_url = "https://api.telegram.org/bot$token/";
@@ -345,7 +372,6 @@ class CoreBot {
             'timeout' => 60,
             'http_errors' => false
         ]);
-
     }
 
     /** @} */
@@ -357,44 +383,36 @@ class CoreBot {
 
     /**
      * \brief Get chat ID of the current user.
-     * @return Chat ID of the user.
+     * @return int Chat ID of the user.
      */
-    public function getChatID() {
-
+    public function getChatID()
+    {
         return $this->_chat_id;
-
     }
 
     /**
      * \brief Set current chat ID.
      * \details Change the chat ID on which the bot acts.
-     * @param $_chat_id The new chat ID to set.
+     * @param $chat_id The new chat ID to set.
      */
-    public function setChatID($_chat_id) {
-
-        $this->_chat_id = $_chat_id;
-
+    public function setChatID($chat_id)
+    {
+        $this->_chat_id = $chat_id;
     }
 
     /**
      * \brief Get bot ID using `getMe` method.
+     * @return int Bot id, 0 on errors.
      */
-    public function getBotID() : int {
-
-        // Get the id of the bot
-        static $bot_id;
-        $bot_id = ($this->getMe())['id'];
-
+    public function getBotID() : int
+    {
         // If it is not valid
-        if (!isset($bot_id) || $bot_id == 0) {
-
+        if (!isset($this->_bot_id) || $this->_bot_id == 0) {
             // get it again
-            $bot_id = ($this->getMe())['id'];
-
+            $this->_bot_id = ($this->getMe())['id'];
         }
 
-        return $bot_id ?? 0;
-
+        return $this->_bot_id ?? 0;
     }
 
     /** @} */
@@ -406,7 +424,7 @@ class CoreBot {
      */
 
     /**
-     * \brief Exec any api request using this method.
+     * \brief Execute any API request using this method.
      * \details Use this method for custom api calls using this syntax:
      *
      *     $param = [
@@ -419,10 +437,9 @@ class CoreBot {
      * @param $parameters Parameters to add.
      * @return Depends on api method.
      */
-    public function apiRequest(string $method, array $parameters) {
-
-        return $this->exec_curl_request($method . '?' . http_build_query($parameters));
-
+    public function apiRequest(string $method, array $parameters)
+    {
+        return $this->execRequest($method . '?' . http_build_query($parameters));
     }
 
     /** @} */
@@ -432,22 +449,43 @@ class CoreBot {
      * @{
      */
 
+    /**
+     * \brief Process an API method by taking method and parameter.
+     * \details optionally create a object of $class class name with the response as constructor param.
+     * @param string $method Method to call.
+     * @param array $param Parameter for the method.
+     * @param string $class Class name of the object to create using response.
+     * @return mixed Response or object of $class class name.
+     */
+    protected function processRequest(string $method, array $param, string $class = '')
+    {
+        $response = $this->execRequest("$method?" . http_build_query($param));
+
+        if ($response === false) {
+            return false;
+        }
+
+        if ($class !== '') {
+            $object_class = "PhpBotFramework\Entities\\$class";
+
+            return new $object_class($response);
+        }
+
+        return $response;
+    }
+
+
     /** \brief Core function to execute HTTP request.
      * @param $url The request's URL.
-     * @param $method The request's HTTP method, POST by default.
-     * @return Url response, false on error.
+     * @return Array|false Url response decoded from JSON, false on error.
      */
-    protected function exec_curl_request($url, $method = 'POST') {
-
-        $response = $this->_http->request($method, $url);
+    protected function execRequest(string $url)
+    {
+        $response = $this->_http->request('POST', $url);
         $http_code = $response->getStatusCode();
 
         if ($http_code === 200) {
             $response = json_decode($response->getBody(), true);
-
-            if (isset($response['desc'])) {
-                error_log("Request was successfull: {$response['description']}\n");
-            }
 
             return $response['result'];
         } elseif ($http_code >= 500) {
@@ -457,15 +495,11 @@ class CoreBot {
         } else {
             $response = json_decode($response->getBody(), true);
             error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
-            if ($http_code === 401) {
-                throw new BotException('Invalid access token provided');
-            }
             return false;
         }
-
-        return $response;
     }
 
     /** @} */
 
+    /** @} */
 }

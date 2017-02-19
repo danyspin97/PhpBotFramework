@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * This file is part of the PhpBotFramework.
+ *
+ * PhpBotFramework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, version 3.
+ *
+ * PhpBotFramework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace PhpBotFramework\Entities;
 
 /**
@@ -12,7 +28,8 @@ namespace PhpBotFramework\Entities;
  * \class Text
  * \brief Contains text helper methods
  */
-class Text {
+class Text
+{
 
     /**
      * \brief Get hashtag contained in a string.
@@ -22,15 +39,14 @@ class Text {
      * @param $string The string to check for hashtags.
      * @return An array of valid hashtags, can be empty.
      */
-    public static function getHashtags(string $string) : array {
+    public static function getHashtags(string $string) : array
+    {
 
         // Use regex to check
         if (preg_match_all("/(#\w+)/u", $string, $matches) != 0) {
-
             $hashtagsArray = array_count_values($matches[0]);
 
             $hashtags = array_keys($hashtagsArray);
-
         }
 
         // Return an array of hashtags
@@ -39,7 +55,7 @@ class Text {
 
     // http://www.mendoweb.be/blog/php-convert-string-to-camelcase-string/<Paste>
     public static function camelCase($str, array $noStrip = [])
-{
+    {
         // non-alpha and non-numeric characters become spaces
         $str = preg_replace('/[^a-z0-9' . implode("", $noStrip) . ']+/i', ' ', $str);
         $str = trim($str);
@@ -58,11 +74,11 @@ class Text {
      * @param $tag Formattation tag to remove.
      * @return The string, modified if there are usernames. Otherwise $string.
      */
-    public static function removeUsernameFormattation(string $string, string $tag) : string {
+    public static function removeUsernameFormattation(string $string, string $tag) : string
+    {
 
         // Check if there are usernames in string using regex
         if (preg_match_all('/(@\w+)/u', $string, $matches) != 0) {
-
             $usernamesArray = array_count_values($matches[0]);
 
             $usernames = array_keys($usernamesArray);
@@ -78,19 +94,14 @@ class Text {
 
             // For each username
             for ($i = 0; $i !== $count; $i++) {
-
                 // Put the Delimitator_end before the username and the start one after it
                 $string = str_replace($usernames[$i], $delimitator_end . $usernames[$i] . $delimitator_start, $string);
-
             }
-
         }
 
         // Return the string, modified or not
         return $string;
-
     }
 
     /** @} */
-
 }
