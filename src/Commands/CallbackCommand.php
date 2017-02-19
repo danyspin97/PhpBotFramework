@@ -31,7 +31,7 @@ trait CallbackCommand
 {
     /** @} */
 
-    /** \brief Chat id of the current user/group/channel. */
+    /** \brief Chat ID of the current user/group/channel. */
     protected $_chat_id;
 
     /**
@@ -73,17 +73,12 @@ trait CallbackCommand
     {
         // Check for callback commands
         if (isset($callback_query['data'])) {
-            // Iterate over all commands
             foreach ($this->_callback_commands as $trigger) {
                 // If command is found in callback data
                 if (strpos($trigger['data'], $callback_query['data']) !== false) {
-                    // Set chat id
                     $this->_chat_id = $callback_query['message']['chat']['id'];
-
-                    // Trigger the script
                     $trigger['script']($this, new CallbackQuery($callback_query));
 
-                    // The callback triggered a command, return true
                     return true;
                 }
             }

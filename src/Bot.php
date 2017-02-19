@@ -72,7 +72,7 @@ class Bot extends Core\BaseBot
         $this->keyboard = new Button($this);
     }
 
-    /** \brief Descruct the bot. */
+    /** \brief Destruct the bot. */
     public function __destruct()
     {
         if (isset($this->redis)) {
