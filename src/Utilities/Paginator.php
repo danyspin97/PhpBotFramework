@@ -22,12 +22,12 @@ define("DELIMITER", "::::::::::::::::::::::::::::::::::::::\n");
 
 class Paginator
 {
-    public static function paginateItems($items, int $index, &$keyboard, $format_item, int $item_per_page = 3, $prefix = 'list', string $delimiter = DELIMITER)
+    public static function paginateItems($items, int $index, &$keyboard, $format_item, int $item_per_page = 3,
+                                         $prefix = 'list', string $delimiter = DELIMITER)
     {
         // Assign the position of first item to show
         $item_position = ($index - 1) * $item_per_page + 1;
 
-        // Get how many items did the database return
         $items_number = $items->rowCount();
 
         $counter = 1;

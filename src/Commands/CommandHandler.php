@@ -35,12 +35,12 @@ trait CommandHandler
      * @{
      */
 
-    /** \brief (<i>Internal</i>)contains all command that can trigger the bot.
+    /** \brief (<i>Internal</i>)Contains all command that can be triggered by the bot.
      * \details E.g. Add each type of command processed by the bot into this array to avoid overhead. */
     protected $_command_types;
 
     /**
-     * \brief (<i>Internal</i>) Init commands to speed up processing.
+     * \brief (<i>Internal</i>) Initialize commands to speed up processing.
      * \details Get all command that the bot handle, and put them in priority.
      */
     protected function initCommands()
@@ -57,9 +57,7 @@ trait CommandHandler
 
         // Iterate over each
         foreach ($commands as $index => $command) {
-            // If there is at least a command of that type (by checking that the container exists and it is not empty)
             if (isset($this->{$command['var']}) && !empty($this->{$command['var']})) {
-                // Add the type to the command container
                 $this->_command_types[] = ['method' => "process$index", 'update' => $command['update']];
             }
         }
@@ -68,7 +66,7 @@ trait CommandHandler
     /**
      * \brief Process updates handling first commands, and then general methods (e.g. BaseBot::processMessage())
      * @param array $update Update to process.
-     * @return int Id of the update processed.
+     * @return int ID of the update processed.
      */
     protected function processUpdate(array $update) : int
     {
@@ -81,12 +79,12 @@ trait CommandHandler
             }
         }
 
-        // Call the parent method because this update didn't trigger any command
+        // Call the parent method 'cause this update didn't trigger any command
         return parent::processUpdate($update);
     }
 
     /**
-        * \brief (<i>Internal</i>) Sort an array based on <code>prior</code> index value.
+     * \brief (<i>Internal</i>) Sort an array based on <code>prior</code> index value.
      * @param array $a First array.
      * @param array $b Second array.
      * @return int 1 If $a > $b, -1 if $a < $b, 0 otherwise.

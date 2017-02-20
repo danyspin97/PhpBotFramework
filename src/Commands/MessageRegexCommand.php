@@ -31,7 +31,7 @@ trait MessageRegexCommand
 {
     /** @} */
 
-    /** \brief Chat id of the current user/group/channel. */
+    /** \brief Chat ID of the current user/group/channel. */
     protected $_chat_id;
 
     /**
@@ -44,7 +44,9 @@ trait MessageRegexCommand
     protected $_message_regex_commands;
 
     /**
-     * \brief Add a function that will be executed everytime a message contain a command that match the regex
+     * \brief Add a function that will be executed everytime a message contain a command
+     * that match the regex.
+     *
      * \details Use this syntax:
      *
      *     addMessageCommandRegex("number\d", function($bot, $message, $result) {
@@ -77,14 +79,11 @@ trait MessageRegexCommand
 
                     // Trigger the script
                     $trigger['script']($this, new Message($message));
-
-                    // The message triggered a command, return true
                     return true;
                 }
             }
         }
 
-        // No command were triggered
         return false;
     }
 }

@@ -41,6 +41,7 @@ class BaseBot extends CoreBot
      * @{
      */
 
+    /** \brief (<i>Internal</i>) True if the bot is using webhook? */
     protected $_is_webhook;
 
     /**
