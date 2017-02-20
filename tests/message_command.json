@@ -1,0 +1,17 @@
+{
+  "update_id": 112519235,
+  "message": {
+    "message_id": 1101241,
+    "from": {
+      "id": 0,
+      "first_name": "Carlo"
+    },
+    "chat": {
+      "id": "0",
+      "first_name": "Carlo",
+      "type": "private"
+    },
+    "date": 14854412271,
+    "text": "/start"
+  }
+}

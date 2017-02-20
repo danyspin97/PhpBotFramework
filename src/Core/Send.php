@@ -139,7 +139,8 @@ trait Send
     /**
      * \brief Send a document.
      * \details Use this method to send general files. [API reference](https://core.telegram.org/bots/api/#senddocument)
-     * @param mixed $document File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or give the local path of an document to upload it.
+     * @param string $document File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or give the local path of an document to upload it.
+     * Only some document are allowed through url sending (this is a Telegram limitation).
      * @param string $caption <i>Optional</i>. Document caption (may also be used when resending documents by file_id), 0-200 characters.
      *
      * @param string $reply_markup <i>Optional</i>. Reply markup of the message.
@@ -147,7 +148,7 @@ trait Send
      * @param int $reply_to_message_id <i>Optional</i>. If the message is a reply, ID of the original message.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendDocument($document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
+    public function sendDocument(string $document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
     {
         $this->_file->init($document, 'document');
 

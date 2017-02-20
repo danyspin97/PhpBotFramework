@@ -58,7 +58,8 @@ class File
         return false;
     }
 
-    public function getFormatName() : string {
+    public function getFormatName() : string
+    {
         return $this->format_name;
     }
 }

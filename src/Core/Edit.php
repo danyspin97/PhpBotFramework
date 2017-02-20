@@ -41,7 +41,7 @@ trait Edit
     public function editMessageText(int $message_id, string $text, string $reply_markup = null, string $parse_mode = 'HTML', bool $disable_web_preview = true)
     {
 
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
             'message_id' => $message_id,
             'text' => $text,
@@ -50,7 +50,7 @@ trait Edit
             'disable_web_page_preview' => $disable_web_preview,
         ];
 
-        return $this->processRequest('editMessageText', $parameters, 'Message');
+        return $this->processRequest('editMessageText', 'Message');
     }
 
     /**
@@ -87,13 +87,13 @@ trait Edit
     public function editMessageReplyMarkup(int $message_id, string $inline_keyboard)
     {
 
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
             'message_id' => $message_id,
             'reply_markup' => $inline_keyboard,
         ];
 
-        return $this->processRequest('editMessageReplyMarkup', $parameters, 'Message');
+        return $this->processRequest('editMessageReplyMarkup', 'Message');
     }
 
     /** @} */

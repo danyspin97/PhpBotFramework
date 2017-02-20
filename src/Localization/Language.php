@@ -161,7 +161,6 @@ trait Language
 
         // If we could successfully set the language in the database
         if ($this->setLanguageDatabase($language)) {
-
             // Set the language in Redis
             $this->redis->setEx($this->_chat_id . ':language', $expiring_time, $language);
             return true;

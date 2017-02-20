@@ -1,11 +1,12 @@
 <?php
 
 require './vendor/autoload.php';
+
 use PHPUnit\Framework\TestCase;
 
 use PhpBotFramework\Entities\Message;
 
-define('MESSAGES', 1);
+define('MESSAGES', 2);
 
 class BotTest extends TestCase
 {
@@ -20,7 +21,11 @@ class BotTest extends TestCase
             exit(1);
         }
 
-        return new PhpBotFramework\Test\TestBot($token);
+        $bot = new PhpBotFramework\Test\TestBot($token);
+
+        $this->assertInstanceOf('PhpBotFramework\Test\TestBot', $bot);
+
+        return $bot;
     }
 
     /**
@@ -33,6 +38,9 @@ class BotTest extends TestCase
     public function testProcessFakeMessage($message, $bot)
     {
         $bot->processFakeUpdate($message);
+
+        // Assert that the id of the message processed is equal to the id of the message to process
+        $this->assertEquals($message['message']['message_id'], $bot->message_id);
     }
 
     public function providerFakeMessages()
@@ -44,9 +52,28 @@ class BotTest extends TestCase
 
             $array = json_decode($json_data, true);
 
-            $messages[] = $array;
+            $messages[
+            ] = [$array['message']['from']['first_name'] => $array];
         }
 
-        return [$messages];
+        return $messages;
+    }
+
+    /**
+     * @depends testCreateBot
+     */
+    public function testMessageCommands($bot)
+    {
+        $filename = 'tests/message_command.json';
+        $message = json_decode(file_get_contents($filename), true);
+
+        $bot->addMessageCommand('start', function (Message $message, $bot) {
+            $bot->setChatID(getenv("CHAT_ID"));
+            $bot->sendMessage("This is a start message");
+        });
+
+        $bot->processFakeUpdate($message);
+
+        $this->assertFileExists($filename);
     }
 }

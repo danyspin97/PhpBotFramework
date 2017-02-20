@@ -9,6 +9,11 @@ define('EYES_IMAGE', 'http://www.planwallpaper.com/static/images/wallpapers-7020
 define('PANDA_IMAGE', 'http://www.planwallpaper.com/static/images/wallpaper-11628192.jpg');
 define('LOGO_IMAGE', './Doxygen/logo.png');
 
+// Define document path and urls
+define('MESSAGE_JSON', './tests/message_1.json');
+define('PHP_TEST', './tests/corebottest.php');
+define('PDF_TEST', 'http://www.lmpt.univ-tours.fr/~volkov/C++.pdf');
+
 class CoreBotTest extends TestCase
 {
     public $chat_id;
@@ -23,7 +28,11 @@ class CoreBotTest extends TestCase
             exit(1);
         }
 
-        return new PhpBotFramework\Core\CoreBot($token);
+        $bot = new PhpBotFramework\Core\CoreBot($token);
+
+        $this->assertInstanceOf('PhpBotFramework\Core\CoreBot', $bot);
+
+        return $bot;
     }
 
     /**
@@ -112,6 +121,46 @@ class CoreBotTest extends TestCase
     {
         $chat = $bot->getChat($this->chat_id);
         $this->assertEquals($this->chat_id, $chat['id']);
+    }
+
+    /**
+     * @depends testCreateCoreBot
+     * @dataProvider providerDocument
+     */
+    public function testSendDocument($document, $caption, $bot)
+    {
+        $new_document = $bot->sendDocument($document, $caption);
+
+        $this->assertArrayHasKey('document', $new_document);
+
+        $this->assertArrayHasKey('caption', $new_document);
+    }
+
+    public function providerDocument()
+    {
+        return [
+            'message_json' => [MESSAGE_JSON, 'This is a simple json file.'],
+            'php_test' => [PHP_TEST, 'This is a php file.'],
+            'pdf' => [PDF_TEST, 'This is a programming book.']
+        ];
+    }
+
+    /**
+     * @depends testCreateCoreBot
+     */
+    public function testEditingMessageChangeText($bot)
+    {
+        $new_message = $bot->sendMessage('This message will be edited.');
+
+        $text = 'This message has been edited.';
+
+        $edited_message = $bot->editMessageText($new_message['message_id'], $text);
+
+        $this->assertInstanceOf('PhpBotFramework\Entities\Message', $edited_message);
+
+        $this->assertNotEquals($edited_message['text'], $new_message['text']);
+
+        $this->assertEquals($edited_message['text'], $text);
     }
 
     /**
