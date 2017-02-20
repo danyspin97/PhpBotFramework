@@ -18,9 +18,11 @@
 
 namespace PhpBotFramework\Core;
 
-use \PhpBotFramework\Exceptions\BotException;
+use PhpBotFramework\Exceptions\BotException;
 
-use \PhpBotFramework\Entities\InlineKeyboard;
+use PhpBotFramework\Entities\File as TelegramFile;
+
+use PhpBotFramework\Entities\InlineKeyboard;
 
 /**
  * \mainpage
@@ -350,6 +352,9 @@ class CoreBot
     /** \brief Implements interface for execute HTTP requests. */
     protected $_http;
 
+    /** \brief Object of class PhpBotFramework\Entities\File that contain a path or resource to a file that has to be sent using Telegram API Methods. */
+    protected $_file;
+
     /**
      * \brief Initialize a new bot.
      * \details Initialize a new bot passing its token.
@@ -372,6 +377,8 @@ class CoreBot
             'timeout' => 60,
             'http_errors' => false
         ]);
+
+        $this->_file = new TelegramFile();
     }
 
     /** @} */
@@ -457,9 +464,16 @@ class CoreBot
      * @param string $class Class name of the object to create using response.
      * @return mixed Response or object of $class class name.
      */
-    protected function processRequest(string $method, array $param, string $class = '')
+    protected function processRequest(string $method, string $class = '', $file = false)
     {
-        $response = $this->execRequest("$method?" . http_build_query($param));
+        $url = "$method?" . http_build_query($this->parameters);
+
+        // If there is a file to upload
+        if ($file === false) {
+            $response = $this->execRequest($url);
+        } else {
+            $response = $this->execMultipartRequest($url);
+        }
 
         if ($response === false) {
             return false;
@@ -474,6 +488,21 @@ class CoreBot
         return $response;
     }
 
+    /**
+     * \brief Check if the current file is local or not.
+     * \details If the file file is local, then it has to be uploaded using multipart. If not, then it is a url/file_id so it has to be added in request parameters as a string.
+     * @return PhpBotFramework\Entities\File|false The file that will be sent using multipart, false otherwise.
+     */
+    protected function checkCurrentFile()
+    {
+        if (!$this->_file->is_local()) {
+            $this->parameters[$this->_file->getFormatName()] = $this->_file->getString();
+            return false;
+        }
+
+        return $this->_file;
+    }
+
 
     /** \brief Core function to execute HTTP request.
      * @param $url The request's URL.
@@ -482,6 +511,30 @@ class CoreBot
     protected function execRequest(string $url)
     {
         $response = $this->_http->request('POST', $url);
+
+        return $this->checkRequestError($response);
+    }
+
+    /** \brief Core function to execute HTTP request uploading a file.
+     * \details Using an object of type PhpBotFramework\Entities\File contained in $_file and Guzzle multipart request option, it uploads the file along with api method requested.
+     * @param $url The request's URL.
+     * @return Array|false Url response decoded from JSON, false on error.
+     */
+    protected function execMultipartRequest(string $url)
+    {
+        $response = $this->_http->request('POST', $url, [
+            'multipart' => [
+                [
+                    'name' => $this->_file->getFormatName(),
+                    'contents' => $this->_file->getResource()
+                ]
+            ]]);
+
+        return $this->checkRequestError($response);
+    }
+
+    public function checkRequestError($response)
+    {
         $http_code = $response->getStatusCode();
 
         if ($http_code === 200) {

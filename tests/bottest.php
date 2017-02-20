@@ -12,7 +12,6 @@ class BotTest extends TestCase
 
     public function testCreateBot()
     {
-
         // Get token from env variable
         $token = getenv("BOT_TOKEN");
 
@@ -33,13 +32,11 @@ class BotTest extends TestCase
      */
     public function testProcessFakeMessage($message, $bot)
     {
-
         $bot->processFakeUpdate($message);
     }
 
     public function providerFakeMessages()
     {
-
         $messages = [];
 
         for ($i = 1; $i < MESSAGES + 1; $i++) {

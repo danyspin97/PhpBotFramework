@@ -99,8 +99,11 @@ trait Language
         }
 
         // Set the value from the database
-        $this->redis->setEx($this->_chat_id . ':language', $expiring_time,
-                            $this->getLanguageDatabase($default_language));
+        $this->redis->setEx(
+            $this->_chat_id . ':language',
+            $expiring_time,
+            $this->getLanguageDatabase($default_language)
+        );
         return $this->language;
     }
 
@@ -118,7 +121,7 @@ trait Language
         }
 
         // Update the language in the database
-        $sth = $this->pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE ' 
+        $sth = $this->pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE '
                                              . $this->id_column . ' = :id');
         $sth->bindParam(':language', $language);
         $sth->bindParam(':id', $this->_chat_id);
