@@ -20,7 +20,7 @@ namespace PhpBotFramework;
 
 use PhpBotFramework\Exceptions\BotException;
 
-// Use inline keyboard with localizated buttons
+// Use localized inline keyboard: this means you can display it in various languages.
 use PhpBotFramework\Localization\Button;
 
 /** \class Bot Bot class that contains all modules.
@@ -40,27 +40,25 @@ class Bot extends Core\BaseBot
 
     /**
      * \addtogroup Bot Bot
-     * \brief Properties and methods to handle your Telegram's bot.
-     * \details Here are listed all the properties and methods that will help
-     * the developers during creation of basic bot's features.
+     * \brief Properties and methods to handle your Telegrams bot.
+     * \details Here're listed all the properties and methods that offers facilities for bot's basic features.
      * @{
      */
 
     /** \brief Store the inline keyboard */
     public $keyboard;
 
-    /** \brief PDO reference to manage database */
+    /** \brief Manage connection with database using PDO */
     public $pdo;
 
-    /** \brief Redis connection */
+    /** \brief Manage connection with Redis */
     public $redis;
 
     /**
      * \brief Construct an empty bot.
-     * \details Construct a bot that can handle updates, localization, database
-     * connection and handling and Redis.
+     * \details Construct a complete Telegram bot which can use localization, database and more other.
      *
-     * @param string $token Bot token given by BotFather.
+     * @param string $token Bot token, you can request one through **BotFather** on Telegram.
      */
     public function __construct(string $token)
     {
@@ -72,7 +70,7 @@ class Bot extends Core\BaseBot
         $this->keyboard = new Button($this);
     }
 
-    /** \brief Destruct the bot. */
+    /** \brief Destroy the bot closing connections with database and Redis */
     public function __destruct()
     {
         if (isset($this->redis)) {
