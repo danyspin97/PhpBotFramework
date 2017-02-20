@@ -41,21 +41,21 @@ trait CommandHandler
 
     /**
      * \brief (<i>Internal</i>) Initialize commands to speed up processing.
-     * \details Get all command that the bot handle, and put them in priority.
+     * \details Get commands handled by the bot and prioritize them.
      */
     protected function initCommands()
     {
-        // All command types with respective update
+        // All command types with respective update.
         static $commands = ['MessageCommand' =>
             ['var' => '_message_commands', 'update' => 'message', 'prior' => '1'],
             'CallbackCommand' =>
             ['var' => '_callback_commands', 'update' => 'callback_query', 'prior' => '1'],
             'MessageRegexCommand' => ['var' => '_message_regex_commands', 'update' => 'message', 'prior' => '2']];
 
-        // Sort them by priority
+        // Sort them by priority.
         uasort($commands, 'PhpBotFramework\Commands\CommandHandler::sortingPrior');
 
-        // Iterate over each
+        // Iterate over each command.
         foreach ($commands as $index => $command) {
             if (isset($this->{$command['var']}) && !empty($this->{$command['var']})) {
                 $this->_command_types[] = ['method' => "process$index", 'update' => $command['update']];
@@ -64,7 +64,7 @@ trait CommandHandler
     }
 
     /**
-     * \brief Process updates handling first commands, and then general methods (e.g. BaseBot::processMessage())
+     * \brief Process updates prioritizing bot's commands over the general methods (e.g. BaseBot::processMessage())
      * @param array $update Update to process.
      * @return int ID of the update processed.
      */

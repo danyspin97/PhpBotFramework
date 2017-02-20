@@ -50,7 +50,8 @@ trait MessageCommand
      *     addMessageCommand("start", function($bot, $message) {
      *         $bot->sendMessage("Hi"); });
      * @param string $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
-     * @param callable $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
+     * @param callable $script The function that will be triggered by a command.
+     * Must take an object(the bot) and an array(the message received).
      */
     public function addMessageCommand(string $command, callable $script)
     {
@@ -64,29 +65,26 @@ trait MessageCommand
     /**
      * \brief (<i>Internal</i>)Process a message checking if it trigger any MessageCommand.
      * @param string $message Message to process.
-     * @return bool True if the message triggered any command.
+     * @return bool True if the message trigger any command.
      */
     protected function processMessageCommand(array $message) : bool
     {
-        // If the message contains a bot command at the start
         if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
             // For each command added by the user
             foreach ($this->_message_commands as $trigger) {
-                // If we found a valid command (check first lenght, then use strpos)
-                if ($trigger['length'] == $message['entities'][0]['length'] && mb_strpos($trigger['command'], $message['text'], $message['entities'][0]['offset']) !== false) {
-                    // Set chat_id
-                    $this->_chat_id = $message['chat']['id'];
+                // If we found a valid command (check first length, then use strpos)
+                if ($trigger['length'] == $message['entities'][0]['length'] &&
+                    mb_strpos($trigger['command'], $message['text'], $message['entities'][0]['offset']) !== false) {
 
-                    // Execute script,
+                    // Execute the script.
+                    $this->_chat_id = $message['chat']['id'];
                     $trigger['script']($this, new Message($message));
 
-                    // Return
                     return true;
                 }
             }
         }
 
-        // No command were triggered, return false
         return false;
     }
 }

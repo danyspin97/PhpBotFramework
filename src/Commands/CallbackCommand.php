@@ -31,7 +31,7 @@ trait CallbackCommand
 {
     /** @} */
 
-    /** \brief Chat ID of the current user/group/channel. */
+    /** \brief Chat ID of the user / channel / group we're chatting with. */
     protected $_chat_id;
 
     /**
@@ -53,8 +53,10 @@ trait CallbackCommand
      *
      *     addMessageCommand("menu", function($bot, $callback_query) {
      *         $bot->editMessageText($callback_query['message']['message_id'], "This is the menu"); });
+     *
      * @param string $data The string that will trigger this function.
-     * @param callable $script The function that will be triggered by the callback query if it contains the $data string. Must take an object(the bot) and an array(the callback query received).
+     * @param callable $script The function that will be triggered by the callback query if it contains
+     * the $data string. Must take an object(the bot) and an array(the callback query received).
      */
     public function addCallbackCommand(string $data, callable $script)
     {
@@ -71,11 +73,11 @@ trait CallbackCommand
      */
     protected function processCallbackCommand(array $callback_query) : bool
     {
-        // Check for callback commands
         if (isset($callback_query['data'])) {
             foreach ($this->_callback_commands as $trigger) {
                 // If command is found in callback data
                 if (strpos($trigger['data'], $callback_query['data']) !== false) {
+                    // Change the internal chat ID to the one pointed by callback query.
                     $this->_chat_id = $callback_query['message']['chat']['id'];
                     $trigger['script']($this, new CallbackQuery($callback_query));
 

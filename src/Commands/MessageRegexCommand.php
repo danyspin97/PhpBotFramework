@@ -40,19 +40,20 @@ trait MessageRegexCommand
      * @{
      */
 
-    /** \brief (<i>Internal</i>)Store the command triggered on message. */
+    /** \brief (<i>Internal</i>)Store the command triggered by the message. */
     protected $_message_regex_commands;
 
     /**
      * \brief Add a function that will be executed everytime a message contain a command
-     * that match the regex.
+     * that match the regular expression.
      *
      * \details Use this syntax:
      *
      *     addMessageCommandRegex("number\d", function($bot, $message, $result) {
      *         $bot->sendMessage("You sent me a number"); });
      * @param string $regex_rule Regex rule that will called for evalueting the command received.
-     * @param callable $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
+     * @param callable $script The function that will be triggered by a command.
+     * Must take an object(the bot) and an array(the message received).
      */
     public function addMessageCommandRegex(string $regex_rule, callable $script)
     {
@@ -69,15 +70,12 @@ trait MessageRegexCommand
      */
     protected function processMessageRegexCommand(array $message) : bool
     {
-        // and there are bot commands in the message, checking message entities
         if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
             // For each command added by the user
             foreach ($this->_message_commands as $trigger) {
-                // Use preg_match to check if it is true
                 if (preg_match("/{$trigger['regex_rule']}/", substr($message['text'], $message['entities'][0]['offset'] + 1, $message['entities'][0]['length']))) {
                     $this->_chat_id = $message['chat']['id'];
 
-                    // Trigger the script
                     $trigger['script']($this, new Message($message));
                     return true;
                 }
