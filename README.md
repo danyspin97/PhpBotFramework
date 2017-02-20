@@ -81,10 +81,10 @@ Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for lea
 
    Take a look to [this issue](https://github.com/guzzle/guzzle/issues/1127) for more information.
 
-- **Why there is no chat__id to pass for api methods?**
+- **Why there isn't a `chat_id` parameter to pass for API methods?**
 
-  PhpBotFramework is "smart" enough to set it as the current user, group or channel id.
-  Most of the frameworks out there requires you to specify the chat ID for every method's call but PhpBotFramework will call next api method to whom sent the update.
+  PhpBotFramework is "smart" enough to set it as the current user, group or channel ID.
+  Most of the frameworks out there requires you to specify the chat ID for every method's call but PhpBotFramework does it for you calling the next API method on who sent the message.
 
   You can still change it by using [setChatID](https://danyspin97.github.io/PhpBotFramework/group__Bot.html).
 
