@@ -18,10 +18,28 @@
 
 namespace PhpBotFramework\Utilities;
 
+/**
+ * \addtogroup Modules
+ * @{
+ */
+
+// Delimitate items in one page.
 define("DELIMITER", "::::::::::::::::::::::::::::::::::::::\n");
 
+/* \class Paginator */
 class Paginator
 {
+    /**
+     * \brief Given the items, organize them in pages.
+     * \details Allows the bot to show various pages where each has the same amount of items.
+     * @param array $items The items to show.
+     * @param int $index The page's index.
+     * @param InlineKeyboard $keyboard The inline keyboard.
+     * @param function $format_item The callback function which format a single item.
+     * @param int $item_per_page The amount of items to show in one page.
+     * @param string $delimiter The delimiter for items.
+     * @return Message $message The message to send.
+     */
     public static function paginateItems($items, int $index, &$keyboard, $format_item, int $item_per_page = 3,
                                          $prefix = 'list', string $delimiter = DELIMITER)
     {
@@ -69,3 +87,7 @@ class Paginator
         return $message;
     }
 }
+
+/*
+ * @}
+ */
