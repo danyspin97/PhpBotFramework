@@ -41,7 +41,7 @@ trait MessageRegexCommand
      */
 
     /** \brief (<i>Internal</i>)Store the command triggered on message. */
-    protected $_message_regex_commands;
+    protected $_message_regex_commands = [];
 
     /**
      * \brief Add a function that will be executed everytime a message contain a command

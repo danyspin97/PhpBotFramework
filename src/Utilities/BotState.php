@@ -18,6 +18,8 @@
 
 namespace PhpBotFramework\Utilities;
 
+use PhpBotFramework\Exceptions\BotException;
+
 trait BotState
 {
 

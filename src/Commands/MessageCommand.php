@@ -41,7 +41,7 @@ trait MessageCommand
      */
 
     /** \brief (<i>Internal</i>)Store the command triggered on message. */
-    protected $_message_commands;
+    protected $_message_commands = [];
 
     /**
      * \brief Add a function that will be executed everytime a message contain the selected command

@@ -47,7 +47,7 @@ class Paginator
         $items,
         int $index,
         Keyboard &$keyboard,
-        closure $format_item,
+        callable $format_item,
         int $item_per_page = 3,
         string $prefix = 'list',
         string $delimiter = DELIMITER

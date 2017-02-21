@@ -31,6 +31,9 @@ trait Send
 
     abstract protected function checkCurrentFile(TelegramFile $file);
 
+    /** \brief Contains parameters of the next request. */
+    protected $parameters;
+
     /**
      * \addtogroup Api Api Methods
      * @{

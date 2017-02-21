@@ -24,7 +24,6 @@ use PhpBotFramework\Entities\InlineKeyboard;
 /** \class Button Button Inline keyboard with localizated buttons. */
 class Button extends InlineKeyboard
 {
-
     /**
      * \addtogroup InlineKeyboard InlineKeyboard
      * \brief Handle an inline keyboard to send along with messages.
@@ -53,10 +52,10 @@ class Button extends InlineKeyboard
 
     /**
      * \brief Get a simple Back button with back as callback_data.
-     * @param $json_serialized return a json serialized string, or an array.
-     * @return A button with written "back".
+     * @param bool $json_serialized return a json serialized string, or an array.
+     * @return string|array A button with written "back".
      */
-    public function getBackButton($json_serialized = true)
+    public function getBackButton(bool $json_serialized = true)
     {
         // Create the button
         $inline_keyboard = [ 'inline_keyboard' =>
@@ -81,10 +80,10 @@ class Button extends InlineKeyboard
     /**
      * \brief Get a Back and a Skip buttons inthe same row.
      * \details Back button has callback_data "back" and Skip button has callback_data "skip".
-     * @param $json_serialized return a json serialized string, or an array.
-     * @return A button with written "back" and one with written "Skip".
+     * @param bool $json_serialized return a json serialized string, or an array.
+     * @return string|array A button with written "back" and one with written "Skip".
      */
-    public function getBackSkipKeyboard($json_serialized = true)
+    public function getBackSkipKeyboard(bool $json_serialized = true)
     {
         // Create the keyboard
         $inline_keyboard = [ 'inline_keyboard' =>
@@ -116,11 +115,11 @@ class Button extends InlineKeyboard
      * The button will be one per row.
      * The text will be the language and the language localizatated for the current user with a slash between them.
      * The callback data for each button will be "cl/key" where key is the key in $localization['languages'].
-     * @param $prefix Prefix followed by '/' and the language index (en, it..).
-     * @param $json_serialized Get a JSON-serialized string or an array.
-     * @return The buttons in the selected type.
+     * @param string $prefix Prefix followed by '/' and the language index (en, it..).
+     * @param bool $json_serialized Get a JSON-serialized string or an array.
+     * @return string|array The buttons in the selected type.
      */
-    public function getChooseLanguageKeyboard($prefix = 'cl', $json_serialized = true)
+    public function getChooseLanguageKeyboard(string $prefix = 'cl', bool $json_serialized = true)
     {
         // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];

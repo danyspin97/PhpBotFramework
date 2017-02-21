@@ -18,6 +18,8 @@
 
 namespace PhpBotFramework\Localization;
 
+use PhpBotFramework\Exceptions\BotException;
+
 /**
  * \addtogroup Modules
  * @{
@@ -54,17 +56,17 @@ trait LocalizedString
     public function getStr($index)
     {
         if (!isset($this->language)) {
-            $this->getLanguage();
+            $this->getLanguageRedis();
         }
 
-        $this->loadLocalization();
+        $this->loadCurrentLocalization();
 
         // Check if the requested string exists
         if (isset($this->local[$this->language][$index])) {
             return $this->local[$this->language][$index];
         }
 
-        throw BotException("Index '$index' is not set for {$this->language}");
+        throw new BotException("Index '$index' is not set for {$this->language}");
     }
 
     /** @} */

@@ -20,8 +20,10 @@ namespace PhpBotFramework\Core;
 
 trait Edit
 {
-
     abstract protected function execRequest(string $url);
+
+    /** \brief Contains parameters of the next request. */
+    protected $parameters;
 
     /**
      * \addtogroup Api Api Methods

@@ -18,7 +18,7 @@
 
 namespace PhpBotFramework\Database;
 
-use PDOException;
+use PhpBotFramework\Exceptions\BotException;
 
 define('PDO_DEFAULT_ADAPTER', 'mysql');
 
@@ -58,13 +58,13 @@ trait Handler
     public function connect(array $params) : bool
     {
         try {
-            $config = $this->getDNS($this->mergeWithDefaults($params));
+            $config = $this->getDns($this->addDefaultValue($params));
 
             $this->pdo = new \PDO($config, $params['username'], $params['password'], $params['option']);
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             return true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo 'Unable to connect to database, an error occured:' . $e->getMessage();
         }
 

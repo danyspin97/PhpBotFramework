@@ -201,9 +201,16 @@ class InlineKeyboard
     }
 
     /**
-     * \brief */
+     * \brief Add 5 buttons or less, which will have as a callback data '$prefix/number'.
+     * \details Create buttons for browsing something in the bot. Each button will have a number as text, plus some symbol as first page, or last page. The buttons are dinamically generated at runtime passing $index and $list. If there are less than 5 pages, then show only the required buttons (at least one, up to 4).
+     * @param int $index The page which the user is currently.
+     * @param int $list The total number of pages.
+     * @param string $prefix Prefix to add at each callback_data of the button. Eg.: 'list/1'.
+     */
     public function addListKeyboard(int $index, int $list, $prefix = 'list')
     {
+        $buttons = [];
+
         if (($list > 0) && ($index >= 0)) {
             if ($index == 0) {
                 if ($list > 1) {

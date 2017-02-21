@@ -355,6 +355,9 @@ class CoreBot
     /** \brief Object of class PhpBotFramework\Entities\File that contain a path or resource to a file that has to be sent using Telegram API Methods. */
     protected $_file;
 
+    /** \brief Contains parameters of the next request. */
+    protected $parameters;
+
     /**
      * \brief Initialize a new bot.
      * \details Initialize a new bot passing its token.
@@ -440,9 +443,9 @@ class CoreBot
      *     ];
      *     apiRequest("sendMessage", $param);
      *
-     * @param $method The method to call.
-     * @param $parameters Parameters to add.
-     * @return Depends on api method.
+     * @param string $method The method to call.
+     * @param array $parameters Parameters to add.
+     * @return mixed Depends on api method.
      */
     public function apiRequest(string $method, array $parameters)
     {

@@ -18,6 +18,8 @@
 
 namespace PhpBotFramework\Localization;
 
+use PhpBotFramework\Exceptions\BotException;
+
 trait File
 {
 

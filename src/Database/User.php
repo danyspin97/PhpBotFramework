@@ -18,6 +18,8 @@
 
 namespace PhpBotFramework\Database;
 
+use PhpBotFramework\Exceptions\BotException;
+
 /**
  * \addtogroup Modules
  * @{
@@ -73,7 +75,7 @@ trait User
         try {
             $sth->execute();
             $success = true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
 
             $success = false;
@@ -108,7 +110,7 @@ trait User
 
         try {
             $sth->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
         }
 

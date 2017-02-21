@@ -5,6 +5,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6254e3eccc93497997dae21e57a452ac)](https://www.codacy.com/app/danyspin97/PhpBotFramework?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DanySpin97/PhpBotFramework&amp;utm_campaign=Badge_Grade)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/DanySpin97/PhpBotFramework/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/DanySpin97/PhpBotFramework/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/DanySpin97/PhpBotFramework/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/DanySpin97/PhpBotFramework/?branch=master)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
 [![License](https://poser.pugx.org/danyspin97/php-bot-framework/license)](https://packagist.org/packages/danyspin97/php-bot-framework)
 
 

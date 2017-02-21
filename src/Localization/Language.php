@@ -66,7 +66,7 @@ trait Language
 
         try {
             $sth->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
         }
 
@@ -103,7 +103,7 @@ trait Language
 
         try {
             $sth->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             throw new BotException($e->getMessage());
         }
         $sth = null;

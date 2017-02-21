@@ -68,9 +68,9 @@ trait CommandHandler
     /**
      * \brief Process updates handling commands.
      * @param array $update Update to process.
-     * @return bool Tru if this update trigger any command.
+     * @return bool True if this update trigger any command.
      */
-    protected function processCommands(array $update) : int
+    protected function processCommands(array $update) : bool
     {
         // For each command active (checked by initCommands())
         foreach ($this->_command_types as $index => $command) {

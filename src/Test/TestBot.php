@@ -26,6 +26,8 @@ class TestBot extends Bot
 {
     use FakeUpdate;
 
+    public $message_id = 0;
+
     public function processMessage(Message $message)
     {
         $this->setChatID(getenv("CHAT_ID"));

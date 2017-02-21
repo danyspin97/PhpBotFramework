@@ -71,7 +71,7 @@ trait LongPolling
             $offset = $update[0]['update_id'];
 
             $this->redis->set($offset_key, $offset);
-            return $offset_key;
+            return $offset;
         }
     }
 
@@ -92,7 +92,7 @@ trait LongPolling
             throw new BotException("Redis connection is not set");
         }
 
-        $offset = $this->getUpdateOffsetRedis();
+        $offset = $this->getUpdateOffsetRedis($offset_key);
         $this->initCommands();
 
          // Process all updates received
@@ -126,7 +126,7 @@ trait LongPolling
 
         try {
             $sth->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
         }
 
@@ -164,7 +164,7 @@ trait LongPolling
             throw new BotException("Database connection is not set");
         }
 
-        $this->getUpdateOffsetDatabase($table_name, $column_name);
+        $offset = $this->getUpdateOffsetDatabase($table_name, $column_name);
         $this->initCommands();
 
         // Prepare the query for updating the offset in the database
