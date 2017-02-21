@@ -136,6 +136,10 @@ class BaseBot extends CoreBot
             'edited_channel_post' => 'EditedChannelPost',
             'chosen_inline_result' => 'ChosenInlineResult'];
 
+        if ($this->processCommands($update)) {
+            return $update['update_id'];
+        }
+
         foreach ($updates_type as $offset => $class) {
             if (isset($update[$offset])) {
                 $object_class = "PhpBotFramework\Entities\\$class";

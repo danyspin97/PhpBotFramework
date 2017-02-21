@@ -12,6 +12,13 @@
       "type": "private"
     },
     "date": 14854412271,
-    "text": "/start"
+    "text": "/start",
+    "entities": [
+        {
+            "type": "bot_command",
+            "offset": 0,
+            "length": 6
+        }
+    ]
   }
 }

@@ -34,4 +34,9 @@ class TestBot extends Bot
 
         $this->message_id = $message['message_id'];
     }
+
+    public function initCommandsWrap()
+    {
+        $this->initCommands();
+    }
 }

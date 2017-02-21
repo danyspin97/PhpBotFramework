@@ -55,6 +55,8 @@ trait CommandHandler
         // Sort them by priority
         uasort($commands, 'PhpBotFramework\Commands\CommandHandler::sortingPrior');
 
+        $this->_command_types = [];
+
         // Iterate over each
         foreach ($commands as $index => $command) {
             if (isset($this->{$command['var']}) && !empty($this->{$command['var']})) {
@@ -64,23 +66,23 @@ trait CommandHandler
     }
 
     /**
-     * \brief Process updates handling first commands, and then general methods (e.g. BaseBot::processMessage())
+     * \brief Process updates handling commands.
      * @param array $update Update to process.
-     * @return int ID of the update processed.
+     * @return bool Tru if this update trigger any command.
      */
-    protected function processUpdate(array $update) : int
+    protected function processCommands(array $update) : int
     {
         // For each command active (checked by initCommands())
         foreach ($this->_command_types as $index => $command) {
             // If the update type is right and the update triggered a command
             if (isset($update[$command['update']]) && $this->{$command['method']}($update[$command['update']])) {
                 // Return the id as we already processed this update
-                return $update['update_id'];
+                return true;
             }
         }
 
-        // Call the parent method 'cause this update didn't trigger any command
-        return parent::processUpdate($update);
+        // Return -1 because this update didn't trigger any command.
+        return false;
     }
 
     /**

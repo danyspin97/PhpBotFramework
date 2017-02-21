@@ -37,6 +37,8 @@ class BotTest extends TestCase
      */
     public function testProcessFakeMessage($message, $bot)
     {
+        $bot->initCommandsWrap();
+
         $bot->processFakeUpdate($message);
 
         // Assert that the id of the message processed is equal to the id of the message to process
@@ -67,10 +69,14 @@ class BotTest extends TestCase
         $filename = 'tests/message_command.json';
         $message = json_decode(file_get_contents($filename), true);
 
-        $bot->addMessageCommand('start', function (Message $message, $bot) {
+        $closure = function($bot, Message $message) {
             $bot->setChatID(getenv("CHAT_ID"));
             $bot->sendMessage("This is a start message");
-        });
+        };
+
+        $bot->addMessageCommand('start', $closure);
+
+        $bot->initCommandsWrap();
 
         $bot->processFakeUpdate($message);
 
