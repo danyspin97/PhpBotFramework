@@ -19,7 +19,7 @@
 namespace PhpBotFramework\Entities;
 
 /**
- * \addtogroup Utility-classes Utility class
+ * \addtogroup Utility-classes Utility classes
  * \brief Static methods grouped by class and context.
  * @{
  */
@@ -36,8 +36,8 @@ class Text
      * \details Check hashtags in a string using regex.
      * All valid hashtags will be returned in an array.
      * [Credis to trante](http://stackoverflow.com/questions/3060601/retrieve-all-hashtags-from-a-tweet-in-a-php-function).
-     * @param $string The string to check for hashtags.
-     * @return An array of valid hashtags, can be empty.
+     * @param string $string The string to check for hashtags.
+     * @return array An array of valid hashtags, can be empty.
      */
     public static function getHashtags(string $string) : array
     {
@@ -70,9 +70,9 @@ class Text
     /**
      * \brief Remove html formattation from telegram usernames in string.
      * \details Remove the $modificator html formattation from a message containing telegram username, to let the user click them.
-     * @param $string to parse.
-     * @param $tag Formattation tag to remove.
-     * @return The string, modified if there are usernames. Otherwise $string.
+     * @param string $string to parse.
+     * @param string $tag Formattation tag to remove.
+     * @return string The string, modified if there are usernames. Otherwise $string.
      */
     public static function removeUsernameFormattation(string $string, string $tag) : string
     {

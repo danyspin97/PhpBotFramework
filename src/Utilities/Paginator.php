@@ -18,19 +18,40 @@
 
 namespace PhpBotFramework\Utilities;
 
+use PhpBotFramework\Entities\InlineKeyboard as Keyboard;
+
 define("DELIMITER", "::::::::::::::::::::::::::::::::::::::\n");
 
 class Paginator
 {
+
+    /**
+     * \addtogroup Utility-classes Utility classes
+     * @{
+     */
+
+    /**
+     * \brief Paginate a number of items got as a result by a query.
+     * \details Take items to show in the page $index, delimiting in by $delimiter, and call the closure $format_item on each item paginated.
+     * Taking a select query result, take items that have to be shown on page of index $index (calculated with $item_per_page).
+     * @param mixed $items Result of a select query using pdo object.
+     * @param int $index Index of the page to show.
+     * @param PhpBotFramework\Entities\InlineKeyboard $keyboard Inline keyboard object to call PhpBotFramework\\Entities\\InlineKeyboard::addListKeyboard() on it for browsing results.
+     * @param closure $format_item A closure that take the item to paginate and the keyboard. You can use it to format the item and add some inline keyboard button for each item.
+     * @param string $prefix Prefix to pass to InlineKeyboard::addListKeyboard.
+     * @param string $delimiter A string that will be used to concatenate each item.
+     * @return string The string message with the items of page $index, with $delimiter between each of them.
+     * @see PhpBotFramework\\Entities\\InlineKeyboard
+     */
     public static function paginateItems(
         $items,
         int $index,
-        &$keyboard,
-        $format_item,
+        Keyboard &$keyboard,
+        closure $format_item,
         int $item_per_page = 3,
-        $prefix = 'list',
+        string $prefix = 'list',
         string $delimiter = DELIMITER
-    ) {
+    ) : string {
     
         // Assign the position of first item to show
         $item_position = ($index - 1) * $item_per_page + 1;
