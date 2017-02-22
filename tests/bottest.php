@@ -91,6 +91,7 @@ class BotTest extends TestCase
             'username' => 'postgres',
             'password' => '',
             'adapter' => 'pgsql',
+            'dbname' => 'travis_ci_test'
         ]);
 
         $this->assertTrue(isset($bot->pdo));

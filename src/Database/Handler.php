@@ -48,8 +48,9 @@ trait Handler
      * @param array $params Parameters for initialize connection.
      * Index required:
      *     - <code>username</code>
-     *     - <code>password</code> (can be a null string)
+     *     - <code>password</code> (can be an empty string)
      * Optional index:
+     *     - <code>dbname</code>
      *     - <code>adapter</code> <b>Default</b>: <code>mysql</code>
      *     - <code>host</code> <b>Default</b>: <code>localhost</code>
      *     - <code>options</code> (<i>Array of options passed when creating PDO object</i>)
