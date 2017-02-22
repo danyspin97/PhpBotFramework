@@ -57,10 +57,11 @@ trait Handler
      */
     public function connect(array $params) : bool
     {
-        try {
-            $config = $this->getDns($this->addDefaultValue($params));
+        $params = $this->addDefaultValue($params);
+        $config = $this->getDns($params);
 
-            $this->pdo = new \PDO($config, $params['username'], $params['password'], $params['option']);
+        try {
+            $this->pdo = new \PDO($config, $params['username'], $params['password'], $params['options']);
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             return true;
@@ -77,7 +78,7 @@ trait Handler
      */
     protected function addDefaultValue(array $params) : array
     {
-        static $defaults = [ 'adapter' => PDO_DEFAULT_ADAPTER, 'host' => 'localhost' ];
+        static $defaults = [ 'adapter' => PDO_DEFAULT_ADAPTER, 'host' => 'localhost', 'options' => [] ];
         return array_merge($defaults, $params);
     }
 
@@ -97,7 +98,7 @@ trait Handler
              * that are passed to PDO in another way and so don't need
              * to be included in the string.
              */
-            if ($field === 'username' || $field === 'password') {
+            if ($field === 'username' || $field === 'password' || $field === 'options') {
                 unset($params[$field]);
                 continue;
             }

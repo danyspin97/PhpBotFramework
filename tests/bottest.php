@@ -82,4 +82,48 @@ class BotTest extends TestCase
 
         $this->assertFileExists($filename);
     }
+
+    /**
+     * @depends testCreateBot
+     */
+    public function testDatabaseConnection($bot) {
+        $bot->connect([
+            'username' => 'postgres',
+            'password' => '',
+            'adapter' => 'psql',
+        ]);
+
+        $this->assertTrue(isset($bot->pdo));
+    }
+
+    /**
+     * @depends testCreateBot
+     */
+    public function testAddingUser($bot) {
+        $chat_id = $bot->getChatID();
+
+        // Add the user
+        $bot->addUser($chat_id);
+
+        $bot->pdo->prepare('SELECT COUNT(chat_id) FROM "User" WHERE chat_id = :chat_id');
+        $bot->pdo->bindParam(':chat_id', $chat_id);
+
+        try {
+            $bot->pdo->execute();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+
+        $count = $bot->pdo->fetchColumn();
+
+        // Assert that we inserted the user
+        $this->assertEquals($count, 1);
+    }
+
+    /**
+     * @depends testCreateBot
+     */
+    public function testBroadcastMessage($bot) {
+        $this->assertEquals($bot->broadcastMessage("Hello"), 1);
+    }
 }
