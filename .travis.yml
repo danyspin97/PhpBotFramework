@@ -19,6 +19,7 @@ notifications:
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -U postgres -f examples/user.sql travis_ci_test
   - composer install --prefer-source --no-interaction
 
 script:
