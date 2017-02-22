@@ -90,7 +90,7 @@ class BotTest extends TestCase
         $bot->connect([
             'username' => 'postgres',
             'password' => '',
-            'adapter' => 'psql',
+            'adapter' => 'pgsql',
         ]);
 
         $this->assertTrue(isset($bot->pdo));

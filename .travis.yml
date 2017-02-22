@@ -19,7 +19,6 @@ notifications:
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
-  - composer self-update
   - composer install --prefer-source --no-interaction
 
 script:
