@@ -106,16 +106,16 @@ class BotTest extends TestCase
         // Add the user
         $bot->addUser($chat_id);
 
-        $bot->pdo->prepare('SELECT COUNT(chat_id) FROM "User" WHERE chat_id = :chat_id');
-        $bot->pdo->bindParam(':chat_id', $chat_id);
+        $sth = $bot->pdo->prepare('SELECT COUNT(chat_id) FROM "User" WHERE chat_id = :chat_id');
+        $sth->bindParam(':chat_id', $chat_id);
 
         try {
-            $bot->pdo->execute();
+            $sth->execute();
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
 
-        $count = $bot->pdo->fetchColumn();
+        $count = $sth->fetchColumn();
 
         // Assert that we inserted the user
         $this->assertEquals($count, 1);
