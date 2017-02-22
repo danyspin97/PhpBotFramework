@@ -35,6 +35,12 @@ trait LocalizatedString
      * @{
      */
 
+    /**
+     * \brief Returns the requested string in the user's language.
+     * \details It uses framework's multi-language features to show the requested string in the user's language.
+     * @param string $index The name for the requested string (e.g. Welcome_Msg)
+     * @return string The requested string in the right language.
+     */
     public function getStr($index)
     {
 

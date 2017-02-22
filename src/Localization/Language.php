@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the PhpBotFramework.
  *
@@ -20,16 +19,15 @@ namespace PhpBotFramework\Localization;
 
 trait Language
 {
-
     /**
      * \addtogroup Localization Localization
      * @{
      */
 
-    /** \brief Stores the language for a multi-language bot */
+    /** \brief Stores the language for a multi-language bot. */
     public $language;
 
-    /** PDO connection to the database. */
+    /** \brief Stores database's connection using PDO. */
     public $pdo;
 
     /** \brief Table containing bot users data into database. */
@@ -118,7 +116,7 @@ trait Language
         }
 
         // Update the language in the database
-        $sth = $this->pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE ' 
+        $sth = $this->pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE '
                                              . $this->id_column . ' = :id');
         $sth->bindParam(':language', $language);
         $sth->bindParam(':id', $this->_chat_id);

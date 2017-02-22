@@ -43,7 +43,7 @@ trait File
     /** \brief Store the localizated strings. */
     protected $local;
 
-    /** \brief Directory where there are the localization files. */
+    /** \brief Source for localization files. */
     protected $localization_dir = './localization';
 
     /**
@@ -54,16 +54,12 @@ trait File
      */
     protected function loadSingleLanguage(string $lang = 'en', string $dir = './localization') : bool
     {
-
-        // Name of the file
         $filename = "$dir/$lang";
 
         // If this language isn't already set and the file exists
         if (!isset($this->local[$lang]) && file_exists($filename)) {
-            // Load localization in memory
+            // Save it internally
             $this->local[$lang] = json_decode(file_get_contents($filename), true);
-
-            // We loaded it
             return true;
         }
 
@@ -71,22 +67,22 @@ trait File
     }
 
     /**
-     * \brief Load all localization files (JSON-serialized) from a folder and set them in $local variable.
-     * \details Save all localization files, saved as json format, from a directory and put the contents in $local variable.
-     * Each file will be saved into $local with the first two letters of the filename as the index.
-     * @param string $dir Directory where the localization files are saved.
+     * \brief Load all localization files (like JSON) from a folder and set them in <code>$local</code> variable.
+     * \details Save all localization files, using JSON format, from a directory and put
+     * the contents in <code>$local</code> variable.
+     *
+     * Each file will be saved into <code>$local</code> with the first two letters of the filename as the index.
+     * @param string $dir Source directory for localization files.
      */
     public function loadLocalization(string $dir = './localization')
     {
-
-        // Open directory
         if ($handle = opendir($dir)) {
             // Iterate over all files
             while (false !== ($file = readdir($handle))) {
                 // If the file is a JSON data file
                 if (strlen($file) > 6 && substr($file, -5) === '.json') {
                     try {
-                        // Add the contents of the file to the $local variable, after deserializng it from JSON format
+                        // Add the contents of the file to the $local variable, after converting it to a PHP object.
                         // The contents will be added with the 2 letter of the file as the index
                         $this->local[substr($file, 0, 2)] = json_decode(file_get_contents("$dir/$file"), true);
                     } catch (BotException $e) {
@@ -97,6 +93,10 @@ trait File
         }
     }
 
+    /**
+     * \brief Change source directory for localization files.
+     * @param string $dir Source directory.
+     */
     public function setLocalizationDir(string $dir)
     {
 
