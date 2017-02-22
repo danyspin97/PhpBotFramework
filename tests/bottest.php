@@ -86,7 +86,8 @@ class BotTest extends TestCase
     /**
      * @depends testCreateBot
      */
-    public function testDatabaseConnection($bot) {
+    public function testDatabaseConnection($bot)
+    {
         $bot->connect([
             'username' => 'postgres',
             'password' => '',
@@ -100,7 +101,8 @@ class BotTest extends TestCase
     /**
      * @depends testCreateBot
      */
-    public function testAddingUser($bot) {
+    public function testAddingUser($bot)
+    {
         $chat_id = $bot->getChatID();
 
         // Add the user
@@ -124,7 +126,8 @@ class BotTest extends TestCase
     /**
      * @depends testCreateBot
      */
-    public function testBroadcastMessage($bot) {
-        $this->assertEquals($bot->broadcastMessage("Hello"), 1);
+    public function testBroadcastMessage($bot)
+    {
+        $this->assertEquals($bot->broadcastMessage("This is a broadcasted message."), 1);
     }
 }
