@@ -100,9 +100,8 @@ class BotTest extends TestCase
 
     /**
      * @depends testCreateBot
-     * @depends testDatabaseConnection
      */
-    public function testAddingUserInsertAUserInDatabase($bot, $pdo)
+    public function testAddingUserInsertAUserInDatabase($bot)
     {
         $chat_id = $bot->getChatID();
 
@@ -150,7 +149,7 @@ class BotTest extends TestCase
      * @depends testDatabaseConnection
      * @dataProvider providerLanguage
      */
-    public function testSetAUserLanguageInsertLanguageInDatabase($language, $bot, $pdo)
+    /*public function testSetAUserLanguageInsertLanguageInDatabase($language, $bot, $pdo)
     {
         $bot->setLanguageRedis($language);
 
@@ -169,26 +168,26 @@ class BotTest extends TestCase
             ['ru'],
             ['en']
         ];
-    }
+    }*/
 
     /**
      * @depends testCreateBot
      * @depends testDatabaseConnection
      */
-    public function testLanguageIsLoadedInArray($bot, $pdo)
+    /*public function testLanguageIsLoadedInArray($bot, $pdo)
     {
         $bot->loadSingleLopcalization('en');
 
         // Localization has en file?
         $this->assertArrayHasKey('en', $bot->local);
-    }
+    } */
 
     /**
      * @depends testCreateBot
      * @depends testDatabaseConnection
      * @dataProvider providerStringIndex
      */
-    public function testLocalizatedStringIsTheSameInLocalizationFile($index, $language, $bot, $pdo)
+    /*public function testLocalizatedStringIsTheSameInLocalizationFile($index, $language, $bot, $pdo)
     {
         // Set the language from redis
         $bot->setLanguageRedis($language);
@@ -206,5 +205,5 @@ class BotTest extends TestCase
             ['HelloMsg', 'en'],
             ['StartMsg', 'it']
         ];
-    }
+    }*/
 }
