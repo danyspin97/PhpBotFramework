@@ -84,7 +84,7 @@ trait File
      * @param string $dir Directory where the localization files are saved.
      * @return bool True if the directory could be opened without errors.
      */
-    public function loadAllLocalizations(string $dir = './localization') : bool
+    public function loadAllLanguages(string $dir = './localization') : bool
     {
         // Open directory
         if ($handle = opendir($dir)) {
@@ -126,7 +126,7 @@ trait File
             if (isset($this->_is_webhook)) {
                 return $this->loadSingleLanguage($this->localization_dir);
             } else {
-                return $this->loadAllLocalizations($this->localization_dir);
+                return $this->loadAllLanguages($this->localization_dir);
             }
         }
 

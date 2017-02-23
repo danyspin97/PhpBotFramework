@@ -100,15 +100,16 @@ class BotTest extends TestCase
 
     /**
      * @depends testCreateBot
+     * @depends testDatabaseConnection
      */
-    public function testAddingUserInsertAUserInDatabase($bot)
+    public function testAddingUserInsertAUserInDatabase($bot, $pdo)
     {
         $chat_id = $bot->getChatID();
 
         // Add the user
         $bot->addUser($chat_id);
 
-        $sth = $bot->pdo->prepare('SELECT COUNT(chat_id) FROM "User" WHERE chat_id = :chat_id');
+        $sth = $pdo->prepare('SELECT COUNT(chat_id) FROM "User" WHERE chat_id = :chat_id');
         $sth->bindParam(':chat_id', $chat_id);
 
         try {
@@ -125,6 +126,7 @@ class BotTest extends TestCase
 
     /**
      * @depends testCreateBot
+     * @depends testDatabaseConnection
      */
     public function testBroadcastMessageSendMessageToAllUser($bot)
     {
@@ -145,9 +147,10 @@ class BotTest extends TestCase
 
     /**
      * @depends testCreateBot
+     * @depends testDatabaseConnection
      * @dataProvider providerLanguage
      */
-    public function testSetAUserLanguageInsertLanguageInDatabase($language, $bot)
+    public function testSetAUserLanguageInsertLanguageInDatabase($language, $bot, $pdo)
     {
         $bot->setLanguageRedis($language);
 
@@ -170,10 +173,11 @@ class BotTest extends TestCase
 
     /**
      * @depends testCreateBot
+     * @depends testDatabaseConnection
      */
-    public function testLanguageIsLoadedInArray($bot)
+    public function testLanguageIsLoadedInArray($bot, $pdo)
     {
-        $bot->loadSingleLocalization('en');
+        $bot->loadSingleLopcalization('en');
 
         // Localization has en file?
         $this->assertArrayHasKey('en', $bot->local);
@@ -181,9 +185,10 @@ class BotTest extends TestCase
 
     /**
      * @depends testCreateBot
+     * @depends testDatabaseConnection
      * @dataProvider providerStringIndex
      */
-    public function testLocalizatedStringIsTheSameInLocalizationFile($index, $language, $bot)
+    public function testLocalizatedStringIsTheSameInLocalizationFile($index, $language, $bot, $pdo)
     {
         // Set the language from redis
         $bot->setLanguageRedis($language);
