@@ -108,7 +108,7 @@ class BotTest extends TestCase
         // Add the user
         $bot->addUser($chat_id);
 
-        $sth = $pdo->prepare('SELECT COUNT(chat_id) FROM "User" WHERE chat_id = :chat_id');
+        $sth = $bot->pdo->prepare('SELECT COUNT(chat_id) FROM "User" WHERE chat_id = :chat_id');
         $sth->bindParam(':chat_id', $chat_id);
 
         try {
