@@ -168,7 +168,7 @@ trait LongPolling
         $this->initCommands();
 
         // Prepare the query for updating the offset in the database
-        $sth = $this->pdo->prepare('UPDATE "' . $table_name . '" SET "' . $column_name . '" = :new_offset');
+        $sth = $this->pdo->prepare('UPDATE ' . $table_name . ' SET ' . $column_name . ' = :new_offset');
 
         while (true) {
             $updates = $this->getUpdates($offset, $limit, $timeout);

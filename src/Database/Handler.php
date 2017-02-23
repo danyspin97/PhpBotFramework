@@ -36,6 +36,9 @@ trait Handler
     /** PDO connection to the database. */
     public $pdo;
 
+    /** \brief Table contaning bot users data in the SQL database. */
+    public $user_table = 'User';
+
     /**
      * \addtogroup Bot Bot
      * @{
@@ -108,6 +111,19 @@ trait Handler
         }
 
         return $response . join(';', $fields);
+    }
+
+    /**
+     * \brief (<i>Internal</i>) Sanitize name of the user table depending on database used.
+     */
+    protected function sanitizeUserTable() {
+        if ($this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'mysql')
+        {
+            $this->user_table = "`$this->user_table`";
+        } else
+        {
+            $this->user_table = '"' . $this->user_table . '"';
+        }
     }
 
     /** @} */

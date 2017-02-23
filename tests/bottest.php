@@ -101,7 +101,7 @@ class BotTest extends TestCase
     /**
      * @depends testCreateBot
      */
-    public function testAddingUser($bot)
+    public function testAddingUserInsertAUserInDatabase($bot)
     {
         $chat_id = $bot->getChatID();
 
@@ -126,8 +126,80 @@ class BotTest extends TestCase
     /**
      * @depends testCreateBot
      */
-    public function testBroadcastMessage($bot)
+    public function testBroadcastMessageSendMessageToAllUser($bot)
     {
         $this->assertEquals($bot->broadcastMessage("This is a broadcasted message."), 1);
+    }
+
+    /**
+     * @depends testCreateBot
+     */
+    public function TestConnectToRedis ($bot)
+    {
+        $redis = new Redis();
+
+        $bot->redis = $redis;
+
+        $this->assertTrue(isset($bot->redis));
+    }
+
+    /**
+     * @depends testCreateBot
+     * @dataProvider providerLanguage
+     */
+    public function testSetAUserLanguageInsertLanguageInDatabase($language, $bot)
+    {
+        $bot->setLanguageRedis($language);
+
+        // Assert language given and language in redis are the same
+        $this->assertEquals($language, $bot->getLanguageRedis());
+
+        // Assert that bot current language and language in database are the same
+        $this->assertEquals($bot->language, $bot->getLanguageDatabase());
+    }
+
+    public function providerLanguage()
+    {
+        return [
+            ['it'],
+            ['es'],
+            ['ru'],
+            ['en']
+        ];
+    }
+
+    /**
+     * @depends testCreateBot
+     */
+    public function testLanguageIsLoadedInArray($bot)
+    {
+        $bot->loadSingleLocalization('en');
+
+        // Localization has en file?
+        $this->assertArrayHasKey('en', $bot->local);
+    }
+
+    /**
+     * @depends testCreateBot
+     * @dataProvider providerStringIndex
+     */
+    public function testLocalizatedStringIsTheSameInLocalizationFile($index, $language, $bot)
+    {
+        // Set the language from redis
+        $bot->setLanguageRedis($language);
+
+        // Get all file strings
+        $local = file_get_contents("tests/$index.json");
+
+        // Assert that localizated string got from bot is the same as the  string in the file
+        $this->assertEquals($bot->getStr($index), $local[$index]);
+    }
+
+    public function providerStringIndex()
+    {
+        return [
+            ['HelloMsg', 'en'],
+            ['StartMsg', 'it']
+        ];
     }
 }

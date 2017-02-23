@@ -22,6 +22,7 @@ use PhpBotFramework\Exceptions\BotException;
 
 trait Language
 {
+    abstract protected function sanitizeUserTable();
 
     /**
      * \addtogroup Localization Localization
@@ -41,7 +42,7 @@ trait Language
     public $pdo;
 
     /** \brief Table containing bot users data into database. */
-    public $user_table = '"User"';
+    public $user_table = 'User';
 
     /** \brief Name of the column that represents the user ID into database */
     public $id_column = 'chat_id';
