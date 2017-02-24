@@ -25,12 +25,10 @@ require './vendor/autoload.php';
 $bot = new PhpBotFramework\Bot("token");
 
 // Add a command that will be triggered everytime the user send `/start`
-$bot->addMessageCommand("start",
-    function($bot, $message) {
-        // Reply with a message
-        $bot->sendMessage("Hello, folks!");
-    }
-);
+$bot->addMessageCommand("start", function($bot, $message) {
+    // Reply with a message
+    $bot->sendMessage("Hello, folks!");
+});
 
 // Receive updates from Telegram using getUpdates
 $bot->getUpdatesLocal();
@@ -88,6 +86,12 @@ Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for lea
   Most of the frameworks out there requires you to specify the chat ID for every method's call but PhpBotFramework does it for you calling the next API method on who sent the message.
 
   You can still change it by using [setChatID](https://danyspin97.github.io/PhpBotFramework/group__Bot.html).
+
+## Examples
+
+You can find a list of examples bot right in `examples/` folder.
+
+All examples listed here are fully functional: you only need a valid **Telegram bot token**.
 
 ## Made with PhpBotFramework
 - [MyAddressBookBot](https://github.com/DanySpin97/MyAddressBookBot): [Try it on Telegram](https://telegram.me/myaddressbookbot)
