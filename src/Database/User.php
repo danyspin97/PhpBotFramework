@@ -22,6 +22,10 @@ use PhpBotFramework\Exceptions\BotException;
 
 /**
  * \addtogroup Modules
+ * \brief Build your own bot using modules.
+ * \details PhpBotFramework\Bot contains all modules and features of this framework but you're probabily not using all of them.
+ * If you prefer keeping your bot lightweight you can extends PhpFrameworkBot\Core\BaseBot and use modules to add features.
+ * The BaseBot class includes command handler (command types have to be included manually), api methods and file uploading.
  * @{
  */
 
@@ -30,10 +34,6 @@ use PhpBotFramework\Exceptions\BotException;
 trait User
 {
     /** @} */
-
-    abstract public function getChat($chat_id);
-
-    abstract public function setChatID($chat_id);
 
     abstract protected function sanitizeUserTable();
 
@@ -85,7 +85,6 @@ trait User
             $success = false;
         }
 
-        $sth = null;
         return $success;
     }
 
@@ -125,8 +124,8 @@ trait User
 
             if ($user_data !== false) {
                 // Change the chat_id for the next API method
-                $this->setChatID($user[$this->id_column]);
-                $this->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview, $disable_notification);
+                $this->bot->setChatID($user[$this->id_column]);
+                $this->bot->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview, $disable_notification);
             }
         }
 

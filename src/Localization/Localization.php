@@ -18,12 +18,13 @@
 
 namespace PhpBotFramework\Localization;
 
+use PhpBotFramework\BasicBot;
 use PhpBotFramework\Exceptions\BotException;
 
-trait Language
+class Localization
 {
-    abstract protected function sanitizeUserTable();
-
+    use File,
+        LocalizedString;
     /**
      * \addtogroup Localization Localization
      * \brief Create a localized bot.
@@ -35,11 +36,8 @@ trait Language
      * @{
      */
 
-    /** \brief Stores the language for a multi-language bot */
-    public $language;
-
-    /** PDO connection to the database. */
-    public $pdo;
+    /** \brief Reference to the bot. */
+    protected $bot;
 
     /** \brief Table containing bot users data into database. */
     public $user_table = 'User';
@@ -47,41 +45,43 @@ trait Language
     /** \brief Name of the column that represents the user ID into database */
     public $id_column = 'chat_id';
 
+    /** \brief Current user/group language. */
+    public $language;
+
+    public function __construct(BasicBot &$bot)
+    {
+        $this->bot = $bot;
+    }
+
     /**
      * \brief Get current user's language from the database, and set it in $language.
-     * @param string $default_language <i>Optional</i>. Default language to return in case of errors.
-     * @return string Language set for the current user, $default_language on errors.
+     * @return string Language set for the current user, throw error if there is language is not set for the user.
      */
-    public function getLanguageDatabase(string $default_language = 'en')
+    public function getLanguageDatabase() : string
     {
-        // If we have no database
-        if (!isset($this->_database)) {
-            $this->language = $default_language;
-            return $default_language;
-        }
+        $pdo = $this->bot->getPDO();
 
         // Get the language from the bot
-        $sth = $this->pdo->prepare('SELECT language FROM ' . $this->user_table . ' WHERE '
+        $sth = $pdo->prepare('SELECT language FROM ' . $this->user_table . ' WHERE '
                                                            . $this->id_column . ' = :chat_id');
-        $sth->bindParam(':chat_id', $this->_chat_id);
+
+        $chat_id = $this->bot->getChatID();
+        $sth->bindParam(':chat_id', $chat_id);
 
         try {
             $sth->execute();
         } catch (\PDOException $e) {
-            echo $e->getMessage();
+            throw new BotException($e->getMessage() . "/n" . $e->getLine());
         }
 
         $row = $sth->fetch();
-        $sth = null;
 
         if (isset($row['language'])) {
             $this->language = $row['language'];
             return $row['language'];
         }
 
-        // If we couldn't get it, set the language to the default one
-        $this->language = $default_language;
-        return $this->language;
+        throw new BotException("Could not load language from database for user: $chat_id");
     }
 
     /**
@@ -92,24 +92,22 @@ trait Language
      */
     public function setLanguageDatabase(string $language) : bool
     {
-        if (!isset($this->_database)) {
-            throw new BotException('Database connection not set');
-        }
+        $pdo = $this->bot->getPDO();
 
         // Update the language in the database
-        $sth = $this->pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE '
+        $sth = $pdo->prepare('UPDATE ' . $this->user_table . ' SET language = :language WHERE '
                                              . $this->id_column . ' = :id');
         $sth->bindParam(':language', $language);
-        $sth->bindParam(':id', $this->_chat_id);
+
+        $chat_id = $this->bot->getChatID();
+        $sth->bindParam(':id', $chat_id);
 
         try {
             $sth->execute();
         } catch (\PDOException $e) {
             throw new BotException($e->getMessage());
         }
-        $sth = null;
 
-        // Set language internally
         $this->language = $language;
 
         return true;
@@ -121,20 +119,17 @@ trait Language
      * from the database and store it (with default expiring time of one day) in Redis.
      *
      * It also change $language parameter of the bot to the language returned.
-     * @param string $default_language <i>Optional</i>. Default language to return in case of errors.
-     * @param int $expiring_time <i>Optional</i>. Set the expiring time for the language on
-     * redis each time it is took from the sql database.
+     * @param int $expiring_time <i>Optional</i>. Set the expiring time for the language on redis each time it is took from the sql database.
      * @return string Language for the current user, $default_language on errors.
      */
-    public function getLanguageRedis(string $default_language = 'en', int $expiring_time = 86400) : string
+    public function getLanguageRedis(int $expiring_time = 86400) : string
     {
-        if (!isset($this->redis) || !isset($this->pdo)) {
-            return $default_language;
-        }
+        $redis = $this->bot->getRedis();
+        $chat_id = $this->getChatID();
 
         // Check if the language exists on Redis
-        if ($this->redis->exists($this->_chat_id . ':language')) {
-            $this->language = $this->redis->get($this->_chat_id . ':language');
+        if ($redis->exists($this->chat_id . ':language')) {
+            $this->language = $redis->get($chat_id . ':language');
             return $this->language;
         }
 
@@ -142,7 +137,7 @@ trait Language
         $this->redis->setEx(
             $this->_chat_id . ':language',
             $expiring_time,
-            $this->getLanguageDatabase($default_language)
+            $this->getLanguageDatabase()
         );
         return $this->language;
     }
@@ -156,14 +151,12 @@ trait Language
      */
     public function setLanguageRedis(string $language, int $expiring_time = 86400) : bool
     {
-        if (!isset($this->redis)) {
-            throw new BotException('Database connection not set');
-        }
+        $redis = $this->bot->getRedis();
 
         // If we could successfully set the language in the database
         if ($this->setLanguageDatabase($language)) {
             // Set the language in Redis
-            $this->redis->setEx($this->_chat_id . ':language', $expiring_time, $language);
+            $redis->setEx($this->bot->getChatID() . ':language', $expiring_time, $language);
             return true;
         }
 

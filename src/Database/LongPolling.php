@@ -25,21 +25,14 @@ use PhpBotFramework\Exceptions\BotException;
  * @{
  */
 
-/** \class LongPolling
+/** \class LongPollingDatabase
  */
-trait LongPolling
+trait LongPollingDatabase
 {
     /** @} */
 
     abstract public function getUpdates(int $offset = 0, int $limit = 100, int $timeout = 60);
-
     abstract protected function initCommands();
-
-    /** Redis connection. */
-    public $redis;
-
-    /** PDO connection to the database. */
-    public $pdo;
 
     /**
      * \addtogroup Bot
@@ -60,8 +53,9 @@ trait LongPolling
      */
     protected function getUpdateOffsetRedis(string $offset_key) : int
     {
-        if ($this->redis->exists($offset_key)) {
-            return $this->redis->get($offset_key);
+        $redis = $this->getRedis();
+        if ($redis->exists($offset_key)) {
+            return $redis->get($offset_key);
         } else {
             // Get offset by first update.
             do {
@@ -70,7 +64,7 @@ trait LongPolling
 
             $offset = $update[0]['update_id'];
 
-            $this->redis->set($offset_key, $offset);
+            $redis->set($offset_key, $offset);
             return $offset;
         }
     }
@@ -87,10 +81,7 @@ trait LongPolling
      */
     public function getUpdatesRedis(int $limit = 100, int $timeout = 60, string $offset_key = 'offset')
     {
-
-        if (!isset($this->redis)) {
-            throw new BotException("Redis connection is not set");
-        }
+        $redis = $this->getRedis();
 
         $offset = $this->getUpdateOffsetRedis($offset_key);
         $this->initCommands();

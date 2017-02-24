@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PhpBotFramework\Core;
+namespace PhpBotFramework;
 
 use PhpBotFramework\Exceptions\BotException;
 
@@ -32,7 +32,7 @@ use PhpBotFramework\Entities\InlineQuery;
  * An example of its usage is available in webhook.php
  *
  */
-class BaseBot extends CoreBot
+class BasicBot extends Core\CoreBot
 {
     use \PhpBotFramework\Commands\CommandHandler;
 

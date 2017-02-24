@@ -23,20 +23,22 @@ use PhpBotFramework\Exceptions\BotException;
 // Use inline keyboard with localizated buttons
 use PhpBotFramework\Localization\Button;
 
+use PhpBotFramework\Utilities\BotState;
+
+use PhpBotFramework\Database\Database;
+
+use PhpBotFramework\Database\Getter;
+
+use PhpBotFramework\Localization\Localization;
+
 /** \class Bot Bot class that contains all modules.
  */
-class Bot extends Core\BaseBot
+class Bot extends BasicBot
 {
     use Commands\MessageCommand,
         Commands\MessageRegexCommand,
         Commands\CallbackCommand,
-        Database\LongPolling,
-        Database\Handler,
-        Database\User,
-        Localization\File,
-        Localization\Language,
-        Localization\LocalizedString,
-        Utilities\BotState;
+        Getter;
 
     /**
      * \addtogroup Bot Bot
@@ -46,14 +48,16 @@ class Bot extends Core\BaseBot
      * @{
      */
 
-    /** \brief Store the inline keyboard */
+    /** \brief Store the inline keyboard. */
     public $keyboard;
 
-    /** \brief PDO reference to manage database */
-    public $pdo;
+    /** \brief Database handling object. */
+    public $database;
 
-    /** \brief Redis connection */
+    /** \brief Redis connection. */
     public $redis;
+
+    public $local;
 
     /**
      * \brief Construct an empty bot.
@@ -70,18 +74,9 @@ class Bot extends Core\BaseBot
         $this->_callback_commands = [];
 
         $this->keyboard = new Button($this);
-    }
-
-    /** \brief Destruct the bot. */
-    public function __destruct()
-    {
-        if (isset($this->redis)) {
-            $this->redis->close();
-        }
-
-        if (isset($this->pdo)) {
-            $this->pdo = null;
-        }
+        $this->status = new BotState($this);
+        $this->local = new Localization($this);
+        $this->database = new Database($this);
     }
 
     /** @} */

@@ -39,11 +39,14 @@ trait LocalizedString
      * @{
      */
 
+    /** \brief Reference to the bot. */
+    protected $bot;
+
     /** \brief Current user/group language. */
     public $language;
 
-    /** \brief (<i>Internal</i>) True if the bot is using webhook? */
-    protected $_is_webhook;
+    /** \brief (<i>Internal</i>)Store the localizated strings. */
+    protected $local;
 
     /**
      * \brief Get a localized string giving an index.

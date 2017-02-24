@@ -20,9 +20,10 @@ namespace PhpBotFramework\Utilities;
 
 use PhpBotFramework\Exceptions\BotException;
 
-trait BotState
-{
+use PhpBotFramework\BasicBot;
 
+class BotState
+{
     /**
      * \addtogroup State
      * \brief Create a state-based bot using these methods.
@@ -95,11 +96,10 @@ trait BotState
      * @{
      */
 
-    /** \brief Represents status used to handle data like inserting and menu-like bot. */
-    public $status;
-
-    /** \brief Redis connection. */
-    public $redis;
+    public function __construct(BasicBot &$bot)
+    {
+        $this->bot = $bot;
+    }
 
     /**
      * \brief Get current user status from Redis and set it in status variable.
@@ -108,31 +108,27 @@ trait BotState
      * if there is no status for the current user.
      * @return int The status for the current user, $default_status if missing.
      */
-    public function getStatus(int $default_status = -1) : int
+    static public function getStatus(int $default_status = -1) : int
     {
-        if (!isset($this->redis)) {
-            throw new BotException('Redis connection not set');
-        }
-
-        if ($this->redis->exists($this->_chat_id . ':status')) {
-            $this->status = $this->redis->get($this->_chat_id . ':status');
-
+        $chat_id = $this->bot->getChatID();
+        $redis = $this->bot->getRedis();
+        if ($redis->exists($chat_id . ':status')) {
+            $this->status = $redis->get($chat_id . ':status');
             return $this->status;
         }
 
-        $this->redis->set($this->_chat_id . ':status', $default_status);
+        $redis->set($chat_id . ':status', $default_status);
         $this->status = $default_status;
-
-        return $default_status;
+        return $this->status;
     }
 
     /** \brief Set the status of the bot in both Redis and $status.
      * \details Throws an exception if the Redis connection is missing.
      * @param int $status The new status of the bot.
      */
-    public function setStatus(int $status)
+    static public function setStatus(int $status)
     {
-        $this->redis->set($this->_chat_id . ':status', $status);
+        $redis->set($this->_chat_id . ':status', $status);
 
         $this->status = $status;
     }

@@ -18,6 +18,7 @@
 
 namespace PhpBotFramework\Database;
 
+use PhpBotFramework\BasicBot;
 use PhpBotFramework\Exceptions\BotException;
 
 define('PDO_DEFAULT_ADAPTER', 'mysql');
@@ -27,9 +28,9 @@ define('PDO_DEFAULT_ADAPTER', 'mysql');
  * @{
  */
 
-/** \class Handler Handler Database connection handler
+/** \class Database Database connection handler
  */
-trait Handler
+class Database
 {
     /** @} */
 
@@ -43,6 +44,11 @@ trait Handler
      * \addtogroup Bot Bot
      * @{
      */
+
+    public function __construct(BasicBot &$bot)
+    {
+        $this->bot = $bot;
+    }
 
     /**
      * \brief Open a database connection using PDO.
