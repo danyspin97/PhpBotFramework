@@ -24,7 +24,7 @@ namespace PhpBotFramework\Entities;
  */
 
 /** \class ChosenInlineResult
- * \brief Represents a result of an inline query that was chosen by the user and sent to their chat partner.
+ * \brief Represents the result of an inline query that was chosen by the user.
  */
 class ChosenInlineResult implements \ArrayAccess
 {
@@ -33,17 +33,21 @@ class ChosenInlineResult implements \ArrayAccess
 
     use EntityAccess;
 
+    /**
+     * \brief Get result's query.
+     * @return $query Null if it's empty.
+     */
     public function getQuery() : string
     {
-
-        // Get text of the message if any
         return isset($this->container['query']) ? $this->container['query'] : null;
     }
 
+    /**
+     * \brief Get the chat ID where the result comes from.
+     * @return $chat_id Chat ID.
+     */
     public function getChatID()
     {
-
-        // Return the chat id
         return $this->container['from']['id'];
     }
 }

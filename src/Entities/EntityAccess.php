@@ -32,27 +32,24 @@ trait EntityAccess
 
     public function __construct($data)
     {
-
         $this->container = $data;
     }
 
-    public function offsetSet($offset, $value)
-    {
-    }
+    public function offsetSet($offset, $value) {}
 
+    /** \brief Check that the given offset exists or not */
     public function offsetExists($offset)
     {
-
-        // Is it set?
         return isset($this->container[$offset]);
     }
 
-    public function offsetUnset($offset)
-    {
+    public function offsetUnset($offset) { // Log a warning }
 
-        // Log a warning
-    }
-
+    /**
+     * \brief Get the given offset.
+     * @param $offset The given offset.
+     * @return Data relative to the offset.
+     */
     public function offsetGet($offset)
     {
 

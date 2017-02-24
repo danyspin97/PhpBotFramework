@@ -26,7 +26,12 @@ namespace PhpBotFramework\Entities;
 
 /** \class CallbackQuery
  * \brief This object represents an incoming callback query from a callback button in an inline keyboard.
- * \details If the button that originated the query was attached to a message sent by the bot, the field message will be present. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be present. Exactly one of the fields data or game_short_name will be present.
+ * \details If the button that originated the query was attached to a message sent by the bot,
+ * the <code>field</code> message will be present.
+ * If the button was attached to a message sent via the bot (in inline mode),
+ * the field inline_message_id will be present.
+ *
+ * Exactly one of the fields data or <code>game_short_name</code> will be present.
  */
 class CallbackQuery implements \ArrayAccess
 {
@@ -37,29 +42,25 @@ class CallbackQuery implements \ArrayAccess
 
     /**
      * \brief Get data parameter if it is set.
-     * @return $data if set or empty string otherwise.
+     * @return string $data if set or empty string otherwise.
      */
     public function getData() : string
     {
-
-        // Get text of the message if any
         return isset($this->container['data']) ? $this->container['data'] : null;
     }
 
     /**
-     * \brief Get chat id of the chat in which the message attached to this callback has been send.
-     * @return $chat_id Chat id of the chat.
+     * \brief Get chat ID of the chat where the message comes from.
+     * @return $chat_id Chat ID.
      */
     public function getChatID()
     {
-
-        // Return the chat id
         return isset($this->container['message']) ? $this->container['message']['chat']['id'] : null;
     }
 
     /**
      * \brief Get message attached to this callback.
-     * @return $message Message class object attached to this callback.
+     * @return Message $message Message object attached to this callback.
      */
     public function getMessage()
     {
@@ -73,8 +74,9 @@ class CallbackQuery implements \ArrayAccess
 
     /**
      * \brief (<i>Internal</i>) Get parameter to set to the bot.
-     * \details Each time the bot receive a callback query the parameter _callback_query_id will be set to the id of this callback.
-     * @return Array with the parameter name as "var" index, and the id in "id" index.
+     * \details Each time the bot receive a callback query the parameter _callback_query_id
+     * will be set to the ID of this callback.
+     * @return array Array with the parameter name as "var" index, and the id in "id" index.
      */
     public function getBotParameter() : array
     {
@@ -83,8 +85,8 @@ class CallbackQuery implements \ArrayAccess
     }
 
     /**
-     * \brief Get if of this callback query.
-     * @return $id Id of the callback.
+     * \brief Get ID of this callback query.
+     * @return int $id ID of the callback.
      */
     public function getID() : int
     {
