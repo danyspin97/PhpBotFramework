@@ -37,16 +37,16 @@ trait CommandHandler
 
     /** \brief (<i>Internal</i>)Contains all command that can be triggered by the bot.
      * \details E.g. Add each type of command processed by the bot into this array to avoid overhead. */
-    protected $_command_types;
+protected $_command_types;
 
     /**
      * \brief (<i>Internal</i>) Initialize commands to speed up processing.
      * \details Get commands handled by the bot and prioritize them.
      */
-    protected function initCommands()
+protected function initCommands()
     {
         // All command types with respective update.
-        static $commands = ['MessageCommand' =>
+static $commands = ['MessageCommand' =>
             ['var' => '_message_commands', 'update' => 'message', 'prior' => '1'],
             'CallbackCommand' =>
             ['var' => '_callback_commands', 'update' => 'callback_query', 'prior' => '1'],
@@ -55,7 +55,8 @@ trait CommandHandler
         // Sort them by priority.
         uasort($commands, 'PhpBotFramework\Commands\CommandHandler::sortingPrior');
 
-        // Iterate over each command.
+        $this->_command_types = [];
+
         foreach ($commands as $index => $command) {
             if (isset($this->{$command['var']}) && !empty($this->{$command['var']})) {
                 $this->_command_types[] = ['method' => "process$index", 'update' => $command['update']];
@@ -66,21 +67,21 @@ trait CommandHandler
     /**
      * \brief Process updates prioritizing bot's commands over the general methods (e.g. BaseBot::processMessage())
      * @param array $update Update to process.
-     * @return int ID of the update processed.
+     * @return bool True if this update trigger any command.
      */
-    protected function processUpdate(array $update) : int
+    protected function processCommands(array $update) : bool
     {
         // For each command active (checked by initCommands())
         foreach ($this->_command_types as $index => $command) {
             // If the update type is right and the update triggered a command
             if (isset($update[$command['update']]) && $this->{$command['method']}($update[$command['update']])) {
                 // Return the id as we already processed this update
-                return $update['update_id'];
+                return true;
             }
         }
 
-        // Call the parent method 'cause this update didn't trigger any command
-        return parent::processUpdate($update);
+        // Return -1 because this update didn't trigger any command.
+        return false;
     }
 
     /**

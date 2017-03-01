@@ -26,6 +26,8 @@ class TestBot extends Bot
 {
     use FakeUpdate;
 
+    public $message_id = 0;
+
     /*
      * \brief Process a message sending it to the user specified internally.
      * @param Message $message The message to send to the user.
@@ -34,5 +36,12 @@ class TestBot extends Bot
     {
         $this->setChatID(getenv("CHAT_ID"));
         $this->sendMessage("Message from <b>{$message['from']['first_name']}</b> saying: <i>{$message['text']}</i>");
+
+        $this->message_id = $message['message_id'];
+    }
+
+    public function initCommandsWrap()
+    {
+        $this->initCommands();
     }
 }

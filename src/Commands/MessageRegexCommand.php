@@ -32,7 +32,7 @@ trait MessageRegexCommand
     /** @} */
 
     /** \brief Chat ID of the current user/group/channel. */
-    protected $_chat_id;
+protected $_chat_id;
 
     /**
      * \addtogroup Commands
@@ -40,8 +40,8 @@ trait MessageRegexCommand
      * @{
      */
 
-    /** \brief (<i>Internal</i>)Store the command triggered by the message. */
-    protected $_message_regex_commands;
+    /** \brief (<i>Internal</i>)Store the command triggered on message. */
+    protected $_message_regex_commands = [];
 
     /**
      * \brief Add a function that will be executed everytime a message contain a command

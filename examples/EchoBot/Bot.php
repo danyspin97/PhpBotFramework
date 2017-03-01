@@ -6,7 +6,7 @@
  * Change token to reflect your bot's one.
  */
 
-require_once '../vendor/autoload.php';
+require_once '../../vendor/autoload.php';
 
 class EchoBot extends PhpBotFramework\Bot {
   // Override processMessage in order to send user the same message it give us.

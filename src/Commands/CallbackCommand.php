@@ -45,7 +45,7 @@ trait CallbackCommand
      */
 
     /** \brief Store the command triggered on callback query. */
-    protected $_callback_commands;
+    protected $_callback_commands = [];
 
     /**
      * \brief Add a function that will be executed everytime a callback query contains a string as data

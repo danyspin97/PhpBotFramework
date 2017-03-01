@@ -18,6 +18,8 @@
 
 namespace PhpBotFramework\Localization;
 
+use PhpBotFramework\Exceptions\BotException;
+
 trait File
 {
 
@@ -40,30 +42,39 @@ trait File
      * @{
      */
 
-    /** \brief Store the localizated strings. */
-    protected $local;
+    /** \brief (<i>Internal</i>)Store the localizated strings. */
+protected $local;
 
     /** \brief Source for localization files. */
-    protected $localization_dir = './localization';
+protected $localization_dir = './localization';
 
     /**
-     * \brief Load a localization file into the localized strings array.
+     * \brief (<i>Internal</i>)Load a localization file into the localized strings array.
      * @param string $lang Language to load.
      * @param string $dir Directory in which there are the JSON files.
-     * @return bool True if loaded. False if already loaded.
+     * @return bool True if loaded.
      */
-    protected function loadSingleLanguage(string $lang = 'en', string $dir = './localization') : bool
+protected function loadSingleLanguage(string $lang = 'en', string $dir = './localization') : bool
     {
+        // Name of the file
         $filename = "$dir/$lang";
 
-        // If this language isn't already set and the file exists
-        if (!isset($this->local[$lang]) && file_exists($filename)) {
-            // Save it internally
-            $this->local[$lang] = json_decode(file_get_contents($filename), true);
-            return true;
+        // If this language isn't already set
+        if (!isset($this->local[$lang])) {
+            // and the file exists
+            if (file_exists($filename)) {
+                // Load localization in memory
+                $this->local[$lang] = json_decode(file_get_contents($filename), true);
+
+                // We loaded it
+                return true;
+            }
+            // The file doens't exists
+            return false;
         }
 
-        return false;
+        // The language is already set
+        return true;
     }
 
     /**
@@ -73,8 +84,9 @@ trait File
      *
      * Each file will be saved into <code>$local</code> with the first two letters of the filename as the index.
      * @param string $dir Source directory for localization files.
+     * @return bool True if the directory could be opened without errors.
      */
-    public function loadLocalization(string $dir = './localization')
+    public function loadAllLanguages(string $dir = './localization') : bool
     {
         if ($handle = opendir($dir)) {
             // Iterate over all files
@@ -90,7 +102,36 @@ trait File
                     }
                 }
             }
+            return true;
         }
+        return false;
+    }
+
+    /*
+     * \brief Load localization for current language and mode.
+     * \details This method will load only the current user/group localization file if the bot is using webhook, all files otherwise.
+     * @param string $dir Directory where the localization file is stored. If no directory is given (by default) it will load it from $localization_dir (which is ./localization if it is not set).
+     * @return bool True if the localization has been loaded or it is already loaded.
+     */
+    public function loadCurrentLocalization(string $dir = '') : bool
+    {
+        // If no dir has been given
+        if (!isset($dir) || $dir === '') {
+            // The dir is the default one
+            $dir = $this->localization_dir;
+        }
+
+        // If the language of the user is already set in the array containing localizated strings
+        if (!isset($this->local[$this->language])) {
+            // Is the bot using webhook?
+            if (isset($this->_is_webhook)) {
+                return $this->loadSingleLanguage($this->localization_dir);
+            } else {
+                return $this->loadAllLanguages($this->localization_dir);
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -99,7 +140,6 @@ trait File
      */
     public function setLocalizationDir(string $dir)
     {
-
         $this->localization_dir = $dir;
     }
 

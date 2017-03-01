@@ -28,7 +28,6 @@ namespace PhpBotFramework\Entities;
  */
 class Message implements \ArrayAccess
 {
-
     /** @} */
 
     use EntityAccess;
@@ -37,7 +36,7 @@ class Message implements \ArrayAccess
      * \brief Get text parameter if it is set.
      * @return string If set or <code>null</code> otherwise.
      */
-    public function getText() : string
+public function getText() : string
     {
         return isset($this->container['text']) ? $this->container['text'] : null;
     }
@@ -49,5 +48,10 @@ class Message implements \ArrayAccess
     public function getChatID()
     {
         return $this->container['chat']['id'];
+    }
+
+    public function getMessageId() : int
+    {
+        return $this->container['message_id'];
     }
 }

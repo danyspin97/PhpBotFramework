@@ -41,6 +41,7 @@ class BaseBot extends CoreBot
      * @{
      */
 
+    /** \brief (<i>Internal</i>) True if the bot is using webhook? */
     protected $_is_webhook;
 
     /**
@@ -133,6 +134,10 @@ class BaseBot extends CoreBot
             'edited_message' => 'EditedMessage',
             'edited_channel_post' => 'EditedChannelPost',
             'chosen_inline_result' => 'ChosenInlineResult'];
+
+        if ($this->processCommands($update)) {
+            return $update['update_id'];
+        }
 
         foreach ($updates_type as $offset => $class) {
             if (isset($update[$offset])) {

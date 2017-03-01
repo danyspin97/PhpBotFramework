@@ -18,6 +18,8 @@
 
 namespace PhpBotFramework\Entities;
 
+use PhpBotFramework\Exceptions\BotException;
+
 /**
  * \addtogroup Entities Entities
  * @{
@@ -125,9 +127,8 @@ class InlineQueryResults
      */
     public function addResult(array $result) : int
     {
-        if (array_key_exists('type', $result) || in_array($result['type'], $accepted_type))
-        {
-            throw BotException("Result has wrong or no type at all. Check that the result has a value of key 'type' that correspond to a type in the API Reference");
+        if (array_key_exists('type', $result) || in_array($result['type'], $this->accepted_type)) {
+            throw new BotException("Result has wrong or no type at all. Check that the result has a value of key 'type' that correspond to a type in the API Reference");
         }
 
         // Set the id of the result to add
@@ -150,10 +151,15 @@ class InlineQueryResults
      * links in the sent message.
      * @return int Id the the article added.
      */
-    public function newArticle(string $title, string $message_text,
-                               string $description = '', array $reply_markup = null,
-                               $parse_mode = 'HTML', $disable_web_preview = false) : int
-    {
+    public function newArticle(
+        string $title,
+        string $message_text,
+        string $description = '',
+        array $reply_markup = null,
+        $parse_mode = 'HTML',
+        $disable_web_preview = false
+    ) : int {
+    
         array_push($this->results, [
             'type' => 'article',
             'id' => (string)$this->id_result,

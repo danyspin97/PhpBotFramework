@@ -1,0 +1,17 @@
+{
+  "update_id": 112443857,
+  "message": {
+    "message_id": 10101250,
+    "from": {
+      "id": 1,
+      "first_name": "Emanuele"
+    },
+    "chat": {
+      "id": "0",
+      "first_name": "Emanuele",
+      "type": "private"
+    },
+    "date": 1485900271,
+    "text": "Bot i invoke you!"
+  }
+}

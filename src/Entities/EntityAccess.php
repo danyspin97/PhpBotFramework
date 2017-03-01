@@ -24,7 +24,6 @@ namespace PhpBotFramework\Entities;
  */
 trait EntityAccess
 {
-
     /** @} */
 
     /** \brief Contains the array passed __construct */
@@ -35,15 +34,18 @@ trait EntityAccess
         $this->container = $data;
     }
 
-    public function offsetSet($offset, $value) {}
+    public function offsetSet($offset, $value)
+    {
+    }
 
     /** \brief Check that the given offset exists or not */
     public function offsetExists($offset)
     {
+<<<<<<< HEAD
         return isset($this->container[$offset]);
     }
 
-    public function offsetUnset($offset) { // Log a warning }
+    public function offsetUnset($offset) { /* Log a warning */ }
 
     /**
      * \brief Get the given offset.
@@ -52,7 +54,6 @@ trait EntityAccess
      */
     public function offsetGet($offset)
     {
-
         // Get name of the method, the class should have. Like "getText"
         $method = Text::camelCase("get $offset");
 

@@ -19,7 +19,7 @@
 namespace PhpBotFramework\Entities;
 
 /**
- * \addtogroup Utility-classes Utility class
+ * \addtogroup Utility-classes Utility classes
  * \brief Static methods grouped by class and context.
  * @{
  */
@@ -34,9 +34,14 @@ class Text
      * \brief Get hashtag contained in a string.
      * \details Check hashtags in a string using a regular expression.
      * All valid hashtags will be returned in an array.
+<<<<<<< HEAD
      *
      * See the following [StackOverflow thread](http://stackoverflow.com/questions/3060601/retrieve-all-hashtags-from-a-tweet-in-a-php-function) to learn more.
      * @param $string The string to check for hashtags.
+=======
+     * [Credis to trante](http://stackoverflow.com/questions/3060601/retrieve-all-hashtags-from-a-tweet-in-a-php-function).
+     * @param string $string The string to check for hashtags.
+>>>>>>> master
      * @return array An array of valid hashtags, can be empty.
      */
     public static function getHashtags(string $string) : array
@@ -72,11 +77,18 @@ class Text
     }
 
     /**
+<<<<<<< HEAD
      * \brief Remove HTML formattation from Telegram usernames.
      * \details Remove the $modificator html formattation from a message
      * containing Telegram username.
      * @param $string to parse.
      * @param $tag Formattation tag to remove.
+=======
+     * \brief Remove html formattation from telegram usernames in string.
+     * \details Remove the $modificator html formattation from a message containing telegram username, to let the user click them.
+     * @param string $string to parse.
+     * @param string $tag Formattation tag to remove.
+>>>>>>> master
      * @return string The string, modified if there are usernames. Otherwise $string.
      */
     public static function removeUsernameFormattation(string $string, string $tag) : string

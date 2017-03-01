@@ -19,10 +19,10 @@ notifications:
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
-  - composer self-update
+  - psql -U postgres -f examples/localization.sql travis_ci_test
   - composer install --prefer-source --no-interaction
 
 script:
-  - phpunit  --coverage-clover=coverage.clover --configuration phpunit.xml
+  - php vendor/bin/phpunit --coverage-clover=coverage.clover --configuration phpunit.xml
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

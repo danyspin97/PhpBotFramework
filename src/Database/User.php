@@ -18,6 +18,8 @@
 
 namespace PhpBotFramework\Database;
 
+use PhpBotFramework\Exceptions\BotException;
+
 /**
  * \addtogroup Modules
  * @{
@@ -29,9 +31,11 @@ trait User
 {
     /** @} */
 
-    abstract function getChat($chat_id);
+    abstract public function getChat($chat_id);
 
-    abstract function setChatID($chat_id);
+    abstract public function setChatID($chat_id);
+
+    abstract protected function sanitizeUserTable();
 
     /** PDO connection to the database. */
     public $pdo;
@@ -48,7 +52,7 @@ trait User
      */
 
     /** \brief Table contaning bot users data in the SQL database. */
-    public $user_table = '"User"';
+    public $user_table = 'User';
 
     /** \brief Name of the column that represents the user id in the sql database */
     public $id_column = 'chat_id';
@@ -64,6 +68,8 @@ trait User
             throw new BotException("Database connection not set");
         }
 
+        $this->sanitizeUserTable();
+
         // Create insertion query and initialize variable
         $query = "INSERT INTO $this->user_table ($this->id_column) VALUES (:chat_id)";
 
@@ -73,7 +79,7 @@ trait User
         try {
             $sth->execute();
             $success = true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
 
             $success = false;
@@ -89,21 +95,27 @@ trait User
      * This method requires Bot::$pdo connection set.
      * All parameters are the same as CoreBot::sendMessage.
      * Because a limitation of Telegram Bot API the bot will have a delay after 20 messages sent in different chats.
+     * @return int How many messages were sent.
      * @see CoreBot::sendMessage
      */
-    public function broadcastMessage(string $text, string $reply_markup = null, string $parse_mode = 'HTML',
-                                     bool $disable_web_preview = true, bool $disable_notification = false)
-    {
-
+    public function broadcastMessage(
+        string $text,
+        string $reply_markup = null,
+        string $parse_mode = 'HTML',
+        bool $disable_web_preview = true,
+        bool $disable_notification = false
+    ) : int {
         if (!isset($this->pdo)) {
             throw new BotException("Database connection not set");
         }
+
+        $this->sanitizeUserTable();
 
         $sth = $this->pdo->prepare("SELECT $this->id_column FROM $this->user_table");
 
         try {
             $sth->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo $e->getMessage();
         }
 
@@ -118,7 +130,7 @@ trait User
             }
         }
 
-        $sth = null;
+        return $sth->rowCount();
     }
 
     /** @} */

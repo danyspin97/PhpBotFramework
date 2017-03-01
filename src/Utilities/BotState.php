@@ -22,6 +22,7 @@ namespace PhpBotFramework\Utilities;
  * \addtogroup Modules
  * @{
  */
+use PhpBotFramework\Exceptions\BotException;
 
 trait BotState
 {

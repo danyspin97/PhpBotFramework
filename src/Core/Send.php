@@ -20,12 +20,19 @@ namespace PhpBotFramework\Core;
 
 use PhpBotFramework\Entities\Message;
 
+use PhpBotFramework\Entities\File as TelegramFile;
+
 trait Send
 {
 
     abstract protected function execRequest(string $url);
 
-    abstract protected function processRequest(string $method, array $param, string $class);
+    abstract protected function processRequest(string $method, string $class, $file);
+
+    abstract protected function checkCurrentFile(TelegramFile $file);
+
+    /** \brief Contains parameters of the next request. */
+    protected $parameters;
 
     /**
      * \addtogroup Api Api Methods
@@ -44,8 +51,7 @@ trait Send
      */
     public function sendMessage($text, string $reply_markup = null, int $reply_to = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false)
     {
-
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
             'text' => $text,
             'parse_mode' => $parse_mode,
@@ -55,7 +61,7 @@ trait Send
             'disable_notification' => $disable_notification
         ];
 
-        return $this->processRequest('sendMessage', $parameters, 'Message');
+        return $this->processRequest('sendMessage', 'Message');
     }
 
     /**
@@ -68,45 +74,44 @@ trait Send
      */
     public function forwardMessage($from_chat_id, int $message_id, bool $disable_notification = false)
     {
-
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
             'message_id' => $message_id,
             'from_chat_id' => $from_chat_id,
             'disable_notification' => $disable_notification
         ];
 
-        return $this->processRequest('forwardMessage', $parameters, 'Message');
+        return $this->processRequest('forwardMessage', 'Message');
     }
 
     /**
      * \brief Send a photo.
      * \details Use this method to send photos. [API reference](https://core.telegram.org/bots/api#sendphoto)
-     * @param $photo Photo to send, can be a file_id or a string referencing the location of that image.
+     * @param $photo Photo to send, can be a file_id or a string referencing the location of that image(both local or remote path).
      * @param $reply_markup <i>Optional</i>. Reply markup of the message.
      * @param $caption <i>Optional</i>. Photo caption (may also be used when resending photos by file_id), 0-200 characters.
      * @param $disable_notification <i>Optional<i>. Sends the message silently.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendPhoto($photo, string $reply_markup = null, string $caption = '', bool $disable_notification = false)
+    public function sendPhoto(&$photo, string $reply_markup = null, string $caption = '', bool $disable_notification = false)
     {
+        $this->_file->init($photo, 'photo');
 
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
-            'photo' => $photo,
             'caption' => $caption,
             'reply_markup' => $reply_markup,
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->processRequest('sendPhoto', $parameters, 'Message');
+        return $this->processRequest('sendPhoto', 'Message', $this->checkCurrentFile());
     }
 
     /**
      * \brief Send an audio.
      * \details Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. [API reference](https://core.telegram.org/bots/api/#sendaudio)
      * Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
-     * @param $audio Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data.
+     * @param $audio Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or give the local path of an audio to upload.
      * @param $caption <i>Optional</i>. Audio caption, 0-200 characters.
      * @param $reply_markup <i>Optional</i>. Reply markup of the message.
      * @param $duration <i>Optional</i>. Duration of the audio in seconds.
@@ -118,10 +123,10 @@ trait Send
      */
     public function sendAudio($audio, string $caption = null, string $reply_markup = null, int $duration = null, string $performer, string $title = null, bool $disable_notification = false, int $reply_to_message_id = null)
     {
+        $this->_file->init($audio, 'audio');
 
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
-            'audio' => $audio,
             'caption' => $caption,
             'duration' => $duration,
             'performer' => $performer,
@@ -131,13 +136,14 @@ trait Send
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->processRequest('sendAudio', $parameters, 'Message');
+        return $this->processRequest('sendAudio', 'Message', $this->checkCurrentFile());
     }
 
     /**
      * \brief Send a document.
      * \details Use this method to send general files. [API reference](https://core.telegram.org/bots/api/#senddocument)
-     * @param mixed $document File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
+     * @param string $document File to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or give the local path of an document to upload it.
+     * Only some document are allowed through url sending (this is a Telegram limitation).
      * @param string $caption <i>Optional</i>. Document caption (may also be used when resending documents by file_id), 0-200 characters.
      *
      * @param string $reply_markup <i>Optional</i>. Reply markup of the message.
@@ -145,19 +151,19 @@ trait Send
      * @param int $reply_to_message_id <i>Optional</i>. If the message is a reply, ID of the original message.
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendDocument($document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
+    public function sendDocument(string $document, string $caption = '', string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
     {
+        $this->_file->init($document, 'document');
 
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
-            'document' => $document,
             'caption' => $caption,
             'reply_to_message_id' => $reply_to_message_id,
             'reply_markup' => $reply_markup,
             'disable_notification' => $disable_notification,
         ];
 
-        return $this->processRequest('sendDocument', $parameters, 'Message');
+        return $this->processRequest('sendDocument', 'Message', $this->checkCurrentFile());
     }
 
 
@@ -173,8 +179,7 @@ trait Send
      */
     public function sendSticker($sticker, string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
     {
-
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
             'sticker' => $sticker,
             'disable_notification' => $disable_notification,
@@ -182,14 +187,14 @@ trait Send
             'reply_markup' => $reply_markup
         ];
 
-        return $this->processRequest('sendSticker', $parameters, 'Message');
+        return $this->processRequest('sendSticker', 'Message');
     }
 
     /**
      * \brief Send audio files.
      * \details Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document).o
      * Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
-     * @param mixed $voice Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
+     * @param mixed $voice Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or the local path of a voice to upload.
      * @param string $caption <i>Optional</i>. Voice message caption, 0-200 characters
      * @param int $duration <i>Optional</i>. Duration of the voice message in seconds
      * @param string $reply_markup <i>Optional</i>. Reply markup of the message.
@@ -199,10 +204,10 @@ trait Send
      */
     public function sendVoice($voice, string $caption, int $duration, string $reply_markup = null, bool $disable_notification, int $reply_to_message_id = 0)
     {
+        $this->_file->init($voice, 'voice');
 
-        $parameters = [
+        $this->parameters = [
             'chat_id' => $this->_chat_id,
-            'voice' => $voice,
             'caption' => $caption,
             'duration' => $duration,
             'disable_notification', $disable_notification,
@@ -210,7 +215,7 @@ trait Send
             'reply_markup' => $reply_markup
         ];
 
-        return $this->processRequest('sendVoice', $parameters, 'Message');
+        return $this->processRequest('sendVoice', 'Message', $this->checkCurrentFile());
     }
 
     /**

@@ -18,6 +18,8 @@
 
 namespace PhpBotFramework\Core;
 
+use PhpBotFramework\Exceptions\BotException;
+
 trait Inline
 {
 
@@ -90,8 +92,7 @@ trait Inline
             'cache_time' => $cache_time
         ];
 
-        if (isset($results) && $results !== '')
-        {
+        if (isset($results) && $results !== '') {
             $parameters['results'] = $results;
         }
 

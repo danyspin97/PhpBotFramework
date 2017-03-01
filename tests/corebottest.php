@@ -7,13 +7,19 @@ use PHPUnit\Framework\TestCase;
 define('TREE_IMAGE', 'http://www.planwallpaper.com/static/images/2022725-wallpaper_625864_Iz6NK8G.jpg');
 define('EYES_IMAGE', 'http://www.planwallpaper.com/static/images/wallpapers-7020-7277-hd-wallpapers.jpg');
 define('PANDA_IMAGE', 'http://www.planwallpaper.com/static/images/wallpaper-11628192.jpg');
+define('LOGO_IMAGE', './Doxygen/logo.png');
+
+// Define document path and urls
+define('MESSAGE_JSON', './tests/message_1.json');
+define('PHP_TEST', './tests/corebottest.php');
+define('PDF_TEST', 'http://www.lmpt.univ-tours.fr/~volkov/C++.pdf');
 
 class CoreBotTest extends TestCase
 {
+    public $chat_id;
 
     public function testCreateCoreBot()
     {
-
         // Get token from env variable
         $token = getenv("BOT_TOKEN");
 
@@ -22,7 +28,11 @@ class CoreBotTest extends TestCase
             exit(1);
         }
 
-        return new PhpBotFramework\Core\CoreBot($token);
+        $bot = new PhpBotFramework\Core\CoreBot($token);
+
+        $this->assertInstanceOf('PhpBotFramework\Core\CoreBot', $bot);
+
+        return $bot;
     }
 
     /**
@@ -30,14 +40,13 @@ class CoreBotTest extends TestCase
      */
     public function testSetChatIDAndGetChatIDReturnSameID($bot)
     {
-
-        $chat_id = getenv("CHAT_ID");
+        $this->chat_id = getenv("CHAT_ID");
 
         // Set chat id
-        $bot->setChatID($chat_id);
+        $bot->setChatID($this->chat_id);
 
         // Assert that getChatID returns the same chat_id set with setChatID
-        $this->assertEquals($chat_id, $bot->getChatID());
+        $this->assertEquals($this->chat_id, $bot->getChatID());
     }
 
     /**
@@ -45,7 +54,6 @@ class CoreBotTest extends TestCase
      */
     public function providerMessageText()
     {
-
         return [
             'no_markdown' => ["First message <i>with</i> *no* markdown", ""],
             'HTML' => ["Second message with <i>html</i> _markdown_", "HTML"],
@@ -63,7 +71,6 @@ class CoreBotTest extends TestCase
      */
     public function testSendingMessageWillReturnTheSentMessage($text, $parse_mode, $bot)
     {
-
         // Send a message
         $new_message = $bot->sendMessage($text, null, null, $parse_mode);
 
@@ -84,7 +91,6 @@ class CoreBotTest extends TestCase
      */
     public function testSendPhoto($photo, $caption, $bot)
     {
-
         // Send the photo
         $new_photo = $bot->sendPhoto($photo, null, $caption);
 
@@ -100,12 +106,61 @@ class CoreBotTest extends TestCase
 
     public function providerPhoto()
     {
-
         return [
             'tree' => [TREE_IMAGE, 'What a fantastic tree.'],
             'eyes' => [EYES_IMAGE, 'Blue is the new black.'],
-            'panda' => [PANDA_IMAGE, 'Oohh, there is a panda!']
+            'panda' => [PANDA_IMAGE, 'Oohh, there is a panda!'],
+            'logo' => [LOGO_IMAGE, 'Here it is the logo.']
         ];
+    }
+
+    /**
+     * @depends testCreateCoreBot
+     */
+    public function testGetChatReturnTheSameID($bot)
+    {
+        $chat = $bot->getChat($this->chat_id);
+        $this->assertEquals($this->chat_id, $chat['id']);
+    }
+
+    /**
+     * @depends testCreateCoreBot
+     * @dataProvider providerDocument
+     */
+    public function testSendDocument($document, $caption, $bot)
+    {
+        $new_document = $bot->sendDocument($document, $caption);
+
+        $this->assertArrayHasKey('document', $new_document);
+
+        $this->assertArrayHasKey('caption', $new_document);
+    }
+
+    public function providerDocument()
+    {
+        return [
+            'message_json' => [MESSAGE_JSON, 'This is a simple json file.'],
+            'php_test' => [PHP_TEST, 'This is a php file.'],
+            'pdf' => [PDF_TEST, 'This is a programming book.']
+        ];
+    }
+
+    /**
+     * @depends testCreateCoreBot
+     */
+    public function testEditingMessageChangeText($bot)
+    {
+        $new_message = $bot->sendMessage('This message will be edited.');
+
+        $text = 'This message has been edited.';
+
+        $edited_message = $bot->editMessageText($new_message['message_id'], $text);
+
+        $this->assertInstanceOf('PhpBotFramework\Entities\Message', $edited_message);
+
+        $this->assertNotEquals($edited_message['text'], $new_message['text']);
+
+        $this->assertEquals($edited_message['text'], $text);
     }
 
     /**
@@ -117,7 +172,6 @@ class CoreBotTest extends TestCase
      */
     public function testGetWebhookInfo($bot)
     {
-
         $response = $bot->getWebhookInfo();
 
         $this->assertEquals(is_array($response), true);

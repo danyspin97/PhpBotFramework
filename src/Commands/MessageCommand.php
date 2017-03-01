@@ -41,7 +41,7 @@ trait MessageCommand
      */
 
     /** \brief (<i>Internal</i>)Store the command triggered on message. */
-    protected $_message_commands;
+    protected $_message_commands = [];
 
     /**
      * \brief Add a function that will be executed everytime a message contain the selected command
@@ -75,7 +75,6 @@ trait MessageCommand
                 // If we found a valid command (check first length, then use strpos)
                 if ($trigger['length'] == $message['entities'][0]['length'] &&
                     mb_strpos($trigger['command'], $message['text'], $message['entities'][0]['offset']) !== false) {
-
                     // Execute the script.
                     $this->_chat_id = $message['chat']['id'];
                     $trigger['script']($this, new Message($message));

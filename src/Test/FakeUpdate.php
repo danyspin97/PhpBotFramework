@@ -25,13 +25,12 @@ use PhpBotFramework\Entities\Message;
  */
 trait FakeUpdate
 {
-
     /**
      * \brief Process fake update for testing purpose.
      * @param array $update Fake update.
      * @return int processed update's ID.
      */
-    public function processFakeUpdate($update)
+    public function processFakeUpdate(array $update)
     {
         $this->processUpdate($update);
     }

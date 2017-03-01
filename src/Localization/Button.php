@@ -22,8 +22,8 @@ use PhpBotFramework\Core\CoreBot;
 use PhpBotFramework\Entities\InlineKeyboard;
 
 /** \class Button Button Inline keyboard with localizated buttons. */
-class Button extends InlineKeyboard {
-
+class Button extends InlineKeyboard
+{
     /**
      * \addtogroup InlineKeyboard InlineKeyboard
      * \brief Handle an inline keyboard to send along with messages.
@@ -38,7 +38,8 @@ class Button extends InlineKeyboard {
      * @param CoreBot $bot References to the bot that's using the inline keyboard.
      * @param array $buttons Buttons passed as inizialization.
      */
-    public function __construct(CoreBot &$bot, array $buttons = array()) {
+    public function __construct(CoreBot &$bot, array $buttons = array())
+    {
         $this->bot = $bot;
 
         // Call parent constructor passing array
@@ -51,7 +52,7 @@ class Button extends InlineKeyboard {
      * @param $json_serialized return a json serialized string, or an array.
      * @return A button with written "back".
      */
-    public function getBackButton($json_serialized = true)
+    public function getBackButton(bool $json_serialized = true)
     {
         // Create the button
         $inline_keyboard = [ 'inline_keyboard' =>
@@ -74,12 +75,19 @@ class Button extends InlineKeyboard {
     }
 
     /**
+<<<<<<< HEAD
      * \brief Get 'Back' and 'Skip' buttons on the same row.
      * \details Back button has <code>callback_data</code> "back"; Skip button has "skip".
      * @param $json_serialized return a JSON-serialized string, or an array.
      * @return A button labeled 'Back' and another one labeled 'Skip'.
+=======
+     * \brief Get a Back and a Skip buttons inthe same row.
+     * \details Back button has callback_data "back" and Skip button has callback_data "skip".
+     * @param bool $json_serialized return a json serialized string, or an array.
+     * @return string|array A button with written "back" and one with written "Skip".
+>>>>>>> master
      */
-    public function getBackSkipKeyboard($json_serialized = true)
+    public function getBackSkipKeyboard(bool $json_serialized = true)
     {
         // Create the keyboard
         $inline_keyboard = [ 'inline_keyboard' =>
@@ -115,7 +123,7 @@ class Button extends InlineKeyboard {
      * @param $json_serialized Get a JSON-serialized string or an array.
      * @return The buttons in the selected type.
      */
-    public function getChooseLanguageKeyboard($prefix = 'cl', $json_serialized = true)
+    public function getChooseLanguageKeyboard(string $prefix = 'cl', bool $json_serialized = true)
     {
         $inline_keyboard = ['inline_keyboard' => array()];
 

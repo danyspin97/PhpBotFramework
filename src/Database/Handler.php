@@ -18,7 +18,7 @@
 
 namespace PhpBotFramework\Database;
 
-use PDOException;
+use PhpBotFramework\Exceptions\BotException;
 
 define('PDO_DEFAULT_ADAPTER', 'mysql');
 
@@ -36,6 +36,9 @@ trait Handler
     /** PDO connection to the database. */
     public $pdo;
 
+    /** \brief Table contaning bot users data in the SQL database. */
+    public $user_table = 'User';
+
     /**
      * \addtogroup Bot Bot
      * @{
@@ -48,8 +51,9 @@ trait Handler
      * @param array $params Parameters for initialize connection.
      * Index required:
      *     - <code>username</code>
-     *     - <code>password</code> (can be a null string)
+     *     - <code>password</code> (can be an empty string)
      * Optional index:
+     *     - <code>dbname</code>
      *     - <code>adapter</code> <b>Default</b>: <code>mysql</code>
      *     - <code>host</code> <b>Default</b>: <code>localhost</code>
      *     - <code>options</code> (<i>Array of options passed when creating PDO object</i>)
@@ -57,14 +61,15 @@ trait Handler
      */
     public function connect(array $params) : bool
     {
-        try {
-            $config = $this->getDNS($this->mergeWithDefaults($params));
+        $params = $this->addDefaultValue($params);
+        $config = $this->getDns($params);
 
-            $this->pdo = new \PDO($config, $params['username'], $params['password'], $params['option']);
+        try {
+            $this->pdo = new \PDO($config, $params['username'], $params['password'], $params['options']);
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             return true;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             echo 'Unable to connect to database, an error occured:' . $e->getMessage();
         }
 
@@ -77,7 +82,7 @@ trait Handler
      */
     protected function addDefaultValue(array $params) : array
     {
-        static $defaults = [ 'adapter' => PDO_DEFAULT_ADAPTER, 'host' => 'localhost' ];
+        static $defaults = [ 'adapter' => PDO_DEFAULT_ADAPTER, 'host' => 'localhost', 'options' => [] ];
         return array_merge($defaults, $params);
     }
 
@@ -97,7 +102,7 @@ trait Handler
              * that are passed to PDO in another way and so don't need
              * to be included in the string.
              */
-            if ($field === 'username' || $field === 'password') {
+            if ($field === 'username' || $field === 'password' || $field === 'options') {
                 unset($params[$field]);
                 continue;
             }
@@ -106,6 +111,26 @@ trait Handler
         }
 
         return $response . join(';', $fields);
+    }
+
+    /**
+     * \brief (<i>Internal</i>) Sanitize name of the user table depending on database used.
+     */
+    protected function sanitizeUserTable()
+    {
+        static $is_sanitized = false;
+
+        if ($is_sanitized) {
+            return;
+        }
+
+        if ($this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'mysql') {
+            $this->user_table = "`$this->user_table`";
+        } else {
+            $this->user_table = '"' . $this->user_table . '"';
+        }
+
+        $is_sanitized = true;
     }
 
     /** @} */
