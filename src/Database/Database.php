@@ -122,19 +122,17 @@ class Database
     /**
      * \brief (<i>Internal</i>) Sanitize name of the user table depending on database used.
      */
-    protected function sanitizeUserTable() {
+    protected function sanitizeUserTable()
+    {
         static $is_sanitized = false;
 
-        if ($is_sanitized)
-        {
+        if ($is_sanitized) {
             return;
         }
 
-        if ($this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'mysql')
-        {
+        if ($this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'mysql') {
             $this->user_table = "`$this->user_table`";
-        } else
-        {
+        } else {
             $this->user_table = '"' . $this->user_table . '"';
         }
 

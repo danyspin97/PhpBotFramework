@@ -108,7 +108,7 @@ class BotState
      * if there is no status for the current user.
      * @return int The status for the current user, $default_status if missing.
      */
-    static public function getStatus(int $default_status = -1) : int
+    public static function getStatus(int $default_status = -1) : int
     {
         $chat_id = $this->bot->getChatID();
         $redis = $this->bot->getRedis();
@@ -126,7 +126,7 @@ class BotState
      * \details Throws an exception if the Redis connection is missing.
      * @param int $status The new status of the bot.
      */
-    static public function setStatus(int $status)
+    public static function setStatus(int $status)
     {
         $redis->set($this->_chat_id . ':status', $status);
 

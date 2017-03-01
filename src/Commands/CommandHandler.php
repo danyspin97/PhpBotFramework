@@ -18,50 +18,35 @@
 
 namespace PhpBotFramework\Commands;
 
-/**
- * \addtogroup Modules
- * @{
- */
-
 /** \class CallbackCommandHandler
  */
 trait CommandHandler
 {
-    /** @} */
 
     /**
-     * \addtogroup Commands
-     * \brief What commands are
+     * \addtogroup Core Core(Internal)
+     * \brief Core of the framework.
      * @{
      */
 
-    /** \brief (<i>Internal</i>)Contains all command that can be triggered by the bot.
-     * \details E.g. Add each type of command processed by the bot into this array to avoid overhead. */
-    protected $_command_types;
+    private $_commands_temp = [];
 
     /**
-     * \brief (<i>Internal</i>) Initialize commands to speed up processing.
+     * \brief Initialize commands to speed up processing.
      * \details Get all command that the bot handle, and put them in priority.
      */
     protected function initCommands()
     {
-        // All command types with respective update
-        static $commands = ['MessageCommand' =>
-            ['var' => '_message_commands', 'update' => 'message', 'prior' => '1'],
-            'CallbackCommand' =>
-            ['var' => '_callback_commands', 'update' => 'callback_query', 'prior' => '1'],
-            'MessageRegexCommand' => ['var' => '_message_regex_commands', 'update' => 'message', 'prior' => '2']];
-
-        // Sort them by priority
-        uasort($commands, 'PhpBotFramework\Commands\CommandHandler::sortingPrior');
-
-        $this->_command_types = [];
+        $this->_commands = [];
 
         // Iterate over each
-        foreach ($commands as $index => $command) {
-            if (isset($this->{$command['var']}) && !empty($this->{$command['var']})) {
-                $this->_command_types[] = ['method' => "process$index", 'update' => $command['update']];
-            }
+        foreach ($this->_commands_temp as $command) {
+            $this->_commands[$command::$type][] = $command;
+        }
+
+        foreach ($this->_commands as $index => $array) {
+        // Sort them by priority
+            uasort($this->_commands[$index], 'PhpBotFramework\Commands\CommandHandler::sortingPrior');
         }
     }
 
@@ -73,11 +58,16 @@ trait CommandHandler
     protected function processCommands(array $update) : bool
     {
         // For each command active (checked by initCommands())
-        foreach ($this->_command_types as $index => $command) {
-            // If the update type is right and the update triggered a command
-            if (isset($update[$command['update']]) && $this->{$command['method']}($update[$command['update']])) {
-                // Return the id as we already processed this update
-                return true;
+        foreach ($this->_commands as $entity => $commands) {
+            foreach ($commands as $index => $command) {
+                // If the update type is right and the update triggered a command
+                if (isset($update[$entity]) && $command->checkCommand($update[$entity])) {
+                    $entity = new $command::$object_class($update[$entity]);
+                    $this->_chat_id = $entity->getChatID();
+                    $command->getScript()($this, $entity);
+                    // Return the id as we already processed this update
+                    return true;
+                }
             }
         }
 
@@ -85,23 +75,30 @@ trait CommandHandler
         return false;
     }
 
+    public function addCommand($command)
+    {
+        $this->_commands_temp[] = $command;
+    }
+
     /**
-     * \brief (<i>Internal</i>) Sort an array based on <code>prior</code> index value.
+     * \brief Sort an array based on <code>prior</code> index value.
      * @param array $a First array.
      * @param array $b Second array.
      * @return int 1 If $a > $b, -1 if $a < $b, 0 otherwise.
      */
     public static function sortingPrior($a, $b)
     {
-        if ($a['prior'] > $b['prior']) {
+        $prior_a = $a::$priority;
+        $prior_b = $b::$priority;
+        if ($prior_a > $prior_b) {
             return 1;
         }
 
-        if ($a['prior'] < $b['prior']) {
+        if ($prior_a < $prior_b) {
             return -1;
         }
 
-        if ($a['prior'] == $b['prior']) {
+        if ($prior_a == $prior_b) {
             return 0;
         }
     }

@@ -59,11 +59,11 @@ trait File
         $filename = "$dir/$lang";
 
         // If this language isn't already set
-        if (!isset($this->bot->local[$lang])) {
+        if (!isset($this->local[$lang])) {
             // and the file exists
             if (file_exists($filename)) {
                 // Load localization in memory
-                $this->bot->local[$lang] = json_decode(file_get_contents($filename), true);
+                $this->local[$lang] = json_decode(file_get_contents($filename), true);
 
                 // We loaded it
                 return true;
@@ -94,7 +94,7 @@ trait File
                     try {
                         // Add the contents of the file to the $local variable, after deserializng it from JSON format
                         // The contents will be added with the 2 letter of the file as the index
-                        $this->bot->local[substr($file, 0, 2)] = json_decode(file_get_contents("$dir/$file"), true);
+                        $this->local[substr($file, 0, 2)] = json_decode(file_get_contents("$dir/$file"), true);
                     } catch (BotException $e) {
                         echo $e->getMessage();
                     }
@@ -120,7 +120,7 @@ trait File
         }
 
         // If the language of the user is already set in the array containing localizated strings
-        if (!isset($this->bot->local[$this->bot->language])) {
+        if (!isset($this->local[$this->bot->language])) {
             // Is the bot using webhook?
             if (isset($this->bot->_is_webhook)) {
                 return $this->loadSingleLanguage($this->localization_dir);

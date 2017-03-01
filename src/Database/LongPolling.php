@@ -27,7 +27,7 @@ use PhpBotFramework\Exceptions\BotException;
 
 /** \class LongPollingDatabase
  */
-trait LongPollingDatabase
+trait LongPolling
 {
     /** @} */
 

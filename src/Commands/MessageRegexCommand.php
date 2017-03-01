@@ -27,21 +27,9 @@ use PhpBotFramework\Entities\Message;
 
 /** \class MessageRegexCommand
  */
-trait MessageRegexCommand
+class MessageRegexCommand extends BasicCommand
 {
     /** @} */
-
-    /** \brief Chat ID of the current user/group/channel. */
-    protected $_chat_id;
-
-    /**
-     * \addtogroup Commands
-     * \brief What commands are
-     * @{
-     */
-
-    /** \brief (<i>Internal</i>)Store the command triggered on message. */
-    protected $_message_regex_commands = [];
 
     /**
      * \brief Add a function that will be executed everytime a message contain a command
@@ -54,12 +42,10 @@ trait MessageRegexCommand
      * @param string $regex_rule Regex rule that will called for evalueting the command received.
      * @param callable $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
      */
-    public function addMessageCommandRegex(string $regex_rule, callable $script)
+    public function __construct(string $regex_rule, callable $script)
     {
-        $this->_message_commands[] = [
-            'script' => $script,
-            'regex_rule' => $regex_rule
-        ];
+        $this->script = $script;
+        $this->regex_rule = $regex_rule;
     }
 
     /**
@@ -67,21 +53,14 @@ trait MessageRegexCommand
      * @param array $message Message to process.
      * @return bool True if the message triggered a command.
      */
-    protected function processMessageRegexCommand(array $message) : bool
+    public function checkCommand(array $message) : bool
     {
-        // and there are bot commands in the message, checking message entities
-        if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
-            // For each command added by the user
-            foreach ($this->_message_commands as $trigger) {
-                // Use preg_match to check if it is true
-                if (preg_match("/{$trigger['regex_rule']}/", substr($message['text'], $message['entities'][0]['offset'] + 1, $message['entities'][0]['length']))) {
-                    $this->_chat_id = $message['chat']['id'];
+        // If the message contains a bot command at the start
+        $message_is_command = (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') ? true : false;
 
-                    // Trigger the script
-                    $trigger['script']($this, new Message($message));
+        // Use preg_match to check if it is true
+        if ($message_is_command && preg_match("/{$this->regex_rule}/", substr($message['text'], $message['entities'][0]['offset'] + 1, $message['entities'][0]['length']))) {
                     return true;
-                }
-            }
         }
 
         return false;

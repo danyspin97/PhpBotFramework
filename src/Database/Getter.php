@@ -12,8 +12,7 @@ trait Getter
 
     public function getPDO() : \PDO
     {
-        if (!isset($this->database))
-        {
+        if (!isset($this->database)) {
             throw new BotException("Database connection has not been set");
         }
 
@@ -22,8 +21,7 @@ trait Getter
 
     public function getRedis() : \Redis
     {
-        if (!isset($this->redis))
-        {
+        if (!isset($this->redis)) {
             throw new BotException("Redis connection has not been set");
         }
 

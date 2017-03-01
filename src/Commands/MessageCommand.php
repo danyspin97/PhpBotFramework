@@ -18,8 +18,6 @@
 
 namespace PhpBotFramework\Commands;
 
-use PhpBotFramework\Entities\Message;
-
 /**
  * \addtogroup Modules
  * @{
@@ -27,21 +25,19 @@ use PhpBotFramework\Entities\Message;
 
 /** \class MessageCommand
  */
-trait MessageCommand
+class MessageCommand extends BasicCommand
 {
     /** @} */
 
-    /** \brief Chat id of the current user/group/channel. */
-    protected $_chat_id;
+    public static $type = 'message';
 
-    /**
-     * \addtogroup Commands
-     * \brief What commands are
-     * @{
-     */
+    public static $object_class = 'PhpBotFramework\Entities\Message';
 
-    /** \brief (<i>Internal</i>)Store the command triggered on message. */
-    protected $_message_commands = [];
+    public static $priority = 1;
+
+    private $command;
+
+    private $length;
 
     /**
      * \brief Add a function that will be executed everytime a message contain the selected command
@@ -52,13 +48,11 @@ trait MessageCommand
      * @param string $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
      * @param callable $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
      */
-    public function addMessageCommand(string $command, callable $script)
+    public function __construct(string $command, callable $script)
     {
-        $this->_message_commands[] = [
-            'script' => $script,
-            'command' => '/' . $command,
-            'length' => strlen($command) + 1,
-        ];
+        $this->command = "/$command";
+        $this->script = $script;
+        $this->length = strlen($command) + 1;
     }
 
     /**
@@ -66,24 +60,15 @@ trait MessageCommand
      * @param string $message Message to process.
      * @return bool True if the message triggered any command.
      */
-    protected function processMessageCommand(array $message) : bool
+    public function CheckCommand(array $message) : bool
     {
         // If the message contains a bot command at the start
-        if (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') {
-            // For each command added by the user
-            foreach ($this->_message_commands as $trigger) {
-                // If we found a valid command (check first lenght, then use strpos)
-                if ($trigger['length'] == $message['entities'][0]['length'] && mb_strpos($trigger['command'], $message['text'], $message['entities'][0]['offset']) !== false) {
-                    // Set chat_id
-                    $this->_chat_id = $message['chat']['id'];
+        $message_is_command = (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') ? true : false;
 
-                    // Execute script,
-                    $trigger['script']($this, new Message($message));
-
+        // If we found a valid command (check first lenght, then use strpos)
+        if ($message_is_command && $this->length == $message['entities'][0]['length'] && mb_strpos($this->command, $message['text'], $message['entities'][0]['offset']) !== false) {
                     // Return
                     return true;
-                }
-            }
         }
 
         // No command were triggered, return false
