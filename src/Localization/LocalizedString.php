@@ -21,17 +21,15 @@ namespace PhpBotFramework\Localization;
 use PhpBotFramework\Exceptions\BotException;
 
 /**
- * \addtogroup Modules
- * @{
- */
-
-/** \class LocalizedString
+ * \class LocalizedString
+ * \brief Get a localized string using user language and localization files.
  */
 trait LocalizedString
 {
     /** @} */
 
     abstract public function getLanguageRedis(string $default_language = 'en', int $expiring_time = 86400) : string;
+
     abstract public function loadCurrentLocalization(string $dir = '') : bool;
 
     /**
@@ -39,13 +37,16 @@ trait LocalizedString
      * @{
      */
 
-    /** \brief Reference to the bot. */
+    /** @internal
+      * \brief Reference to the bot. */
     protected $bot;
 
-    /** \brief Current user/group language. */
+    /** @internal
+      * \brief Current user/group language. */
     public $language;
 
-    /** \brief (<i>Internal</i>)Store the localizated strings. */
+    /** @internal
+      * \brief Store the localizated strings. */
     protected $local;
 
     /**

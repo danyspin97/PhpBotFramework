@@ -30,7 +30,8 @@ class Button extends InlineKeyboard
      * @{
      */
 
-    /** \brief Store a reference to the bot that is using this inline keyboard. */
+    /** @internal
+      * \brief Store a reference to the bot that is using this inline keyboard. */
     protected $bot;
 
     /**

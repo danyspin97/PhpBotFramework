@@ -22,9 +22,11 @@ use PhpBotFramework\Entities\InlineKeyboard as Keyboard;
 
 define("DELIMITER", "::::::::::::::::::::::::::::::::::::::\n");
 
+/**
+ * \class Paginator
+ */
 class Paginator
 {
-
     /**
      * \addtogroup Utility-classes Utility classes
      * @{
@@ -52,7 +54,7 @@ class Paginator
         string $prefix = 'list',
         string $delimiter = DELIMITER
     ) : string {
-    
+
         // Assign the position of first item to show
         $item_position = ($index - 1) * $item_per_page + 1;
 

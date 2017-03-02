@@ -69,12 +69,12 @@ class BotTest extends TestCase
         $filename = 'tests/message_command.json';
         $message = json_decode(file_get_contents($filename), true);
 
-        $closure = function ($bot, Message $message) {
+        $command = new PhpBotFramework\Commands\MessageCommand("start", function ($bot, Message $message) {
             $bot->setChatID(getenv("CHAT_ID"));
             $bot->sendMessage("This is a start message");
-        };
+        });
 
-        $bot->addMessageCommand('start', $closure);
+        $bot->addCommand($command);
 
         $bot->initCommandsWrap();
 

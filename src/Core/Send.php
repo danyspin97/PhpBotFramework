@@ -22,16 +22,20 @@ use PhpBotFramework\Entities\Message;
 
 use PhpBotFramework\Entities\File as TelegramFile;
 
+/**
+ * \class Send
+ * \brief All API Methods that send a message (text based or not).
+ */
 trait Send
 {
-
     abstract protected function execRequest(string $url);
 
     abstract protected function processRequest(string $method, string $class, $file);
 
     abstract protected function checkCurrentFile(TelegramFile $file);
 
-    /** \brief Contains parameters of the next request. */
+    /** @internal
+      * \brief Contains parameters of the next request. */
     protected $parameters;
 
     /**

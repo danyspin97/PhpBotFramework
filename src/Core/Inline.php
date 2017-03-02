@@ -20,26 +20,24 @@ namespace PhpBotFramework\Core;
 
 use PhpBotFramework\Exceptions\BotException;
 
+/**
+ * \class Inline
+ * \brief All inline API Methods.
+ */
 trait Inline
 {
-
     abstract protected function execRequest(string $url);
 
-    /**
-     * \addtogroup Core Core(Internal)
-     * @{
-     */
-
-    /** \brief Store ID of the callback query received. */
+    /** @internal
+      * \brief Store ID of the callback query received. */
     protected $_callback_query_id;
 
-    /** \brief Store ID of the inline query received. */
+    /** @internal
+      * \brief Store ID of the inline query received. */
     protected $_inline_query_id;
 
-    /** @} */
-
     /**
-     * \addtogroup API API Methods
+     * \addtogroup Api API Methods
      * @{
      */
 

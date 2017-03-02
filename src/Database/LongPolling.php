@@ -21,32 +21,23 @@ namespace PhpBotFramework\Database;
 use PhpBotFramework\Exceptions\BotException;
 
 /**
- * \addtogroup Modules
- * @{
- */
-
-/** \class LongPollingDatabase
+ * \class LongPolling
+ * \brief Use getUpdates saving and getting offset in Redis and database.
  */
 trait LongPolling
 {
-    /** @} */
-
     abstract public function getUpdates(int $offset = 0, int $limit = 100, int $timeout = 60);
+
     abstract protected function initCommands();
 
     /**
-     * \addtogroup Bot
+     * \addtogroup Database
      * @{
      */
 
     /**
-     * \addtogroup LongPollingDatabase Long polling With Database
-     * \brief Use getUpdates saving and getting offset in Redis and database.
-     * @{
-     */
-
-    /**
-     * \brief (<i>Internal</i>)Get first update offset in Redis.
+     * @internal
+     * \brief Get first update offset in Redis.
      * \details Called by getUpdatesRedis in order to get the saved offset in Redis or retrieve it from Telegram and save it.
      * @param string $offset_key Name of the variable where the offset is saved on Redis.
      * @return int Id of the first update to process.
@@ -104,7 +95,8 @@ trait LongPolling
     }
 
     /**
-     * \brief (<i>Internal</i>) Get first update offset in database.
+     * @internal
+     * \brief Get first update offset in database.
      * \details Called by getUpdatesDatabase to get the offset saved in database.
      * If the offset is not saved: it retrieve the offset from Telegram and save it on the database.
      * @param string $table_name Name of the table where offset is saved in the database.
@@ -177,8 +169,6 @@ trait LongPolling
             $sth->execute();
         }
     }
-
-    /** @} */
 
     /** @} */
 }

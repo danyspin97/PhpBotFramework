@@ -19,7 +19,7 @@
 namespace PhpBotFramework\Commands;
 
 /**
- * \addtogroup Modules
+ * \addtogroup Commands
  * @{
  */
 
@@ -56,11 +56,12 @@ class MessageCommand extends BasicCommand
     }
 
     /**
-     * \brief (<i>Internal</i>)Process a message checking if it trigger any MessageCommand.
+     * @internal
+     * \brief Process a message checking if it trigger any MessageCommand.
      * @param string $message Message to process.
      * @return bool True if the message triggered any command.
      */
-    public function CheckCommand(array $message) : bool
+    public function checkCommand(array $message) : bool
     {
         // If the message contains a bot command at the start
         $message_is_command = (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') ? true : false;

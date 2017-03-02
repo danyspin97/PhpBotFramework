@@ -37,11 +37,12 @@ trait User
 
     abstract protected function sanitizeUserTable();
 
-    /** PDO connection to the database. */
+    /** @internal
+      * \brief PDO connection to the database. */
     public $pdo;
 
     /**
-     * \addtogroup Bot Bot
+     * \addtogroup Database
      * @{
      */
 
@@ -57,7 +58,8 @@ trait User
     /** \brief Name of the column that represents the user id in the sql database */
     public $id_column = 'chat_id';
 
-    /** \brief Add a user to the database.
+    /**
+     * \brief Add a user to the database.
      * \details Add a user to the database in Bot::$user_table table and Bot::$id_column column using Bot::$pdo connection.
      * @param string|int $chat_id chat ID of the user to add.
      * @return bool True on success.

@@ -18,29 +18,35 @@
 
 namespace PhpBotFramework\Commands;
 
-/** \class CallbackCommandHandler
+/*
+ * \class CommandHandler
+ * \brief Handle all bot commands.
+ * \details Add commands, check if commands trigger a user update.
  */
 trait CommandHandler
 {
-
     /**
-     * \addtogroup Core Core(Internal)
-     * \brief Core of the framework.
+     * \addtogroup Commands
+     * \brief Bots command and usage.
      * @{
      */
 
-    private $_commands_temp = [];
+    /** @internal
+     * \brief Contains all command used by the bot. */
+    private $_commands = [];
 
     /**
+     * @internal
      * \brief Initialize commands to speed up processing.
      * \details Get all command that the bot handle, and put them in priority.
      */
     protected function initCommands()
     {
+        $commands_temp = $this->_commands;
         $this->_commands = [];
 
         // Iterate over each
-        foreach ($this->_commands_temp as $command) {
+        foreach ($commands_temp as $command) {
             $this->_commands[$command::$type][] = $command;
         }
 
@@ -51,6 +57,7 @@ trait CommandHandler
     }
 
     /**
+     * @internal
      * \brief Process updates handling commands.
      * @param array $update Update to process.
      * @return bool True if this update trigger any command.
@@ -75,12 +82,17 @@ trait CommandHandler
         return false;
     }
 
-    public function addCommand($command)
+    /**
+     * \brief Add a command to the bot.
+     * @param BasicCommand $command Command to add. Must be an object that inherits BasicCommand class.
+     */
+    public function addCommand(BasicCommand $command)
     {
-        $this->_commands_temp[] = $command;
+        $this->_commands[] = $command;
     }
 
     /**
+     * @internal
      * \brief Sort an array based on <code>prior</code> index value.
      * @param array $a First array.
      * @param array $b Second array.

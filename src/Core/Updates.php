@@ -18,9 +18,12 @@
 
 namespace PhpBotFramework\Core;
 
+/**
+ * \class Updates
+ * \brief All API Methods that get updates from telegram or handle webhooks.
+ */
 trait Updates
 {
-
     abstract protected function execRequest(string $url);
 
     /**

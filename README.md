@@ -24,13 +24,15 @@ require './vendor/autoload.php';
 // Create a bot
 $bot = new PhpBotFramework\Bot("token");
 
-// Add a command that will be triggered everytime the user send `/start`
-$bot->addMessageCommand("start",
+// Create a command that will be triggered everytime the user send `/start`
+$start_command = new PhpBotFramework\Commands\MessageCommand("start",
     function($bot, $message) {
         // Reply with a message
         $bot->sendMessage("Hello, folks!");
     }
 );
+
+$bot->addCommand($start_command);
 
 // Receive updates from Telegram using getUpdates
 $bot->getUpdatesLocal();

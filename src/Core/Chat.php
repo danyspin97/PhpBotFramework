@@ -18,14 +18,13 @@
 
 namespace PhpBotFramework\Core;
 
+/**
+ * \class Chat
+ * \brief All API Methods that involve chats data and info.
+ */
 trait Chat
 {
     abstract protected function execRequest(string $url);
-
-    /**
-     * \addtogroup Bot
-     * @{
-     */
 
     /**
      * \addtogroup Api Api Methods

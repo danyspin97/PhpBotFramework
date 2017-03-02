@@ -22,6 +22,10 @@ use PhpBotFramework\Exceptions\BotException;
 
 use PhpBotFramework\BasicBot;
 
+/**
+ * \class BotState
+ * \brief Handle users status.
+ */
 class BotState
 {
     /**
@@ -122,7 +126,8 @@ class BotState
         return $this->status;
     }
 
-    /** \brief Set the status of the bot in both Redis and $status.
+    /**
+     * \brief Set the status of the bot in both Redis and $status.
      * \details Throws an exception if the Redis connection is missing.
      * @param int $status The new status of the bot.
      */

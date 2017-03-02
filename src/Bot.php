@@ -32,11 +32,13 @@ use PhpBotFramework\Database\LongPolling;
 
 use PhpBotFramework\Localization\Localization;
 
-/** \class Bot Bot class that contains all modules.
+/**
+ * \class Bot Bot class that contains all modules.
  */
 class Bot extends BasicBot
 {
-    use Getter;
+    use Getter,
+        LongPolling;
 
     /**
      * \addtogroup Bot Bot
@@ -49,12 +51,13 @@ class Bot extends BasicBot
     /** \brief Store the inline keyboard. */
     public $keyboard;
 
-    /** \brief Database handling object. */
+    /** \brief Database handler object. */
     public $database;
 
     /** \brief Redis connection. */
     public $redis;
 
+    /** \brief Localization handler object. */
     public $local;
 
     /**

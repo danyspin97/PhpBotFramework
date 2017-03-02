@@ -21,7 +21,7 @@ namespace PhpBotFramework\Commands;
 use PhpBotFramework\Entities\Message;
 
 /**
- * \addtogroup Modules
+ * \addtogroup Commands
  * @{
  */
 
@@ -49,7 +49,8 @@ class MessageRegexCommand extends BasicCommand
     }
 
     /**
-     * \brief (<i>Internal</i>) Process the message to check if it triggers a command of this type.
+     * @internal
+     * \brief Process the message to check if it triggers a command of this type.
      * @param array $message Message to process.
      * @return bool True if the message triggered a command.
      */

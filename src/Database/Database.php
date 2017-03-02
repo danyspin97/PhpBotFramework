@@ -23,15 +23,12 @@ use PhpBotFramework\Exceptions\BotException;
 
 define('PDO_DEFAULT_ADAPTER', 'mysql');
 
-/**
- * \addtogroup Modules
- * @{
- */
-
 /** \class Database Database connection handler
  */
 class Database
 {
+    use User;
+
     /** @} */
 
     /** PDO connection to the database. */
@@ -41,10 +38,15 @@ class Database
     public $user_table = 'User';
 
     /**
-     * \addtogroup Bot Bot
+     * \addtogroup Database
      * @{
      */
 
+    /**
+     * @internal
+     * \brief Create a Database handler object.
+     * @param BasicBot $bot Reference to the bot that use this object.
+     */
     public function __construct(BasicBot &$bot)
     {
         $this->bot = $bot;
@@ -82,7 +84,9 @@ class Database
         return false;
     }
 
-    /** \brief (<i>Internal</i>) Add default connection value to parameter passed to PDO.
+    /**
+     * @internal
+     * \brief Add default connection value to parameter passed to PDO.
      * @param array $params Parameter for PDO connection.
      * @return array Parameter with defaults value.
      */
@@ -92,7 +96,9 @@ class Database
         return array_merge($defaults, $params);
     }
 
-    /** \brief (<i>Internal</i>) Returns a string that can passed to PDO as DNS parameter in order to open connection.
+    /**
+     * @internal
+     * \brief Returns a string that can passed to PDO as DNS parameter in order to open connection.
      * @param array $params Array containing parameter of the connection
      * @return string Parameters contained in array $params sanitized in a string that can be passed as DNS param of PDO object creation.
      */
@@ -120,7 +126,8 @@ class Database
     }
 
     /**
-     * \brief (<i>Internal</i>) Sanitize name of the user table depending on database used.
+     * @internal
+     * \brief Sanitize name of the user table depending on database used.
      */
     protected function sanitizeUserTable()
     {

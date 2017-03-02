@@ -18,11 +18,16 @@
 
 namespace PhpBotFramework\Core;
 
+/**
+ * \class Edit
+ * \brief All API Methods that edit a message.
+ */
 trait Edit
 {
     abstract protected function execRequest(string $url);
 
-    /** \brief Contains parameters of the next request. */
+    /** @internal
+      * \brief Contains parameters of the next request. */
     protected $parameters;
 
     /**

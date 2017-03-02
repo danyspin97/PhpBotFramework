@@ -57,10 +57,12 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *     // Create the bot
  *     $bot = new PhpBotFramework\Bot("token");
  *
- *     // Add a command that will be triggered every time the user send /start
- *     $bot->addMessageCommand("start", function($bot, $message) {
+ *     // Create a command that will be triggered every time the user send /start
+ *     $start_command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
  *         $bot->sendMessage("Hello, folks!");
  *     });
+ *
+ *     $bot->addCommand($start_command);
  *
  *     // Receive updates from Telegram using getUpdates
  *     $bot->getUpdatesLocal();
@@ -164,21 +166,25 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  * PhpBotFrameworks makes it easy:
  *
- *     $bot->addMessageCommand("start", function($bot, $message) {
+ *     $start_message_command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
  *         $bot->sendMessage("I am your personal bot, try /help command");
  *     });
  *
- *     $help_function = function($bot, $message) {
+ *     $bot->addCommand($start_message_command);
+ *
+ *     $help_closure = function($bot, $message) {
  *         $bot->sendMessage("This is the help message")
  *     };
  *
- *     $bot->addMessageCommand("/help", $help_function);
+ *     $help_message_command = new PhpBotFramework\Commands\MessageCommand("/help", $help_function);
+ *
+ *     $bot->addCommand($help_message_command);
  *
  * \subsection Bot-commands-regex Check commands using regex
  *
  * You can also use **regular expressions** to check for the given command:
  *
- *     $bot->addMessageCommandRegex("number\d", $help_function);
+ *     $regex_command = new PhpBotFramework\Commands\MessageRegexCommand("number\d", $help_function);
  *
  * The closure will be called when the user send a command that match the given regex,
  * in this example: both <code>/number1</code> or <code>/number135</code>.
@@ -186,11 +192,11 @@ use PhpBotFramework\Entities\InlineKeyboard;
  * \subsection Callback-commands Callback commands
  * You can also check for a callback query containing a particular string as data:
  *
- *     $bot->addCallbackCommand("back", function($bot, $callback_query) {
+ *     $callback_command = new PhpBotFramework\Commands\CallbackCommand("back", function($bot, $callback_query) {
  *         $bot->editMessageText($callback_query['message']['message_id'], "You pressed back");
  *     });
  *
- * You should absolutely check Bot::addCallbackCommand() for learning more.
+ * You should absolutely check Bot::addCommand() for learning more.
  *
  * \section InlineKeyboard-Usage Inline keyboards
  *
@@ -201,7 +207,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  *     $bot = new PhpBotFramework\Bot("token");
  *
- *     $command_function = function($bot, $message) {
+ *     $command = ("start", function($bot, $message) {
  *         // Add a button to the inline keyboard with written 'Click me!' and
  *         // that open the Telegram site if pressed.
  *         $bot->inline_keyboard->addLevelButtons([
@@ -211,10 +217,10 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  *         // Then send a message, with our keyboard in the parameter $reply_markup of sendMessage
  *         $bot->sendMessage("This is a test message", $bot->inline_keyboard->get());
- *     };
+ *     });
  *
  *     // Add the command
- *     $bot->addMessageCommand("start", $command_function);
+ *     $bot->addCommand($command);
  *
  * \section Sql-Database Database
  * A database is required in order to save offsets (if you use local updates)
@@ -222,7 +228,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  * We implemented a simpler way to connect to a database which is based on PDO:
  *
- *     $bot->connect([
+ *     $bot->database->connect([
  *         'adapter' => 'pgsql',
  *         'username' => 'sysuser',
  *         'password' => 'myshinypassword',
@@ -230,7 +236,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *     ]);
  *
  * This method will istantiate a new PDO connection and a new PDO object you can
- * access through `$bot->pdo`.
+ * access through `$bot->getPdo()`.
  *
  * If no adapter and host are specified: `mysql` and `localhost` are assigned.
  *
@@ -261,16 +267,12 @@ use PhpBotFramework\Entities\InlineKeyboard;
  * <code>main.php</code>:
  *
  *     // ...
- *     // Load JSON files
- *     $bot->loadLocalization();
  *
- *     $start_function = function($bot, $message) {
- *         // Fetch user's language from database
- *         $user_language = $bot->getLanguageDatabase();
- *         $bot->sendMessage($this->localization[$user_language]['Greetings_Msg']);
- *     };
+ *     $start_command = PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
+ *         $bot->sendMessage($bot->local->getStr('Greetings_Msg'));
+ *     });
  *
- *     $bot->addMessageCommand("start", $start_function);
+ *     $bot->addCommand($start_command);
  *
  * So you can have a wonderful (multi-language) bot with a small effort.
  *
@@ -297,7 +299,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *      phpunit
  *
  * \section Authors
- * This framework is developed and mantained by [Danilo Spinella](https://github.com/DanySpin97).
+ * This framework is developed and mantained by [Danilo Spinella](https://github.com/DanySpin97) and [Dom Corvasce](https://github.com/domcorvasce).
  *
  * \section License
  * PhpBotFramework is released under [GNU Lesser General Public License v3](https://www.gnu.org/licenses/lgpl-3.0.en.html).
@@ -309,57 +311,45 @@ use PhpBotFramework\Entities\InlineKeyboard;
  */
 
 /**
- * \addtogroup Core Core(Internal)
- * \brief Core of the framework.
- * @{
- */
-
-/**
  * \class CoreBot
  * \brief Core of the framework
  * \details Contains data used by the bot to works, curl request handling, and all api methods (sendMessage, editMessageText, etc).
  */
 class CoreBot
 {
-    /** @} */
-
     use Updates,
         Send,
         Edit,
         Inline,
         Chat;
 
-    /**
-     * \addtogroup Bot Bot
-     * @{
-     */
-
-    /**
-     * \addtogroup Core Core(Internal)
-     * \brief Core of the framework.
-     * @{
-     */
-
-    /** \brief Chat_id of the user that interacted with the bot. */
+    /** @internal
+      * \brief Chat_id of the user that interacted with the bot. */
     protected $_chat_id;
 
-    /** \brief Bot id. */
+    /** @internal
+      * \brief Bot id. */
     protected $_bot_id;
 
-    /** \brief API endpoint (containing $token). */
+    /** @internal
+      * \brief API endpoint (containing $token). */
     protected $_api_url;
 
-    /** \brief Implements interface for execute HTTP requests. */
+    /** @internal
+      * \brief Implements interface for execute HTTP requests. */
     protected $_http;
 
-    /** \brief Object of class PhpBotFramework\Entities\File that contain a path or resource to a file that has to be sent using Telegram API Methods. */
+    /** @internal
+      * \brief Object of class PhpBotFramework\Entities\File that contain a path or resource to a file that has to be sent using Telegram API Methods. */
     protected $_file;
 
-    /** \brief Contains parameters of the next request. */
+    /** \@internal
+      * brief Contains parameters of the next request. */
     protected $parameters;
 
     /**
-     * \brief Initialize a new bot.
+     * \@internal
+     * brief Initialize a new bot.
      * \details Initialize a new bot passing its token.
      * @param $token Bot's token given by @botfather.
      */
@@ -383,8 +373,6 @@ class CoreBot
 
         $this->_file = new TelegramFile();
     }
-
-    /** @} */
 
     /**
      * \addtogroup Bot Bot
@@ -455,12 +443,8 @@ class CoreBot
     /** @} */
 
     /**
-     * \addtogroup Core Core(internal)
-     * @{
-     */
-
-    /**
-     * \brief Process an API method by taking method and parameter.
+     * \@internal
+     * brief Process an API method by taking method and parameter.
      * \details optionally create a object of $class class name with the response as constructor param.
      * @param string $method Method to call.
      * @param array $param Parameter for the method.
@@ -492,6 +476,7 @@ class CoreBot
     }
 
     /**
+     * @internal
      * \brief Check if the current file is local or not.
      * \details If the file file is local, then it has to be uploaded using multipart. If not, then it is a url/file_id so it has to be added in request parameters as a string.
      * @return PhpBotFramework\Entities\File|false The file that will be sent using multipart, false otherwise.
@@ -507,7 +492,9 @@ class CoreBot
     }
 
 
-    /** \brief Core function to execute HTTP request.
+    /**
+     * @internal
+     * \brief Core function to execute HTTP request.
      * @param $url The request's URL.
      * @return Array|false Url response decoded from JSON, false on error.
      */
@@ -518,7 +505,9 @@ class CoreBot
         return $this->checkRequestError($response);
     }
 
-    /** \brief Core function to execute HTTP request uploading a file.
+    /**
+     * @internal
+     * \brief Core function to execute HTTP request uploading a file.
      * \details Using an object of type PhpBotFramework\Entities\File contained in $_file and Guzzle multipart request option, it uploads the file along with api method requested.
      * @param $url The request's URL.
      * @return Array|false Url response decoded from JSON, false on error.

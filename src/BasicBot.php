@@ -36,12 +36,8 @@ class BasicBot extends Core\CoreBot
 {
     use \PhpBotFramework\Commands\CommandHandler;
 
-    /**
-     * \addtogroup Core Core(Internal)
-     * @{
-     */
-
-    /** \brief (<i>Internal</i>) True if the bot is using webhook? */
+    /** @internal
+      * \brief True if the bot is using webhook? */
     protected $_is_webhook;
 
     /**
@@ -116,11 +112,7 @@ class BasicBot extends Core\CoreBot
     /** @} */
 
     /**
-     * \addtogroup Core Core(Internal)
-     * @{
-     */
-
-    /**
+     * @internal
      * \brief Dispatch each update to the right method (processMessage, processCallbackQuery, etc).
      * \details Set $chat_id for each update, $text, $data and $query are set for each update that contains them.
      * @param array $update Reference to the update received.
@@ -158,13 +150,6 @@ class BasicBot extends Core\CoreBot
             }
         }
     }
-
-    /** @} */
-
-    /**
-     * \addtogroup Bot Bot
-     * @{
-     */
 
     /**
      * \brief Called every message received by the bot.

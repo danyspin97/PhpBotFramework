@@ -20,6 +20,10 @@ namespace PhpBotFramework\Localization;
 
 use PhpBotFramework\Exceptions\BotException;
 
+/**
+ * \class File Localization Files handler
+ * \brief Handle localizations files, load them from disk.
+ */
 trait File
 {
     /**
@@ -41,14 +45,16 @@ trait File
      * @{
      */
 
-    /** \brief (<i>Internal</i>)Store the localizated strings. */
+    /** @internal
+      * \brief Store the localizated strings. */
     protected $local;
 
     /** \brief Directory where there are the localization files. */
     protected $localization_dir = './localization';
 
     /**
-     * \brief (<i>Internal</i>)Load a localization file into the localized strings array.
+     * @internal
+     * \brief Load a localization file into the localized strings array.
      * @param string $lang Language to load.
      * @param string $dir Directory in which there are the JSON files.
      * @return bool True if loaded.
@@ -106,6 +112,7 @@ trait File
     }
 
     /**
+     * @internal
      * \brief Load localization for current language and mode.
      * \details This method will load only the current user/group localization file if the bot is using webhook, all files otherwise.
      * @param string $dir Directory where the localization file is stored. If no directory is given (by default) it will load it from $localization_dir (which is ./localization if it is not set).
