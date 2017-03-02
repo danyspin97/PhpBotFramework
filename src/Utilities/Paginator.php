@@ -18,8 +18,17 @@
 
 namespace PhpBotFramework\Utilities;
 
+<<<<<<< HEAD
+/**
+ * \addtogroup Modules
+ * @{
+ */
+
+// Delimitate items in one page.
+=======
 use PhpBotFramework\Entities\InlineKeyboard as Keyboard;
 
+>>>>>>> master
 define("DELIMITER", "::::::::::::::::::::::::::::::::::::::\n");
 
 /**
@@ -54,7 +63,6 @@ class Paginator
         string $prefix = 'list',
         string $delimiter = DELIMITER
     ) : string {
-
         // Assign the position of first item to show
         $item_position = ($index - 1) * $item_per_page + 1;
 
@@ -99,3 +107,7 @@ class Paginator
         return $message;
     }
 }
+
+/*
+ * @}
+ */

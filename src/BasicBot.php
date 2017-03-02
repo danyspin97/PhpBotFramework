@@ -27,7 +27,7 @@ use PhpBotFramework\Entities\InlineQuery;
 
 /**
  * \class Bot Bot
- * \brief Bot class to handle updates and commandes.
+ * \brief Bot class to handle updates and commands.
  * \details Class Bot to handle task like API request, or more specific API method like sendMessage, editMessageText, etc..
  * An example of its usage is available in webhook.php
  *
@@ -64,7 +64,7 @@ class BasicBot extends Core\CoreBot
     /**
      * \brief Get update and process it.
      * \details Call this method if user is using webhook.
-     * It'll get bot's update from php::\input, check it and then process it using processUpdate.
+     * It'll get bot's update from php::\input, check it and then process it using <b>processUpdate</b>.
      */
     public function processWebhookUpdate()
     {
@@ -76,7 +76,7 @@ class BasicBot extends Core\CoreBot
 
     /**
      * \brief Get updates received by the bot, and hold the offset in $offset.
-     * \details Get the update_id of the first update to parse, set it in $offset and
+     * \details Get the <code>update_id</code> of the first update to parse, set it in $offset and
      * then it start an infinite loop where it processes updates and keep $offset on the update_id of the last update received.
      * Each processUpdate() method call is surrounded by a try/catch.
      * @see getUpdates
@@ -98,7 +98,6 @@ class BasicBot extends Core\CoreBot
 
             foreach ($updates as $key => $update) {
                 try {
-                    // Process one at a time
                     $this->processUpdate($update);
                 } catch (BotException $e) {
                     echo $e->getMessage();

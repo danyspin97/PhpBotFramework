@@ -135,7 +135,11 @@ class BotTest extends TestCase
     /**
      * @depends testCreateBot
      */
+<<<<<<< HEAD
     /*public function TestConnectToRedis ($bot)
+=======
+    public function TestConnectToRedis($bot)
+>>>>>>> master
     {
         $redis = new Redis();
 

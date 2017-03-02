@@ -30,20 +30,16 @@ class Button extends InlineKeyboard
      * @{
      */
 
-    /** @internal
-      * \brief Store a reference to the bot that is using this inline keyboard. */
+    /** \brief Stores a reference to the bot that's using the inline keyboard. */
     protected $bot;
 
     /**
      * \brief Create an inline keyboard object with localizated buttons.
-     * @param CoreBot $bot Reference to the bot that possess this Inline Keyboard.
+     * @param CoreBot $bot References to the bot that's using the inline keyboard.
      * @param array $buttons Buttons passed as inizialization.
      */
-    public function __construct(
-        CoreBot &$bot,
-        array $buttons = array()
-    ) {
-        // Set bot reference
+    public function __construct(CoreBot &$bot, array $buttons = array())
+    {
         $this->bot = $bot;
 
         // Call parent constructor passing array
@@ -52,9 +48,9 @@ class Button extends InlineKeyboard
 
 
     /**
-     * \brief Get a simple Back button with back as callback_data.
-     * @param bool $json_serialized return a json serialized string, or an array.
-     * @return string|array A button with written "back".
+     * \brief Get a simple Back button with back as <code>callback_data</code>.
+     * @param $json_serialized return a json serialized string, or an array.
+     * @return A button with written "back".
      */
     public function getBackButton(bool $json_serialized = true)
     {
@@ -70,7 +66,7 @@ class Button extends InlineKeyboard
             ]
         ];
 
-        // Does we need it as json-serialized?
+        // Serialize everything as JSON if necessary
         if ($json_serialized) {
             return json_encode($inline_keyboard);
         } else {
@@ -102,7 +98,6 @@ class Button extends InlineKeyboard
             ]
         ];
 
-        // Does we need it as json-serialized?
         if ($json_serialized) {
             return json_encode($inline_keyboard);
         } else {
@@ -111,18 +106,18 @@ class Button extends InlineKeyboard
     }
 
     /**
-     * \brief Get button for each language.
-     * \details Create a button for each language contained in $localization['languages'] variable of $bot object.
-     * The button will be one per row.
-     * The text will be the language and the language localizatated for the current user with a slash between them.
-     * The callback data for each button will be "cl/key" where key is the key in $localization['languages'].
-     * @param string $prefix Prefix followed by '/' and the language index (en, it..).
-     * @param bool $json_serialized Get a JSON-serialized string or an array.
-     * @return string|array The buttons in the selected type.
+     * \brief Get various buttons for set various languages.
+     * \details Create a button for each language contained in <code>$localization['languages']</code> variable of $bot object.
+     * There will be a button per row.
+     *
+     * The button's label will include the target language and the current one.
+     * The callback data for each button will be "cl/key" where key is the key in <code>$localization['languages']</code>.
+     * @param $prefix Prefix followed by '/' and the language index (en, it..).
+     * @param $json_serialized Get a JSON-serialized string or an array.
+     * @return The buttons in the selected type.
      */
     public function getChooseLanguageKeyboard(string $prefix = 'cl', bool $json_serialized = true)
     {
-        // Create the empty array
         $inline_keyboard = ['inline_keyboard' => array()];
 
         foreach ($this->bot->local as $languages => $language_msg) {
@@ -136,7 +131,6 @@ class Button extends InlineKeyboard
                     ]
                 ]);
             } else {
-                // Create a button with the language on the left and the language localizated for the current user in the right
                 array_push($inline_keyboard['inline_keyboard'], [
                         [
                             'text' => $language_msg['Language'] . '/' . $this->bot->local[$this->bot->language][$languages],

@@ -46,7 +46,8 @@ class MessageCommand extends BasicCommand
      *     addMessageCommand("start", function($bot, $message) {
      *         $bot->sendMessage("Hi"); });
      * @param string $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
-     * @param callable $script The function that will be triggered by a command. Must take an object(the bot) and an array(the message received).
+     * @param callable $script The function that will be triggered by a command.
+     * Must take an object(the bot) and an array(the message received).
      */
     public function __construct(string $command, callable $script)
     {
@@ -59,7 +60,7 @@ class MessageCommand extends BasicCommand
      * @internal
      * \brief Process a message checking if it trigger any MessageCommand.
      * @param string $message Message to process.
-     * @return bool True if the message triggered any command.
+     * @return bool True if the message trigger any command.
      */
     public function checkCommand(array $message) : bool
     {
@@ -72,7 +73,6 @@ class MessageCommand extends BasicCommand
                     return true;
         }
 
-        // No command were triggered, return false
         return false;
     }
 }

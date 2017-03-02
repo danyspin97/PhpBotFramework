@@ -38,46 +38,41 @@ class InlineKeyboard
      * @{
      */
 
-    /** \brief Store the array of InlineKeyboardButton */
+    /** \brief Stores the array of InlineKeyboardButton */
     protected $inline_keyboard;
 
-    /** \brief Store the current row. */
+    /** \brief Stores the current row. */
     private $row;
 
-    /** \brief Store the current column. */
+    /** \brief Stores the current column. */
     private $column;
 
     /**
      * \brief Create an inline keyboard object.
-     * @param array $buttons Buttons passed as inizialization.
+     * @param array $buttons Buttons to add to the inline keyboard.
      */
-    public function __construct(
-        array $buttons = array()
-    ) {
-        // If $buttons is empty, initialize it with an empty array
+    public function __construct(array $buttons = array())
+    {
         $this->inline_keyboard = $buttons;
 
-        // Set up vars
+        // Reset indexes
         $this->row = 0;
         $this->column = 0;
     }
 
     /**
-     * \brief Get a JSON-serialized object containg the inline keyboard.
+     * \brief Get a JSON object containing the inline keyboard.
      * @param bool $clear_keyboard Remove all the buttons from this object.
-     * @return string JSON-serialized string with the buttons.
+     * @return string JSON object.
      */
     public function get(bool $clear_keyboard = true) : string
     {
-        // Check if it is empty
         if (empty($this->inline_keyboard)) {
             throw new BotException("Inline keyboard is empty");
         }
 
         // Create a new array to put our buttons
         $reply_markup = ['inline_keyboard' => $this->inline_keyboard];
-
-        // Encode the array in a json object
         $reply_markup = json_encode($reply_markup);
 
         if ($clear_keyboard) {
@@ -88,13 +83,13 @@ class InlineKeyboard
     }
 
     /**
-     * \brief Get the array containing the buttons. (Use this method when adding keyboard to inline query results)
-     * @param bool $clean_keyboard Remove all the button from this object.
+     * \brief Get the array containing the buttons.
+     * \details Use this method when adding keyboard to inline query results.
+     * @param bool $clean_keyboard If it's true, it'll clean the inline keyboard.
      * @return array An array containing the buttons.
      */
     public function getArray(bool $clean_keyboard = true) : array
     {
-        // Check if it is empty
         if (empty($this->inline_keyboard)) {
             throw new BotException("Inline keyboard is empty");
         }
@@ -109,47 +104,53 @@ class InlineKeyboard
         return $reply_markup;
     }
 
-    /** \brief Add buttons for the current row of buttons
-     * \details Each array sent as parameter require a text key
-     * and one another key (as specified <a href="https://core.telegram.org/bots/api/#inlinekeyboardbutton" target="blank">here</a> between:
+    /**
+     * \brief Add buttons for the current row.
+     * \details Each array sent as parameter requires a text key
+     * and one another key
+     * (see <a href="https://core.telegram.org/bots/api/#inlinekeyboardbutton" target="blank">here</a>)
+     * like:
      * - url
      * - callback_data
      * - switch_inline_query
      * - switch_inline_query_current_chat
      * - callback_game
      *
-     * Each call to this function add one or more button to a row. The next call add buttons on the next row.
-     * Each row allows 8 buttons per row and 12 columns total.
-     * Use this function with this syntax:
+     * Each call to this function add one or more button to a row.
+     * The next call add buttons on the next row.
+     *
+     * There are twelve columns and eight buttons per row.
+     *
+     * Let's see an example:
      *
      *     addLevelButtons(['text' => 'Click me!', 'url' => 'https://telegram.me']);
      *
-     * If you want to add more than a button, use this syntax:
+     * If you want to add more than a button:
      *
      *     addLevelButtons(['text' => 'Button 1', 'url' => 'https://telegram.me/gamedev_ita'], ['text' => 'Button 2', 'url' => 'https://telegram.me/animewallpaper']);
      *
-     * @param array ...$buttons One or more arrays, each one represent a button.
+     * @param array ...$buttons One or more arrays which represents buttons.
      */
     public function addLevelButtons(array ...$buttons)
     {
         // If the user has already added a button in this row
         if ($this->column != 0) {
-             // Change row
-             $this->changeRow();
+            $this->changeRow();
         }
 
         // Add buttons to the next row
         $this->inline_keyboard[] = $buttons;
-
-        // Switch to the next row
         $this->changeRow();
     }
 
-    /** \brief Add a button.
-     * \details The button will be added next to the last one or in the next row if the bot has reached the limit for the buttons per row.
+    /**
+     * \brief Add a button.
+     * \details The button will be added next to the last one or
+     * in the next row if the bot has reached the limit of <b>buttons per row<b>.
      *
-     * Each row allows 8 buttons per row and 12 columns total.
-     * Use this function with this syntax:
+     * Each row allows eight buttons per row and a maximum of twelve columns.
+     *
+     * Let's see an example:
      *
      *     addButton('Click me!', 'url', 'https://telegram.me');
      *
@@ -172,40 +173,43 @@ class InlineKeyboard
 
         // Add the button
         $this->inline_keyboard[$this->row][$this->column] = ['text' => $text, $data_type => $data];
-
-        // Update column
         $this->column++;
     }
 
     /**
      * \brief Change row for the current keyboard.
-     * \details Buttons will be added in the next row from now on (until next InlineKeyboard::addLevelButtons() or InlineKeyboard::changeRow() call or InlineKeyboard::addButton() reaches the max).
+     * \details Change row where the buttons will be saved.
      */
     public function changeRow()
     {
-
-        // Reset vars
         $this->row++;
         $this->column = 0;
     }
 
-    /** \brief Remove all the buttons from the current inline keyboard. */
+    /** \brief Clear inline keyboard. */
     public function clearKeyboard()
     {
-        // Set the inline keyboard to an empty array
         $this->inline_keyboard = [];
 
-        // Reset vars
         $this->row = 0;
         $this->column = 0;
     }
 
     /**
+<<<<<<< HEAD
+     * \brief Add a list keyboard.
+     * \details Add a list keyboard which can be useful if you want separate
+     * data in multiple "pages" and allows users to navigate it easily.
+     * @param $index The current index of the list.
+     * @param $list The length of the list.
+     * @param $prefix Prefix used to represent the list.
+=======
      * \brief Add 5 buttons or less, which will have as a callback data '$prefix/number'.
      * \details Create buttons for browsing something in the bot. Each button will have a number as text, plus some symbol as first page, or last page. The buttons are dinamically generated at runtime passing $index and $list. If there are less than 5 pages, then show only the required buttons (at least one, up to 4).
      * @param int $index The page which the user is currently.
      * @param int $list The total number of pages.
      * @param string $prefix Prefix to add at each callback_data of the button. Eg.: 'list/1'.
+>>>>>>> master
      */
     public function addListKeyboard(int $index, int $list, $prefix = 'list')
     {

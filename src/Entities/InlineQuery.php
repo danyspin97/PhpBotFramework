@@ -34,23 +34,26 @@ class InlineQuery implements \ArrayAccess
 
     use EntityAccess;
 
+    /**
+     * \brief Get result's query.
+     * @return string $query If set or <code>null</code> if empty.
+     */
     public function getQuery() : string
     {
-
-        // Get text of the message if any
         return isset($this->container['query']) ? $this->container['query'] : null;
     }
 
+    /**
+     * \brief Get the chat ID where the result comes from.
+     * @return $chat_id Chat ID.
+     */
     public function getChatID()
     {
-
-        // Return the chat id
         return $this->container['from']['id'];
     }
 
     public function getBotParameter() : array
     {
-
         return ['var' => '_inline_query_id', 'id' => $this->container['id']];
     }
 }

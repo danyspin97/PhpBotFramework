@@ -32,17 +32,20 @@ trait EntityAccess
     {
     }
 
+    /** \brief Check that the given offset exists or not */
     public function offsetExists($offset)
     {
-        // Is it set?
+<<<<<<< HEAD
         return isset($this->container[$offset]);
     }
 
-    public function offsetUnset($offset)
-    {
-        // Log a warning
-    }
+    public function offsetUnset($offset) { /* Log a warning */ }
 
+    /**
+     * \brief Get the given offset.
+     * @param $offset The given offset.
+     * @return Data relative to the offset.
+     */
     public function offsetGet($offset)
     {
         // Get name of the method, the class should have. Like "getText"

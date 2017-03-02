@@ -43,8 +43,10 @@ class CallbackCommand extends BasicCommand
      *
      *     addMessageCommand("menu", function($bot, $callback_query) {
      *         $bot->editMessageText($callback_query['message']['message_id'], "This is the menu"); });
+     *
      * @param string $data The string that will trigger this function.
-     * @param callable $script The function that will be triggered by the callback query if it contains the $data string. Must take an object(the bot) and an array(the callback query received).
+     * @param callable $script The function that will be triggered by the callback query if it contains
+     * the $data string. Must take an object(the bot) and an array(the callback query received).
      */
     public function __construct(string $data, callable $script)
     {
@@ -59,7 +61,6 @@ class CallbackCommand extends BasicCommand
      */
     public function checkCommand(array $callback_query) : bool
     {
-        // Check for callback commands
         if (isset($callback_query['data'])) {
             // If command is found in callback data
             if (strpos($this->data, $callback_query['data']) !== false) {

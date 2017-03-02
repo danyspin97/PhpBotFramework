@@ -18,6 +18,10 @@
 
 namespace PhpBotFramework\Utilities;
 
+/**
+ * \addtogroup Modules
+ * @{
+ */
 use PhpBotFramework\Exceptions\BotException;
 
 use PhpBotFramework\BasicBot;
@@ -49,31 +53,19 @@ class BotState
      *
      *         // Add the function for processing messages
      *         protected function processMessage($message) {
-     *
      *             switch($this->getStatus()) {
-     *
-     *                 // If we are expecting a username from the user
      *                 case SEND_USERNAME:
-     *
-     *                     // Say the user to insert the password
      *                     $this->sendMessage("Please, send your password.");
      *
      *                     // Update the bot state
      *                     $this->setStatus(SEND_PASSWORD);
-     *
      *                     break;
      *
      *                 // Or if we are expecting a password from the user
      *                 case SEND_PASSWORD:
-     *
-     *                     // Save the password
-     *
-     *                     // Say the user he completed the process
      *                     $this->sendMessage("The registration is complete");
-     *
      *                     break;
-     *                 }
-     *
+     *             }
      *         }
      *
      *     }
@@ -83,19 +75,13 @@ class BotState
      *     $bot->redis = new Redis();
      *     $bot->redis->connect('127.0.0.1');
      *
-     *     // Create the awnser to the <code>/start</code> command
+     *     // Create the answer to the <code>/start</code> command
      *     $start_closure = function($bot, $message) {
-     *
-     *         // saying the user to enter a username
      *         $bot->sendMessage("Please, send your username.");
-     *
-     *         // and update the status
      *         $bot->setStatus(SEND_USERNAME);
      *     };
      *
-     *     // Add the answer
      *     $bot->addMessageCommand("start", $start_closure);
-     *
      *     $bot->getUpdatesLocal();
      * @{
      */

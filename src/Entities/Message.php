@@ -32,15 +32,21 @@ class Message implements \ArrayAccess
 
     use EntityAccess;
 
-    public function getText() : string
+    /**
+     * \brief Get text parameter if it is set.
+     * @return string If set or <code>null</code> otherwise.
+     */
+public function getText() : string
     {
-        // Get text of the message if any
         return isset($this->container['text']) ? $this->container['text'] : null;
     }
 
+    /**
+     * \brief Get the chat ID where the result comes from.
+     * @return $chat_id Chat ID.
+     */
     public function getChatID()
     {
-        // Return the chat id
         return $this->container['chat']['id'];
     }
 

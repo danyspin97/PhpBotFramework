@@ -27,14 +27,17 @@ use PhpBotFramework\Exceptions\BotException;
 
 /**
  * \class InlineQueryResults InlineQueryResults
- * \brief Handle and store results before sending them to an answerInlineQuery api call.
+ * \brief Handle and store results before sending them to an <code>answerInlineQuery</code> API call.
  */
 class InlineQueryResults
 {
     /**
      * \addtogroup InlineQueryResults InlineQueryResults
-     * \brief Handle and store results before sending them to an answerInlineQuery api call.
-     * \details To answer Inline Queries with results create an object of type PhpBotFramework\Entities\InlineQueryResults and add the wanted results using InlineQueryResults::addResult() method or type-based result method (InlineQueryResults::newArtile()).
+     * \brief Handles and stores results before sending them to an answerInlineQuery API call.
+     * \details In order to answer <i>inline queries</i>: create an object of type
+     * PhpBotFramework\Entities\InlineQueryResults and add the wanted results
+     * using InlineQueryResults::addResult() method or
+     * type-based result method (InlineQueryResults::newArticle()).
      *
      *     use PhpBotFramework\Entities\InlineQueryResults;
      *     use PhpBotFramework\Entities\InlineQuery;
@@ -54,10 +57,10 @@ class InlineQueryResults
     /** \brief Array of the results stored. */
     private $results;
 
-    /** \brief Count the result so we can assign them an unique id. */
+    /** \brief Counts the result so we can assign them an unique id. */
     private $id_result;
 
-    /** \brief Type accepted for results. */
+    /** \brief Accepted types for results. */
     private $accepted_type = [
         'audio',
         'article',
@@ -79,13 +82,12 @@ class InlineQueryResults
     {
         // Initialize the array to empty
         $this->results = [];
-
         $this->id_result = 0;
     }
 
     /**
      * \brief Add a result passing an array containing data.
-     * \details Create a result of one of these 20 types:
+     * \details Create a result of one of these types:
      * - InlineQueryResultCachedAudio
      * - InlineQueryResultCachedDocument
      * - InlineQueryResultCachedGif
@@ -107,7 +109,9 @@ class InlineQueryResults
      * - InlineQueryResultVideo
      * - InlineQueryResultVoice
      *
-     * To add a result, create an array contaning data as showed on API Reference, 'id' parameter will be automatically genereted so there is no need to add it.
+     * To add a result, create an array containing data as showed on API Reference,
+     *'id' parameter will be automatically genereted so there is no need to add it.
+     *
      * Example of adding an article result:
      *
      *     $data = [
@@ -115,9 +119,10 @@ class InlineQueryResults
      *         'title' => 'Example title',
      *         'message_text' => 'Text of the message'
      *     ];
+     *
      *     $handler->addResult($data);
      *
-     * @param array $result Array containg data of the result to add.
+     * @param array $result Array containing data result to add.
      * @return int Id of the result added.
      */
     public function addResult(array $result) : int
@@ -130,23 +135,31 @@ class InlineQueryResults
         $result['id'] = (string)$this->id_result;
 
         $this->results[] = $result;
-
         return $this->id_result++;
     }
 
     /**
-     * \brief Add a result of type article article.
+     * \brief Add a result of type Article.
      * \details Add a result that will be show to the user.
      * @param string $title Title of the result.
      * @param string $message_text Text of the message to be sent.
      * @param string $description <i>Optional</i>. Short description of the result
-     * @param array $reply_markup Inline keyboard object (Not JSON serialized, use getArray from InlineKeyboard class).
-     * @param string $parse_mode <i>Optional</i>. Formattation of the message.
-     * @param string $disable_web_preview <i>Optional</i>. Disables link previews for links in the sent message.
+     * @param array $reply_markup Inline keyboard object.
+     * Not JSON serialized, use getArray from InlineKeyboard class.
+     * @param string $parse_mode <i>Optional</i>. Formattation style for the message.
+     * @param string $disable_web_preview <i>Optional</i>. Disables link previews for
+     * links in the sent message.
      * @return int Id the the article added.
      */
-    public function newArticle(string $title, string $message_text, string $description = '', array $reply_markup = null, $parse_mode = 'HTML', $disable_web_preview = false) : int
-    {
+    public function newArticle(
+        string $title,
+        string $message_text,
+        string $description = '',
+        array $reply_markup = null,
+        $parse_mode = 'HTML',
+        $disable_web_preview = false
+    ) : int {
+    
         array_push($this->results, [
             'type' => 'article',
             'id' => (string)$this->id_result,
@@ -163,17 +176,14 @@ class InlineQueryResults
 
     /**
      * \brief Get all results created.
-     * @return string JSON-serialized string containing the results.
+     * @return string JSON string containing the results.
      */
     public function get()
     {
-        // Encode the results to get a JSON-serialized object
         $encoded_results = json_encode($this->results);
 
-        // Clear the results
+        // Clear results by resetting ID counter and results' container
         $this->results = [];
-
-        // Reset counter
         $this->id_result = 0;
 
         return $encoded_results;

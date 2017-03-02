@@ -40,7 +40,7 @@ trait CommandHandler
      * \brief Initialize commands to speed up processing.
      * \details Get all command that the bot handle, and put them in priority.
      */
-    protected function initCommands()
+protected function initCommands()
     {
         $commands_temp = $this->_commands;
         $this->_commands = [];
@@ -58,7 +58,7 @@ trait CommandHandler
 
     /**
      * @internal
-     * \brief Process updates handling commands.
+     * \brief Process updates prioritizing bot's commands over the general methods (e.g. BaseBot::processMessage())
      * @param array $update Update to process.
      * @return bool True if this update trigger any command.
      */
