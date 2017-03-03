@@ -89,8 +89,9 @@ trait LongPolling
                 }
             }
 
+            $offset = $offset + count($updates);
             // Update the offset in redis
-            $this->redis->set($offset_key, $offset + count($updates));
+            $this->redis->set($offset_key, $offset);
         }
     }
 
@@ -164,8 +165,9 @@ trait LongPolling
                 }
             }
 
+            $offset = $offset + count($updates);
             // Update the offset on the database
-            $sth->bindParam(':new_offset', $offset + sizeof($updates));
+            $sth->bindParam(':new_offset', $offset);
             $sth->execute();
         }
     }
