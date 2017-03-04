@@ -59,6 +59,9 @@ class Bot extends BasicBot
     /** \brief Localization handler object. */
     public $local;
 
+    /** \brief Status handler object. */
+    public $status;
+
     /**
      * \brief Construct an empty bot.
      * \details Construct a complete Telegram bot which can use localization, database and more other.
@@ -68,9 +71,6 @@ class Bot extends BasicBot
     public function __construct(string $token)
     {
         parent::__construct($token);
-
-        $this->_message_commands = [];
-        $this->_callback_commands = [];
 
         $this->keyboard = new Button($this);
         $this->status = new BotState($this);

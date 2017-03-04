@@ -31,6 +31,8 @@ class MessageRegexCommand extends BasicCommand
 {
     /** @} */
 
+    private $regex_rule;
+
     /**
      * \brief Add a function that will be executed everytime a message contain a command
      * that match the regular expression.

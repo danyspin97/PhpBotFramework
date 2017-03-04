@@ -124,17 +124,17 @@ class Localization
     public function getLanguageRedis(int $expiring_time = 86400) : string
     {
         $redis = $this->bot->getRedis();
-        $chat_id = $this->getChatID();
+        $chat_id = $this->bot->getChatID();
 
         // Check if the language exists on Redis
-        if ($redis->exists($this->chat_id . ':language')) {
+        if ($redis->exists($this->bot->getChatID() . ':language')) {
             $this->language = $redis->get($chat_id . ':language');
             return $this->language;
         }
 
         // Set the value from the database
-        $this->redis->setEx(
-            $this->_chat_id . ':language',
+        $redis->setEx(
+            $this->bot->getChatID() . ':language',
             $expiring_time,
             $this->getLanguageDatabase()
         );

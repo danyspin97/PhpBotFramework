@@ -18,21 +18,13 @@
 
 namespace PhpBotFramework\Utilities;
 
-<<<<<<< HEAD
-/**
- * \addtogroup Modules
- * @{
- */
-
-// Delimitate items in one page.
-=======
 use PhpBotFramework\Entities\InlineKeyboard as Keyboard;
 
->>>>>>> master
 define("DELIMITER", "::::::::::::::::::::::::::::::::::::::\n");
 
 /**
  * \class Paginator
+ * \brief Delimitate items in one page.
  */
 class Paginator
 {

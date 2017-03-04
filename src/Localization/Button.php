@@ -50,7 +50,7 @@ class Button extends InlineKeyboard
     /**
      * \brief Get a simple Back button with back as <code>callback_data</code>.
      * @param $json_serialized return a json serialized string, or an array.
-     * @return A button with written "back".
+     * @return string|array A button with written "back".
      */
     public function getBackButton(bool $json_serialized = true)
     {
@@ -114,7 +114,7 @@ class Button extends InlineKeyboard
      * The callback data for each button will be "cl/key" where key is the key in <code>$localization['languages']</code>.
      * @param $prefix Prefix followed by '/' and the language index (en, it..).
      * @param $json_serialized Get a JSON-serialized string or an array.
-     * @return The buttons in the selected type.
+     * @return string|array The buttons in the selected type.
      */
     public function getChooseLanguageKeyboard(string $prefix = 'cl', bool $json_serialized = true)
     {

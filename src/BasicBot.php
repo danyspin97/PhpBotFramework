@@ -85,9 +85,10 @@ class BasicBot extends Core\CoreBot
      */
     public function getUpdatesLocal(int $limit = 100, int $timeout = 60)
     {
+        $update = [];
+
         // While there aren't updates to process
-        while (empty($update = $this->getUpdates(0, 1))) {
-        }
+        while (empty($update = $this->getUpdates(0, 1)));
 
         $offset = $update[0]['update_id'];
         $this->initCommands();

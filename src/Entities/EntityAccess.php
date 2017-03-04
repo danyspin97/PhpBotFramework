@@ -35,7 +35,6 @@ trait EntityAccess
     /** \brief Check that the given offset exists or not */
     public function offsetExists($offset)
     {
-<<<<<<< HEAD
         return isset($this->container[$offset]);
     }
 

@@ -31,6 +31,8 @@ class Database
 
     /** @} */
 
+    private $bot;
+
     /** PDO connection to the database. */
     public $pdo;
 
