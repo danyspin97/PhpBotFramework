@@ -41,11 +41,19 @@ class MessageCommand extends BasicCommand
 
     /**
      * \brief Add a function that will be executed everytime a message contain the selected command
-     * \details Use this syntax:
+     * \details Use this syntax to create a command:
      *
-     *     addMessageCommand("start", function($bot, $message) {
-     *         $bot->sendMessage("Hi"); });
-     * @param string $command The command that will trigger this function (without slash). Eg: "start", "help", "about"
+     *     $start_command = new PhpBotFramework\Commands\MessageCommand("start",
+     *         function ($bot, $message) {
+     *             $bot->sendMessage("Hello, folks!");
+     *         }
+     *     );
+     *
+     * Then you can add it to the bot's commands using <code>addCommand</code> method:
+     *
+     *     $bot->addCommand($start_command);
+     *
+     * @param string $command The command that will trigger this function (e.g. start)
      * @param callable $script The function that will be triggered by a command.
      * Must take an object(the bot) and an array(the message received).
      */
