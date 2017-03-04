@@ -92,7 +92,7 @@ class Database
      * @param array $params Parameter for PDO connection.
      * @return array Parameter with defaults value.
      */
-    protected function addDefaultValue(array $params) : array
+    public static function addDefaultValue(array $params) : array
     {
         static $defaults = [ 'adapter' => PDO_DEFAULT_ADAPTER, 'host' => 'localhost', 'options' => [] ];
         return array_merge($defaults, $params);
@@ -104,7 +104,7 @@ class Database
      * @param array $params Array containing parameter of the connection
      * @return string Parameters contained in array $params sanitized in a string that can be passed as DNS param of PDO object creation.
      */
-    protected function getDns($params) : string
+    public static function getDns($params) : string
     {
         $response = $params['adapter'] . ':';
         unset($params['adapter']);
