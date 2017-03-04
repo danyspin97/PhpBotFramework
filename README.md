@@ -32,7 +32,17 @@ $start_command = new PhpBotFramework\Commands\MessageCommand("start",
     }
 );
 
+// Create a command that can be executed only by some users passing
+// a list of Telegram IDs.
+$admin_command = new PhpBotFramework\Commands\AdminCommand("admin",
+    function($bot, $message) {
+        $bot->sendMessage("Welcome in the Admin Zone!");
+        // ...
+    }, [10000000, 10000001, 10011012]
+);
+
 $bot->addCommand($start_command);
+$bot->addCommand($admin_command);
 
 // Receive updates from Telegram using getUpdates
 $bot->getUpdatesLocal();
