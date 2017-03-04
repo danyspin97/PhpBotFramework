@@ -1,3 +1,20 @@
+# v2.0.0
+- Reworked all framework
+- Splited Bot and CoreBot classes in different classes and traits to improve modularity
+- Improved multi language support by adding getStr method to get a localized string
+- Save all localized strings in json files and load them using loadAllLanguages or loadSingleLanguage methods
+- Database handling has been improved by adding some methods (connect, addUser)
+- Broadcast a message to all bot users
+- Redis cannot be used anymore as stand alone database for containing user languages
+- Send file along with api methods whetever they are, they will be handled automatically
+- Upload files along with api request, send local image as photo just by sending its local path
+- Added PHPStan as checker to fix majority of bugs
+- Improved design by appling "composition over inheritance" principle
+- Improved documentation
+- Added simple unit testing
+- Added variuos example
+- Fixed many bugs
+
 # v1.0.0
 - Reworked processUpdate
 - Added command-handle system

@@ -1,5 +1,5 @@
 # Php Bot Framework
-[![Total Downloads](https://poser.pugx.org/danyspin97/php-bot-framework/downloads)](https://packagist.org/packages/danyspin97/php-bot-framework)<Paste>
+[![Total Downloads](https://poser.pugx.org/danyspin97/php-bot-framework/downloads)](https://packagist.org/packages/danyspin97/php-bot-framework)
 [![Latest Stable Version](https://poser.pugx.org/danyspin97/php-bot-framework/v/stable)](https://packagist.org/packages/danyspin97/php-bot-framework)
 [![Build Status](https://travis-ci.org/DanySpin97/PhpBotFramework.svg?branch=master)](https://travis-ci.org/DanySpin97/PhpBotFramework)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/6254e3eccc93497997dae21e57a452ac)](https://www.codacy.com/app/danyspin97/PhpBotFramework?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DanySpin97/PhpBotFramework&amp;utm_campaign=Badge_Grade)
@@ -52,6 +52,7 @@ $bot->getUpdatesLocal();
 - Redis support
 - Support for multilanguage bots
 - Support for bot states
+- Upload local files
 - Highly-documented
 
 ## Requisites

@@ -88,7 +88,8 @@ class BasicBot extends Core\CoreBot
         $update = [];
 
         // While there aren't updates to process
-        while (empty($update = $this->getUpdates(0, 1)));
+        while (empty($update = $this->getUpdates(0, 1))) {
+        }
 
         $offset = $update[0]['update_id'];
         $this->initCommands();

@@ -38,7 +38,10 @@ trait EntityAccess
         return isset($this->container[$offset]);
     }
 
-    public function offsetUnset($offset) { /* Log a warning */ }
+    public function offsetUnset($offset)
+    {
+ /* Log a warning */
+    }
 
     /**
      * \brief Get the given offset.

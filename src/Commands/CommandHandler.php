@@ -40,7 +40,7 @@ trait CommandHandler
      * \brief Initialize commands to speed up processing.
      * \details Get all command that the bot handle, and put them in priority.
      */
-protected function initCommands()
+    protected function initCommands()
     {
         $commands_temp = $this->_commands;
         $this->_commands = [];

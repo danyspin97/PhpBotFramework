@@ -50,7 +50,7 @@ trait File
     protected $local;
 
     /** \brief Source for localization files. */
-protected $localization_dir = './localization';
+    protected $localization_dir = './localization';
 
     /**
      * @internal
@@ -59,7 +59,7 @@ protected $localization_dir = './localization';
      * @param string $dir Directory in which there are the JSON files.
      * @return bool True if loaded.
      */
-protected function loadSingleLanguage(string $lang = 'en', string $dir = './localization') : bool
+    protected function loadSingleLanguage(string $lang = 'en', string $dir = './localization') : bool
     {
         // Name of the file
         $filename = "$dir/$lang";

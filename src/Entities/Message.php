@@ -36,7 +36,7 @@ class Message implements \ArrayAccess
      * \brief Get text parameter if it is set.
      * @return string If set or <code>null</code> otherwise.
      */
-public function getText() : string
+    public function getText() : string
     {
         return isset($this->container['text']) ? $this->container['text'] : null;
     }
