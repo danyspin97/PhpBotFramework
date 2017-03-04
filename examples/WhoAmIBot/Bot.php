@@ -25,7 +25,6 @@ class WhoAmIBot extends PhpBotFramework\Bot {
   }
 }
 
-
 $bot = new WhoAmIBot('BOT_TOKEN');
 
 // Add a welcome message
@@ -34,7 +33,6 @@ $start_command = new PhpBotFramework\Commands\MessageCommand('start',
     $bot->sendMessage('<strong>Hey there!</strong> Send or forward me a text message :)');
   }
 );
-
 
 $bot->addCommand($start_command);
 $bot->getUpdatesLocal();

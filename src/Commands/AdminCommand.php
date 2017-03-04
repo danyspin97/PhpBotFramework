@@ -60,11 +60,34 @@ class AdminCommand extends MessageCommand
     {
         $this->command = "/$command";
         $this->length = strlen($command) + 1;
-        $this->script = function ($bot, $message) {
-          // Check that the user can execute the command
-          if (in_array($message['from']['id'], $ids) {
-            $script($bot, $message);
-          }
-        };
+        $this->script = $script;
+
+        $this->ids = $ids;
     }
+
+    /**
+     * @internal
+     * \brief Process a message checking if it trigger any MessageCommand.
+     * @param string $message Message to process.
+     * @return bool True if the message trigger any command.
+     */
+    public function checkCommand(array $message) : bool
+    {
+        // If the message contains a bot command at the start
+        $message_is_command = (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') ? true : false;
+
+        // If we found a valid command (check first lenght, then use strpos)
+        if ($message_is_command && $this->length == $message['entities'][0]['length'] &&
+            mb_strpos($this->command, $message['text'], $message['entities'][0]['offset']) !== false) {
+          // Check that the user can execute the command
+          if (in_array($message['from']['id'], $this->ids)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        return false;
+    }
+
 }
