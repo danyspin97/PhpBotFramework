@@ -1,26 +1,4 @@
 var searchData=
 [
-  ['get',['get',['../group__InlineKeyboard.html#gafd17e604a5caf5f6ef78defb6685502b',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['getarray',['getArray',['../group__InlineKeyboard.html#ga37234e04062beda0055d0b977e712230',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['getbackbutton',['getBackButton',['../group__InlineKeyboard.html#ga2901b9accbcb176bde4e5735d4ed6429',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['getbackskipkeyboard',['getBackSkipKeyboard',['../group__InlineKeyboard.html#gabb5d1cfc815a471430bf961222ae8b7f',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['getbotid',['getBotID',['../group__Bot.html#gaabceffd4ad114793696211c723e96e51',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['getcallbackdata',['getCallbackData',['../group__Bot.html#ga87aef15bd28b95d76ffd227411cd0545',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getchat',['getChat',['../group__Api.html#ga599f2fbbe99db2bdf35919e5d0e4be3b',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['getchatadministrators',['getChatAdministrators',['../group__Api.html#ga2401df8a33a94acb5e6c5f4ae0bc5462',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['getchatid',['getChatID',['../group__Bot.html#ga41ecba18626f8f6bf0d15fcafc6cd8b0',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['getchooselanguagekeyboard',['getChooseLanguageKeyboard',['../group__InlineKeyboard.html#gaef758c25b30a2af2fe210bddebaa6604',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['gethashtags',['getHashtags',['../group__Utility-methods.html#ga2830826106233adb889fe6d0dae8a7a4',1,'DanySpin97::PhpBotFramework::Utility']]],
-  ['getinlinequery',['getInlineQuery',['../group__Bot.html#gad5a367c1667a5c6c6c5e1a5bced9c0ef',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getlanguagedatabase',['getLanguageDatabase',['../group__Multilanguage.html#gaed4ac30d321473c476a1e8fac00afac1',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getlanguageredis',['getLanguageRedis',['../group__Multilanguage.html#gadd3df874a2cca3205e3e84d35c41187b',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getlanguageredisascache',['getLanguageRedisAsCache',['../group__Multilanguage.html#gab3690275342ad2f6fbcbe7a9c03f5ab8',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getme',['getMe',['../group__Api.html#ga80fb5033bded027a6677808460ce49a3',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['getmessagetext',['getMessageText',['../group__Bot.html#ga2be9dc8aa97790c95470f2d7d41bb75d',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getresults',['getResults',['../group__InlineQueryResults.html#ga157eee85f7741f6317c9955190cd9a29',1,'DanySpin97::PhpBotFramework::InlineQueryResults']]],
-  ['getstatus',['getStatus',['../group__State.html#ga698bfdfe5e0e02753475fa06d6f52767',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getupdates',['getUpdates',['../group__Api.html#ga85847299397388bf998e787be68f523c',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['getupdatesdatabase',['getUpdatesDatabase',['../group__Bot.html#gab715326bb3b458ebf8dbda635f2c8520',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getupdateslocal',['getUpdatesLocal',['../group__Bot.html#gafbd201d6534fbba7aaae4ba42d9ace81',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['getupdatesredis',['getUpdatesRedis',['../group__Bot.html#ga98083d5b9fd47fc57571ceb9be4edb66',1,'DanySpin97::PhpBotFramework::Bot']]]
+  ['forwardmessage',['forwardMessage',['../group__Api.html#ga3210e7221f97be8cc80439877e25cfd0',1,'PhpBotFramework::Core::Send']]]
 ];

@@ -1,15 +1,15 @@
 var searchData=
 [
-  ['sendaudio',['sendAudio',['../group__Api.html#gaaf169d2c4c1cee2d18e29ef91db10127',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['sendchataction',['sendChatAction',['../group__Api.html#gaeba391c07f85286aefe11d1e2cc2d677',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['senddocument',['sendDocument',['../group__Api.html#ga96c95928a83e996af17fb61756537eaa',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['sendmessage',['sendMessage',['../group__Api.html#ga3a7f2d0760ba53561eb925e11f000f12',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['sendphoto',['sendPhoto',['../group__Api.html#gabede7eda599d97f91817b2cb3ac0facb',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['sendsticker',['sendSticker',['../group__Api.html#ga83cbd197a29a8581d4763549ae57da08',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['sendvoice',['sendVoice',['../group__Api.html#ga1fae7561c01a301db3b9dc340e245cfd',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['setchatid',['setChatID',['../group__Bot.html#gaba30c8dccb5d454df642dffc86a543c5',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['setlanguageredisascache',['setLanguageRedisAsCache',['../group__Multilanguage.html#ga64ed17b2a28fd265bd7da9c48bdf8d9e',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['setstatus',['setStatus',['../group__State.html#ga8719b1234a707df50af6fffe638f9908',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['setupdatereturned',['setUpdateReturned',['../group__Api.html#ga27589aa271e46d805f05c7bb97653037',1,'DanySpin97::PhpBotFramework::CoreBot']]],
-  ['state',['State',['../group__State.html',1,'']]]
+  ['paginateitems',['paginateItems',['../group__Utility-classes.html#gaf74d300e6a12a0a8c888b849d28ce94f',1,'PhpBotFramework::Utilities::Paginator']]],
+  ['paginator',['Paginator',['../classPhpBotFramework_1_1Utilities_1_1Paginator.html',1,'PhpBotFramework::Utilities']]],
+  ['processcallbackquery',['processCallbackQuery',['../classPhpBotFramework_1_1BasicBot.html#aed6de4495d30dc018a2ee3b49f14f9f6',1,'PhpBotFramework::BasicBot']]],
+  ['processchannelpost',['processChannelPost',['../classPhpBotFramework_1_1BasicBot.html#a77f7b82472f3819f70b2ca030ce81e36',1,'PhpBotFramework::BasicBot']]],
+  ['processchoseninlineresult',['processChosenInlineResult',['../classPhpBotFramework_1_1BasicBot.html#a8d99c1db4d54c1ad8173a4ecc951f549',1,'PhpBotFramework::BasicBot']]],
+  ['processeditedchannelpost',['processEditedChannelPost',['../classPhpBotFramework_1_1BasicBot.html#ac8865e4cf58b24ef95f49ff6b29b8112',1,'PhpBotFramework::BasicBot']]],
+  ['processeditedmessage',['processEditedMessage',['../classPhpBotFramework_1_1BasicBot.html#a432d9f6d3316d572b897bcce47793918',1,'PhpBotFramework::BasicBot']]],
+  ['processfakeupdate',['processFakeUpdate',['../classPhpBotFramework_1_1Test_1_1FakeUpdate.html#acd2a0e0318a61732ebafac3d374c5b7c',1,'PhpBotFramework::Test::FakeUpdate']]],
+  ['processinlinequery',['processInlineQuery',['../classPhpBotFramework_1_1BasicBot.html#aaa3a5b35532dcf6836661253c88cd7ac',1,'PhpBotFramework::BasicBot']]],
+  ['processmessage',['processMessage',['../classPhpBotFramework_1_1BasicBot.html#a501a9accb172e658ddc3c47851d199f2',1,'PhpBotFramework::BasicBot']]],
+  ['processrequest',['processRequest',['../classPhpBotFramework_1_1Core_1_1CoreBot.html#af0aec7156e8020b6401cd96f2fa6c683',1,'PhpBotFramework::Core::CoreBot']]],
+  ['processwebhookupdate',['processWebhookUpdate',['../group__Bot.html#ga6fc8953a15cfb9af0a4e9d6573771c28',1,'PhpBotFramework::BasicBot']]]
 ];

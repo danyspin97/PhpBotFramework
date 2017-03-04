@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['state',['State',['../group__State.html',1,'']]]
+  ['inlinekeyboard',['InlineKeyboard',['../group__InlineKeyboard.html',1,'']]],
+  ['inlinequeryresults',['InlineQueryResults',['../group__InlineQueryResults.html',1,'']]]
 ];

@@ -1,10 +1,12 @@
 var searchData=
 [
-  ['addbutton',['addButton',['../group__InlineKeyboard.html#ga74fd5bed73536f725f3ea3b900b011ac',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['addcallbackcommand',['addCallbackCommand',['../group__Bot.html#ga51a41d8c661547709b49453de0a4d617',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['addlevelbuttons',['addLevelButtons',['../group__InlineKeyboard.html#ga1a426eb2c9f438898fece4173ab06eb5',1,'DanySpin97::PhpBotFramework::InlineKeyboard']]],
-  ['addmessagecommand',['addMessageCommand',['../group__Bot.html#ga2a30bcb9d99e359e269e623f7387ce21',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['addmessagecommandregex',['addMessageCommandRegex',['../group__Bot.html#gacd1710e953497738b5f63e9be87370e8',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['adduser',['addUser',['../group__Users-handle.html#ga5e09a29bb273a5aee4496aef31a6323a',1,'DanySpin97::PhpBotFramework::Bot']]],
-  ['apirequest',['apiRequest',['../group__Api.html#gad9e54ccafbdedb4f25ea7ac6c0d7783b',1,'DanySpin97::PhpBotFramework::CoreBot']]]
+  ['addbutton',['addButton',['../group__InlineKeyboard.html#gae88fbf99d95010835b73fb8998c05b1d',1,'PhpBotFramework::Entities::InlineKeyboard']]],
+  ['addcommand',['addCommand',['../group__Commands.html#ga6126054ede5a7cd136caa6d722416cb7',1,'PhpBotFramework::Commands::CommandHandler']]],
+  ['addlevelbuttons',['addLevelButtons',['../group__InlineKeyboard.html#ga84b0ffb8f54f55c7a88196d1594f099d',1,'PhpBotFramework::Entities::InlineKeyboard']]],
+  ['addlistkeyboard',['addListKeyboard',['../group__InlineKeyboard.html#ga1a868c879e09da559ff2f2a886f3d2bf',1,'PhpBotFramework::Entities::InlineKeyboard']]],
+  ['addresult',['addResult',['../group__InlineQueryResults.html#ga766a8488629f338a68d84e3b6e6b860d',1,'PhpBotFramework::Entities::InlineQueryResults']]],
+  ['adduser',['addUser',['../group__Users-handle.html#gadfcae05344bdd5deeb683ab8e465932f',1,'PhpBotFramework::Database::User']]],
+  ['answercallbackquery',['answerCallbackQuery',['../group__Api.html#ga9c970f7ca91ab9217d4040b68e57ac5f',1,'PhpBotFramework::Core::Inline']]],
+  ['answerinlinequery',['answerInlineQuery',['../group__Api.html#gac8c0ee9b7fd97dd5ac09c547f0a1e8e0',1,'PhpBotFramework::Core::Inline']]],
+  ['apirequest',['apiRequest',['../group__Api.html#ga9c85820781feb0ed6490a309e1aeb0ef',1,'PhpBotFramework::Core::CoreBot']]]
 ];

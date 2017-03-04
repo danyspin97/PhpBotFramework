@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['removeusernameformattation',['removeUsernameFormattation',['../group__Utility-methods.html#ga3bf98883802d158d4e9243f661cf7f1c',1,'DanySpin97::PhpBotFramework::Utility']]]
+  ['newarticle',['newArticle',['../group__InlineQueryResults.html#ga837c302ec51f26d8feb8892b57e90934',1,'PhpBotFramework::Entities::InlineQueryResults']]]
 ];

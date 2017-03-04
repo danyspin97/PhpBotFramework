@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['inlinekeyboard',['InlineKeyboard',['../classDanySpin97_1_1PhpBotFramework_1_1InlineKeyboard.html',1,'DanySpin97::PhpBotFramework']]],
-  ['inlinequeryresults',['InlineQueryResults',['../classDanySpin97_1_1PhpBotFramework_1_1InlineQueryResults.html',1,'DanySpin97::PhpBotFramework']]]
+  ['database',['Database',['../classPhpBotFramework_1_1Database_1_1Database.html',1,'PhpBotFramework::Database']]]
 ];

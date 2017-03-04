@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['utility',['Utility',['../classDanySpin97_1_1PhpBotFramework_1_1Utility.html',1,'DanySpin97::PhpBotFramework']]]
+  ['edit',['Edit',['../classPhpBotFramework_1_1Core_1_1Edit.html',1,'PhpBotFramework::Core']]],
+  ['entityaccess',['EntityAccess',['../classPhpBotFramework_1_1Entities_1_1EntityAccess.html',1,'PhpBotFramework::Entities']]]
 ];

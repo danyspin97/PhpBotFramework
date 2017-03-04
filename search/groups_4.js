@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['multilanguage',['Multilanguage',['../group__Multilanguage.html',1,'']]]
+  ['entities',['Entities',['../group__Entities.html',1,'']]]
 ];
