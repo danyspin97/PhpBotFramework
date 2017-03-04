@@ -24,7 +24,6 @@ require './vendor/autoload.php';
 // Create a bot
 $bot = new PhpBotFramework\Bot("token");
 
-<<<<<<< HEAD
 // Create a command that will be triggered everytime the user send `/start`
 $start_command = new PhpBotFramework\Commands\MessageCommand("start",
     function($bot, $message) {
@@ -32,13 +31,6 @@ $start_command = new PhpBotFramework\Commands\MessageCommand("start",
         $bot->sendMessage("Hello, folks!");
     }
 );
-=======
-// Add a command that will be triggered everytime the user send `/start`
-$bot->addMessageCommand("start", function($bot, $message) {
-    // Reply with a message
-    $bot->sendMessage("Hello, folks!");
-});
->>>>>>> master
 
 $bot->addCommand($start_command);
 
