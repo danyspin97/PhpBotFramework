@@ -483,7 +483,7 @@ class CoreBot
      */
     protected function checkCurrentFile()
     {
-        if (!$this->_file->is_local()) {
+        if ($this->_file->is_local()) {
             $this->parameters[$this->_file->getFormatName()] = $this->_file->getString();
             return false;
         }
