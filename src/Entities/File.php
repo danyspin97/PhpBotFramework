@@ -45,13 +45,18 @@ class File
     {
         $host = parse_url($this->file, PHP_URL_HOST);
 
-        // If it has not an url host and it is a file_id
-        if ($host === null && !is_numeric($this->file)) {
-            // Then it is a local path
+        // If it has not an url host
+        if ($host === null) {
+            // Is the string a file_id?
+            if (preg_match('/^([\w\d]*[-_]*[\w\d]*)*$/', $this->file)) {
+                // It is a file_id
+                return false;
+            }
+            // It is local
             return true;
-        } else {
-            return false;
         }
+            // It is an url
+            return false;
     }
 
     /**

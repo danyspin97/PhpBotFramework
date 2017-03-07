@@ -134,6 +134,8 @@ class CoreBotTest extends TestCase
         $this->assertArrayHasKey('document', $new_document);
 
         $this->assertArrayHasKey('caption', $new_document);
+
+        $bot->sendDocument($new_document['document']['file_id']);;
     }
 
     public function providerDocument()
