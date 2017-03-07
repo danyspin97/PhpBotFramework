@@ -46,7 +46,7 @@ class File
         $host = parse_url($this->file, PHP_URL_HOST);
 
         // If it has not an url host and it is a file_id
-        if ($host === null && !is_numeric($this->file)) {
+        if ($host === null && ! ctype_alnum($this->file)) {
             // Then it is a local path
             return true;
         } else {
