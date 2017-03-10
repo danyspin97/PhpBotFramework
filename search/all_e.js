@@ -10,6 +10,5 @@ var searchData=
   ['processfakeupdate',['processFakeUpdate',['../classPhpBotFramework_1_1Test_1_1FakeUpdate.html#acd2a0e0318a61732ebafac3d374c5b7c',1,'PhpBotFramework::Test::FakeUpdate']]],
   ['processinlinequery',['processInlineQuery',['../classPhpBotFramework_1_1BasicBot.html#aaa3a5b35532dcf6836661253c88cd7ac',1,'PhpBotFramework::BasicBot']]],
   ['processmessage',['processMessage',['../classPhpBotFramework_1_1BasicBot.html#a501a9accb172e658ddc3c47851d199f2',1,'PhpBotFramework::BasicBot']]],
-  ['processrequest',['processRequest',['../classPhpBotFramework_1_1Core_1_1CoreBot.html#af0aec7156e8020b6401cd96f2fa6c683',1,'PhpBotFramework::Core::CoreBot']]],
   ['processwebhookupdate',['processWebhookUpdate',['../group__Bot.html#ga6fc8953a15cfb9af0a4e9d6573771c28',1,'PhpBotFramework::BasicBot']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['send',['Send',['../classPhpBotFramework_1_1Core_1_1Send.html',1,'PhpBotFramework::Core']]]
+  ['paginator',['Paginator',['../classPhpBotFramework_1_1Utilities_1_1Paginator.html',1,'PhpBotFramework::Utilities']]]
 ];

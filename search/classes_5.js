@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['getter',['Getter',['../classPhpBotFramework_1_1Database_1_1Getter.html',1,'PhpBotFramework::Database']]]
+  ['fakeupdate',['FakeUpdate',['../classPhpBotFramework_1_1Test_1_1FakeUpdate.html',1,'PhpBotFramework::Test']]],
+  ['file',['File',['../classPhpBotFramework_1_1Entities_1_1File.html',1,'PhpBotFramework\Entities\File'],['../classPhpBotFramework_1_1Localization_1_1File.html',1,'PhpBotFramework\Localization\File']]]
 ];

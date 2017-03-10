@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PhpBotFramework
-   &#160;<span id="projectnumber">2.0.0</span>
+   &#160;<span id="projectnumber">2.0.1</span>
    </div>
    <div id="projectbrief">A framework for Telegram Bots&#39; APIs.</div>
   </td>
@@ -202,7 +202,7 @@ $help_closure = function($bot, $message) {
     $bot-&gt;sendMessage("This is the help message")
 };
 
-$help_message_command = new PhpBotFramework\Commands\MessageCommand("/help", $help_function);
+$help_message_command = new PhpBotFramework\Commands\MessageCommand("help", $help_function);
 
 $bot-&gt;addCommand($help_message_command);
 </pre><h2><a class="anchor" id="Bot-commands-regex"></a>
@@ -220,16 +220,16 @@ Inline keyboards</h1>
 <p>Telegram implements something called <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboards</a> which allows users to send commands to a bot tapping on buttons instead of typing text.</p>
 <p>PhpBotFrameworks supports <b>inline keyboard</b> and you can easily integrate it with your bot: </p><pre class="fragment">$bot = new PhpBotFramework\Bot("token");
 
-$command = ("start", function($bot, $message) {
+$command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
     // Add a button to the inline keyboard with written 'Click me!' and
     // that open the Telegram site if pressed.
-    $bot-&gt;inline_keyboard-&gt;addLevelButtons([
+    $bot-&gt;keyboard-&gt;addLevelButtons([
         'text' =&gt; 'Click me!',
         'url' =&gt; 'telegram.me'
     ]);
 
     // Then send a message, with our keyboard in the parameter $reply_markup of sendMessage
-    $bot-&gt;sendMessage("This is a test message", $bot-&gt;inline_keyboard-&gt;get());
+    $bot-&gt;sendMessage("This is a test message", $bot-&gt;keyboard-&gt;get());
 });
 
 // Add the command
@@ -258,7 +258,7 @@ Multi-language Bot</h1>
 </pre><p><code>localization/it.json</code>: </p><pre class="fragment">{ "Welcome_Message": "Ciao, gente!" }
 </pre><p><code>main.php</code>: </p><pre class="fragment">// ...
 
-$start_command = PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
+$start_command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
     $bot-&gt;sendMessage($bot-&gt;local-&gt;getStr('Greetings_Msg'));
 });
 

@@ -8,7 +8,6 @@ var searchData=
   ['_24language',['$language',['../group__Localization.html#ga2e67d27274f4844baa6b07e714d98a2b',1,'PhpBotFramework::Localization::Localization']]],
   ['_24local',['$local',['../group__Bot.html#gafc6898f1be57e2a6565b63ab951c1b6d',1,'PhpBotFramework::Bot']]],
   ['_24localization_5fdir',['$localization_dir',['../group__Localization.html#gaab5cadfe193900ed979230c4b9f6c8df',1,'PhpBotFramework::Localization::File']]],
-  ['_24parameters',['$parameters',['../classPhpBotFramework_1_1Core_1_1CoreBot.html#a0357787da4c70ab0ffc21d16fc849449',1,'PhpBotFramework::Core::CoreBot']]],
   ['_24pdo',['$pdo',['../classPhpBotFramework_1_1Database_1_1Database.html#a26ee13f7e9234c2e67200b541627638c',1,'PhpBotFramework::Database::Database']]],
   ['_24redis',['$redis',['../group__Bot.html#ga853d965b9df448685e4ad362ad93194c',1,'PhpBotFramework::Bot']]],
   ['_24status',['$status',['../group__Bot.html#gacc1577d5545b60c45148e270f2e1dcc3',1,'PhpBotFramework\Bot\$status()'],['../group__Modules.html#gaf3c23ca76f52b1202d1b01624c733b6f',1,'PhpBotFramework\Utilities\BotState\$status()']]],

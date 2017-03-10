@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['updates',['Updates',['../classPhpBotFramework_1_1Core_1_1Updates.html',1,'PhpBotFramework::Core']]],
-  ['user',['User',['../classPhpBotFramework_1_1Database_1_1User.html',1,'PhpBotFramework::Database']]]
+  ['testbot',['TestBot',['../classPhpBotFramework_1_1Test_1_1TestBot.html',1,'PhpBotFramework::Test']]],
+  ['text',['Text',['../classPhpBotFramework_1_1Entities_1_1Text.html',1,'PhpBotFramework::Entities']]]
 ];
