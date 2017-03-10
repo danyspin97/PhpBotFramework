@@ -268,7 +268,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  *     // ...
  *
- *     $start_command = PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
+ *     $start_command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
  *         $bot->sendMessage($bot->local->getStr('Greetings_Msg'));
  *     });
  *
@@ -343,13 +343,13 @@ class CoreBot
       * \brief Object of class PhpBotFramework\Entities\File that contain a path or resource to a file that has to be sent using Telegram API Methods. */
     protected $_file;
 
-    /** \@internal
-      * brief Contains parameters of the next request. */
+    /** @internal
+      * \brief Contains parameters of the next request. */
     protected $parameters;
 
     /**
-     * \@internal
-     * brief Initialize a new bot.
+     * @internal
+     * \brief Initialize a new bot.
      * \details Initialize a new bot passing its token.
      * @param $token Bot's token given by @botfather.
      */
@@ -443,8 +443,8 @@ class CoreBot
     /** @} */
 
     /**
-     * \@internal
-     * brief Process an API method by taking method and parameter.
+     * @internal
+     * \brief Process an API method by taking method and parameter.
      * \details optionally create a object of $class class name with the response as constructor param.
      * @param string $method Method to call.
      * @param array $param Parameter for the method.
