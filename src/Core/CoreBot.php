@@ -176,7 +176,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *         $bot->sendMessage("This is the help message")
  *     };
  *
- *     $help_message_command = new PhpBotFramework\Commands\MessageCommand("/help", $help_function);
+ *     $help_message_command = new PhpBotFramework\Commands\MessageCommand("help", $help_function);
  *
  *     $bot->addCommand($help_message_command);
  *
@@ -207,16 +207,16 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  *     $bot = new PhpBotFramework\Bot("token");
  *
- *     $command = ("start", function($bot, $message) {
+ *     $command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
  *         // Add a button to the inline keyboard with written 'Click me!' and
  *         // that open the Telegram site if pressed.
- *         $bot->inline_keyboard->addLevelButtons([
+ *         $bot->keyboard->addLevelButtons([
  *             'text' => 'Click me!',
  *             'url' => 'telegram.me'
  *         ]);
  *
  *         // Then send a message, with our keyboard in the parameter $reply_markup of sendMessage
- *         $bot->sendMessage("This is a test message", $bot->inline_keyboard->get());
+ *         $bot->sendMessage("This is a test message", $bot->keyboard->get());
  *     });
  *
  *     // Add the command
