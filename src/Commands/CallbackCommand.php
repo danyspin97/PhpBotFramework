@@ -41,7 +41,7 @@ class CallbackCommand extends BasicCommand
      * \brief Add a function that will be executed everytime a callback query contains a string as data
      * \details Use this syntax:
      *
-     *     addMessageCommand("menu", function($bot, $callback_query) {
+     *     $callback_command = PhpBotFramework\CallbackCommand("menu", function($bot, $callback_query) {
      *         $bot->editMessageText($callback_query['message']['message_id'], "This is the menu"); });
      *
      * @param string $data The string that will trigger this function.

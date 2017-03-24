@@ -32,17 +32,7 @@ $start_command = new PhpBotFramework\Commands\MessageCommand("start",
     }
 );
 
-// Create a command that can be executed only by some users passing
-// a list of Telegram IDs.
-$admin_command = new PhpBotFramework\Commands\AdminCommand("admin",
-    function($bot, $message) {
-        $bot->sendMessage("Welcome in the Admin Zone!");
-        // ...
-    }, [10000000, 10000001, 10011012]
-);
-
 $bot->addCommand($start_command);
-$bot->addCommand($admin_command);
 
 // Receive updates from Telegram using getUpdates
 $bot->getUpdatesLocal();
@@ -98,7 +88,7 @@ Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for lea
 - **Why there isn't a `chat_id` parameter to pass for API methods?**
 
   PhpBotFramework is "smart" enough to set it as the current user, group or channel ID.
-  Most of the frameworks out there requires you to specify the chat ID for every method's call but PhpBotFramework does it for you calling the next API method on who sent the message.
+  Most of the frameworks out there requires you to specify the chat ID for every method's call but PhpBotFramework does it for you calling most API methods on the current chat.
 
   You can still change it by using [setChatID](https://danyspin97.github.io/PhpBotFramework/group__Bot.html).
 
