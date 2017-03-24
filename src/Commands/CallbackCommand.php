@@ -55,7 +55,8 @@ class CallbackCommand extends BasicCommand
     }
 
     /**
-     * \brief (<i>Internal</i>) Process the callback query and check if it triggers a command of this type.
+     * \internal
+     * \brief  Process the callback query and check if it triggers a command of this type.
      * @param array $callback_query Callback query to process.
      * @return bool True if the callback query triggered a command.
      */
