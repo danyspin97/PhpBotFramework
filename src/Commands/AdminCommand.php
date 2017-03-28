@@ -73,18 +73,14 @@ class AdminCommand extends MessageCommand
      */
     public function checkCommand(array $message) : bool
     {
-        // If the message contains a bot command at the start
         $message_is_command = (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') ? true : false;
 
-        // If we found a valid command (check first lenght, then use strpos)
+        // If we found a valid command (check length at first, then use strpos)
         if ($message_is_command && $this->length == $message['entities'][0]['length'] &&
             mb_strpos($this->command, $message['text'], $message['entities'][0]['offset']) !== false) {
-          // Check that the user can execute the command
-          if (in_array($message['from']['id'], $this->ids)) {
-            return true;
-          } else {
-            return false;
-          }
+
+            // Check if user has the right privileges to execute the command.
+            return in_array($message['from']['id'], $this->ids) ? true : false;
         }
 
         return false;

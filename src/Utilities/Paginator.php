@@ -83,7 +83,7 @@ class Paginator
             if ($items_displayed === 0 && $counter === $item_position) {
                 $message .= $format_item($item, $keyboard);
                 $items_displayed++;
-            // If there are space for other items
+
             } elseif ($items_displayed > 0 && $items_displayed < $item_per_page) {
                 $message .= $delimiter;
                 $message .= $format_item($item, $keyboard);

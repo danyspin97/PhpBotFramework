@@ -51,7 +51,7 @@ trait CommandHandler
         }
 
         foreach ($this->_commands as $index => $array) {
-        // Sort them by priority
+            // Sort them by priority
             uasort($this->_commands[$index], 'PhpBotFramework\Commands\CommandHandler::sortingPrior');
         }
     }
