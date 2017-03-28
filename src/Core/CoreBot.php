@@ -456,11 +456,7 @@ class CoreBot
         $url = "$method?" . http_build_query($this->parameters);
 
         // If there is a file to upload
-        if ($file === false) {
-            $response = $this->execRequest($url);
-        } else {
-            $response = $this->execMultipartRequest($url);
-        }
+        $response = $file === false ? $this->execRequest($url) : $this->execMultipartRequest($url);
 
         if ($response === false) {
             return false;
@@ -468,7 +464,6 @@ class CoreBot
 
         if ($class !== '') {
             $object_class = "PhpBotFramework\Entities\\$class";
-
             return new $object_class($response);
         }
 
