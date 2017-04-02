@@ -18,20 +18,14 @@ class CoreBotTest extends TestCase
 {
     public $chat_id;
 
+    public function __construct() { $this->chat_id = ''; }
+
     public function testCreateCoreBot()
     {
-        // Get token from env variable
-        $token = getenv("BOT_TOKEN");
-
-        if (!isset($token)) {
-            echo "You need a valid bot token to run tests/corebottest.php.\n";
-            exit(1);
-        }
-
-        $bot = new PhpBotFramework\Core\CoreBot($token);
+        $bot = $this->createMock(PhpBotFramework\Core\CoreBot::class, 'BOT_TOKEN');
+        $bot->method('setChatID')->will($this->returnArgument(0));
 
         $this->assertInstanceOf('PhpBotFramework\Core\CoreBot', $bot);
-
         return $bot;
     }
 
@@ -40,12 +34,9 @@ class CoreBotTest extends TestCase
      */
     public function testSetChatIDAndGetChatIDReturnSameID($bot)
     {
-        $this->chat_id = getenv("CHAT_ID");
+        $this->chat_id = $bot->setChatID('CUSTOM_CHAT_ID');
 
-        // Set chat id
-        $bot->setChatID($this->chat_id);
-
-        // Assert that getChatID returns the same chat_id set with setChatID
+        $bot->method('getChatID')->willReturn($this->chat_id);
         $this->assertEquals($this->chat_id, $bot->getChatID());
     }
 
@@ -71,13 +62,15 @@ class CoreBotTest extends TestCase
      */
     public function testSendingMessageWillReturnTheSentMessage($text, $parse_mode, $bot)
     {
-        // Send a message
+        $resp = json_decode('{"ok":true,"chat":{"id":100000001}}');
+        $resp['chat']['text'] = $text;
+
+        $bot->method('sendMessage')
+            ->willReturn(new PhpBotFramework\Entities\Message($resp));
+
         $new_message = $bot->sendMessage($text, null, null, $parse_mode);
 
-        // Is the response an array?
         $this->assertInstanceOf('PhpBotFramework\Entities\Message', $new_message);
-
-        // Does the array have the text key?
         $this->assertArrayHasKey('text', $new_message);
     }
 
@@ -91,13 +84,9 @@ class CoreBotTest extends TestCase
      */
     public function testSendPhoto($photo, $caption, $bot)
     {
-        // Send the photo
         $new_photo = $bot->sendPhoto($photo, null, $caption);
 
-        // Does the message sent contains a photo?
         $this->assertArrayHasKey('photo', $new_photo);
-
-        // The photo sent has a caption?
         $this->assertArrayHasKey('caption', $new_photo);
 
         // Are the caption equals?
@@ -119,7 +108,7 @@ class CoreBotTest extends TestCase
      */
     public function testGetChatReturnTheSameID($bot)
     {
-        $chat = $bot->getChat($this->chat_id);
+        $chat = $bot->getChat($chat_id);
         $this->assertEquals($this->chat_id, $chat['id']);
     }
 
@@ -174,43 +163,12 @@ class CoreBotTest extends TestCase
      */
     public function testGetWebhookInfo($bot)
     {
+        $map = ['ok' => true, 'result' => ['pending_update_count' => 0]];
+        $bot->method('getWebhookInfo')->willReturn($map);
+
         $response = $bot->getWebhookInfo();
 
-        $this->assertEquals(is_array($response), true);
-        $this->assertArrayHasKey('pending_update_count', $response);
-
-        return;
+        $this->assertEquals($response['ok'], true);
+        $this->assertArrayHasKey('pending_update_count', $response['result']);
     }
-
-    /**
-     * deleteWebhook()
-     * Delete webhook if the user configured one.
-     *
-     * @depends testCreateCoreBot
-     */
-    /*public function testDeleteWebhook() {
-        $response = $this->subject->deleteWebhook();
-
-        $this->assertEquals($response, true);
-
-        return;
-    }*/
-
-    /**
-     * setWebhook($params)
-     * Set bot's webhook.
-     *
-     * @depends testCreateCoreBot
-     */
-    /*public function testSetWebhook() {
-        $response = $this->subject->setWebhook([
-            'url' => 'https://example.com',
-            'max_connections' => 5
-        ]);
-
-        $this->assertEquals($response, true);
-        $this->subject->deleteWebhook();
-
-        return;
-    }*/
 }
