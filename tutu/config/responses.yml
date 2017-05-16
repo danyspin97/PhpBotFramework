@@ -1,0 +1,24 @@
+get_webhook_info:
+  request:
+    path: /getWebhookInfo
+    methods: ['POST', 'GET']
+  response:
+    content: '{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0}}'
+
+get_chat_id:
+  request:
+    path: /getChat
+    methods: ['POST']
+  response:
+    content: '{ "result": { "id": "CUSTOM_CHAT_ID" } }'
+
+send_message:
+  request:
+    path: /sendMessage
+    methods: ['POST']
+  response:
+    content: '{
+      "ok":true,"result": {"message_id":11044,
+      "from":{"id":X52XXX648,"first_name":"ExampleBot","username":"ExampleBot"},
+      "chat":{"id":10XX1XX6X,"first_name":"PHP","username":"PHP","type":"private"},
+      "date":1494955249,"text": "{{ request.query.get("text") }}"}}'
