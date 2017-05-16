@@ -113,8 +113,12 @@ on which port run the **mock server** that allows the tests to be executed.
 export MOCK_SERVER_PORT=9696
 ```
 
-After you've set the necessary, you can run the test suite typing:
+Now you can run the run the mock server:
+```shell
+./start_mock_server.sh
+```
 
+And run the test suite:
 ```shell
 php vendor/bin/phpunit
 ```
