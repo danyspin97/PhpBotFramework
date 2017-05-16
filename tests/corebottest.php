@@ -22,8 +22,24 @@ class CoreBotTest extends TestCase
 
     public function testCreateCoreBot()
     {
-        $bot = $this->createMock(PhpBotFramework\Core\CoreBot::class, 'BOT_TOKEN');
-        $bot->method('setChatID')->will($this->returnArgument(0));
+        $MOCK_SERVER_PORT = getenv('MOCK_SERVER_PORT');
+
+        if (!isset($MOCK_SERVER_PORT)) {
+            echo "You need to define the port for the mock server to run.\n";
+            exit(1);
+        }
+
+
+        $bot = new PhpBotFramework\Core\CoreBot('FAKE_TOKEN');
+
+        $bot->_http = new \GuzzleHttp\Client([
+            'base_uri' => "http://localhost:$MOCK_SERVER_PORT",
+            'connect_timeout' => 5,
+            'verify' => false,
+            'timeout' => 60,
+            'http_errors' => false
+        ]);
+
 
         $this->assertInstanceOf('PhpBotFramework\Core\CoreBot', $bot);
         return $bot;
@@ -34,10 +50,8 @@ class CoreBotTest extends TestCase
      */
     public function testSetChatIDAndGetChatIDReturnSameID($bot)
     {
-        $this->chat_id = $bot->setChatID('CUSTOM_CHAT_ID');
-
-        $bot->method('getChatID')->willReturn($this->chat_id);
-        $this->assertEquals($this->chat_id, $bot->getChatID());
+        $bot->setChatID('CUSTOM_CHAT_ID');
+        $this->assertEquals('CUSTOM_CHAT_ID', $bot->getChatID());
     }
 
     /**
@@ -62,12 +76,6 @@ class CoreBotTest extends TestCase
      */
     public function testSendingMessageWillReturnTheSentMessage($text, $parse_mode, $bot)
     {
-        $resp = json_decode('{"ok":true,"chat":{"id":100000001}}');
-        $resp['chat']['text'] = $text;
-
-        $bot->method('sendMessage')
-            ->willReturn(new PhpBotFramework\Entities\Message($resp));
-
         $new_message = $bot->sendMessage($text, null, null, $parse_mode);
 
         $this->assertInstanceOf('PhpBotFramework\Entities\Message', $new_message);
@@ -163,12 +171,7 @@ class CoreBotTest extends TestCase
      */
     public function testGetWebhookInfo($bot)
     {
-        $map = ['ok' => true, 'result' => ['pending_update_count' => 0]];
-        $bot->method('getWebhookInfo')->willReturn($map);
-
         $response = $bot->getWebhookInfo();
-
-        $this->assertEquals($response['ok'], true);
-        $this->assertArrayHasKey('pending_update_count', $response['result']);
+        $this->assertArrayHasKey('pending_update_count', $response);
     }
 }
