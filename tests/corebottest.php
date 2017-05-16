@@ -116,8 +116,8 @@ class CoreBotTest extends TestCase
      */
     public function testGetChatReturnTheSameID($bot)
     {
-        $chat = $bot->getChat($chat_id);
-        $this->assertEquals($this->chat_id, $chat['id']);
+        $chat = $bot->getChat('CUSTOM_CHAT_ID');
+        $this->assertEquals('CUSTOM_CHAT_ID', $chat['id']);
     }
 
     /**
