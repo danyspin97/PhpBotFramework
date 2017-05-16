@@ -106,11 +106,11 @@ All examples listed here are fully functional: you only need a valid **Telegram 
 
 PhpBotFramework comes with a test suite you can run using **PHPUnit**.
 
-You need a valid bot token and chat ID in order to run tests:
+You need to set `MOCK_SERVER_PORT` environment variable which tells PhpBotFramework
+on which port run the **mock server** that allows the tests to be executed.
 
 ```shell
-export BOT_TOKEN=YOURBOTTOKEN
-export CHAT_ID=YOURCHATID
+export MOCK_SERVER_PORT=9696
 ```
 
 After you've set the necessary, you can run the test suite typing:
