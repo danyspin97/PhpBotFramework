@@ -3,7 +3,8 @@ get_webhook_info:
     path: /getWebhookInfo
     methods: ['POST', 'GET']
   response:
-    content: '{"ok":true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0}}'
+    content: >
+      {"ok": true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0}}
 
 get_chat_id:
   request:
@@ -17,8 +18,52 @@ send_message:
     path: /sendMessage
     methods: ['POST']
   response:
-    content: '{
-      "ok":true,"result": {"message_id":11044,
-      "from":{"id":X52XXX648,"first_name":"ExampleBot","username":"ExampleBot"},
-      "chat":{"id":10XX1XX6X,"first_name":"PHP","username":"PHP","type":"private"},
-      "date":1494955249,"text": "{{ request.query.get("text") }}"}}'
+    content: >
+      { "ok":true,"result": {"message_id": 11044, "from":{"id":X52XXX648},
+        "chat": {"id": {{ request.query.get("chat_id") }}, "type":"private"},
+        "date": 1494955249, "text": {{ request.query.get("text") }} }
+      }
+
+send_photo:
+  request:
+    path: /sendPhoto
+    methods: ['POST']
+  response:
+    content: >
+      { "ok":true,"result":{"message_id":11046,
+        "from": {"id":25XXX464X},
+        "chat": {"id":10XXX48XX, "type":"private"},"date":1495034246,
+        "photo": [{"file_id":"AgADBAADwhg2G_scZAfbBBeWCxXxpxxxxxBxxxBJ5xx_fgTtH-DpkAAgI","file_size":1099,"width":90,"height":51},
+        {"file_id": "AgADBAADwhg2G_scZAfbxCxxxxxxxxXxkAHOjwuJx8NPCDZkAAgI",
+         "file_size": 19047,"width":320,"height":180},
+        {"file_id": "AgADBAADwhg2G_scZAfbBBeWC2GgpDlToBkABMS3FxUpJVfhEJkAAgI","file_size":511833,"width":1920,"height":1080}],
+        "caption":"What a fantastic tree."}
+      }
+
+send_document:
+  request:
+    path: /sendDocument
+    methods: ['POST']
+  response:
+    content: >
+      {
+        "ok": true,"result":{"message_id":11047,
+        "from": {"id":2X2XX4XXX},
+        "chat": {"id":1XX7XXX6X, "type":"private"},"date":1495034574,
+        "document": {"file_name":"C++.pdf","mime_type":"application/pdf",
+        "file_id": "BQADBXXDXXIAAu8aZAXXmlUXX1XXXgI","file_size":10829969},
+        "caption": "This is a programming book."}
+      }
+
+edit_message:
+  request:
+    path: /editMessageText
+    methods: ['POST']
+  response:
+    content: >
+      {
+        "ok": true,"result":{"message_id": {{ request.query.get("message_id") }},
+        "from": {"id":XX2XXXXX},
+        "chat": {"id": {{ request.query.get("chat_id") }},"type":"private"},
+        "date":1495035778, "text": {{ request.query.get("text") }} }
+      }

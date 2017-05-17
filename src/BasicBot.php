@@ -121,13 +121,15 @@ class BasicBot extends Core\CoreBot
      */
     protected function processUpdate(array $update) : int
     {
-        static $updates_type = ['message' => 'Message',
+        static $updates_type = [
+            'message' => 'Message',
             'callback_query' => 'CallbackQuery',
             'inline_query' => 'InlineQuery',
             'channel_post' => 'ChannelPost',
             'edited_message' => 'EditedMessage',
             'edited_channel_post' => 'EditedChannelPost',
-            'chosen_inline_result' => 'ChosenInlineResult'];
+            'chosen_inline_result' => 'ChosenInlineResult'
+        ];
 
         if ($this->processCommands($update)) {
             return $update['update_id'];

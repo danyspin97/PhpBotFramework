@@ -17,9 +17,6 @@ define('PDF_TEST', 'http://www.lmpt.univ-tours.fr/~volkov/C++.pdf');
 class CoreBotTest extends TestCase
 {
     public $chat_id;
-
-    public function __construct() { $this->chat_id = ''; }
-
     public function testCreateCoreBot()
     {
         $MOCK_SERVER_PORT = getenv('MOCK_SERVER_PORT');
@@ -55,31 +52,30 @@ class CoreBotTest extends TestCase
     }
 
     /**
-     * provider for test
-     */
-    public function providerMessageText()
-    {
-        return [
-            'no_markdown' => ["First message <i>with</i> *no* markdown", ""],
-            'HTML' => ["Second message with <i>html</i> _markdown_", "HTML"],
-            'Markdown' => ["Third message <b>with</b> *markdown*", "Markdown"]
-        ];
-    }
-
-    /**
      * @param string $text Text of the message to send
      * @param string $parse_mode Parse mode of the message to send
      * @param CoreBot $bot Bot object that will send the photo
      *
      * @depends testCreateCoreBot
-     * @dataProvider providerMessageText
+     * @dataProvider additionProvider
      */
     public function testSendingMessageWillReturnTheSentMessage($text, $parse_mode, $bot)
     {
         $new_message = $bot->sendMessage($text, null, null, $parse_mode);
-
         $this->assertInstanceOf('PhpBotFramework\Entities\Message', $new_message);
-        $this->assertArrayHasKey('text', $new_message);
+        $this->assertEquals($new_message['text'], $text);
+    }
+
+    /**
+     * provider for test
+     */
+    public function additionProvider()
+    {
+        return [
+            ['First message <i>with</i> *no* markdown', ''],
+            ['Second message with <i>html</i> _markdown_', 'HTML'],
+            ['Third message <b>with</b> *markdown*', 'Markdown']
+        ];
     }
 
     /**
@@ -96,6 +92,7 @@ class CoreBotTest extends TestCase
 
         $this->assertArrayHasKey('photo', $new_photo);
         $this->assertArrayHasKey('caption', $new_photo);
+        $this->assertEquals($new_photo['result'], 2);
 
         // Are the caption equals?
         $this->assertEquals($new_photo['caption'], $caption);
@@ -150,15 +147,13 @@ class CoreBotTest extends TestCase
     public function testEditingMessageChangeText($bot)
     {
         $new_message = $bot->sendMessage('This message will be edited.');
-
         $text = 'This message has been edited.';
 
+        print($new_message['result']);
         $edited_message = $bot->editMessageText($new_message['message_id'], $text);
 
         $this->assertInstanceOf('PhpBotFramework\Entities\Message', $edited_message);
-
         $this->assertNotEquals($edited_message['text'], $new_message['text']);
-
         $this->assertEquals($edited_message['text'], $text);
     }
 
