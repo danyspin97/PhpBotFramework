@@ -3,21 +3,28 @@ get_webhook_info:
     path: /getWebhookInfo
     methods: ['POST', 'GET']
   response:
+    headers:
+      Content-Type: application/json
     content: >
-      {"ok": true,"result":{"url":"","has_custom_certificate":false,"pending_update_count":0}}
+      {"ok": true,"result":{"url": "","has_custom_certificate":false,"pending_update_count": 0 }}
 
 get_chat_id:
   request:
     path: /getChat
     methods: ['POST']
   response:
-    content: '{ "result": { "id": "CUSTOM_CHAT_ID" } }'
+    headers:
+      Content-Type: application/json
+    content: >
+      { "result": { "id": "CUSTOM_CHAT_ID" } }
 
 send_message:
   request:
     path: /sendMessage
     methods: ['POST']
   response:
+    headers:
+      Content-Type: application/json
     content: >
       { "ok":true,"result": {"message_id": 11044, "from":{"id":X52XXX648},
         "chat": {"id": {{ request.query.get("chat_id") }}, "type":"private"},
@@ -29,14 +36,17 @@ send_photo:
     path: /sendPhoto
     methods: ['POST']
   response:
+    headers:
+      Content-Type: application/json
     content: >
-      { "ok":true,"result":{"message_id":11046,
+      { "ok": true,"result":{"message_id":11046,
         "from": {"id":25XXX464X},
-        "chat": {"id":10XXX48XX, "type":"private"},"date":1495034246,
-        "photo": [{"file_id":"AgADBAADwhg2G_scZAfbBBeWCxXxpxxxxxBxxxBJ5xx_fgTtH-DpkAAgI","file_size":1099,"width":90,"height":51},
-        {"file_id": "AgADBAADwhg2G_scZAfbxCxxxxxxxxXxkAHOjwuJx8NPCDZkAAgI",
-         "file_size": 19047,"width":320,"height":180},
-        {"file_id": "AgADBAADwhg2G_scZAfbBBeWC2GgpDlToBkABMS3FxUpJVfhEJkAAgI","file_size":511833,"width":1920,"height":1080}],
+        "chat": {"id": {{ request.query.get("chat_id") }}, "type":"private"},"date":1495034246,
+        "photo": [
+          {"file_id": "AgADBAADwhg2G_scZAfbBBeWCxXxpxxxxxBxxxBJ5xx_fgTtH-DpkAAgI","file_size":1099,"width":90,"height":51},
+          {"file_id": "AgADBAADwhg2G_scZAfbxCxxxxxxxxXxkAHOjwuJx8NPCDZkAAgI", "file_size": 19047,"width":320,"height":180},
+          {"file_id": "AgADBAADwhg2G_scZAfbBBeWC2GgpDlToBkABMS3FxUpJVfhEJkAAgI","file_size":511833,"width":1920,"height":1080}
+        ],
         "caption":"What a fantastic tree."}
       }
 
@@ -45,6 +55,8 @@ send_document:
     path: /sendDocument
     methods: ['POST']
   response:
+    headers:
+      Content-Type: application/json
     content: >
       {
         "ok": true,"result":{"message_id":11047,
@@ -60,6 +72,8 @@ edit_message:
     path: /editMessageText
     methods: ['POST']
   response:
+    headers:
+      Content-Type: application/json
     content: >
       {
         "ok": true,"result":{"message_id": {{ request.query.get("message_id") }},
