@@ -63,7 +63,7 @@ class CoreBotTest extends TestCase
     {
         $new_message = $bot->sendMessage($text, null, null, $parse_mode);
         $this->assertInstanceOf('PhpBotFramework\Entities\Message', $new_message);
-        $this->assertEquals($new_message['text'], $text);
+        $this->assertEquals(html_entity_decode($new_message['text']), $text);
     }
 
     /**
@@ -92,7 +92,6 @@ class CoreBotTest extends TestCase
 
         $this->assertArrayHasKey('photo', $new_photo);
         $this->assertArrayHasKey('caption', $new_photo);
-        $this->assertEquals($new_photo['result'], 2);
 
         // Are the caption equals?
         $this->assertEquals($new_photo['caption'], $caption);
