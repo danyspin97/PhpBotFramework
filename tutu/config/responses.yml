@@ -1,0 +1,80 @@
+get_webhook_info:
+  request:
+    path: /getWebhookInfo
+    methods: ['POST', 'GET']
+  response:
+    headers:
+      Content-Type: application/json
+    content: >
+      {"ok": true,"result":{"url": "","has_custom_certificate":false,"pending_update_count": 0 }}
+
+get_chat_id:
+  request:
+    path: /getChat
+    methods: ['POST']
+  response:
+    headers:
+      Content-Type: application/json
+    content: >
+      { "result": { "id": "CUSTOM_CHAT_ID" } }
+
+send_message:
+  request:
+    path: /sendMessage
+    methods: ['POST']
+  response:
+    headers:
+      Content-Type: application/json
+    content: >
+      { "ok":true,"result": {"message_id": 11044, "from":{"id": "X52XXX648"},
+        "chat": {"id": "{{ request.query.get('chat_id') }}", "type":"private"},
+        "date": 1494955249, "text": "{{ request.query.get('text') }}" }
+      }
+
+send_photo:
+  request:
+    path: /sendPhoto
+    methods: ['POST']
+  response:
+    headers:
+      Content-Type: application/json
+    content: >
+      { "ok": true,"result":{"message_id":11046,
+        "chat": {"id": "CHAT_ID", "type":"private"},
+        "photo": [
+          {"file_id": "AgADBAADwhg2G_scZAfbBBeWC2GgpDlToBkABMS3FxUpJVfhEJkAAgI"}
+        ],
+        "caption": "{{ request.query.get('caption') }}" }
+      }
+
+send_document:
+  request:
+    path: /sendDocument
+    methods: ['POST']
+  response:
+    headers:
+      Content-Type: application/json
+    content: >
+      {
+        "ok": true,"result":{"message_id":11047,
+        "from": {"id":"2X2XX4XXX"},
+        "chat": {"id":"1XX7XXX6X", "type":"private"},"date":1495034574,
+        "document": {"file_name":"C++.pdf","mime_type":"application/pdf",
+        "file_id": "BQADBXXDXXIAAu8aZAXXmlUXX1XXXgI","file_size":10829969},
+        "caption": "This is a programming book."}
+      }
+
+edit_message:
+  request:
+    path: /editMessageText
+    methods: ['POST']
+  response:
+    headers:
+      Content-Type: application/json
+    content: >
+      {
+        "ok": true,"result":{"message_id": "{{ request.query.get('message_id') }}",
+        "from": {"id":"XX2XXXXX"},
+        "chat": {"id": "{{ request.query.get('chat_id') }}", "type":"private"},
+        "date":1495035778, "text": "{{ request.query.get('text') }}" }
+      }
