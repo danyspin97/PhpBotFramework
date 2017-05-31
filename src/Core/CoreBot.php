@@ -337,7 +337,7 @@ class CoreBot
 
     /** @internal
       * \brief Implements interface for execute HTTP requests. */
-    protected $_http;
+    public $_http;
 
     /** @internal
       * \brief Object of class PhpBotFramework\Entities\File that contain a path or resource to a file that has to be sent using Telegram API Methods. */

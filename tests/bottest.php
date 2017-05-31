@@ -13,18 +13,16 @@ class BotTest extends TestCase
 
     public function testCreateBot()
     {
-        // Get token from env variable
-        $token = getenv("BOT_TOKEN");
+        $MOCK_SERVER_PORT = getenv('MOCK_SERVER_PORT');
 
-        if (!isset($token)) {
-            echo "You need a valid bot token to run tests/corebottest.php.\n";
+        if (!isset($MOCK_SERVER_PORT)) {
+            echo "You need to define the port for the mock server to run.\n";
             exit(1);
         }
 
-        $bot = new PhpBotFramework\Test\TestBot($token);
+        $bot = new PhpBotFramework\Test\TestBot('FAKE_TOKEN');
 
         $this->assertInstanceOf('PhpBotFramework\Test\TestBot', $bot);
-
         return $bot;
     }
 
@@ -70,8 +68,8 @@ class BotTest extends TestCase
         $message = json_decode(file_get_contents($filename), true);
 
         $command = new PhpBotFramework\Commands\MessageCommand("start", function ($bot, Message $message) {
-            $bot->setChatID(getenv("CHAT_ID"));
-            $bot->sendMessage("This is a start message");
+            $bot->setChatID('FAKE_CHAT_ID');
+            $bot->sendMessage('This is a start message');
         });
 
         $bot->addCommand($command);
