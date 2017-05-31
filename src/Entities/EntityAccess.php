@@ -40,7 +40,7 @@ trait EntityAccess
 
     public function offsetUnset($offset)
     {
-        /* Log a warning */
+ /* Log a warning */
     }
 
     /**

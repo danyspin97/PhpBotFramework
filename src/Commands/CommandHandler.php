@@ -51,7 +51,7 @@ trait CommandHandler
         }
 
         foreach ($this->_commands as $index => $array) {
-            // Sort them by priority
+        // Sort them by priority
             uasort($this->_commands[$index], 'PhpBotFramework\Commands\CommandHandler::sortingPrior');
         }
     }
@@ -64,9 +64,10 @@ trait CommandHandler
      */
     protected function processCommands(array $update) : bool
     {
+        print_r($this->_commands);
         // For each command active (checked by initCommands())
         foreach ($this->_commands as $entity => $commands) {
-            foreach ($commands as $index => $command) {
+            foreach ($commands as $command) {
                 // If the update type is right and the update triggered a command
                 if (isset($update[$entity]) && $command->checkCommand($update[$entity])) {
                     $entity = new $command::$object_class($update[$entity]);

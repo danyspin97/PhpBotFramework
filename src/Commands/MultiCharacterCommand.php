@@ -18,14 +18,16 @@
 
 namespace PhpBotFramework\Commands;
 
+use PhpBotFramework\Exceptions\BotException;
+
 /**
  * \addtogroup Commands
  * @{
  */
 
-/** \class AdminCommand
+/** \class MessageCommand
  */
-class AdminCommand extends MessageCommand
+class MultiCharacterCommand extends BasicCommand
 {
     /** @} */
 
@@ -40,29 +42,46 @@ class AdminCommand extends MessageCommand
     private $length;
 
     /**
-     * \brief Registers commands that can be triggered only by administrators.
-     * \details It works like <code>MessageCommand</code> but it requires a
-     * third argument: the list of Telegram IDs which represents the users
-     * that can execute the command.
+     * \brief Add a function that will be executed everytime a message contain the selected command
+     * \details Use this syntax to create a command:
      *
-     *     $start_command = new PhpBotFramework\Commands\AdminCommand("getusers",
+     *     $help_cpmmand = new PhpBotFramework\Commands\MultiCharacterCommand("help",
      *         function ($bot, $message) {
-     *             $bot->sendMessage("Hello, folks!");
-     *         },
-     *     array(3299130043, -439991220, 12221004));
+     *             $bot->sendMessage("This is a help message.");
+     *         }
+     *     );
+     *
+     * Then you can add it to the bot's commands using <code>addCommand</code> method:
+     *
+     *     $bot->addCommand($help_command);
      *
      * @param string $command The command that will trigger this function (e.g. start)
      * @param callable $script The function that will be triggered by a command.
-     * @param array $ids The users who can execute the command.
      * Must take an object(the bot) and an array(the message received).
      */
-    public function __construct(string $command, callable $script, array $ids)
+    public function __construct(string $command, callable $script, string ...$chars)
     {
-        $this->command = "/$command";
-        $this->length = strlen($command) + 1;
-        $this->script = $script;
+        $chars_count = count($chars);
+        if ( $chars_count === 0)
+        {
+            throw new BotException("No character given for matching the command");
+        }
 
-        $this->ids = $ids;
+        if ($chars_count === 1)
+        {
+            $this->regex_rule = $chars[0] . $command;
+        }
+        else
+        {
+            $this->regex_rule = '(' . $chars[0];
+            foreach($chars as $char)
+            {
+                $this->regex_rule .= '|' . $char;
+            }
+            $this->regex_rule .= ')' . $command;
+        }
+
+        $this->script = $script;
     }
 
     /**
@@ -73,21 +92,12 @@ class AdminCommand extends MessageCommand
      */
     public function checkCommand(array $message) : bool
     {
-        // If the message contains a bot command at the start
-        $message_is_command = (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') ? true : false;
-
         // If we found a valid command (check first lenght, then use strpos)
-        if ($message_is_command && $this->length == $message['entities'][0]['length'] &&
-            mb_strpos($this->command, $message['text'], $message['entities'][0]['offset']) !== false) {
-          // Check that the user can execute the command
-          if (in_array($message['from']['id'], $this->ids)) {
-            return true;
-          } else {
-            return false;
-          }
+        if (preg_match("/{$this->regex_rule}/", $message['text'])) {
+                    // Return
+                    return true;
         }
 
         return false;
     }
-
 }

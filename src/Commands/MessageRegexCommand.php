@@ -39,9 +39,8 @@ class MessageRegexCommand extends BasicCommand
      *
      * \details Use this syntax:
      *
-     *     $regex_command = new PhpBotFramework\MessageCommandRegex("number\d", function($bot, $message, $result) {
+     *     addMessageCommandRegex("number\d", function($bot, $message, $result) {
      *         $bot->sendMessage("You sent me a number"); });
-     *
      * @param string $regex_rule Regex rule that will called for evalueting the command received.
      * @param callable $script The function that will be triggered by a command.
      * Must take an object(the bot) and an array(the message received).

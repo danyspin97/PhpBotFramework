@@ -176,7 +176,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *         $bot->sendMessage("This is the help message")
  *     };
  *
- *     $help_message_command = new PhpBotFramework\Commands\MessageCommand("help", $help_function);
+ *     $help_message_command = new PhpBotFramework\Commands\MessageCommand("/help", $help_function);
  *
  *     $bot->addCommand($help_message_command);
  *
@@ -207,16 +207,16 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  *     $bot = new PhpBotFramework\Bot("token");
  *
- *     $command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
+ *     $command = ("start", function($bot, $message) {
  *         // Add a button to the inline keyboard with written 'Click me!' and
  *         // that open the Telegram site if pressed.
- *         $bot->keyboard->addLevelButtons([
+ *         $bot->inline_keyboard->addLevelButtons([
  *             'text' => 'Click me!',
  *             'url' => 'telegram.me'
  *         ]);
  *
  *         // Then send a message, with our keyboard in the parameter $reply_markup of sendMessage
- *         $bot->sendMessage("This is a test message", $bot->keyboard->get());
+ *         $bot->sendMessage("This is a test message", $bot->inline_keyboard->get());
  *     });
  *
  *     // Add the command
@@ -268,7 +268,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  *     // ...
  *
- *     $start_command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
+ *     $start_command = PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
  *         $bot->sendMessage($bot->local->getStr('Greetings_Msg'));
  *     });
  *
@@ -343,13 +343,13 @@ class CoreBot
       * \brief Object of class PhpBotFramework\Entities\File that contain a path or resource to a file that has to be sent using Telegram API Methods. */
     protected $_file;
 
-    /** @internal
-      * \brief Contains parameters of the next request. */
+    /** \@internal
+      * brief Contains parameters of the next request. */
     protected $parameters;
 
     /**
-     * @internal
-     * \brief Initialize a new bot.
+     * \@internal
+     * brief Initialize a new bot.
      * \details Initialize a new bot passing its token.
      * @param $token Bot's token given by @botfather.
      */
@@ -443,8 +443,8 @@ class CoreBot
     /** @} */
 
     /**
-     * @internal
-     * \brief Process an API method by taking method and parameter.
+     * \@internal
+     * brief Process an API method by taking method and parameter.
      * \details optionally create a object of $class class name with the response as constructor param.
      * @param string $method Method to call.
      * @param array $param Parameter for the method.
@@ -456,7 +456,11 @@ class CoreBot
         $url = "$method?" . http_build_query($this->parameters);
 
         // If there is a file to upload
-        $response = $file === false ? $this->execRequest($url) : $this->execMultipartRequest($url);
+        if ($file === false) {
+            $response = $this->execRequest($url);
+        } else {
+            $response = $this->execMultipartRequest($url);
+        }
 
         if ($response === false) {
             return false;
@@ -464,6 +468,7 @@ class CoreBot
 
         if ($class !== '') {
             $object_class = "PhpBotFramework\Entities\\$class";
+
             return new $object_class($response);
         }
 
