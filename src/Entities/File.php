@@ -41,7 +41,7 @@ class File
      * \brief (<i>Internal</i>) Check if the path to the file given is local or a file_id/url.
      * @return bool True if the file is a local path.
      */
-    public function is_local() : bool
+    public function isLocal() : bool
     {
         $host = parse_url($this->file, PHP_URL_HOST);
 

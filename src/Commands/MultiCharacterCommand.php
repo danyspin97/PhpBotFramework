@@ -25,7 +25,7 @@ use PhpBotFramework\Exceptions\BotException;
  * @{
  */
 
-/** \class MessageCommand
+/** \class MultiCharacterCommand
  */
 class MultiCharacterCommand extends BasicCommand
 {
@@ -45,10 +45,10 @@ class MultiCharacterCommand extends BasicCommand
      * \brief Add a function that will be executed everytime a message contain the selected command
      * \details Use this syntax to create a command:
      *
-     *     $help_cpmmand = new PhpBotFramework\Commands\MultiCharacterCommand("help",
+     *     $help_command = new PhpBotFramework\Commands\MultiCharacterCommand("help",
      *         function ($bot, $message) {
      *             $bot->sendMessage("This is a help message.");
-     *         }
+     *         }, '!', '.', '/'
      *     );
      *
      * Then you can add it to the bot's commands using <code>addCommand</code> method:
@@ -69,8 +69,11 @@ class MultiCharacterCommand extends BasicCommand
 
         if ($chars_count === 1)
         {
+            // Build a regex using the only character
             $this->regex_rule = $chars[0] . $command;
         }
+        // Build regex including all characters
+        // Eg: (!|.)command
         else
         {
             $this->regex_rule = '(' . $chars[0];
@@ -92,7 +95,7 @@ class MultiCharacterCommand extends BasicCommand
      */
     public function checkCommand(array $message) : bool
     {
-        // If we found a valid command (check first lenght, then use strpos)
+        // Check the regex
         if (preg_match("/{$this->regex_rule}/", $message['text'])) {
                     // Return
                     return true;
