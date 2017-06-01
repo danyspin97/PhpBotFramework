@@ -148,7 +148,6 @@ class CoreBotTest extends TestCase
         $new_message = $bot->sendMessage('This message will be edited.');
         $text = 'This message has been edited.';
 
-        print($new_message['result']);
         $edited_message = $bot->editMessageText($new_message['message_id'], $text);
 
         $this->assertInstanceOf('PhpBotFramework\Entities\Message', $edited_message);
