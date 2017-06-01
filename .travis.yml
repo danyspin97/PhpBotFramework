@@ -21,10 +21,9 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - psql -U postgres -f examples/localization.sql travis_ci_test
   - composer install --prefer-source --no-interaction
+  - composer create-project coduo/tutu --stability=dev -n
+  - cp tests/responses.yml tutu/config/responses.yml
   - nohup ./start_mock_server.sh& SERVER_PID=$!
-
-after_script:
-  - kill $SERVER_PID
 
 script:
   - php vendor/bin/phpunit --coverage-clover=coverage.clover --configuration phpunit.xml

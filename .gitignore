@@ -4,6 +4,5 @@ composer.lock
 vendor/
 test.php
 Doxygen/all_filters.php
-tutu/var/*
-tutu/bin/*
 nohup.out
+tutu
