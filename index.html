@@ -75,7 +75,220 @@ $(function() {
 <div class="title">PhpBotFramework Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="Description"></a>
+Description</h1>
+<p>PhpBotFramework is a lightweight framework for <a href="https://core.telegram.org/bots/api">Telegram Bot API</a>. Designed to be fast and easy to use, it provides all the features a user need in order to start developing Telegram bots..</p>
+<h1><a class="anchor" id="Installation"></a>
+Installation</h1>
+<p>You can install PhpBotFramework using <b>Composer</b>.</p>
+<p>Go to your project's folder and type: </p><pre class="fragment">composer require danyspin97/php-bot-framework
+composer install --no-dev
+</pre><h1><a class="anchor" id="Usage"></a>
+Usage</h1>
+<p>You can start working on your bot creating a new instance of <a class="el" href="classPhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commands. ">Bot</a> or by creating a class that inherits from it.</p>
+<p>Each API call will have <code>$_chat_id</code> set to the current user: you can use <a class="el" href="group__Bot.html#gaabbd2c3240401bf4d6de2fa2ea0bee72" title="Set current chat ID. ">CoreBot::setChatID()</a> to change it.</p>
+<p>Below an example bot you can look to:</p>
+<pre class="fragment">&lt;?php
+
+// Include the framework
+require './vendor/autoload.php';
+
+// Create the bot
+$bot = new PhpBotFramework\Bot("token");
+
+// Create a command that will be triggered every time the user send /start
+$start_command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
+    $bot-&gt;sendMessage("Hello, folks!");
+});
+
+$bot-&gt;addCommand($start_command);
+
+// Receive updates from Telegram using getUpdates
+$bot-&gt;getUpdatesLocal();
+</pre><h2><a class="anchor" id="Bot-Intherited"></a>
+Inheriting by Bot class</h2>
+<pre class="fragment">&lt;?php
+
+// Include the framework
+require './vendor/autoload.php';
+
+// Create the class that will extends Bot class
+class EchoBot extends PhpBotFramework\Bot {
+
+    // Add the function for processing messages
+    protected function processMessage($message) {
+
+        // Answer each message with the text received
+        $this-&gt;sendMessage($message['text']);
+    }
+}
+
+$bot = new EchoBot("token");
+
+// Process updates using webhook
+$bot-&gt;processWebhookUpdate();
+</pre><p>Override these method to make your bot handle each update type:</p><ul>
+<li><a class="el" href="classPhpBotFramework_1_1BasicBot.html#a501a9accb172e658ddc3c47851d199f2" title="Called every message received by the bot. ">Bot::processMessage</a>($message)</li>
+<li><a class="el" href="classPhpBotFramework_1_1BasicBot.html#aed6de4495d30dc018a2ee3b49f14f9f6" title="Called every callback query received by the bot. ">Bot::processCallbackQuery</a>($callback_query)</li>
+<li><a class="el" href="classPhpBotFramework_1_1BasicBot.html#aaa3a5b35532dcf6836661253c88cd7ac" title="Called every inline query received by the bot. ">Bot::processInlineQuery</a>($inline_query)</li>
+<li><a class="el" href="classPhpBotFramework_1_1BasicBot.html#a8d99c1db4d54c1ad8173a4ecc951f549" title="Called every chosen inline result received by the bot. ">Bot::processChosenInlineResult</a>($_chosen_inline_result)</li>
+<li><a class="el" href="classPhpBotFramework_1_1BasicBot.html#a432d9f6d3316d572b897bcce47793918" title="Called every chosen edited message received by the bot. ">Bot::processEditedMessage</a>($edited_message)</li>
+<li><a class="el" href="classPhpBotFramework_1_1BasicBot.html#a77f7b82472f3819f70b2ca030ce81e36" title="Called every new post in the channel where the bot is in. ">Bot::processChannelPost</a>($post)</li>
+<li><a class="el" href="classPhpBotFramework_1_1BasicBot.html#ac8865e4cf58b24ef95f49ff6b29b8112" title="Called every time a post get edited in the channel where the bot is in. ">Bot::processEditedChannelPost</a>($edited_post)</li>
+</ul>
+<h1><a class="anchor" id="Features"></a>
+Features</h1>
+<ul>
+<li>Modular: take only what you need</li>
+<li>Flexible HTTP requests with <a href="https://github.com/guzzle/guzzle">Guzzle</a></li>
+<li>Designed to be fast and easy to use</li>
+<li>Support for local updates and webhooks</li>
+<li>Support for the most important API methods</li>
+<li>Command-handle system for messages and callback queries</li>
+<li>Update type based processing</li>
+<li>Easy <b>inline keyboard</b> creation</li>
+<li><a class="el" href="classPhpBotFramework_1_1Core_1_1Inline.html" title="All inline API Methods. ">Inline</a> query results handler</li>
+<li>Database support and facilities</li>
+<li>Redis support</li>
+<li>Support for multilanguage bots</li>
+<li>Support for bot states</li>
+<li>Highly-documented</li>
+</ul>
+<h1><a class="anchor" id="Requirements"></a>
+Requirements</h1>
+<ul>
+<li>PHP &gt;= 7.0</li>
+<li>php-mbstring</li>
+<li>Composer (to install the framework)</li>
+<li>Web server: <em>required for webhook</em> (we recommend <a href="http://nginx.org/">nginx</a>)</li>
+<li>SSL certificate: <em>required for webhook</em> (follow <a href="https://devcenter.heroku.com/articles/ssl-certificate-self">these steps</a> to make a self-signed certificate or use <a href="https://letsencrypt.org/">Let's Encrypt</a>)</li>
+</ul>
+<h1><a class="anchor" id="GetUpdates-section"></a>
+Getting updates</h1>
+<p>Everytime a user interacts with the bot, an <code>update</code> is generated by Telegram's servers.</p>
+<p>There are two ways of receiving this updates:</p><ul>
+<li>use <a href="https://core.telegram.org/bots/api#getupdates">Telegram Bot API's <code>getUpdates</code></a> method</li>
+<li>use webhooks (it's covered in the next section)</li>
+</ul>
+<p>If you want to use <code>getUpdates</code> in order to receive updates, add one of these functions at the end of your bot:</p><ul>
+<li><a class="el" href="group__Bot.html#ga25ee5250d0262d84809d0261e903aab3" title="Get updates received by the bot, and hold the offset in $offset. ">Bot::getUpdatesLocal()</a></li>
+<li><a class="el" href="group__Database.html#gaf97abd7262545615096beac380183430" title="Get updates received by the bot, using the SQL database to store and get the last offset...">Bot::getUpdatesDatabase()</a></li>
+<li><a class="el" href="group__Database.html#gab1f01461e4b2c68976b87b0cc3205e03" title="Get updates received by the bot, and use Redis to save and get the last offset. ">Bot::getUpdatesRedis()</a></li>
+</ul>
+<p>The bot will process updates one a time and will call Bot::processUpdate() for each.</p>
+<p>The connection will be opened at the creation and used for the entire life of the bot.</p>
+<h1><a class="anchor" id="Webhook-section"></a>
+Webhook</h1>
+<p>An alternative way to receive updates is using <b>webhooks</b>.</p>
+<p>Everytime a user interacts with the bot, Telegram servers send the update through a POST request to a URL chose by you.</p>
+<p>A web server will create an instance of the bot for every update received.</p>
+<p>If you want to use webhook: call <a class="el" href="group__Bot.html#ga6fc8953a15cfb9af0a4e9d6573771c28" title="Get update and process it. ">Bot::processWebhookUpdate()</a> at the end of your bot.</p>
+<p>The bot will get data from <code>php://input</code> and process it using Bot::processUpdate(). Each instance of the bot will open its connection.</p>
+<h2><a class="anchor" id="Setwebhooks-subsection"></a>
+Set webhook</h2>
+<p>You can set a URL for your bot's webhook using <a class="el" href="group__Api.html#ga866c6389cde796bb14f9f7eb33178c0c" title="Set bot&#39;s webhook. ">CoreBot::setWebhook()</a>: </p><pre class="fragment">//...
+$bot-&gt;setWebhook([ 'url' =&gt; 'https://example.com/mybotSECRETPATH' ])
+</pre><p>You can learn more about <code>setWebhook</code> and webhooks <a href="https://core.telegram.org/bots/api#setwebhook">here</a>.</p>
+<h1><a class="anchor" id="Message-commands"></a>
+Bot's commands</h1>
+<p>One of the most important tasks during a Telegram bot's development is register the commands the bot will respond to.</p>
+<p>PhpBotFrameworks makes it easy: </p><pre class="fragment">$start_message_command = new PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
+    $bot-&gt;sendMessage("I am your personal bot, try /help command");
+});
+
+$bot-&gt;addCommand($start_message_command);
+
+$help_closure = function($bot, $message) {
+    $bot-&gt;sendMessage("This is the help message")
+};
+
+$help_message_command = new PhpBotFramework\Commands\MessageCommand("/help", $help_function);
+
+$bot-&gt;addCommand($help_message_command);
+</pre><h2><a class="anchor" id="Bot-commands-regex"></a>
+Check commands using regex</h2>
+<p>You can also use <b>regular expressions</b> to check for the given command: </p><pre class="fragment">$regex_command = new PhpBotFramework\Commands\MessageRegexCommand("number\d", $help_function);
+</pre><p>The closure will be called when the user send a command that match the given regex, in this example: both <code>/number1</code> or <code>/number135</code>.</p>
+<h2><a class="anchor" id="Callback-commands"></a>
+Callback commands</h2>
+<p>You can also check for a callback query containing a particular string as data: </p><pre class="fragment">$callback_command = new PhpBotFramework\Commands\CallbackCommand("back", function($bot, $callback_query) {
+    $bot-&gt;editMessageText($callback_query['message']['message_id'], "You pressed back");
+});
+</pre><p>You should absolutely check <a class="el" href="group__Commands.html#ga6126054ede5a7cd136caa6d722416cb7" title="Add a command to the bot. ">Bot::addCommand()</a> for learning more.</p>
+<h1><a class="anchor" id="InlineKeyboard-Usage"></a>
+Inline keyboards</h1>
+<p>Telegram implements something called <a href="https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating">inline keyboards</a> which allows users to send commands to a bot tapping on buttons instead of typing text.</p>
+<p>PhpBotFrameworks supports <b>inline keyboard</b> and you can easily integrate it with your bot: </p><pre class="fragment">$bot = new PhpBotFramework\Bot("token");
+
+$command = ("start", function($bot, $message) {
+    // Add a button to the inline keyboard with written 'Click me!' and
+    // that open the Telegram site if pressed.
+    $bot-&gt;inline_keyboard-&gt;addLevelButtons([
+        'text' =&gt; 'Click me!',
+        'url' =&gt; 'telegram.me'
+    ]);
+
+    // Then send a message, with our keyboard in the parameter $reply_markup of sendMessage
+    $bot-&gt;sendMessage("This is a test message", $bot-&gt;inline_keyboard-&gt;get());
+});
+
+// Add the command
+$bot-&gt;addCommand($command);
+</pre><h1><a class="anchor" id="Sql-Database"></a>
+Database</h1>
+<p>A database is required in order to save offsets (if you use local updates) and save user's language.</p>
+<p>We implemented a simpler way to connect to a database which is based on PDO: </p><pre class="fragment">$bot-&gt;database-&gt;connect([
+    'adapter' =&gt; 'pgsql',
+    'username' =&gt; 'sysuser',
+    'password' =&gt; 'myshinypassword',
+    'dbname' =&gt; 'my_shiny_bot'
+]);
+</pre><p>This method will istantiate a new PDO connection and a new PDO object you can access through <code>$bot-&gt;getPdo()</code>.</p>
+<p>If no adapter and host are specified: <code>mysql</code> and <code>localhost</code> are assigned.</p>
+<h2><a class="anchor" id="Redis-database"></a>
+Redis</h2>
+<p><b>Redis</b> is used across PhpBotFramework in order to save offsets for local updates, to store user's language (both as cache and persistent) and save bot states.</p>
+<p>Redis and the main database are complementary so you need to set both.</p>
+<p>All you need to do, in order to enable Redis for your bot, is create a new Redis object: </p><pre class="fragment">$bot-&gt;redis = new Redis();
+</pre><h1><a class="anchor" id="Multilanguage-section"></a>
+Multi-language Bot</h1>
+<p>This framework offers methods and facilities for develop a multi-language bot.</p>
+<p>All you need to do is create a <code>localization</code> folder in your project's root folder and store there the JSON files with bot's messages:</p>
+<p><code>localization/en.json</code>: </p><pre class="fragment">{ "Welcome_Message": "Hello, folks!" }
+</pre><p><code>localization/it.json</code>: </p><pre class="fragment">{ "Welcome_Message": "Ciao, gente!" }
+</pre><p><code>main.php</code>: </p><pre class="fragment">// ...
+
+$start_command = PhpBotFramework\Commands\MessageCommand("start", function($bot, $message) {
+    $bot-&gt;sendMessage($bot-&gt;local-&gt;getStr('Greetings_Msg'));
+});
+
+$bot-&gt;addCommand($start_command);
+</pre><p>So you can have a wonderful (multi-language) bot with a small effort.</p>
+<h1><a class="anchor" id="Source"></a>
+Source</h1>
+<p><b>PhpBotFramework</b> is an open-source project so everyone can contribute to it.</p>
+<p>It's currently hosted on GitHub <a href="https://github.com/DanySpin97/PhpBotFramework">here</a>.</p>
+<h1><a class="anchor" id="Createdwith-section"></a>
+Made with PhpBotFramework</h1>
+<ul>
+<li><a href="https://github.com/DanySpin97/MyAddressBookBot">MyAddressBookBot</a>: <a href="https://telegram.me/myaddressbookbot">Try it on Telegram</a></li>
+<li><a href="https://github.com/DanySpin97/GiveawaysBot">Giveaways_Bot</a>: <a href="https://telegram.me/giveaways_bot">Try it on Telegram</a></li>
+</ul>
+<h1><a class="anchor" id="Testing"></a>
+Testing</h1>
+<p>PhpBotFramework comes with a test suite you can run using <b>PHPUnit</b>.</p>
+<p>You need a valid bot token and chat ID in order to run tests: </p><pre class="fragment"> export BOT_TOKEN=YOURBOTTOKEN
+ export CHAT_ID=YOURCHATID
+</pre><p>After you've set the necessary, you can run the test suite typing: </p><pre class="fragment"> phpunit
+</pre><h1><a class="anchor" id="Authors"></a>
+Authors</h1>
+<p>This framework is developed and mantained by <a href="https://github.com/DanySpin97">Danilo Spinella</a> and <a href="https://github.com/domcorvasce">Dom Corvasce</a>.</p>
+<h1><a class="anchor" id="License"></a>
+License</h1>
+<p>PhpBotFramework is released under <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html">GNU Lesser General Public License v3</a>.</p>
+<p>You may copy, distribute and modify the software provided that modifications are described and licensed for free under LGPL-3.</p>
+<p>Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the wrapper don't have to be. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

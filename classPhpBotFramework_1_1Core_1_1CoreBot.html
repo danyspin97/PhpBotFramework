@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PhpBotFramework
-   &#160;<span id="projectnumber">2.0.1</span>
+   &#160;<span id="projectnumber">2.0.2</span>
    </div>
    <div id="projectbrief">A framework for Telegram Bots&#39; APIs.</div>
   </td>
@@ -77,6 +77,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classPhpBotFramework_1_1Core_1_1CoreBot-members.html">List of all members</a>  </div>
@@ -106,8 +107,7 @@ Inheritance diagram for PhpBotFramework\Core\CoreBot:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a68c85b86db52543caea95eb20c3da9c6"><td class="memItemLeft" align="right" valign="top"><a id="a68c85b86db52543caea95eb20c3da9c6"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>__construct</b> (string $token)</td></tr>
+<tr class="memitem:a68c85b86db52543caea95eb20c3da9c6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPhpBotFramework_1_1Core_1_1CoreBot.html#a68c85b86db52543caea95eb20c3da9c6">__construct</a> (string $token)</td></tr>
 <tr class="separator:a68c85b86db52543caea95eb20c3da9c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga091de3edfd105aa1dc76d793a9405c4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Bot.html#ga091de3edfd105aa1dc76d793a9405c4b">getChatID</a> ()</td></tr>
 <tr class="memdesc:ga091de3edfd105aa1dc76d793a9405c4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get chat ID of the current user.  <a href="group__Bot.html#ga091de3edfd105aa1dc76d793a9405c4b">More...</a><br /></td></tr>
@@ -193,10 +193,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ga6aaec1f96c42fde8927d50b163a39d77 inherit pub_methods_classPhpBotFramework_1_1Core_1_1Chat"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this method to get the list of chat's administrators.  <a href="group__Api.html#ga6aaec1f96c42fde8927d50b163a39d77">More...</a><br /></td></tr>
 <tr class="separator:ga6aaec1f96c42fde8927d50b163a39d77 inherit pub_methods_classPhpBotFramework_1_1Core_1_1Chat"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a879a933a0351687d173536a6c4dbca03"><td class="memItemLeft" align="right" valign="top"><a id="a879a933a0351687d173536a6c4dbca03"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>$_http</b></td></tr>
+<tr class="separator:a879a933a0351687d173536a6c4dbca03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:af0aec7156e8020b6401cd96f2fa6c683"><td class="memItemLeft" align="right" valign="top"><a id="af0aec7156e8020b6401cd96f2fa6c683"></a>
-mixed&#160;</td><td class="memItemRight" valign="bottom"><b>processRequest</b> (string $method, string $class='', $file=false)</td></tr>
+<tr class="memitem:af0aec7156e8020b6401cd96f2fa6c683"><td class="memItemLeft" align="right" valign="top">mixed&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPhpBotFramework_1_1Core_1_1CoreBot.html#af0aec7156e8020b6401cd96f2fa6c683">processRequest</a> (string $method, string $class='', $file=false)</td></tr>
 <tr class="separator:af0aec7156e8020b6401cd96f2fa6c683"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3272f791541967f7d2bb18e34c670498"><td class="memItemLeft" align="right" valign="top"><a id="a3272f791541967f7d2bb18e34c670498"></a>
 PhpBotFramework Entities File false&#160;</td><td class="memItemRight" valign="bottom"><b>checkCurrentFile</b> ()</td></tr>
@@ -245,14 +250,10 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a35b9cffcd4680dbd4244bd75a3a61cdb"><td class="memItemLeft" align="right" valign="top"><a id="a35b9cffcd4680dbd4244bd75a3a61cdb"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>$_api_url</b></td></tr>
 <tr class="separator:a35b9cffcd4680dbd4244bd75a3a61cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a879a933a0351687d173536a6c4dbca03"><td class="memItemLeft" align="right" valign="top"><a id="a879a933a0351687d173536a6c4dbca03"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>$_http</b></td></tr>
-<tr class="separator:a879a933a0351687d173536a6c4dbca03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc6958363dfd5ef28f7bdb41bccc67ce"><td class="memItemLeft" align="right" valign="top"><a id="adc6958363dfd5ef28f7bdb41bccc67ce"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>$_file</b></td></tr>
 <tr class="separator:adc6958363dfd5ef28f7bdb41bccc67ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0357787da4c70ab0ffc21d16fc849449"><td class="memItemLeft" align="right" valign="top"><a id="a0357787da4c70ab0ffc21d16fc849449"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>$parameters</b></td></tr>
+<tr class="memitem:a0357787da4c70ab0ffc21d16fc849449"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPhpBotFramework_1_1Core_1_1CoreBot.html#a0357787da4c70ab0ffc21d16fc849449">$parameters</a></td></tr>
 <tr class="separator:a0357787da4c70ab0ffc21d16fc849449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classPhpBotFramework_1_1Core_1_1Send"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classPhpBotFramework_1_1Core_1_1Send')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classPhpBotFramework_1_1Core_1_1Send.html">PhpBotFramework\Core\Send</a></td></tr>
 <tr class="memitem:a78bbf0bd72bf7cfff82a8ad07434d102 inherit pro_attribs_classPhpBotFramework_1_1Core_1_1Send"><td class="memItemLeft" align="right" valign="top"><a id="a78bbf0bd72bf7cfff82a8ad07434d102"></a>
@@ -273,7 +274,110 @@ Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Core of the framework. </p>
 <p>Contains data used by the bot to works, curl request handling, and all api methods (sendMessage, editMessageText, etc). </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a68c85b86db52543caea95eb20c3da9c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68c85b86db52543caea95eb20c3da9c6">&#9670;&nbsp;</a></span>__construct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">PhpBotFramework\Core\CoreBot::__construct </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>$token</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>@internal brief Initialize a new bot.</p>
+<p>Initialize a new bot passing its token. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">$token</td><td><a class="el" href="classPhpBotFramework_1_1Bot.html" title="Bot class to handle updates and commands. ">Bot</a>'s token given by . </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af0aec7156e8020b6401cd96f2fa6c683"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0aec7156e8020b6401cd96f2fa6c683">&#9670;&nbsp;</a></span>processRequest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">mixed PhpBotFramework\Core\CoreBot::processRequest </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>$method</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>$class</em> = <code>''</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$file</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>@internal brief Process an API method by taking method and parameter.</p>
+<p>optionally create a object of $class class name with the response as constructor param. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$method</td><td>Method to call. </td></tr>
+    <tr><td class="paramtype">array</td><td class="paramname">$param</td><td>Parameter for the method. </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$class</td><td>Class name of the object to create using response. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>mixed Response or object of $class class name. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0357787da4c70ab0ffc21d16fc849449"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0357787da4c70ab0ffc21d16fc849449">&#9670;&nbsp;</a></span>$parameters</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">PhpBotFramework\Core\CoreBot::$parameters</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>@internal brief Contains parameters of the next request. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/Core/CoreBot.php</li>
 </ul>
 </div><!-- contents -->

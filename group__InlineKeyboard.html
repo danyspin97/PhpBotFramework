@@ -25,7 +25,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">PhpBotFramework
-   &#160;<span id="projectnumber">2.0.1</span>
+   &#160;<span id="projectnumber">2.0.2</span>
    </div>
    <div id="projectbrief">A framework for Telegram Bots&#39; APIs.</div>
   </td>
@@ -233,8 +233,7 @@ Variables</h2></td></tr>
 
 <p>Add a button. </p>
 <p>The button will be added next to the last one or in the next row if the bot has reached the limit of <b>buttons per row<b>.</b></b></p>
-<p><b><b>Each row allows eight buttons per row and a maximum of twelve columns.</b></b></p>
-<p><b><b>Let's see an example: </p><pre class="fragment">addButton('Click me!', 'url', 'https://telegram.me');
+<p><b><b>Each row allows eight buttons per row and a maximum of twelve columns. </p><pre class="fragment">addButton('Click me!', 'url', 'https://telegram.me');
 </pre><p></b></b></p>
 <p><b><b></p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -325,36 +324,11 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Add a list keyboard. </p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<p>Add a list keyboard which can be useful if you want separate data in multiple "pages" and allows users to navigate it easily. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>A list keyboard can be useful if you want separate data in multiple "pages" and allows users to navigate it easily. The keyboard is generated at runtime. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">$index</td><td>The current index of the list. </td></tr>
-    <tr><td class="paramname">$list</td><td>The length of the list. <h1>$prefix Prefix used to represent the list. </h1>
-</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Add 5 buttons or less, which will have as a callback data '$prefix/number'.</p>
-<p>Create buttons for browsing something in the bot. Each button will have a number as text, plus some symbol as first page, or last page. The buttons are dinamically generated at runtime passing $index and $list. If there are less than 5 pages, then show only the required buttons (at least one, up to 4). </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramtype">int</td><td class="paramname">$index</td><td>The page which the user is currently. </td></tr>
-    <tr><td class="paramtype">int</td><td class="paramname">$list</td><td>The total number of pages. </td></tr>
-    <tr><td class="paramtype">string</td><td class="paramname">$prefix</td><td>Prefix to add at each callback_data of the button. Eg.: 'list/1'. <blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<p>master</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</td></tr>
+    <tr><td class="paramtype">int</td><td class="paramname">$index</td><td>The current index of the list. </td></tr>
+    <tr><td class="paramtype">int</td><td class="paramname">$list</td><td>The length of the list. </td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$prefix</td><td>Prefix to add at each callback_data of the button. Eg.: 'list/1'. </td></tr>
   </table>
   </dd>
 </dl>
