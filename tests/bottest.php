@@ -10,7 +10,6 @@ define('MESSAGES', 2);
 
 class BotTest extends TestCase
 {
-
     public function testCreateBot()
     {
         $MOCK_SERVER_PORT = getenv('MOCK_SERVER_PORT');
@@ -79,6 +78,24 @@ class BotTest extends TestCase
         $bot->processFakeUpdate($message);
 
         $this->assertFileExists($filename);
+    }
+
+    /**
+     * @depends testCreateBot
+     */
+    public function testAddMessageCommands($bot) {
+        $filename = 'tests/message_command.json';
+        $message = json_decode(file_get_contents($filename), true);
+
+        $bot->addMessageCommand("start", function ($bot, Message $message) {
+            $bot->setChatID('FAKE_CHAT_ID');
+            $bot->sendMessage('This is a start message');
+        });
+
+        $bot->processFakeUpdate($message);
+
+        $this->assertFileExists($filename);
+
     }
 
     /**

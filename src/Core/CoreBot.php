@@ -64,6 +64,11 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  *     $bot->addCommand($start_command);
  *
+ *     // Shortcut for add message commands.
+ *     $bot->addMessageCommand('about', function($bot, $message) {
+ *         $bot->sendMessage('Powered by PhpBotFramework');
+ *     });
+ *
  *     // Receive updates from Telegram using getUpdates
  *     $bot->getUpdatesLocal();
  *

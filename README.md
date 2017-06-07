@@ -34,6 +34,12 @@ $start_command = new PhpBotFramework\Commands\MessageCommand("start",
 
 $bot->addCommand($start_command);
 
+// A shortcut for message commands.
+
+$bot->addMessageCommand('about', function($bot, $message) {
+  $bot->sendMessage('Powered by PhpBotFramework');
+});
+
 // Receive updates from Telegram using getUpdates
 $bot->getUpdatesLocal();
 ```

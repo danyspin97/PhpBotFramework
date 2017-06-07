@@ -93,6 +93,15 @@ trait CommandHandler
     }
 
     /**
+     * \brief Add a message command to the bot.
+     * @param string $command The command that will trigger the functiion (e.g. start).
+     * @param callable $script The function that will be triggered by a command.
+     */
+    public function addMessageCommand(string $command, callable $script) {
+      $this->_commands[] = new MessageCommand($command, $script);
+    }
+
+    /**
      * @internal
      * \brief Sort an array based on <code>prior</code> index value.
      * @param array $a First array.
