@@ -64,7 +64,6 @@ trait CommandHandler
      */
     protected function processCommands(array $update) : bool
     {
-        print_r($this->_commands);
         // For each command active (checked by initCommands())
         foreach ($this->_commands as $entity => $commands) {
             foreach ($commands as $command) {
@@ -93,11 +92,23 @@ trait CommandHandler
     }
 
     /**
+     * \brief Add various commands at once.
+     * @param ...BasicCommand $commands The commands to add.
+     */
+    public function addCommands(BasicCommand ...$commands)
+    {
+      foreach ($commands as $command) {
+            $this->addCommand($command);
+        }
+    }
+
+    /**
      * \brief Add a message command to the bot.
      * @param string $command The command that will trigger the function (e.g. start).
      * @param callable $script The function that will be triggered by a command.
      */
-    public function addMessageCommand(string $command, callable $script) {
+    public function addMessageCommand(string $command, callable $script)
+    {
       $this->_commands[] = new MessageCommand($command, $script);
     }
 
@@ -106,7 +117,8 @@ trait CommandHandler
      * @param string $data The data that will trigger the function.
      * @param callable $script The function that will be triggered by the data.
      */
-    public function addCallbackCommand(string $data, callable $script) {
+    public function addCallbackCommand(string $data, callable $script)
+    {
       $this->_commands[] = new CallbackCommand($data, $script);
     }
 

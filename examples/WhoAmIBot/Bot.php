@@ -33,4 +33,15 @@ $bot->addMessageCommand('start', function ($bot, $message) {
   }
 );
 
+// Add various commands at once
+$about_command = new PhpBotFramework\Commands\MessageCommand('about', function($bot, $message) {
+  $bot->sendMessage('Powered by PhpBotFramework');
+});
+
+$codename_command = new PhpBotFramework\Commands\MessageCommand('codename', function($bot, $message) {
+  $bot->sendMessage('Iron Bird');
+});
+
+$bot->addCommands($about_command, $codename_command);
+
 $bot->getUpdatesLocal();

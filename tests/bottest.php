@@ -83,6 +83,33 @@ class BotTest extends TestCase
     /**
      * @depends testCreateBot
      */
+    public function testAddCommands($bot)
+    {
+        $filename = 'tests/message_command.json';
+        $message = json_decode(file_get_contents($filename), true);
+
+        $start_command = new PhpBotFramework\Commands\MessageCommand("start",
+          function ($bot, Message $message) {
+            $bot->setChatID('FAKE_CHAT_ID');
+            $bot->sendMessage('This is a start message');
+          }
+        );
+
+        $about_command = new PhpBotFramework\Commands\MessageCommand('about',
+          function ($bot, Message $message) {
+            $bot->sendMessage('By PhpBotFramework');
+          }
+        );
+
+        $bot->addCommands($start_command, $about_command);
+
+        $bot->processFakeUpdate($message);
+
+        $this->assertFileExists($filename);
+    }
+    /**
+     * @depends testCreateBot
+     */
     public function testAddMessageCommands($bot) {
         $filename = 'tests/message_command.json';
         $message = json_decode(file_get_contents($filename), true);

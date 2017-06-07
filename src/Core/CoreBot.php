@@ -185,6 +185,12 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *
  *     $bot->addCommand($help_message_command);
  *
+ * The message commands are so used that we eventually decided to add a dedicated method:
+ *
+ *     $bot->addMessageCommand('start', function($bot, $message) {
+ *         $bot->sendMessage('I am your personal bot, try /help command');
+ *     });
+ *
  * \subsection Bot-commands-regex Check commands using regex
  *
  * You can also use **regular expressions** to check for the given command:
@@ -202,6 +208,19 @@ use PhpBotFramework\Entities\InlineKeyboard;
  *     });
  *
  * You should absolutely check Bot::addCommand() for learning more.
+ *
+ * \subsection Add multiple commands at once.
+ * If you've to add a lot of commands you can add all of them at once:
+ *
+ *     $callback_command = new PhpBotFramework\Commands\CallbackCommand("back", function($bot, $callback_query) {
+ *         $bot->editMessageText($callback_query['message']['message_id'], "You pressed back");
+ *     });
+ *
+ *     $callback_command_2 = new PhpBotFramework\Commands\CallbackCommand("delete", function($bot, $callback_query) {
+ *         $bot->editMessageText($callback_query['message']['message_id'], "You pressed delete");
+ *     });
+ *
+ *     $bot->addCommands($callback_command, $callback_command_2);
  *
  * \section InlineKeyboard-Usage Inline keyboards
  *
