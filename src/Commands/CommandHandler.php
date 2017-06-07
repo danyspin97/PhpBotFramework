@@ -94,11 +94,20 @@ trait CommandHandler
 
     /**
      * \brief Add a message command to the bot.
-     * @param string $command The command that will trigger the functiion (e.g. start).
+     * @param string $command The command that will trigger the function (e.g. start).
      * @param callable $script The function that will be triggered by a command.
      */
     public function addMessageCommand(string $command, callable $script) {
       $this->_commands[] = new MessageCommand($command, $script);
+    }
+
+    /**
+     * \brief Add a callback command to the bot.
+     * @param string $data The data that will trigger the function.
+     * @param callable $script The function that will be triggered by the data.
+     */
+    public function addCallbackCommand(string $data, callable $script) {
+      $this->_commands[] = new CallbackCommand($data, $script);
     }
 
     /**
