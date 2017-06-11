@@ -61,7 +61,6 @@ class PreCheckoutQuery implements \ArrayAccess
      */
     public function getBotParameter() : array
     {
-
         return ['var' => '_pre_checkout_query_id', 'id' => $this->container['id']];
     }
 

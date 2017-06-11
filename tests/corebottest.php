@@ -187,6 +187,19 @@ class CoreBotTest extends TestCase
       $method->invokeArgs($bot, [['Donation' => -23]]);
     }
 
+    /**
+     * @depends testCreateCoreBot
+     */
+    public function testGenerateShippingOptions($bot) {
+      $method = $this->invokeMethod($bot, 'generateShippingOptions');
+
+      $response = $method->invokeArgs($bot, [['FedEx' => ['Dispatching' => 14.99]]]);
+      $this->assertEquals('[{"id":1,"title":"FedEx","prices":[{"label":"Dispatching","amount":1499}]}]', $response);
+
+      $response = $method->invokeArgs($bot, [['FedEx' => [], 'USPS'  => []]]);
+      $this->assertEquals('[{"id":1,"title":"FedEx","prices":[]},{"id":2,"title":"USPS","prices":[]}]', $response);
+    }
+
     private function invokeMethod(&$object, $methodName) {
       $reflection = new \ReflectionClass(get_class($object));
       $method = $reflection->getMethod($methodName);
