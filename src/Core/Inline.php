@@ -127,7 +127,7 @@ trait Inline
       $option_index = 1;
 
       foreach ($shipping_options as $option => $prices) {
-        array_push($response, ['id' => $option_index, 'title' => $option, 'prices' => []]);
+        array_push($response, ['id' => strval($option_index), 'title' => $option, 'prices' => []]);
 
         // Register prices for the specific shipping option
         foreach ($prices as $service => $price) {
