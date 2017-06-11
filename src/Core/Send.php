@@ -80,9 +80,12 @@ trait Send
      * @param $payload Bot-defined invoice payload.
      * @param $start_parameter Unique deep-linking parameter used to generate this invoice.
      * @param $prices The various prices to pay (e.g array('Donation' => 14.50, 'Taxes' => 0.50)).
-     * @return Message|false Message sent on success, false otherwise.
+     * @return string The payload for that specific invoice.
+     * @return Message|false message sent on success, false otherwise.
      */
-    public function sendInvoice(string $title, string $description, string $payload, string $start_parameter, $prices) {
+    public function sendInvoice(string $title, string $description, string $start_parameter, $prices) {
+      $payload = $this->generateSecurePayload();
+
       $this->parameters = [
         'chat_id' => $this->_chat_id,
         'title' => $title,
@@ -94,7 +97,16 @@ trait Send
         'prices' => $this->generateLabeledPrices($prices)
       ];
 
-      return $this->processRequest('sendInvoice', 'Message');
+      return [$payload, $this->processRequest('sendInvoice', 'Message')];
+    }
+
+    /**
+     * \brief Generate a secure and unique payload string.
+     * @return string The generated payload.
+     */
+    private function generateSecurePayload()
+    {
+        return bin2hex(random_bytes(32));
     }
 
     /**
