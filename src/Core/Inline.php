@@ -66,6 +66,25 @@ trait Inline
         return $this->execRequest('answerCallbackQuery?' . http_build_query($parameters));
     }
 
+    /**
+     * \brief Send an update once the user has confirmed their payment and shipping details.
+     * @param bool $ok True is everything is alright, elsewhere False.
+     * @param string $error The error message if something went wrong.
+     * @return bool True on success.
+     */
+    public function answerPreCheckoutQuery(bool $ok = true, string $error = null) {
+        if (!isset($this->_pre_checkout_query_id)) {
+            throw new BotException('Callback query ID not set, wrong update');
+        }
+
+        $parameters = [
+            'pre_checkout_query_id' => $this->_pre_checkout_query_id,
+            'ok' => $ok,
+            'error_message' => $error
+        ];
+
+        return $this->execRequest('answerPreCheckoutQuery?' . http_build_query($parameters));
+    }
 
     /**
      * \brief Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the
