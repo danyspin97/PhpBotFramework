@@ -163,7 +163,7 @@ class CoreBotTest extends TestCase
      * @depends testCreateCoreBot
      */
     public function testGetWebhookInfo($bot)
-    {
+    {
         $response = $bot->getWebhookInfo();
         $this->assertArrayHasKey('pending_update_count', $response);
     }
@@ -194,10 +194,10 @@ class CoreBotTest extends TestCase
       $method = $this->invokeMethod($bot, 'generateShippingOptions');
 
       $response = $method->invokeArgs($bot, [['FedEx' => ['Dispatching' => 14.99]]]);
-      $this->assertEquals('[{"id":1,"title":"FedEx","prices":[{"label":"Dispatching","amount":1499}]}]', $response);
+      $this->assertEquals('[{"id":"1","title":"FedEx","prices":[{"label":"Dispatching","amount":1499}]}]', $response);
 
       $response = $method->invokeArgs($bot, [['FedEx' => [], 'USPS'  => []]]);
-      $this->assertEquals('[{"id":1,"title":"FedEx","prices":[]},{"id":2,"title":"USPS","prices":[]}]', $response);
+      $this->assertEquals('[{"id":"1","title":"FedEx","prices":[]},{"id":"2","title":"USPS","prices":[]}]', $response);
     }
 
     private function invokeMethod(&$object, $methodName) {
