@@ -83,21 +83,45 @@ trait Send
      * @return string The payload for that specific invoice.
      * @return Message|false message sent on success, false otherwise.
      */
-    public function sendInvoice(string $title, string $description, string $start_parameter, $prices) {
-      $payload = $this->generateSecurePayload();
+    public function sendInvoice(string $title, string $description, string $start_parameter, $prices, $optionals = [])
+    {
+        $OPTIONAL_FIELDS = [
+            'photo_url',
+            'photo_width',
+            'photo_height',
+            'need_name',
+            'need_phone_number',
+            'need_email',
+            'need_shipping_address',
+            'is_flexible',
+            'disable_notification',
+            'reply_to_message_id',
+            'reply_markup'
+          ];
 
-      $this->parameters = [
-        'chat_id' => $this->_chat_id,
-        'title' => $title,
-        'description' => $description,
-        'payload' => $payload,
-        'provider_token' => $this->_provider_token,
-        'start_parameter' => $start_parameter,
-        'currency' => $this->_payment_currency,
-        'prices' => $this->generateLabeledPrices($prices)
-      ];
+        $payload = $this->generateSecurePayload();
 
-      return [$payload, $this->processRequest('sendInvoice', 'Message')];
+        $this->parameters = [
+            'chat_id' => $this->_chat_id,
+            'title' => $title,
+            'description' => $description,
+            'payload' => $payload,
+            'provider_token' => $this->_provider_token,
+            'start_parameter' => $start_parameter,
+            'currency' => $this->_payment_currency,
+            'prices' => $this->generateLabeledPrices($prices)
+        ];
+
+        // Add optional fields if available
+        foreach ($OPTIONAL_FIELDS as $field)
+        {
+            if (isset($optionals[$field]))
+            {
+                $this->parameters[$field] = $optionals[$field];
+            }
+        }
+
+        return [$payload, $this->processRequest('sendInvoice', 'Message')];
     }
 
     /**
@@ -114,21 +138,24 @@ trait Send
      * @param $prices The matrix of prices.
      * @return string The JSON string response.
      */
-    private function generateLabeledPrices(array $prices) {
-      $response = [];
+    private function generateLabeledPrices(array $prices)
+    {
+        $response = [];
 
-      foreach ($prices as $item => $price) {
-        if ($price < 0) {
-          throw new \Exception('Invalid negative price passed to "sendInvoice"');
+        foreach ($prices as $item => $price)
+        {
+            if ($price < 0)
+            {
+                throw new \Exception('Invalid negative price passed to "sendInvoice"');
+            }
+
+            // Format the price value following the official guideline:
+            // https://core.telegram.org/bots/api#labeledprice
+            $formatted_price = intval($price * 100);
+            array_push($response, ['label' => $item, 'amount' => $formatted_price]);
         }
 
-        // Format the price value following the official guideline:
-        // https://core.telegram.org/bots/api#labeledprice
-        $formatted_price = intval($price * 100);
-        array_push($response, ['label' => $item, 'amount' => $formatted_price]);
-      }
-
-      return json_encode($response);
+        return json_encode($response);
     }
 
     /**
