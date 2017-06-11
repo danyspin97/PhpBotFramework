@@ -44,6 +44,34 @@ trait Send
      */
 
     /**
+     * \brief Send an invoice.
+     * \details Send an invoice in order receive real money. [API reference](https://core.telegram.org/bots/api#sendinvoice).
+     * @param $title The title of product or service to pay (e.g. Free Donation to Telegram).
+     * @param $description A description of product or service to pay.
+     * @param $payload Bot-defined invoice payload.
+     * @param $provider_token The token for the payment provider got using BotFather.
+     * @param $start_parameter Unique deep-linking parameter used to generate this invoice.
+     * @param $currency The payment currency (represented with 'ISO 4217 currency code').
+     * @param $prices The various prices which compose the total amount to pay.
+     * @return Message|false Message sent on success, false otherwise.
+     */
+    public function sendInvoice(string $title, string $description, string $payload, string $provider_token,
+      string $start_parameter, string $currency, $prices) {
+      $this->parameters = [
+        'chat_id' => $this->_chat_id,
+        'title' => $title,
+        'description' => $description,
+        'payload' => $payload,
+        'provider_token' => $provider_token,
+        'start_parameter' => $start_parameter,
+        'currency' => $currency,
+        'prices' => $prices
+      ];
+
+      return $this->processRequest('sendInvoice', 'Message');
+    }
+
+    /**
      * \brief Send a text message.
      * \details Use this method to send text messages. [API reference](https://core.telegram.org/bots/api#sendmessage)
      * @param $text Text of the message.
