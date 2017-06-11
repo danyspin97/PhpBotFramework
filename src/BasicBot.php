@@ -128,7 +128,9 @@ class BasicBot extends Core\CoreBot
             'channel_post' => 'ChannelPost',
             'edited_message' => 'EditedMessage',
             'edited_channel_post' => 'EditedChannelPost',
-            'chosen_inline_result' => 'ChosenInlineResult'
+            'chosen_inline_result' => 'ChosenInlineResult',
+            'pre_checkout_query' => 'PreCheckoutQuery',
+            'shipping_query' => 'ShippingQuery'
         ];
 
         if ($this->processCommands($update)) {
@@ -163,6 +165,25 @@ class BasicBot extends Core\CoreBot
     protected function processMessage(Message $message)
     {
     }
+
+    /**
+     * \brief Process updates which involve PreCheckout queries (part of Payments API).
+     * \details Ovveride it to script the bot answer for each PreCheckout query.
+     * @param PreCheckoutQuery $pre_checkout_query Reference to the query received.
+     */
+    protected function processPreCheckoutQuery(PreCheckoutQuery $pre_checkout_query)
+    {
+    }
+
+    /**
+     * \brief Process updates which involve shipping queries (part of Payments API).
+     * \details Ovveride it to script the bot answer for each shipping query.
+     * @param ShippingQuery $shipping_query Reference to the query received.
+     */
+    protected function processShippingQuery(ShippingQuery $shipping_query)
+    {
+    }
+
 
     /**
      * \brief Called every callback query received by the bot.
