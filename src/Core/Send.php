@@ -52,7 +52,7 @@ trait Send
      * @param $provider_token The token for the payment provider got using BotFather.
      * @param $start_parameter Unique deep-linking parameter used to generate this invoice.
      * @param $currency The payment currency (represented with 'ISO 4217 currency code').
-     * @param $prices The various prices which compose the total amount to pay.
+     * @param $prices The various prices to pay (e.g [['Taxes', 0.50], ['Donation', 14.50]]).
      * @return Message|false Message sent on success, false otherwise.
      */
     public function sendInvoice(string $title, string $description, string $payload, string $provider_token,
@@ -65,10 +65,32 @@ trait Send
         'provider_token' => $provider_token,
         'start_parameter' => $start_parameter,
         'currency' => $currency,
-        'prices' => $prices
+        'prices' => $this->generateLabeledPrices($prices)
       ];
 
       return $this->processRequest('sendInvoice', 'Message');
+    }
+
+    /**
+     * \brief Convert a matrix of prices in a JSON string object accepted by 'sendInvoice'.
+     * @param $prices The matrix of prices.
+     * @return string The JSON string response.
+     */
+    private function generateLabeledPrices(array $prices) {
+      $response = [];
+
+      foreach ($prices as $item => $price) {
+        if ($price < 0) {
+          throw new \Exception('Invalid negative price passed to "sendInvoice"');
+        }
+
+        // Format the price value following the official guideline:
+        // https://core.telegram.org/bots/api#labeledprice
+        $formatted_price = intval($price * 100);
+        array_push($response, ['label' => $item, 'amount' => $formatted_price]);
+      }
+
+      return json_encode($response);
     }
 
     /**

@@ -167,4 +167,31 @@ class CoreBotTest extends TestCase
         $response = $bot->getWebhookInfo();
         $this->assertArrayHasKey('pending_update_count', $response);
     }
+
+    /**
+     * @depends testCreateCoreBot
+     */
+    public function testGenerateLabeledPrices($bot) {
+      $method = $this->invokeMethod($bot, 'generateLabeledPrices');
+
+      $response = $method->invokeArgs($bot, [['Donation' => 1.45]]);
+      $this->assertEquals('[{"label":"Donation","amount":145}]', $response);
+
+      $response = $method->invokeArgs($bot, [['Donation' => 14.50, 'Taxes' => 0.59]]);
+      $this->assertEquals('[{"label":"Donation","amount":1450},{"label":"Taxes","amount":59}]', $response);
+
+      $response = $method->invokeArgs($bot, [['Donation' => 0.592]]);
+      $this->assertEquals('[{"label":"Donation","amount":59}]', $response);
+
+      $this->expectException(Exception::class);
+      $method->invokeArgs($bot, [['Donation' => -23]]);
+    }
+
+    private function invokeMethod(&$object, $methodName) {
+      $reflection = new \ReflectionClass(get_class($object));
+      $method = $reflection->getMethod($methodName);
+
+      $method->setAccessible(true);
+      return $method;
+    }
 }
