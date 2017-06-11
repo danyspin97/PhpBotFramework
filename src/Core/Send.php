@@ -38,10 +38,39 @@ trait Send
       * \brief Contains parameters of the next request. */
     protected $parameters;
 
+    /** @internal
+     * \brief Represents the provider token for payments. */
+    protected $_provider_token;
+
+    /** @internal
+     * \brief Represents currency used for payments. */
+    protected $_payment_currency;
+
     /**
      * \addtogroup Api Api Methods
      * @{
      */
+
+    /**
+     * \brief Set data for bot payments used across 'sendInvoice'.
+     * @param string $provider_token The token for the payment provider got using BotFather.
+     * @param string $currency The payment currency (represented with 'ISO 4217 currency mode').
+     */
+    public function setPayment(string $provider_token, string $currency = 'EUR')
+    {
+        $this->_provider_token = $provider_token;
+        $this->_payment_currency = $currency;
+    }
+
+    /**
+     * \brief Set currency for bot payments.
+     * \details It's used in place of 'setPayment' in order to specify only the currency.
+     * @param string $currency The payment currency (represented with 'ISO 4217 currency mode').
+     */
+    public function setPaymentCurrency(string $currency = 'EUR')
+    {
+        $this->_payment_currency = $currency;
+    }
 
     /**
      * \brief Send an invoice.
@@ -49,23 +78,21 @@ trait Send
      * @param $title The title of product or service to pay (e.g. Free Donation to Telegram).
      * @param $description A description of product or service to pay.
      * @param $payload Bot-defined invoice payload.
-     * @param $provider_token The token for the payment provider got using BotFather.
      * @param $start_parameter Unique deep-linking parameter used to generate this invoice.
-     * @param $currency The payment currency (represented with 'ISO 4217 currency code').
      * @param $prices The various prices to pay (e.g array('Donation' => 14.50, 'Taxes' => 0.50)).
      * @return Message|false Message sent on success, false otherwise.
      */
-    public function sendInvoice(string $title, string $description, string $payload, string $provider_token,
-      string $start_parameter, string $currency, $prices) {
+    public function sendInvoice(string $title, string $description, string $payload, string $start_parameter, $prices) {
       $this->parameters = [
         'chat_id' => $this->_chat_id,
         'title' => $title,
         'description' => $description,
         'payload' => $payload,
-        'provider_token' => $provider_token,
+        'provider_token' => $this->_provider_token,
         'start_parameter' => $start_parameter,
-        'currency' => $currency,
-        'prices' => $this->generateLabeledPrices($prices)
+        'currency' => $this->_payment_currency,
+        'prices' => $this->generateLabeledPrices($prices),
+        'is_flexible' => $params['is_flexible'] || false
       ];
 
       return $this->processRequest('sendInvoice', 'Message');
