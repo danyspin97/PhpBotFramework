@@ -91,8 +91,7 @@ trait Send
         'provider_token' => $this->_provider_token,
         'start_parameter' => $start_parameter,
         'currency' => $this->_payment_currency,
-        'prices' => $this->generateLabeledPrices($prices),
-        'is_flexible' => $params['is_flexible'] || false
+        'prices' => $this->generateLabeledPrices($prices)
       ];
 
       return $this->processRequest('sendInvoice', 'Message');
