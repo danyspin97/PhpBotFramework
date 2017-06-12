@@ -33,6 +33,14 @@ trait Inline
     protected $_callback_query_id;
 
     /** @internal
+     * \brief Store ID of the PreCheckout query received. */
+    protected $_pre_checkout_query_id;
+
+    /** @internal
+     * \brief Store ID of the Shipping query received. */
+    protected $_shipping_query_id;
+
+    /** @internal
       * \brief Store ID of the inline query received. */
     protected $_inline_query_id;
 
@@ -66,6 +74,80 @@ trait Inline
         return $this->execRequest('answerCallbackQuery?' . http_build_query($parameters));
     }
 
+    /**
+     * \brief Send an update once the user has confirmed their payment.
+     * @param bool $ok True is everything is alright, elsewhere False.
+     * @param string $error The error message if something went wrong.
+     * @return bool True on success.
+     */
+    public function answerPreCheckoutQuery(bool $ok = true, string $error = null) {
+        if (!isset($this->_pre_checkout_query_id)) {
+            throw new BotException('Callback query ID not set, wrong update');
+        }
+
+        $parameters = [
+            'pre_checkout_query_id' => $this->_pre_checkout_query_id,
+            'ok' => $ok,
+            'error_message' => $error
+        ];
+
+        return $this->execRequest('answerPreCheckoutQuery?' . http_build_query($parameters));
+    }
+
+    /**
+     * \brief Send an update once the user has confirmed their shipping details.
+     * @param bool $ok True is everything is alright, elsewhere False.
+     * @param string $error The error message if something went wrong.
+     * @param array $shipping_options The various shipping options available.
+     * For example: array('FedEx' => ['Dispatch' => 15.90, 'Italy Taxes' => 2.50])
+     * @return bool True on success.
+     */
+    public function answerShippingQuery(bool $ok = true, string $error = null, array $shipping_options) {
+        if (!isset($this->_shipping_query_id)) {
+            throw new BotException('Callback query ID not set, wrong update');
+        }
+
+        $parameters = [
+            'shipping_query_id' => $this->_shipping_query_id,
+            'ok' => $ok,
+            'error_message' => $error,
+            'shipping_options' => $this->generateShippingOptions($shipping_options)
+        ];
+
+        return $this->execRequest('answerShippingQuery?' . http_build_query($parameters));
+    }
+
+    /**
+     * \brief Generate shipping options to pass to 'answerShippingQuery'.
+     * @param array $shipping_options The various shipping options represented like PHP data types.
+     * @return string A JSON string representation of the shipping options.
+     */
+    private function generateShippingOptions(array $shipping_options) {
+      $response = [];
+      $option_index = 1;
+
+      foreach ($shipping_options as $option => $prices) {
+        array_push($response, ['id' => strval($option_index), 'title' => $option, 'prices' => []]);
+
+        // Register prices for the specific shipping option
+        foreach ($prices as $service => $price) {
+          if ($price < 0) {
+            throw new Exception('Invalid negative price passed to "answerShippingQuery"');
+          }
+
+          $formatted_price = intval($price * 100);
+
+          // Selects the most recent shipping option pushed into the array.
+          array_push($response[$option_index - 1]['prices'], [
+            'label' => $service, 'amount' => $formatted_price
+          ]);
+        }
+
+        $option_index++;
+      }
+
+      return json_encode($response);
+    }
 
     /**
      * \brief Answer a inline query (when the user write @botusername "Query") with a button, that will make user switch to the

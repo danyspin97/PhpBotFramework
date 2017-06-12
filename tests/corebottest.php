@@ -163,8 +163,48 @@ class CoreBotTest extends TestCase
      * @depends testCreateCoreBot
      */
     public function testGetWebhookInfo($bot)
-    {
+    {
         $response = $bot->getWebhookInfo();
         $this->assertArrayHasKey('pending_update_count', $response);
+    }
+
+    /**
+     * @depends testCreateCoreBot
+     */
+    public function testGenerateLabeledPrices($bot) {
+      $method = $this->invokeMethod($bot, 'generateLabeledPrices');
+
+      $response = $method->invokeArgs($bot, [['Donation' => 1.45]]);
+      $this->assertEquals('[{"label":"Donation","amount":145}]', $response);
+
+      $response = $method->invokeArgs($bot, [['Donation' => 14.50, 'Taxes' => 0.59]]);
+      $this->assertEquals('[{"label":"Donation","amount":1450},{"label":"Taxes","amount":59}]', $response);
+
+      $response = $method->invokeArgs($bot, [['Donation' => 0.592]]);
+      $this->assertEquals('[{"label":"Donation","amount":59}]', $response);
+
+      $this->expectException(Exception::class);
+      $method->invokeArgs($bot, [['Donation' => -23]]);
+    }
+
+    /**
+     * @depends testCreateCoreBot
+     */
+    public function testGenerateShippingOptions($bot) {
+      $method = $this->invokeMethod($bot, 'generateShippingOptions');
+
+      $response = $method->invokeArgs($bot, [['FedEx' => ['Dispatching' => 14.99]]]);
+      $this->assertEquals('[{"id":"1","title":"FedEx","prices":[{"label":"Dispatching","amount":1499}]}]', $response);
+
+      $response = $method->invokeArgs($bot, [['FedEx' => [], 'USPS'  => []]]);
+      $this->assertEquals('[{"id":"1","title":"FedEx","prices":[]},{"id":"2","title":"USPS","prices":[]}]', $response);
+    }
+
+    private function invokeMethod(&$object, $methodName) {
+      $reflection = new \ReflectionClass(get_class($object));
+      $method = $reflection->getMethod($methodName);
+
+      $method->setAccessible(true);
+      return $method;
     }
 }

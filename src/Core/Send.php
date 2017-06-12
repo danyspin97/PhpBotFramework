@@ -38,10 +38,125 @@ trait Send
       * \brief Contains parameters of the next request. */
     protected $parameters;
 
+    /** @internal
+     * \brief Represents the provider token for payments. */
+    protected $_provider_token;
+
+    /** @internal
+     * \brief Represents currency used for payments. */
+    protected $_payment_currency;
+
     /**
      * \addtogroup Api Api Methods
      * @{
      */
+
+    /**
+     * \brief Set data for bot payments used across 'sendInvoice'.
+     * @param string $provider_token The token for the payment provider got using BotFather.
+     * @param string $currency The payment currency (represented with 'ISO 4217 currency mode').
+     */
+    public function setPayment(string $provider_token, string $currency = 'EUR')
+    {
+        $this->_provider_token = $provider_token;
+        $this->_payment_currency = $currency;
+    }
+
+    /**
+     * \brief Set currency for bot payments.
+     * \details It's used in place of 'setPayment' in order to specify only the currency.
+     * @param string $currency The payment currency (represented with 'ISO 4217 currency mode').
+     */
+    public function setPaymentCurrency(string $currency = 'EUR')
+    {
+        $this->_payment_currency = $currency;
+    }
+
+    /**
+     * \brief Send an invoice.
+     * \details Send an invoice in order receive real money. [API reference](https://core.telegram.org/bots/api#sendinvoice).
+     * @param $title The title of product or service to pay (e.g. Free Donation to Telegram).
+     * @param $description A description of product or service to pay.
+     * @param $payload Bot-defined invoice payload.
+     * @param $start_parameter Unique deep-linking parameter used to generate this invoice.
+     * @param $prices The various prices to pay (e.g array('Donation' => 14.50, 'Taxes' => 0.50)).
+     * @return string The payload for that specific invoice.
+     * @return Message|false message sent on success, false otherwise.
+     */
+    public function sendInvoice(string $title, string $description, string $start_parameter, $prices, $optionals = [])
+    {
+        $OPTIONAL_FIELDS = [
+            'photo_url',
+            'photo_width',
+            'photo_height',
+            'need_name',
+            'need_phone_number',
+            'need_email',
+            'need_shipping_address',
+            'is_flexible',
+            'disable_notification',
+            'reply_to_message_id',
+            'reply_markup'
+          ];
+
+        $payload = $this->generateSecurePayload();
+
+        $this->parameters = [
+            'chat_id' => $this->_chat_id,
+            'title' => $title,
+            'description' => $description,
+            'payload' => $payload,
+            'provider_token' => $this->_provider_token,
+            'start_parameter' => $start_parameter,
+            'currency' => $this->_payment_currency,
+            'prices' => $this->generateLabeledPrices($prices)
+        ];
+
+        // Add optional fields if available
+        foreach ($OPTIONAL_FIELDS as $field)
+        {
+            if (isset($optionals[$field]))
+            {
+                $this->parameters[$field] = $optionals[$field];
+            }
+        }
+
+        return [$payload, $this->processRequest('sendInvoice', 'Message')];
+    }
+
+    /**
+     * \brief Generate a secure and unique payload string.
+     * @return string The generated payload.
+     */
+    private function generateSecurePayload()
+    {
+        return bin2hex(random_bytes(32));
+    }
+
+    /**
+     * \brief Convert a matrix of prices in a JSON string object accepted by 'sendInvoice'.
+     * @param $prices The matrix of prices.
+     * @return string The JSON string response.
+     */
+    private function generateLabeledPrices(array $prices)
+    {
+        $response = [];
+
+        foreach ($prices as $item => $price)
+        {
+            if ($price < 0)
+            {
+                throw new \Exception('Invalid negative price passed to "sendInvoice"');
+            }
+
+            // Format the price value following the official guideline:
+            // https://core.telegram.org/bots/api#labeledprice
+            $formatted_price = intval($price * 100);
+            array_push($response, ['label' => $item, 'amount' => $formatted_price]);
+        }
+
+        return json_encode($response);
+    }
 
     /**
      * \brief Send a text message.
