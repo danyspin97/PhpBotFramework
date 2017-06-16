@@ -9,7 +9,8 @@
 [![License](https://poser.pugx.org/danyspin97/php-bot-framework/license)](https://packagist.org/packages/danyspin97/php-bot-framework)
 
 
-*PhpBotFramework* is a reliable and complete framework for [Telegram Bot API](https://core.telegram.org/bots/api).
+*PhpBotFramework* is a reliable and complete framework for [Telegram Bot API](https://core.telegram.org/bots/api)
+with support to **Payments APIs**.
 
 Designed to be fast and easy to use, it provides all the features a user need in order to start developing Telegram bots.
 
