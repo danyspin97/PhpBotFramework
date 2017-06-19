@@ -1,44 +1,41 @@
 {
-    "name": "danyspin97/php-bot-framework",
-    "description": "PhpBotFramework is a framework for Telegram Bots' APIs.",
-    "type": "library",
-    "license": "LGPL-3.0+",
-    "keywords": ["telegram", "bot", "framework", "telegram-bot"],
-    "homepage": "https://danyspin97.github.io/PhpBotFramework",
-    "authors": [
-        {
-            "name": "Dany Spin",
-            "homepage": "https://github.com/danyspin97"
-        },
-        {
-          "name": "Dom Corvasce",
-          "homepage": "https://github.com/domcorvasce"
-        }
-    ],
-    "require": {
-        "php": ">=7.0",
-        "guzzlehttp/guzzle": "^6.2"
+  "name": "danyspin97/php-bot-framework",
+  "description": "PhpBotFramework is a framework for Telegram Bots' APIs.",
+  "type": "library",
+  "license": "LGPL-3.0+",
+  "keywords": [
+    "telegram",
+    "bot",
+    "framework",
+    "telegram-bot"
+  ],
+  "homepage": "https://danyspin97.github.io/PhpBotFramework",
+  "authors": [
+    {
+      "name": "Dany Spin",
+      "homepage": "https://github.com/danyspin97"
     },
-    "require-dev": {
-        "phpunit/phpunit": "6.*",
-        "squizlabs/php_codesniffer": "2.*",
-        "phpmd/phpmd": "2.*",
-        "phpstan/phpstan": "^0.6.4"
-    },
-    "suggest": {
-        "ext-mysql": "*",
-        "ext-pgsql": "*",
-        "ext-redis": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "PhpBotFramework\\": "src/"
-        }
-    },
-    "scripts": {
-    "test": [
-      "vendor/bin/phpcbf",
-      "vendor/bin/phpmd src text cleancode,codesize,controversial,design,naming,unusedcode"
-      ]
+    {
+      "name": "Dom Corvasce",
+      "homepage": "https://github.com/domcorvasce"
     }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "guzzlehttp/guzzle": "^6.2",
+    "ext-mbstring": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "6.*"
+  },
+  "suggest": {
+    "ext-mysql": "*",
+    "ext-pgsql": "*",
+    "ext-redis": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "PhpBotFramework\\": "src/"
+    }
+  }
 }
