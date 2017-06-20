@@ -47,16 +47,16 @@ menu:
             relativeUrl: site-index.html
         overview:
             text: Overview
-            relativeUrl: overview.html
+            relativeUrl: 01-overview.html
         quickstart:
             text: Quickstart
-            relativeUrl: quickstart.html
+            relativeUrl: 02-quickstart.html
         commands:
             text: Commands
-            relativeUrl: commands.html
+            relativeUrl: 03-commands.html
         entities:
             text: Telegram Entities
-            relativeUrl: entities.html
+            relativeUrl: 04-entities.html
         source:
             text: Source
             # Or absolute urls
