@@ -55,3 +55,23 @@ Then you can access your PDO object using:
 ~~~
 $bot->getPdo();
 ~~~
+
+## InlineKeyboard
+
+Inline keyboard are special objects that can be sent along with messages.
+
+`Bot::$keyboard` is a wrapper for inline keyboard creation:
+
+~~~
+// Answer /about messages
+$bot->addCommand(new Commands\MessageCommand("about", function($bot, $message)
+        {
+            // Create an inline keyboard button with a link to a site
+            $bot->keyboard->addButton("Link", "url", "example.com");
+
+            // then send it with a message
+            $bot->sendMessage("Visit our website!", $bot->keyboard->get());
+        }
+    )
+);
+~~~
