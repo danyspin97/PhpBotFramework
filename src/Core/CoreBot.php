@@ -568,6 +568,22 @@ class CoreBot
         }
     }
 
+    public function withChatId($chat_id, $method, ...$param)
+    {
+        $last_chat = $this->getChatID();
+        $this->setChatID($chat_id);
+        $this->$method(...$param);
+        $this->setChatID($last_chat);
+    }
+
+    public function useChatId($chat_id, \closure $closure)
+    {
+        $last_chat = $this->getChatID();
+        $this->setChatID($chat_id);
+        $closure();
+        $this->setChatID($last_chat);
+    }
+
     /** @} */
 
     /** @} */
