@@ -519,7 +519,7 @@ class CoreBot
     /**
      * @internal
      * \brief Core function to execute HTTP request.
-     * @param $url The request's URL.
+     * @param string $url The request's URL.
      * @return Array|false Url response decoded from JSON, false on error.
      */
     protected function execRequest(string $url)
@@ -568,20 +568,38 @@ class CoreBot
         }
     }
 
+    /**
+     * \brief Call a single api method using another chat_id without changing the current one.
+     * @param string|int $chat_id API method target chat_id.
+     * @param string $method Bot API method name.
+     * @param mixed ...$param Parameters for the API method.
+     * @return mixed The return value of the API method.
+     */
     public function withChatId($chat_id, $method, ...$param)
     {
         $last_chat = $this->getChatID();
         $this->setChatID($chat_id);
-        $this->$method(...$param);
+        $value = $this->$method(...$param);
         $this->setChatID($last_chat);
+
+        return $value;
     }
 
+    /**
+     * \brief Call the closure with the selected `chat_id`.
+     * \detail At the end of the method, $chat_id will still contain the original value.
+     * @param string|int $chat_id Target chat while executing the closure.
+     * @param closure $closure Closure to execute with the selected `chat_id`.
+     * @return mixed The return value of the closure.
+     */
     public function useChatId($chat_id, \closure $closure)
     {
         $last_chat = $this->getChatID();
         $this->setChatID($chat_id);
-        $closure();
+        $value = $closure();
         $this->setChatID($last_chat);
+
+        return $value;
     }
 
     /** @} */
