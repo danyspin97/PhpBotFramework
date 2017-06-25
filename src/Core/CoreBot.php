@@ -43,7 +43,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  * You can start working on your bot creating a new instance of Bot or by creating a
  * class that inherits from it.
  *
- * Each API call will have <code>$_chat_id</code> set to the current user:
+ * Each API call will have <code>$chat_id</code> set to the current user:
  * you can use CoreBot::setChatID() to change it.
  *
  * Below an example bot you can look to:
@@ -347,9 +347,8 @@ class CoreBot
         Inline,
         Chat;
 
-    /** @internal
-      * \brief Chat_id of the user that interacted with the bot. */
-    protected $_chat_id;
+    /** \brief Chat_id of the user that interacted with the bot. */
+    public $chat_id;
 
     /** @internal
       * \brief Bot id. */
@@ -404,22 +403,24 @@ class CoreBot
      */
 
     /**
+     * @deprecated
      * \brief Get chat ID of the current user.
      * @return int Chat ID of the user.
      */
     public function getChatID()
     {
-        return $this->_chat_id;
+        return $this->chat_id;
     }
 
     /**
+     * @deprecated
      * \brief Set current chat ID.
      * \details Change the chat ID on which the bot acts.
      * @param $chat_id The new chat ID to set.
      */
     public function setChatID($chat_id)
     {
-        $this->_chat_id = $chat_id;
+        $this->chat_id = $chat_id;
     }
 
     /**
@@ -450,7 +451,7 @@ class CoreBot
      * \details Use this method for custom api calls using this syntax:
      *
      *     $param = [
-     *             'chat_id' => $_chat_id,
+     *             'chat_id' => $chat_id,
      *             'text' => 'Hello!'
      *     ];
      *     apiRequest("sendMessage", $param);
@@ -577,10 +578,10 @@ class CoreBot
      */
     public function withChatId($chat_id, $method, ...$param)
     {
-        $last_chat = $this->getChatID();
-        $this->setChatID($chat_id);
+        $last_chat = $this->chat_id;
+        $this->chat_id = $chat_id;
         $value = $this->$method(...$param);
-        $this->setChatID($last_chat);
+        $this->chat_id = $last_chat;
 
         return $value;
     }
@@ -594,10 +595,10 @@ class CoreBot
      */
     public function useChatId($chat_id, \closure $closure)
     {
-        $last_chat = $this->getChatID();
-        $this->setChatID($chat_id);
+        $last_chat = $this->chat_id;
+        $this->chat_id = $chat_id;
         $value = $closure();
-        $this->setChatID($last_chat);
+        $this->chat_id = $last_chat;
 
         return $value;
     }

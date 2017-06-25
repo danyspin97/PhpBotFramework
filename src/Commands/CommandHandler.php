@@ -70,7 +70,7 @@ trait CommandHandler
                 // If the update type is right and the update triggered a command
                 if (isset($update[$entity]) && $command->checkCommand($update[$entity])) {
                     $entity = new $command::$object_class($update[$entity]);
-                    $this->_chat_id = $entity->getChatID();
+                    $this->chat_id = $entity->getChatID();
                     $command->getScript()($this, $entity);
                     // Return the id as we already processed this update
                     return true;

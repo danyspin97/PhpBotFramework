@@ -105,7 +105,7 @@ class BotState
      */
     public function getStatus(int $default_status = -1) : int
     {
-        $chat_id = $this->bot->getChatID();
+        $chat_id = $this->bot->chat_id;
         $redis = $this->bot->getRedis();
         if ($redis->exists($chat_id . ':status')) {
             $this->status = $redis->get($chat_id . ':status');
@@ -125,7 +125,7 @@ class BotState
     public function setStatus(int $status)
     {
         $redis = $this->bot->getRedis();
-        $redis->set($this->bot->getChatID() . ':status', $status);
+        $redis->set($this->bot->chat_id . ':status', $status);
 
         $this->status = $status;
     }

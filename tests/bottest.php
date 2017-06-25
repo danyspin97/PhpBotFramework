@@ -67,7 +67,7 @@ class BotTest extends TestCase
         $message = json_decode(file_get_contents($filename), true);
 
         $command = new PhpBotFramework\Commands\MessageCommand("start", function ($bot, Message $message) {
-            $bot->setChatID('FAKE_CHAT_ID');
+            $bot->chat_id = 'FAKE_CHAT_ID';
             $bot->sendMessage('This is a start message');
         });
 
@@ -90,7 +90,7 @@ class BotTest extends TestCase
 
         $start_command = new PhpBotFramework\Commands\MessageCommand("start",
           function ($bot, Message $message) {
-            $bot->setChatID('FAKE_CHAT_ID');
+            $bot->chat_id = 'FAKE_CHAT_ID';
             $bot->sendMessage('This is a start message');
           }
         );
@@ -115,7 +115,7 @@ class BotTest extends TestCase
         $message = json_decode(file_get_contents($filename), true);
 
         $bot->addMessageCommand("start", function ($bot, Message $message) {
-            $bot->setChatID('FAKE_CHAT_ID');
+            $bot->chat_id = 'FAKE_CHAT_ID';
             $bot->sendMessage('This is a start message');
         });
 
@@ -145,7 +145,7 @@ class BotTest extends TestCase
      */
     /*public function testAddingUserInsertAUserInDatabase($bot)
     {
-        $chat_id = $bot->getChatID();
+        $chat_id = $bot->chat_id;
 
         // Add the user
         $bot->addUser($chat_id);

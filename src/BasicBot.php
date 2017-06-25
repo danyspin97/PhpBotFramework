@@ -146,12 +146,14 @@ class BasicBot extends Core\CoreBot
             return $update['update_id'];
         }
 
+        // For each update type
         foreach (BasicBot::$update_types as $offset => $class) {
+            // Did we receive this type of the update?
             if (isset($update[$offset])) {
                 $object_class = "PhpBotFramework\Entities\\$class";
                 $object = new $object_class($update[$offset]);
 
-                $this->_chat_id = $object->getChatID();
+                $this->chat_id = $object->getChatID();
 
                 if (method_exists($object, 'getBotParameter')) {
                     $var = $object->getBotParameter();

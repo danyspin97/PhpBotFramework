@@ -48,7 +48,7 @@ class CoreBotTest extends TestCase
     public function testSetChatIDAndGetChatIDReturnSameID($bot)
     {
         $bot->setChatID('CUSTOM_CHAT_ID');
-        $this->assertEquals('CUSTOM_CHAT_ID', $bot->getChatID());
+        $this->assertEquals('CUSTOM_CHAT_ID', $bot->chat_id);
     }
 
     /**

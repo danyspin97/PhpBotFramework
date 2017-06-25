@@ -102,7 +102,7 @@ trait Send
         $payload = $this->generateSecurePayload();
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'title' => $title,
             'description' => $description,
             'payload' => $payload,
@@ -171,7 +171,7 @@ trait Send
     public function sendMessage($text, string $reply_markup = null, int $reply_to = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false)
     {
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'text' => $text,
             'parse_mode' => $parse_mode,
             'disable_web_page_preview' => $disable_web_preview,
@@ -194,7 +194,7 @@ trait Send
     public function forwardMessage($from_chat_id, int $message_id, bool $disable_notification = false)
     {
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'message_id' => $message_id,
             'from_chat_id' => $from_chat_id,
             'disable_notification' => $disable_notification
@@ -217,7 +217,7 @@ trait Send
         $this->_file->init($photo, 'photo');
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'caption' => $caption,
             'reply_markup' => $reply_markup,
             'disable_notification' => $disable_notification,
@@ -245,7 +245,7 @@ trait Send
         $this->_file->init($audio, 'audio');
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'caption' => $caption,
             'duration' => $duration,
             'performer' => $performer,
@@ -275,7 +275,7 @@ trait Send
         $this->_file->init($document, 'document');
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'caption' => $caption,
             'reply_to_message_id' => $reply_to_message_id,
             'reply_markup' => $reply_markup,
@@ -299,7 +299,7 @@ trait Send
     public function sendSticker($sticker, string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
     {
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'sticker' => $sticker,
             'disable_notification' => $disable_notification,
             'reply_to_message_id' => $reply_to_message_id,
@@ -326,7 +326,7 @@ trait Send
         $this->_file->init($voice, 'voice');
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'caption' => $caption,
             'duration' => $duration,
             'disable_notification', $disable_notification,
@@ -356,7 +356,7 @@ trait Send
     {
 
         $parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'action' => $action
         ];
 
