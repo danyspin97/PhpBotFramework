@@ -1,0 +1,63 @@
+template:
+    # Or if you are using a remote template, you can set the Git URL
+    url: https://github.com/CouscousPHP/Template-Light
+
+# List of directories to include in the processing (by default it's empty, so all markdown files are parsed)
+# Paths are relative to the optional source path given when generating the website, repository root by default
+include:
+    - docs
+
+# List of directories to exclude from the processing (default contains "vendor" and "website")
+# Paths are relative to the optional include paths given when generating the website, repository root by default
+exclude:
+    # This special entry will ask Couscous to read the exluded directories from your ".gitignore"  file
+    - %gitignore%
+
+scripts:
+    before:
+        - cp README.md docs/README.md
+    after:
+        - rm docs/README.md
+
+# Set the target branch in which to deploy the generated website
+branch: gh-pages
+
+# Any variable you put in this file is also available in the Twig layouts:
+title: PhpBotFramework
+subTitle: Telegram Bot API made easy
+
+# Base URL of the published website (no "/" at the end!)
+# You are advised to set and use this variable to write your links in the HTML layouts
+baseUrl: http://DanySpin97.github.io/PhpBotFramework
+
+# Used to link to the GitHub project
+github:
+    user: DanySpin97
+    repo: PhpBotFramework
+
+# The left menu bar
+menu:
+    items:
+        home:
+            text: Home
+            relativeUrl: index.html
+        index:
+            text: Index
+            # You can use relative urls
+            relativeUrl: site-index.html
+        overview:
+            text: Overview
+            relativeUrl: 01-overview.html
+        quickstart:
+            text: Quickstart
+            relativeUrl: 02-quickstart.html
+        commands:
+            text: Commands
+            relativeUrl: 03-commands.html
+        entities:
+            text: Telegram Entities
+            relativeUrl: 04-entities.html
+        source:
+            text: Source
+            # Or absolute urls
+            absoluteUrl: https://github.com/DanySpin97/PhpBotFramework/
