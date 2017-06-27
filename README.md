@@ -101,8 +101,6 @@ Check the [documentation](https://danyspin97.github.io/PhpBotFramework/) for lea
   PhpBotFramework is "smart" enough to set it as the current user, group or channel ID.
   Most of the frameworks out there requires you to specify the chat ID for every method's call but PhpBotFramework does it for you calling most API methods on the current chat.
 
-  You can still change it by using [setChatID](https://danyspin97.github.io/PhpBotFramework/group__Bot.html).
-
 ## Examples
 
 You can find a list of examples bot right in `examples/` folder.
