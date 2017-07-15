@@ -18,6 +18,7 @@ Welcome to PhpBotFramework’s documentation!
    :caption: Entities:
 
    commands
+   payments
 
 Indices and tables
 ==================
