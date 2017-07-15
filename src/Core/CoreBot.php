@@ -333,6 +333,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  * Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the wrapper don't have to be.
  *
  */
+mb_internal_encoding('UTF-8');
 
 /**
  * \class CoreBot
