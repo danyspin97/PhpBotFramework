@@ -110,6 +110,21 @@ Manage the checkout
 
 How do we know if the user filled the form and it's ready to pay us?
 
-Well, PhpBotFramework integrates the **processPreCheckoutQuery** and **answerPreCheckoutQuery** methods:
-the first is triggered after the user fills the form instead the second is used to return eventual errors or
-delivery costs.
+Well, PhpBotFramework integrates the **answerPreCheckoutQuery** methods which takes the incoming
+**pre_checkout_query** (managed through `answerUpdate <https://phpbotframework.readthedocs.io/en/3.0-dev/quickstart.html#answer-messages>`__) and answer to it by returning additional delivery costs, errors or any kind of response:
+
+.. code:: php
+
+    $bot->answerUpdate['pre_checkout_query'] = function ($bot, $pre_checkout_query) {
+      // Telegram uses a custom way to define the amount of money handled.
+      // For instance, 1 EUR is represented like 100.
+      $money_received = $pre_checkout_query['total_amount'] / 100;
+
+      // For logging purpose.
+      echo "Received '$money_received EUR'";
+
+      $bot->sendMessage('Thanks for your donation!');
+      $bot->answerPreCheckoutQuery(true);
+    };
+
+We're done!
