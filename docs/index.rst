@@ -10,6 +10,9 @@ Welcome to PhpBotFramework's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   overview.rst
+   quickstart.rst
+   commands.rst
 
 
 Indices and tables
