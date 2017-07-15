@@ -25,7 +25,7 @@ if they fall in a trap.
 Prepare the playground
 ----------------------
 
-You can enable Payments API or your bot directly from **@BotFather**.
+You can enable Payments API for your bot directly from **@BotFather**.
 
 Like always, Telegram explains in-depth how to do so and we can't do nothing better
 than link to `its documentation <https://core.telegram.org/bots/payments>`__.
@@ -33,8 +33,6 @@ than link to `its documentation <https://core.telegram.org/bots/payments>`__.
 ------------------------------
 Configure Payments credentials
 ------------------------------
-
-During the enabling of Payments API, you should've received a token from BotFather.
 
 PhpBotFramework comes with a method named **setPayment** which's used to set the necessary
 data used by the bot to receive money (the provider token and the money currency).
@@ -51,10 +49,10 @@ Learn more `here <https://core.telegram.org/bots/payments#supported-currencies>`
 Create an invoice
 -----------------
 
-A Telegram **invoice** is a special form which includes a form the user needs to fill
-in order to pay the bot.
+A Telegram **invoice** is a special message which includes a form the user needs to fill
+in order to send money to the bot.
 
-PhpBotFramework provides **sendInvoice** method; here's the basic usage:
+PhpBotFramework provides the **sendInvoice** method; here's the basic usage:
 
 .. code:: php
 
@@ -82,10 +80,10 @@ And you can pass additional parameters to 'sendInvoice'. `Here <https://core.tel
 Shipping & Checkout
 -------------------
 
-When the user fills the form and its information are ok, we need a way to tell the bot what to do next.
+When the user fills the form and the payment is ok, we need a way to tell the bot what to do next.
 
 PhpBotFramework integrates the **answerPreCheckoutQuery** method which takes the incoming
-**pre_checkout_query** (managed through `answerUpdate <https://phpbotframework.readthedocs.io/en/3.0-dev/quickstart.html#answer-messages>`__) and answer to it by returning greetings, errors or any kind of response.
+**pre_checkout_query** (managed through `answerUpdate <https://phpbotframework.readthedocs.io/en/3.0-dev/quickstart.html#answer-messages>`__) and answer it by returning greetings, errors or any kind of response.
 
 .. code:: php
 
