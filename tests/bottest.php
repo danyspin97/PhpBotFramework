@@ -35,6 +35,7 @@ class BotTest extends TestCase
     public function testProcessFakeMessage($message, $bot)
     {
         $bot->initCommandsWrap();
+        $bot->oldDispatch();
 
         $bot->processFakeUpdate($message);
 
