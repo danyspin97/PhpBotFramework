@@ -1,19 +1,27 @@
 .. PhpBotFramework documentation master file, created by
    sphinx-quickstart on Sat Jul 15 12:36:23 2017.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to PhpBotFramework's documentation!
+Welcome to PhpBotFramework’s documentation!
 ===========================================
+
+=====
+Index
+=====
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Get started:
 
-   overview.rst
-   quickstart.rst
-   commands.rst
+   index
+   overview
+   installation
+   quickstart
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Entities:
+
+   commands
 
 Indices and tables
 ==================
