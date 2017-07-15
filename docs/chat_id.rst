@@ -1,3 +1,7 @@
+=======
+Chat_id
+=======
+
 The framework saves the ``chat_id`` of the current user (for private chats), group or channel based on where the update comes from.
 
 All the Bot API methods which don't take ``$chat_id`` as a parameter will target the current chat.
