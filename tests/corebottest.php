@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 define('TREE_IMAGE', 'http://www.planwallpaper.com/static/images/2022725-wallpaper_625864_Iz6NK8G.jpg');
 define('EYES_IMAGE', 'http://www.planwallpaper.com/static/images/wallpapers-7020-7277-hd-wallpapers.jpg');
 define('PANDA_IMAGE', 'http://www.planwallpaper.com/static/images/wallpaper-11628192.jpg');
-define('LOGO_IMAGE', './Doxygen/logo.png');
+define('LOGO_IMAGE', './logo.png');
 
 // Define document path and urls
 define('MESSAGE_JSON', './tests/message_1.json');
