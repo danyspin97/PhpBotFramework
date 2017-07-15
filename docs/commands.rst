@@ -43,14 +43,14 @@ MultiCharacterCommand
 ---------------------
 
 MultiCharacterCommand get triggered by messages what contains the selected keyword, prefixed by one of the wanted characters:
-
+]
 .. code:: php
 
     $about_command = new PhpBotFramework\Commands\MessageCommands("about",
             function ($bot, $message) {
                 $bot->sendMessage("This bot was made by BotFather.");
             },
-            '!', '.', '/');
+            ['!', '.', '/']);
 
 
  Either the messages starting with ``/start``, ``.start`` and ``!start`` will trigger this command.
