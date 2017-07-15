@@ -43,6 +43,6 @@ If you want to update your users with the bot changelog, or telling them an impo
 
     $bot->broadcastMessage("Checkout my new bot @DonateBot.")
 
- This method takes the same parameters as ``Bot::sendMessage``.
+This method takes the same parameters as ``Bot::sendMessage``.
 
- For working the database must have a ``"User"`` table with a ``chat_id`` row.
+For working the database must have a ``"User"`` table with a ``chat_id`` row.
