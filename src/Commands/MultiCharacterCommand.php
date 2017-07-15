@@ -84,7 +84,6 @@ class MultiCharacterCommand extends BasicCommand
             $this->regex_rule .= ')' . $command;
         }
 
-        print_r($this->regex_rule);
         $this->script = $script;
     }
 
