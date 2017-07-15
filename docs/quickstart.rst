@@ -39,8 +39,13 @@ Answer updates
 As for messages, answering other updates requires the assignment of a
 function to ``Bot::answerUpdate["entity"]``.
 
-The function assigned must take 2 arguments: - ``$bot``: the bot object
-- ``$entity``: the entity attached to the update
+The function assigned must take 2 arguments:
+
+``$bot``
+  the bot object
+
+``$entity``
+  the entity attached to the update
 
 Example: answer all CallbackQuery removing the loading circle.
 
