@@ -4,15 +4,11 @@
 Welcome to PhpBotFramework’s documentation!
 ===========================================
 
-=====
-Index
-=====
 
 .. toctree::
    :maxdepth: 2
    :caption: Get started:
 
-   index
    overview
    installation
    quickstart
