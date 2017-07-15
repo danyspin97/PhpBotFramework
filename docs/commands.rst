@@ -1,8 +1,13 @@
+========
+Commands
+========
+
 When a command get triggered, the associated function get called.
 
 Commands are checked in order of priority (based on the type of the
 commands).
 
+---------------
 MessageCommands
 ---------------
 
@@ -17,6 +22,7 @@ MessageCommands get triggered when the message received contains a
             });
 
 
+---------------
 CallbackCommand
 ---------------
 
@@ -32,6 +38,7 @@ CallbackCommands get triggered when an inline button containing the correspondin
                 $bot->answerCallbackQuery();
             });
 
+---------------------
 MultiCharacterCommand
 ---------------------
 

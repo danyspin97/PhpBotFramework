@@ -1,3 +1,8 @@
+==========
+Quickstart
+==========
+
+------------
 Create a bot
 ------------
 
@@ -14,6 +19,7 @@ Create a bot
     // Create the bot object
     $bot = new Bot("token");
 
+---------------
 Answer messages
 ---------------
 
@@ -26,6 +32,7 @@ Answer messages
 
     }
 
+--------------
 Answer updates
 --------------
 
@@ -46,6 +53,7 @@ Example: answer all CallbackQuery removing the loading circle.
 You can find all possible updates
 `here <https://core.telegram.org/bots/api#update>`__.
 
+-------------------------
 Answer the /start command
 -------------------------
 
@@ -62,6 +70,7 @@ Answer the /start command
 For a complete list of Commands, checkout the `Command
 List <03-commands.html>`__
 
+---------------
 Getting updates
 ---------------
 
@@ -92,6 +101,7 @@ Add this line at the end of your bot script:
 
     $bot->processUpdateWebhook();
 
+-----------------------
 Connecting the database
 -----------------------
 
@@ -121,6 +131,7 @@ Then you can access your PDO object using:
 
     $bot->getPdo();
 
+--------------
 InlineKeyboard
 --------------
 

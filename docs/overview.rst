@@ -1,3 +1,8 @@
+========
+Overview
+========
+
+--------
 Features
 --------
 
@@ -14,6 +19,7 @@ Features
 -  Save status for interactive chats
 -  Upload local files
 
+------------
 Requirements
 ------------
 
@@ -35,6 +41,7 @@ Localization requirements
 
 6. Redis database (Optional)
 
+------------
 Installation
 ------------
 
@@ -71,6 +78,7 @@ After installing it, you need to require the Composer's autoloader:
 
     require 'vendor/autoload.php';
 
+-------------------------
 Made with PhpBotFramework
 -------------------------
 
@@ -79,6 +87,7 @@ Made with PhpBotFramework
 -  `Giveaways\_Bot <https://github.com/DanySpin97/GiveawaysBot>`__: `Try
    it on Telegram <https://telegram.me/giveaways_bot>`__
 
+-------
 Authors
 -------
 
@@ -86,6 +95,7 @@ This framework is developed and mantained by `Danilo
 Spinella <https://github.com/DanySpin97>`__ and `Dom
 Corvasce <https://github.com/domcorvasce>`__.
 
+-------
 License
 -------
 
