@@ -28,7 +28,6 @@ use PhpBotFramework\Utilities\BotState;
 use PhpBotFramework\Database\Database;
 
 use PhpBotFramework\Database\Getter;
-use PhpBotFramework\Database\LongPolling;
 
 use PhpBotFramework\Localization\Localization;
 
@@ -37,8 +36,7 @@ use PhpBotFramework\Localization\Localization;
  */
 class Bot extends BasicBot
 {
-    use Getter,
-        LongPolling;
+    use Getter;
 
     /**
      * \addtogroup Bot Bot

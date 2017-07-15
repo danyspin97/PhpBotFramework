@@ -163,7 +163,7 @@ class CoreBotTest extends TestCase
      * @depends testCreateCoreBot
      */
     public function testGetWebhookInfo($bot)
-    {
+    {
         $response = $bot->getWebhookInfo();
         $this->assertArrayHasKey('pending_update_count', $response);
     }
