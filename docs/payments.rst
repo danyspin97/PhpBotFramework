@@ -6,19 +6,18 @@ Payments
 What are Payments API?
 -----------------------
 
-Recently, Telegram released the Payments API which allows bots to handle money.
+Recently, Telegram released the Payments API which allows bots (and developers) to receive money
+from users without need to leave the chat.
 
-The payments are completely secure because they relies on third-party certified services:
+The payments are managed by third-party services:
 
 - `Stripe <https://stripe.com/>`__
 - `Yandex.Money <https://money.yandex.ru/new>`__
 - `Payme <https://payme.uz/>`__
 
-This new API extends the possibilities of a Telegram bot allowing developers to create "Telegram e-commerce stores" or
-whatever crazy idea they can come up with.
-
-**In this tutorial** we're going to see how use Payments API through PhpBotFramework
-to create a **DonateBot**: a sort of "Donate Button" for Telegram folks!
+While the API makes easy for a developer to know if (s)he was paid or not,
+it's not the same for the users which doesn't have no warranty to recover their money
+if they fall in a trap.
 
 ----------------------
 Prepare the playground
