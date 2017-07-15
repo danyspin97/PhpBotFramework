@@ -19,98 +19,73 @@ While the API makes easy for a developer to know if (s)he was paid or not,
 it's not the same for the users which doesn't have no warranty to recover their money
 if they fall in a trap.
 
+**PhpBotFramework 3.x** has introduced the support to the Payments API and the usage is really straightforward.
+
 ----------------------
 Prepare the playground
 ----------------------
 
-The first thing to do is enable the Payments API for our new bot and configure a payment method so we can access to the
-donations received by our generous users.
+You can enable Payments API or your bot directly from **@BotFather**.
 
-Like always, Telegram explains in-depth how to do so;
-we can't do nothing better but link to `Telegram documentation <https://core.telegram.org/bots/payments>`__.
-
------------------------
-Create the bot skeleton
------------------------
-
-Now we're ready to start developing our DonateBot!
-
-Create a new directory wherever you want and install PhpBotFramework:
-
-.. code:: bash
-
-    mkdir donatebot
-    composer require danyspin97/phpbotframework
-
-Now create a new **Bot.php** where we're going to write bot's logic:
-
-.. code:: php
-
-    require_once './vendor/autoload.php';
-
-    $bot = new PhpBotFramework\Bot(getenv('BOT_TOKEN'));
-
-    $bot->addMessageCommand('start', function sayHi($bot, $message) {
-      $bot->sendMessage('Hey there! Nice to see you. Type `/donate` to donate.');
-    });
-
-    $bot->addMessageCommand('donate', function donate($bot, $message) {
-      // payments logic goes here
-      $bot->sendMessage('Coming soon');
-    });
-
-    $bot->getUpdatesLocal();
-
-
-That is all we need to start a Telegram using PhpBotFramework.
-
-Let us verify it works properly:
-
-.. code:: bash
-
-    export BOT_TOKEN=YOURTELEGRAMBOTTOKEN
-    php Bot.php
-
-Now go to Telegram and try it!
+Like always, Telegram explains in-depth how to do so and we can't do nothing better
+than link to `its documentation <https://core.telegram.org/bots/payments>`__.
 
 ------------------------------
 Configure Payments credentials
 ------------------------------
 
-The next step is let PhpBotFramework knows how handle the payments we receive by our users.
+During the enabling of Payments API, you should've received a token from BotFather.
 
-**PhpBotFramework 3** comes with a method named _setPayment_ to define the token and the currency
-used by the bot:
+PhpBotFramework comes with a method named **setPayment** which's used to set the necessary
+data used by the bot to receive money (the provider token and the money currency).
 
 .. code:: php
 
-    $bot->addMessageCommand('donate', function ($bot, $message) {
-      $bot->setPayment(getenv('PAYMENT_TOKEN'), getenv('PAYMENT_CURRENCY') || 'EUR');
-    });
+    $bot->setPayment(getenv('PAYMENT_TOKEN'), 'EUR');
+
+The money currency should be represented following **ISO 4217 currency code**.
+
+Learn more `here <https://core.telegram.org/bots/payments#supported-currencies>`__.
 
 -----------------
 Create an invoice
 -----------------
 
-This **invoice** will allow us to receive a fixed amount of money by the user and check
-if (s)he payed or not.
+A Telegram **invoice** is a special form which includes a form the user needs to fill
+in order to pay the bot.
+
+PhpBotFramework provides **sendInvoice** method; here's the basic usage:
 
 .. code:: php
 
     $bot->sendInvoice('Donation', 'Basic Donation', 'basicDonation', ['Donation' => 1]);
 
-You'll get something like that:
+
+Using the code above, you're going to get something like:
 
 .. image:: https://i.imgur.com/RqRq02I.png
 
+You can define various prices to pay:
+
+.. code:: php
+
+    $bot->sendInvoice('Donation', 'Basic Donation', 'basicDonation', ['Donation' => 1, 'Plus' => 1.5]);
+
+And you can pass additional parameters to 'sendInvoice'. `Here <https://core.telegram.org/bots/api#sendinvoice>`__'s the complete list.
+
+.. code:: php
+
+    $bot->sendInvoice('Donation', 'Basic Donation', 'basicDonation', ['Donation' => 1], ['is_flexible' => true]);
+
+
 -------------------
-Manage the checkout
+Shipping & Checkout
 -------------------
 
-How do we know if the user filled the form and it's ready to pay us?
+When the user fills the form and its information are ok, we need a way to tell the bot what to do next.
 
-Well, PhpBotFramework integrates the **answerPreCheckoutQuery** methods which takes the incoming
-**pre_checkout_query** (managed through `answerUpdate <https://phpbotframework.readthedocs.io/en/3.0-dev/quickstart.html#answer-messages>`__) and answer to it by returning additional delivery costs, errors or any kind of response:
+PhpBotFramework integrates the **answerPreCheckoutQuery** method which takes the incoming
+**pre_checkout_query** (managed through `answerUpdate <https://phpbotframework.readthedocs.io/en/3.0-dev/quickstart.html#answer-messages>`__) and answer to it by returning greetings, errors or any kind of response.
 
 .. code:: php
 
@@ -126,4 +101,15 @@ Well, PhpBotFramework integrates the **answerPreCheckoutQuery** methods which ta
       $bot->answerPreCheckoutQuery(true);
     };
 
-We're done!
+As we said, we can return an error if something goes wrong:
+
+.. code:: php
+
+     $bot->answerPreCheckoutQuery(false, 'I am too rich to allows other donations');
+
+We can also return additional delivery costs if needed through **answerShipping**.
+
+.. code:: php
+
+     $bot->answerShipping(true, '', ['FedEx' => 3.99, 'USPS' => 4.20]);
+
