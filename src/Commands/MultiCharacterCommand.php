@@ -48,7 +48,7 @@ class MultiCharacterCommand extends BasicCommand
      *     $help_command = new PhpBotFramework\Commands\MultiCharacterCommand("help",
      *         function ($bot, $message) {
      *             $bot->sendMessage("This is a help message.");
-     *         }, '!', '.', '/'
+     *         }, ['!', '.', '/']
      *     );
      *
      * Then you can add it to the bot's commands using <code>addCommand</code> method:
@@ -59,10 +59,10 @@ class MultiCharacterCommand extends BasicCommand
      * @param callable $script The function that will be triggered by a command.
      * Must take an object(the bot) and an array(the message received).
      */
-    public function __construct(string $command, callable $script, string ...$chars)
+    public function __construct(string $command, callable $script, array $characters)
     {
-        $chars_count = count($chars);
-        if ( $chars_count === 0)
+        $chars_count = count($characters);
+        if ($chars_count === 0)
         {
             throw new BotException("No character given for matching the command");
         }
@@ -70,16 +70,16 @@ class MultiCharacterCommand extends BasicCommand
         if ($chars_count === 1)
         {
             // Build a regex using the only character
-            $this->regex_rule = $chars[0] . $command;
+            $this->regex_rule = $characters[0] . $command;
         }
         // Build regex including all characters
         // Eg: (!|.)command
         else
         {
-            $this->regex_rule = '(' . $chars[0];
-            foreach($chars as $char)
+            $this->regex_rule = '(' . $characters[0];
+            foreach(array_slice($characters, 1) as $char)
             {
-                $this->regex_rule .= '|' . $char;
+                $this->regex_rule .= '|' . preg_quote($char);
             }
             $this->regex_rule .= ')' . $command;
         }

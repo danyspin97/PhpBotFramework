@@ -15,10 +15,18 @@ Welcome to PhpBotFramework’s documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: API methods:
+
+   chat_id
+   payments
+
+.. toctree::
+   :maxdepth: 2
    :caption: Entities:
 
    commands
-   payments
+   keyboard
+   database
 
 Indices and tables
 ==================
