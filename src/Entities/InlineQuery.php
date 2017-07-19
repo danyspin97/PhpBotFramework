@@ -38,7 +38,7 @@ class InlineQuery implements \ArrayAccess
      * \brief Get result's query.
      * @return string $query If set or <code>null</code> if empty.
      */
-    public function getQuery() : string
+    public function getQuery()
     {
         return isset($this->container['query']) ? $this->container['query'] : null;
     }
