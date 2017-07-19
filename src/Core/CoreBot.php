@@ -335,6 +335,10 @@ use PhpBotFramework\Entities\InlineKeyboard;
  */
 mb_internal_encoding('UTF-8');
 
+use \Monolog\Logger;
+
+use \Monolog\Handler\StreamHandler;
+
 /**
  * \class CoreBot
  * \brief Core of the framework
@@ -371,6 +375,10 @@ class CoreBot
       * brief Contains parameters of the next request. */
     protected $parameters;
 
+    /** \@internal
+     * brief Contains the logger object. */
+    protected $logger;
+
     /**
      * \@internal
      * brief Initialize a new bot.
@@ -379,6 +387,11 @@ class CoreBot
      */
     public function __construct(string $token)
     {
+        $this->logger = new Logger('phpbotframework');
+        $this->logger->pushHandler(new StreamHandler('/tmp/log/phpbotframework-warning.log', Logger::WARNING));
+
+        $this->logger->warning('✓ Started a new (shiny) Telegram bot using PhpBotFramework');
+
         // Check if token is valid
         if (is_numeric($token) || $token === '') {
             throw new BotException('Token is not valid or empty');
