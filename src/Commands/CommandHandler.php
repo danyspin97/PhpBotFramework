@@ -52,7 +52,7 @@ trait CommandHandler
 
         foreach ($this->_commands as $index => $array) {
         // Sort them by priority
-            uasort($this->_commands[$index], function ($array, $b) {
+            uasort($this->_commands[$index], function ($a, $b) {
                 return $a::$priority <=> $b::$priority;    
             });
         }
