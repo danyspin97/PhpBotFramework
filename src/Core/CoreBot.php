@@ -394,6 +394,7 @@ class CoreBot
 
         // Check if token is valid
         if (is_numeric($token) || $token === '') {
+            $this->logger->error('Token is not valid or empty');
             throw new BotException('Token is not valid or empty');
         }
 
@@ -573,12 +574,15 @@ class CoreBot
 
             return $response['result'];
         } elseif ($http_code >= 500) {
-            // do not wat to DDOS server if something goes wrong
+            // Avoids to send too many requests to the server if something goes wrong.
             sleep(10);
+            return false;
+        } elseif ($http_code === 404) {
+            $this->logger->warning('Request returned 404 Page Not Found');
             return false;
         } else {
             $response = json_decode($response->getBody(), true);
-            error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
+            $this->logger->error("Request has failed with error {$response['error_code']}: {$response['description']}\n");
             return false;
         }
     }
