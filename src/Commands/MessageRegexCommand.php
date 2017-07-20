@@ -30,6 +30,12 @@ use PhpBotFramework\Entities\Message;
 class MessageRegexCommand extends BasicCommand
 {
     /** @} */
+    
+    public static $type = 'message';
+    
+    public static $object_class = 'PhpBotFramework\Entities\Message';
+    
+    public static $priority = 1;
 
     private $regex_rule;
 
@@ -64,9 +70,10 @@ class MessageRegexCommand extends BasicCommand
 
         // Use preg_match to check if it is true
         if ($message_is_command && preg_match("/{$this->regex_rule}/", substr($message['text'], $message['entities'][0]['offset'] + 1, $message['entities'][0]['length']))) {
-                    return true;
+            return true;
         }
-
+        
         return false;
     }
+    
 }

@@ -52,7 +52,9 @@ trait CommandHandler
 
         foreach ($this->_commands as $index => $array) {
         // Sort them by priority
-            uasort($this->_commands[$index], 'PhpBotFramework\Commands\CommandHandler::sortingPrior');
+            uasort($this->_commands[$index], function ($a, $b) {
+                return $a::$priority <=> $b::$priority;    
+            });
         }
     }
 
@@ -120,30 +122,6 @@ trait CommandHandler
     public function addCallbackCommand(string $data, callable $script)
     {
       $this->_commands[] = new CallbackCommand($data, $script);
-    }
-
-    /**
-     * @internal
-     * \brief Sort an array based on <code>prior</code> index value.
-     * @param array $a First array.
-     * @param array $b Second array.
-     * @return int 1 If $a > $b, -1 if $a < $b, 0 otherwise.
-     */
-    public static function sortingPrior($a, $b)
-    {
-        $prior_a = $a::$priority;
-        $prior_b = $b::$priority;
-        if ($prior_a > $prior_b) {
-            return 1;
-        }
-
-        if ($prior_a < $prior_b) {
-            return -1;
-        }
-
-        if ($prior_a == $prior_b) {
-            return 0;
-        }
     }
 
     /** @} */

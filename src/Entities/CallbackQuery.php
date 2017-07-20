@@ -44,7 +44,7 @@ class CallbackQuery implements \ArrayAccess
      * \brief Get data parameter if it is set.
      * @return string $data if set or empty string otherwise.
      */
-    public function getData() : string
+    public function getData()
     {
         return isset($this->container['data']) ? $this->container['data'] : null;
     }
