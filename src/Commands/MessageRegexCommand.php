@@ -30,14 +30,16 @@ use PhpBotFramework\Entities\Message;
 class MessageRegexCommand extends BasicCommand
 {
     /** @} */
-    
+
     public static $type = 'message';
-    
+
     public static $object_class = 'PhpBotFramework\Entities\Message';
-    
+
     public static $priority = 1;
 
     private $regex_rule;
+
+    public $args = null;
 
     /**
      * \brief Add a function that will be executed everytime a message contain a command
@@ -69,7 +71,14 @@ class MessageRegexCommand extends BasicCommand
         $message_is_command = (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') ? true : false;
 
         // Use preg_match to check if it is true
-        if ($message_is_command && preg_match("/{$this->regex_rule}/", substr($message['text'], $message['entities'][0]['offset'] + 1, $message['entities'][0]['length']))) {
+        if ($message_is_command
+                && preg_match("/{$this->regex_rule}/",
+                              substr($message['text'], $message['entities'][0]['offset'] + 1, $message['entities'][0]['length']),
+                              $this->args)) {
+            
+            // first occurence is the matched expression, we want only arguments            
+            array_shift($this->args);
+            
             return true;
         }
         
