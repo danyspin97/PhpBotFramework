@@ -335,6 +335,10 @@ use PhpBotFramework\Entities\InlineKeyboard;
  */
 mb_internal_encoding('UTF-8');
 
+use \Monolog\Logger;
+
+use \Monolog\Handler\StreamHandler;
+
 /**
  * \class CoreBot
  * \brief Core of the framework
@@ -371,6 +375,10 @@ class CoreBot
       * brief Contains parameters of the next request. */
     protected $parameters;
 
+    /** \@internal
+     * brief Contains the logger object. */
+    protected $logger;
+
     /**
      * \@internal
      * brief Initialize a new bot.
@@ -379,8 +387,14 @@ class CoreBot
      */
     public function __construct(string $token)
     {
+        $this->logger = new Logger('phpbotframework');
+        $this->logger->pushHandler(new StreamHandler('/tmp/log/phpbotframework-warning.log', Logger::WARNING));
+
+        $this->logger->warning('✓ Started a new (shiny) Telegram bot using PhpBotFramework');
+
         // Check if token is valid
         if (is_numeric($token) || $token === '') {
+            $this->logger->error('Token is not valid or empty');
             throw new BotException('Token is not valid or empty');
         }
 
@@ -560,12 +574,15 @@ class CoreBot
 
             return $response['result'];
         } elseif ($http_code >= 500) {
-            // do not wat to DDOS server if something goes wrong
+            // Avoids to send too many requests to the server if something goes wrong.
             sleep(10);
+            return false;
+        } elseif ($http_code === 404) {
+            $this->logger->warning('Request returned 404 Page Not Found');
             return false;
         } else {
             $response = json_decode($response->getBody(), true);
-            error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
+            $this->logger->error("Request has failed with error {$response['error_code']}: {$response['description']}\n");
             return false;
         }
     }

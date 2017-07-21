@@ -23,7 +23,8 @@
   "require": {
     "php": ">=7.0",
     "guzzlehttp/guzzle": "^6.2",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "monolog/monolog": "^1.23"
   },
   "require-dev": {
     "phpunit/phpunit": "6.*"
