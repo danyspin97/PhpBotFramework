@@ -37,7 +37,7 @@ class ChosenInlineResult implements \ArrayAccess
      * \brief Get result's query.
      * @return $query Null if it's empty.
      */
-    public function getQuery() : string
+    public function getQuery()
     {
         return isset($this->container['query']) ? $this->container['query'] : null;
     }

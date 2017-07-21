@@ -127,7 +127,7 @@ class InlineQueryResults
      */
     public function addResult(array $result) : int
     {
-        if (array_key_exists('type', $result) || in_array($result['type'], $this->accepted_type)) {
+        if (array_key_exists('type', $result) && ! in_array($result['type'], $this->accepted_type)) {
             throw new BotException("Result has wrong or no type at all. Check that the result has a value of key 'type' that correspond to a type in the API Reference");
         }
 
@@ -170,6 +170,10 @@ class InlineQueryResults
             'reply_markup' => $reply_markup,
             'disable_web_page_preview' => $disable_web_preview
         ]);
+        
+        if ( is_null($reply_markup) ) {
+            unset( $this->results[ $this->id_result ]['reply_markup'] );
+        }
 
         return $this->id_result++;
     }
