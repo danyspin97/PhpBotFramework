@@ -30,7 +30,7 @@ Answer messages
         // Reply as an echo bot
         $bot->sendMessage($message->getText());
 
-    }
+    };
 
 --------------
 Answer updates
