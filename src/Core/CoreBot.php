@@ -575,6 +575,9 @@ class CoreBot
             return $response['result'];
         } elseif ($http_code >= 500) {
             // Avoids to send too many requests to the server if something goes wrong.
+            $this->logger->warning("Got '500 Internal Server Error', sleeping 10s.");
+            $this->logger->warning("Response object:\n" . var_dump($response));
+
             sleep(10);
             return false;
         } elseif ($http_code === 404) {
