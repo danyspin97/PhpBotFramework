@@ -16,8 +16,7 @@ The payments are managed by third-party services:
 - `Payme <https://payme.uz/>`__
 
 While the API makes easy for a developer to know if (s)he was paid or not,
-it's not the same for the users which doesn't have no warranty to recover their money
-if they fall in a trap.
+it's not the same for the users who doesn't have no warranty.
 
 **PhpBotFramework 3.x** has introduced the support to the Payments API and the usage is really straightforward.
 
