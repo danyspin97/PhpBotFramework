@@ -540,9 +540,14 @@ class CoreBot
      */
     protected function execRequest(string $url)
     {
-        $response = $this->_http->request('POST', $url);
+        $request = $this->_http->request('POST', $url);
+        $response = $this->checkRequestError($request);
 
-        return $this->checkRequestError($response);
+        if (!$response) {
+          $this->logger->warning("Failed to call '$url', code 500 or 404 returned.");
+        }
+
+        return $response;
     }
 
     /**
