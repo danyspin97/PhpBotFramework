@@ -22,6 +22,8 @@ use PhpBotFramework\Entities\Message;
 
 use PhpBotFramework\Entities\File as TelegramFile;
 
+use PhpBotFramework\Exceptions\BotException;
+
 /**
  * \class Send
  * \brief All API Methods that send a message (text based or not).
@@ -58,6 +60,11 @@ trait Send
      */
     public function setPayment(string $provider_token, string $currency = 'EUR')
     {
+        if (!$provider_token) {
+            $this->logger->warning('setPayment expects a valid provider token, an invalid one given.');
+            throw new BotException('Invalid provider token given to "setPayment"');
+        }
+
         $this->_provider_token = $provider_token;
         $this->_payment_currency = $currency;
     }
