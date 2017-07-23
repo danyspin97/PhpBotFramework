@@ -177,14 +177,14 @@ class CoreBotTest extends TestCase
       $response = $method->invokeArgs($bot, [['Donation' => 1.45]]);
       $this->assertEquals('[{"label":"Donation","amount":145}]', $response);
 
-      $response = $method->invokeArgs($bot, [['Donation' => 14.50, 'Taxes' => 0.59]]);
-      $this->assertEquals('[{"label":"Donation","amount":1450},{"label":"Taxes","amount":59}]', $response);
+      $response = $method->invokeArgs($bot, [['Donation' => 14.50, 'Taxes' => 1]]);
+      $this->assertEquals('[{"label":"Donation","amount":1450},{"label":"Taxes","amount":100}]', $response);
 
+      $this->expectException(Exception::class);
       $response = $method->invokeArgs($bot, [['Donation' => 0.592]]);
-      $this->assertEquals('[{"label":"Donation","amount":59}]', $response);
 
+      $this->expectException(Exception::class);
       $response = $method->invokeArgs($bot, [['Donation' => 0.50]]);
-      $this->assertEquals('[{"label":"Donation","amount":50}]', $response);
 
       $this->expectException(Exception::class);
       $method->invokeArgs($bot, [['Donation' => -23]]);

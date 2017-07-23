@@ -151,9 +151,10 @@ trait Send
 
         foreach ($prices as $item => $price)
         {
-            if ($price < 0)
+            if ($price < 1)
             {
-                throw new \Exception('Invalid negative price passed to "sendInvoice"');
+                $this->logger->warning('Invalid or negative price passed to "sendInvoice"');
+                throw new \Exception('Invalid or negative price passed to "sendInvoice"');
             }
 
             // Format the price value following the official guideline:
