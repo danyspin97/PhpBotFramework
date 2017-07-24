@@ -76,7 +76,7 @@ class MessageCommand extends BasicCommand
         $message_is_command = (isset($message['entities']) && $message['entities'][0]['type'] === 'bot_command') ? true : false;
 
         // If we found a valid command (check first lenght, then use strpos)
-        if ($message_is_command && $this->length == $message['entities'][0]['length'] && mb_strpos($this->command, $message['text'], $message['entities'][0]['offset']) !== false) {
+        if ($message_is_command && $this->length == $message['entities'][0]['length'] && strpos($this->command, $message['text'], $message['entities'][0]['offset']) !== false) {
                     // Return
                     return true;
         }

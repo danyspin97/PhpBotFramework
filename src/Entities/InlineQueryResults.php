@@ -159,7 +159,7 @@ class InlineQueryResults
         $parse_mode = 'HTML',
         $disable_web_preview = false
     ) : int {
-    
+
         array_push($this->results, [
             'type' => 'article',
             'id' => (string)$this->id_result,

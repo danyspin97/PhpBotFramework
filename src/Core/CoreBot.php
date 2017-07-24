@@ -43,7 +43,7 @@ use PhpBotFramework\Entities\InlineKeyboard;
  * You can start working on your bot creating a new instance of Bot or by creating a
  * class that inherits from it.
  *
- * Each API call will have <code>$_chat_id</code> set to the current user:
+ * Each API call will have <code>$chat_id</code> set to the current user:
  * you can use CoreBot::setChatID() to change it.
  *
  * Below an example bot you can look to:
@@ -333,6 +333,11 @@ use PhpBotFramework\Entities\InlineKeyboard;
  * Derivatives works (including modifications) can only be redistributed under LGPL-3, but applications that use the wrapper don't have to be.
  *
  */
+mb_internal_encoding('UTF-8');
+
+use \Monolog\Logger;
+
+use \Monolog\Handler\StreamHandler;
 
 /**
  * \class CoreBot
@@ -347,9 +352,8 @@ class CoreBot
         Inline,
         Chat;
 
-    /** @internal
-      * \brief Chat_id of the user that interacted with the bot. */
-    protected $_chat_id;
+    /** \brief Chat_id of the user that interacted with the bot. */
+    public $chat_id;
 
     /** @internal
       * \brief Bot id. */
@@ -371,6 +375,10 @@ class CoreBot
       * brief Contains parameters of the next request. */
     protected $parameters;
 
+    /** \@internal
+     * brief Contains the logger object. */
+    protected $logger;
+
     /**
      * \@internal
      * brief Initialize a new bot.
@@ -379,8 +387,14 @@ class CoreBot
      */
     public function __construct(string $token)
     {
+        $this->logger = new Logger('phpbotframework');
+        $this->logger->pushHandler(new StreamHandler('/tmp/log/phpbotframework-warning.log', Logger::WARNING));
+
+        $this->logger->warning('✓ Started a new (shiny) Telegram bot using PhpBotFramework');
+
         // Check if token is valid
         if (is_numeric($token) || $token === '') {
+            $this->logger->error('Token is not valid or empty');
             throw new BotException('Token is not valid or empty');
         }
 
@@ -404,22 +418,24 @@ class CoreBot
      */
 
     /**
+     * @deprecated
      * \brief Get chat ID of the current user.
      * @return int Chat ID of the user.
      */
     public function getChatID()
     {
-        return $this->_chat_id;
+        return $this->chat_id;
     }
 
     /**
+     * @deprecated
      * \brief Set current chat ID.
      * \details Change the chat ID on which the bot acts.
      * @param $chat_id The new chat ID to set.
      */
     public function setChatID($chat_id)
     {
-        $this->_chat_id = $chat_id;
+        $this->chat_id = $chat_id;
     }
 
     /**
@@ -450,7 +466,7 @@ class CoreBot
      * \details Use this method for custom api calls using this syntax:
      *
      *     $param = [
-     *             'chat_id' => $_chat_id,
+     *             'chat_id' => $chat_id,
      *             'text' => 'Hello!'
      *     ];
      *     apiRequest("sendMessage", $param);
@@ -519,14 +535,19 @@ class CoreBot
     /**
      * @internal
      * \brief Core function to execute HTTP request.
-     * @param $url The request's URL.
+     * @param string $url The request's URL.
      * @return Array|false Url response decoded from JSON, false on error.
      */
     protected function execRequest(string $url)
     {
-        $response = $this->_http->request('POST', $url);
+        $request = $this->_http->request('POST', $url);
+        $response = $this->checkRequestError($request);
 
-        return $this->checkRequestError($response);
+        if (!$response) {
+          $this->logger->warning("Failed to call '$url', code 500 or 404 returned.");
+        }
+
+        return $response;
     }
 
     /**
@@ -558,14 +579,54 @@ class CoreBot
 
             return $response['result'];
         } elseif ($http_code >= 500) {
-            // do not wat to DDOS server if something goes wrong
+            // Avoids to send too many requests to the server if something goes wrong.
+            $this->logger->warning("Got '500 Internal Server Error', sleeping 10s.");
+            $this->logger->warning("Response object:\n" . var_dump($response));
+
             sleep(10);
+            return false;
+        } elseif ($http_code === 404) {
+            $this->logger->warning('Request returned 404 Page Not Found');
             return false;
         } else {
             $response = json_decode($response->getBody(), true);
-            error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
+            $this->logger->error("Request has failed with error {$response['error_code']}: {$response['description']}\n");
             return false;
         }
+    }
+
+    /**
+     * \brief Call a single api method using another chat_id without changing the current one.
+     * @param string|int $chat_id API method target chat_id.
+     * @param string $method Bot API method name.
+     * @param mixed ...$param Parameters for the API method.
+     * @return mixed The return value of the API method.
+     */
+    public function withChatId($chat_id, $method, ...$param)
+    {
+        $last_chat = $this->chat_id;
+        $this->chat_id = $chat_id;
+        $value = $this->$method(...$param);
+        $this->chat_id = $last_chat;
+
+        return $value;
+    }
+
+    /**
+     * \brief Call the closure with the selected `chat_id`.
+     * \detail At the end of the method, $chat_id will still contain the original value.
+     * @param string|int $chat_id Target chat while executing the closure.
+     * @param closure $closure Closure to execute with the selected `chat_id`.
+     * @return mixed The return value of the closure.
+     */
+    public function useChatId($chat_id, \closure $closure)
+    {
+        $last_chat = $this->chat_id;
+        $this->chat_id = $chat_id;
+        $value = $closure();
+        $this->chat_id = $last_chat;
+
+        return $value;
     }
 
     /** @} */

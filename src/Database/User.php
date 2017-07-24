@@ -126,7 +126,7 @@ trait User
 
             if ($user_data !== false) {
                 // Change the chat_id for the next API method
-                $this->bot->setChatID($user[$this->id_column]);
+                $this->bot->chat_id = $user[$this->id_column];
                 $this->bot->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview, $disable_notification);
             }
         }

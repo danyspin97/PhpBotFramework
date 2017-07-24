@@ -64,7 +64,7 @@ class Localization
         $sth = $pdo->prepare('SELECT language FROM ' . $this->user_table . ' WHERE '
                                                            . $this->id_column . ' = :chat_id');
 
-        $chat_id = $this->bot->getChatID();
+        $chat_id = $this->bot->chat_id;
         $sth->bindParam(':chat_id', $chat_id);
 
         try {
@@ -98,7 +98,7 @@ class Localization
                                              . $this->id_column . ' = :id');
         $sth->bindParam(':language', $language);
 
-        $chat_id = $this->bot->getChatID();
+        $chat_id = $this->bot->chat_id;
         $sth->bindParam(':id', $chat_id);
 
         try {
@@ -124,17 +124,17 @@ class Localization
     public function getLanguageRedis(int $expiring_time = 86400) : string
     {
         $redis = $this->bot->getRedis();
-        $chat_id = $this->bot->getChatID();
+        $chat_id = $this->bot->chat_id;
 
         // Check if the language exists on Redis
-        if ($redis->exists($this->bot->getChatID() . ':language')) {
+        if ($redis->exists($this->bot->chat_id . ':language')) {
             $this->language = $redis->get($chat_id . ':language');
             return $this->language;
         }
 
         // Set the value from the database
         $redis->setEx(
-            $this->bot->getChatID() . ':language',
+            $this->bot->chat_id . ':language',
             $expiring_time,
             $this->getLanguageDatabase()
         );
@@ -155,7 +155,7 @@ class Localization
         // If we could successfully set the language in the database
         if ($this->setLanguageDatabase($language)) {
             // Set the language in Redis
-            $redis->setEx($this->bot->getChatID() . ':language', $expiring_time, $language);
+            $redis->setEx($this->bot->chat_id . ':language', $expiring_time, $language);
             return true;
         }
 

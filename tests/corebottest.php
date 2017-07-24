@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 define('TREE_IMAGE', 'http://www.planwallpaper.com/static/images/2022725-wallpaper_625864_Iz6NK8G.jpg');
 define('EYES_IMAGE', 'http://www.planwallpaper.com/static/images/wallpapers-7020-7277-hd-wallpapers.jpg');
 define('PANDA_IMAGE', 'http://www.planwallpaper.com/static/images/wallpaper-11628192.jpg');
-define('LOGO_IMAGE', './Doxygen/logo.png');
+define('LOGO_IMAGE', './logo.png');
 
 // Define document path and urls
 define('MESSAGE_JSON', './tests/message_1.json');
@@ -48,7 +48,7 @@ class CoreBotTest extends TestCase
     public function testSetChatIDAndGetChatIDReturnSameID($bot)
     {
         $bot->setChatID('CUSTOM_CHAT_ID');
-        $this->assertEquals('CUSTOM_CHAT_ID', $bot->getChatID());
+        $this->assertEquals('CUSTOM_CHAT_ID', $bot->chat_id);
     }
 
     /**
@@ -163,7 +163,7 @@ class CoreBotTest extends TestCase
      * @depends testCreateCoreBot
      */
     public function testGetWebhookInfo($bot)
-    {
+    {
         $response = $bot->getWebhookInfo();
         $this->assertArrayHasKey('pending_update_count', $response);
     }
@@ -177,11 +177,14 @@ class CoreBotTest extends TestCase
       $response = $method->invokeArgs($bot, [['Donation' => 1.45]]);
       $this->assertEquals('[{"label":"Donation","amount":145}]', $response);
 
-      $response = $method->invokeArgs($bot, [['Donation' => 14.50, 'Taxes' => 0.59]]);
-      $this->assertEquals('[{"label":"Donation","amount":1450},{"label":"Taxes","amount":59}]', $response);
+      $response = $method->invokeArgs($bot, [['Donation' => 14.50, 'Taxes' => 1]]);
+      $this->assertEquals('[{"label":"Donation","amount":1450},{"label":"Taxes","amount":100}]', $response);
 
+      $this->expectException(Exception::class);
       $response = $method->invokeArgs($bot, [['Donation' => 0.592]]);
-      $this->assertEquals('[{"label":"Donation","amount":59}]', $response);
+
+      $this->expectException(Exception::class);
+      $response = $method->invokeArgs($bot, [['Donation' => 0.50]]);
 
       $this->expectException(Exception::class);
       $method->invokeArgs($bot, [['Donation' => -23]]);

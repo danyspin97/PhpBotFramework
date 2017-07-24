@@ -40,6 +40,20 @@ class BasicBot extends Core\CoreBot
       * \brief True if the bot is using webhook? */
     protected $_is_webhook;
 
+    public $answerUpdate;
+
+    public static $update_types = [
+            'message' => 'Message',
+            'callback_query' => 'CallbackQuery',
+            'inline_query' => 'InlineQuery',
+            'channel_post' => 'ChannelPost',
+            'edited_message' => 'EditedMessage',
+            'edited_channel_post' => 'EditedChannelPost',
+            'chosen_inline_result' => 'ChosenInlineResult',
+            'pre_checkout_query' => 'PreCheckoutQuery',
+            'shipping_query' => 'ShippingQuery'
+        ];
+
     /**
      * \brief Construct an empty base bot.
      * \details Construct a base bot that can handle updates.
@@ -47,6 +61,13 @@ class BasicBot extends Core\CoreBot
     public function __construct(string $token)
     {
         parent::__construct($token);
+
+        $this->answerUpdate = [];
+
+        // Init all default fallback for updates
+        foreach (BasicBot::$update_types as $type => $classes) {
+            $this->answerUpdate[$type] = function ($bot, $message) {};
+        }
 
         // Add alias for entity classes
         class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\EditedMessage');
@@ -121,35 +142,25 @@ class BasicBot extends Core\CoreBot
      */
     protected function processUpdate(array $update) : int
     {
-        static $updates_type = [
-            'message' => 'Message',
-            'callback_query' => 'CallbackQuery',
-            'inline_query' => 'InlineQuery',
-            'channel_post' => 'ChannelPost',
-            'edited_message' => 'EditedMessage',
-            'edited_channel_post' => 'EditedChannelPost',
-            'chosen_inline_result' => 'ChosenInlineResult',
-            'pre_checkout_query' => 'PreCheckoutQuery',
-            'shipping_query' => 'ShippingQuery'
-        ];
-
         if ($this->processCommands($update)) {
             return $update['update_id'];
         }
 
-        foreach ($updates_type as $offset => $class) {
+        // For each update type
+        foreach (BasicBot::$update_types as $offset => $class) {
+            // Did we receive this type of the update?
             if (isset($update[$offset])) {
                 $object_class = "PhpBotFramework\Entities\\$class";
                 $object = new $object_class($update[$offset]);
 
-                $this->_chat_id = $object->getChatID();
+                $this->chat_id = $object->getChatID();
 
                 if (method_exists($object, 'getBotParameter')) {
                     $var = $object->getBotParameter();
                     $this->{$var['var']} = $var['id'];
                 }
 
-                $this->{"process$class"}($object);
+                $this->answerUpdate[$offset]($this, $object);
 
                 return $update['update_id'];
             }
@@ -157,92 +168,21 @@ class BasicBot extends Core\CoreBot
     }
 
     /**
-     * \brief Called every message received by the bot.
-     * \details Override it to script the bot answer for each message.
-     * <code>$chat_id</code> and <code>$text</code>, if the message contains text(use getMessageText() to access it), set inside of this function.
-     * @param Message $message Reference to the message received.
+     * \brief Set compatibilityu mode for old processes method.
+     * \details If your bot uses `processMessage` or another deprecated function, call this method to make the old version works.
      */
-    protected function processMessage(Message $message)
+    public function oldDispatch()
     {
-    }
-
-    /**
-     * \brief Process updates which involve PreCheckout queries (part of Payments API).
-     * \details Ovveride it to script the bot answer for each PreCheckout query.
-     * @param PreCheckoutQuery $pre_checkout_query Reference to the query received.
-     */
-    protected function processPreCheckoutQuery(PreCheckoutQuery $pre_checkout_query)
-    {
-    }
-
-    /**
-     * \brief Process updates which involve shipping queries (part of Payments API).
-     * \details Ovveride it to script the bot answer for each shipping query.
-     * @param ShippingQuery $shipping_query Reference to the query received.
-     */
-    protected function processShippingQuery(ShippingQuery $shipping_query)
-    {
-    }
-
-
-    /**
-     * \brief Called every callback query received by the bot.
-     * \details Override it to script the bot answer for each callback.
-     * <code>$chat_id</code> and <code>$data</code>, if set in the callback query(use getCallbackData() to access it) set inside of this function.
-     * @param CallbackQuery $callback_query Reference to the callback query received.
-     */
-    protected function processCallbackQuery(CallbackQuery $callback_query)
-    {
-    }
-
-    /**
-     * \brief Called every inline query received by the bot.
-     * \details Override it to script the bot answer for each inline query.
-     * $chat_id and $query(use getInlineQuery() to access it) set inside of this function.
-     * @param InlineQuery $inline_query Reference to the inline query received.
-     */
-    protected function processInlineQuery(InlineQuery $inline_query)
-    {
-    }
-
-    /**
-     * \brief Called every chosen inline result received by the bot.
-     * \details Override it to script the bot answer for each chosen inline result.
-     * <code>$chat_id</code> set inside of this function.
-     * @param ChosenInlineResult $chosen_inline_result Reference to the chosen inline result received.
-     */
-    protected function processChosenInlineResult(ChosenInlineResult $chosen_inline_result)
-    {
-    }
-
-    /**
-     * \brief Called every chosen edited message received by the bot.
-     * \details Override it to script the bot answer for each edited message.
-     * <code>$chat_id</code> set inside of this function.
-     * @param Message $edited_message The message edited by the user.
-     */
-    protected function processEditedMessage(Message $edited_message)
-    {
-    }
-
-    /**
-     * \brief Called every new post in the channel where the bot is in.
-     * \details Override it to script the bot answer for each post sent in a channel.
-     * <code>$chat_id</code> set inside of this function.
-     * @param Message $post The message sent in the channel.
-     */
-    protected function processChannelPost(Message $post)
-    {
-    }
-
-    /**
-     * \brief Called every time a post get edited in the channel where the bot is in.
-     * \details Override it to script the bot answer for each post edited  in a channel.
-     * <code>$chat_id</code> set inside of this function.
-     * @param Message $post The message edited in the channel.
-     */
-    protected function processEditedChannelPost(Message $edited_post)
-    {
+        // For each update type
+        foreach (BasicBot::$update_types as $offset => $class) {
+            // Check if the bot has an inherited method
+            if (method_exists($this, 'process' . $class)) {
+                // Wrap it in a closure to make it works with the 3.0 version
+                $this->answerUpdate[$offset] = function ($bot, $entity) use ($class) {
+                    $bot->{"process$class"}($entity);
+                };
+            }
+        }
     }
 
     /** @} */

@@ -49,7 +49,7 @@ trait Edit
     {
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'message_id' => $message_id,
             'text' => $text,
             'reply_markup' => $reply_markup,
@@ -95,7 +95,7 @@ trait Edit
     {
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'message_id' => $message_id,
             'reply_markup' => $inline_keyboard,
         ];

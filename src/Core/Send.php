@@ -22,6 +22,8 @@ use PhpBotFramework\Entities\Message;
 
 use PhpBotFramework\Entities\File as TelegramFile;
 
+use PhpBotFramework\Exceptions\BotException;
+
 /**
  * \class Send
  * \brief All API Methods that send a message (text based or not).
@@ -58,6 +60,11 @@ trait Send
      */
     public function setPayment(string $provider_token, string $currency = 'EUR')
     {
+        if (!$provider_token) {
+            $this->logger->warning('setPayment expects a valid provider token, an invalid one given.');
+            throw new BotException('Invalid provider token given to "setPayment"');
+        }
+
         $this->_provider_token = $provider_token;
         $this->_payment_currency = $currency;
     }
@@ -102,7 +109,7 @@ trait Send
         $payload = $this->generateSecurePayload();
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'title' => $title,
             'description' => $description,
             'payload' => $payload,
@@ -144,9 +151,10 @@ trait Send
 
         foreach ($prices as $item => $price)
         {
-            if ($price < 0)
+            if ($price < 1)
             {
-                throw new \Exception('Invalid negative price passed to "sendInvoice"');
+                $this->logger->warning('Invalid or negative price passed to "sendInvoice"');
+                throw new \Exception('Invalid or negative price passed to "sendInvoice"');
             }
 
             // Format the price value following the official guideline:
@@ -171,7 +179,7 @@ trait Send
     public function sendMessage($text, string $reply_markup = null, int $reply_to = null, string $parse_mode = 'HTML', bool $disable_web_preview = true, bool $disable_notification = false)
     {
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'text' => $text,
             'parse_mode' => $parse_mode,
             'disable_web_page_preview' => $disable_web_preview,
@@ -194,7 +202,7 @@ trait Send
     public function forwardMessage($from_chat_id, int $message_id, bool $disable_notification = false)
     {
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'message_id' => $message_id,
             'from_chat_id' => $from_chat_id,
             'disable_notification' => $disable_notification
@@ -217,7 +225,7 @@ trait Send
         $this->_file->init($photo, 'photo');
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'caption' => $caption,
             'reply_markup' => $reply_markup,
             'disable_notification' => $disable_notification,
@@ -245,7 +253,7 @@ trait Send
         $this->_file->init($audio, 'audio');
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'caption' => $caption,
             'duration' => $duration,
             'performer' => $performer,
@@ -275,7 +283,7 @@ trait Send
         $this->_file->init($document, 'document');
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'caption' => $caption,
             'reply_to_message_id' => $reply_to_message_id,
             'reply_markup' => $reply_markup,
@@ -299,7 +307,7 @@ trait Send
     public function sendSticker($sticker, string $reply_markup = null, bool $disable_notification = false, int $reply_to_message_id = null)
     {
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'sticker' => $sticker,
             'disable_notification' => $disable_notification,
             'reply_to_message_id' => $reply_to_message_id,
@@ -326,7 +334,7 @@ trait Send
         $this->_file->init($voice, 'voice');
 
         $this->parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'caption' => $caption,
             'duration' => $duration,
             'disable_notification', $disable_notification,
@@ -356,7 +364,7 @@ trait Send
     {
 
         $parameters = [
-            'chat_id' => $this->_chat_id,
+            'chat_id' => $this->chat_id,
             'action' => $action
         ];
 

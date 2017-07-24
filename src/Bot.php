@@ -28,17 +28,17 @@ use PhpBotFramework\Utilities\BotState;
 use PhpBotFramework\Database\Database;
 
 use PhpBotFramework\Database\Getter;
-use PhpBotFramework\Database\LongPolling;
 
 use PhpBotFramework\Localization\Localization;
+
+use PhpBotFramework\Entities\InlineQueryResults;
 
 /**
  * \class Bot Bot class that contains all modules.
  */
 class Bot extends BasicBot
 {
-    use Getter,
-        LongPolling;
+    use Getter;
 
     /**
      * \addtogroup Bot Bot
@@ -62,6 +62,8 @@ class Bot extends BasicBot
     /** \brief Status handler object. */
     public $status;
 
+    public $results;
+
     /**
      * \brief Construct an empty bot.
      * \details Construct a complete Telegram bot which can use localization, database and more other.
@@ -76,6 +78,7 @@ class Bot extends BasicBot
         $this->status = new BotState($this);
         $this->local = new Localization($this);
         $this->database = new Database($this);
+        $this->results = new InlineQueryResults();
     }
 
     /** @} */

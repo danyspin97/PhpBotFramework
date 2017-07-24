@@ -1,31 +1,27 @@
 <?php
-require './vendor/autoload.php';
+require_once './vendor/autoload.php';
 
-class DonateBot extends PhpBotFramework\Bot {
-    // Receive pre-checkout query.
-    protected function processPreCheckoutQuery($pre_checkout_query) {
-       $money_donated = $pre_checkout_query['total_amount'] / 100;
-       $currency = $pre_checkout_query['currency'];
+$bot = new PhpBotFramework\Bot(getenv('BOT_TOKEN'));
 
-       echo "** Checkout for $currency $money_donated\n";
-       $this->answerPreCheckoutQuery(true);
+$bot->answerUpdate['pre_checkout_query'] = function ($bot, $pre_checkout_query) {
+  // Telegram uses a custom way to define the amount of money handled.
+  // For instance, 1 EUR is represented like 100.
+  $money_received = $pre_checkout_query['total_amount'] / 100;
 
-       // If a user donated more than 2 euros or dollars or whatever currency.
-       if ($money_donated > 2) {
-           $this->sendMessage('Thanks for your donation');
-       }
-    }
-}
+  // For logging purpose.
+  echo "Received '$money_received EUR'";
 
-
-// Add commands
-$bot = new DonateBot('BOT_TOKEN');
-$bot->setPayment('PROVIDER_TOKEN', 'EUR');
+  $bot->sendMessage('Thanks for your donation!');
+  $bot->answerPreCheckoutQuery(true);
+};
 
 $bot->addMessageCommand('start', function ($bot, $message) {
-    $bot->sendInvoice('Donation', 'Small donation', 'don1', array('Donation' => 2));
-    $bot->sendInvoice('Donation', 'Medium donation', 'don2', array('Donation' => 5));
-    $bot->sendInvoice('Donation', 'Large donation', 'don3', array('Donation' => 10));
+  $bot->sendMessage('Hey there! Nice to see you. Type `/donate` to donate.');
+});
+
+$bot->addMessageCommand('donate', function ($bot, $message) {
+  $bot->setPayment(getenv('PAYMENT_TOKEN'), 'EUR');
+  $bot->sendInvoice('Donation', 'Basic Donation', 'basicDonation', ['Donation' => 1]);
 });
 
 $bot->getUpdatesLocal();
