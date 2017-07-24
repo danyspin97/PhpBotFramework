@@ -34,6 +34,10 @@ trait CommandHandler
     /** @internal
      * \brief Contains all command used by the bot. */
     private $_commands = [];
+    
+    /** @internal
+      * \brief Args of regex command, if any. */
+    protected $_args_regex;
 
     /**
      * @internal
@@ -72,7 +76,14 @@ trait CommandHandler
                 // If the update type is right and the update triggered a command
                 if (isset($update[$entity]) && $command->checkCommand($update[$entity])) {
                     $entity = new $command::$object_class($update[$entity]);
-                    $this->chat_id = $entity->getChatID();
+
+                    $this->_chat_id = $entity->getChatID();
+                    
+                    // save match of regex command, if present
+                    if ( isset($command->args) ) {
+                        $this->_args_regex = $command->args;
+                    }
+                    
                     $command->getScript()($this, $entity);
                     // Return the id as we already processed this update
                     return true;
@@ -122,6 +133,15 @@ trait CommandHandler
     public function addCallbackCommand(string $data, callable $script)
     {
       $this->_commands[] = new CallbackCommand($data, $script);
+    }
+
+    /**
+     * \brief Get match of regex command.
+     * @return array If set or <code>null</code> otherwise.
+     */
+    public function getArgsRegex ()
+    {
+        return $this->_args_regex;
     }
 
     /** @} */
