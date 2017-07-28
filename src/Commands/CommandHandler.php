@@ -34,7 +34,7 @@ trait CommandHandler
     /** @internal
      * \brief Contains all command used by the bot. */
     private $_commands = [];
-    
+
     /** @internal
       * \brief Args of regex command, if any. */
     protected $_args_regex;
@@ -57,7 +57,7 @@ trait CommandHandler
         foreach ($this->_commands as $index => $array) {
         // Sort them by priority
             uasort($this->_commands[$index], function ($a, $b) {
-                return $a::$priority <=> $b::$priority;    
+                return $a::$priority <=> $b::$priority;
             });
         }
     }
@@ -78,13 +78,9 @@ trait CommandHandler
                     $entity = new $command::$object_class($update[$entity]);
 
                     $this->_chat_id = $entity->getChatID();
-                    
-                    // save match of regex command, if present
-                    if ( isset($command->args) ) {
-                        $this->_args_regex = $command->args;
-                    }
-                    
-                    $command->getScript()($this, $entity);
+
+                    $command->getScript()($this, $entity, ...$command->args);
+
                     // Return the id as we already processed this update
                     return true;
                 }
@@ -110,7 +106,7 @@ trait CommandHandler
      */
     public function addCommands(BasicCommand ...$commands)
     {
-      foreach ($commands as $command) {
+        foreach ($commands as $command) {
             $this->addCommand($command);
         }
     }
@@ -122,7 +118,7 @@ trait CommandHandler
      */
     public function addMessageCommand(string $command, callable $script)
     {
-      $this->_commands[] = new MessageCommand($command, $script);
+        $this->_commands[] = new MessageCommand($command, $script);
     }
 
     /**
@@ -132,16 +128,7 @@ trait CommandHandler
      */
     public function addCallbackCommand(string $data, callable $script)
     {
-      $this->_commands[] = new CallbackCommand($data, $script);
-    }
-
-    /**
-     * \brief Get match of regex command.
-     * @return array If set or <code>null</code> otherwise.
-     */
-    public function getArgsRegex ()
-    {
-        return $this->_args_regex;
+        $this->_commands[] = new CallbackCommand($data, $script);
     }
 
     /** @} */

@@ -28,6 +28,9 @@ class BasicCommand
      * \brief Command closure called when triggered. */
     protected $script;
 
+    /** \brief The additional argument for the command. */
+    public $args = [];
+
     /** @internal
      * \brief Get closure of this command.
      * @return callable Closure.
