@@ -44,7 +44,8 @@ MultiCharacterCommand
 
 MultiCharacterCommand get triggered by messages what contains the selected keyword, prefixed by one of the wanted characters:
 ]
-.. :code:: php
+
+.. code:: php
 
     $about_command = new PhpBotFramework\Commands\MessageCommands("about",
             function ($bot, $message) {

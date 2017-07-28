@@ -16,7 +16,7 @@ Results
 
 Let's create the results:
 
-.. :code:: php
+.. code:: php
 
     $bot->answerUpdate["inline_query"] = function ($bot, $message) {
 
@@ -38,7 +38,7 @@ Sending the results
 
 When we have added all the results, we are ready to send them:
 
-.. :code:: php
+.. code:: php
 
     $bot->answerUpdate["inline_query"] = function ($bot, $message) {
 
@@ -53,13 +53,13 @@ When we have added all the results, we are ready to send them:
 Types
 -----
 
-The type used in the example is ``article``, have a look here_ for all types.
+The type used in the example is ``article``, have a look `here <https://core.telegram.org/bots/api#inlinequeryresult>`__ for all types.
 
-.. here_: https://core.telegram.org/bots/api#inlinequeryresult
+.. here_:
 
 To create a result of a different type you can use ``addResult``:
 
-.. :code:: php
+.. code:: php
 
     $bot->answerUpdate["inline_query"] = function ($bot, $message) {
 
@@ -75,7 +75,7 @@ To create a result of a different type you can use ``addResult``:
 
 To add multiple results simultaneously:
 
-.. :code:: php
+.. code:: php
 
     $bot->answerUpdate["inline_query"] = function ($bot, $message) {
 
