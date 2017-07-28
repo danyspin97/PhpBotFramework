@@ -26,6 +26,7 @@ Welcome to PhpBotFramework’s documentation!
 
    commands
    keyboard
+   inline_queries
    database
 
 Indices and tables

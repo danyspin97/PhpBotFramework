@@ -26,4 +26,71 @@ Let's create the results:
 
    };
 
+Important
 Remember that the parameter ``$reply_markup`` must not be encoded in JSON.
+If you cannot see the answer of the bots but you don't get any error message neither, check the ``$reply_markup`` parameter.
+
+-------------------
+Sending the results
+-------------------
+
+When we have added all the results, we are ready to send them:
+
+.. :code:: php
+
+   $bot->answerUpdate["inline_query"] = function ($bot, $message) {
+
+       // Creation of the results
+       ...
+
+       $bot->answerInlineQuery($bot->results->get());
+
+   };
+
+-----
+Types
+-----
+
+The type used in the example is ``article``, have a look here_ for all types.
+
+.. here_: https://core.telegram.org/bots/api#inlinequeryresult
+
+To create a result of a different type you can use ``addResult``:
+
+.. :code:: php
+
+   $bot->answerUpdate["inline_query"] = function ($bot, $message) {
+
+       $bot->results->addResult([
+               'type' => 'photo',
+               'photo_url' => 'https://www.gstatic.com/webp/gallery/1.jpg',
+               'thumb_url' => 'https://www.gstatic.com/webp/gallery/1.jpg'
+            ]);
+
+       $bot->answerInlineQuery($bot->results->get());
+
+    };
+
+To add multiple results simultaneously:
+
+.. :code:: php
+
+   $bot->answerUpdate["inline_query"] = function ($bot, $message) {
+
+       $bot->results->addResults([
+               [
+                   'type' => 'photo',
+                   'photo_url' => 'https://www.gstatic.com/webp/gallery/1.jpg',
+                   'thumb_url' => 'https://www.gstatic.com/webp/gallery/1.jpg'
+               ],
+               [
+                   'type' => 'photo',
+                   'photo_url' => 'https://www.gstatic.com/webp/gallery/2.jpg',
+                   'thumb_url' => 'https://www.gstatic.com/webp/gallery/2.jpg'
+               ]
+       ]);
+
+       $bot->answerInlineQuery($bot->results->get());
+
+    };
+

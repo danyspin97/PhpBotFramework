@@ -138,6 +138,14 @@ class InlineQueryResults
         return $this->id_result++;
     }
 
+    public function addResults(array $results) : int
+    {
+        foreach ($results as $result) {
+            $this->addResult($result);
+        }
+        return $this->id_result;
+    }
+
     /**
      * \brief Add a result of type Article.
      * \details Add a result that will be show to the user.
@@ -170,7 +178,7 @@ class InlineQueryResults
             'reply_markup' => $reply_markup,
             'disable_web_page_preview' => $disable_web_preview
         ]);
-        
+
         if ( is_null($reply_markup) ) {
             unset( $this->results[ $this->id_result ]['reply_markup'] );
         }

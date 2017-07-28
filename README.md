@@ -8,6 +8,10 @@
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
 [![License](https://poser.pugx.org/danyspin97/php-bot-framework/license)](https://packagist.org/packages/danyspin97/php-bot-framework)
 
+<p align="center">
+  <img src="logo.png" title="PhpBotFramework-Logo" width="50%">
+</p>
+
 
 *PhpBotFramework* is a reliable and complete framework for [Telegram Bot API](https://core.telegram.org/bots/api)
 with support to **Payments APIs**.
