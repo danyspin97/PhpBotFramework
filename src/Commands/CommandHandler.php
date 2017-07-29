@@ -79,6 +79,8 @@ trait CommandHandler
 
                     $this->chat_id = $entity->getChatID();
 
+                    $this->setAdditionalData($entity);
+
                     $command->getScript()($this, $entity, ...$command->args);
 
                     // Return the id as we already processed this update

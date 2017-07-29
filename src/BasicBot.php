@@ -155,15 +155,20 @@ class BasicBot extends Core\CoreBot
 
                 $this->chat_id = $object->getChatID();
 
-                if (method_exists($object, 'getBotParameter')) {
-                    $var = $object->getBotParameter();
-                    $this->{$var['var']} = $var['id'];
-                }
+                $this->setAdditionalData($object);
 
                 $this->answerUpdate[$offset]($this, $object);
 
                 return $update['update_id'];
             }
+        }
+    }
+
+    protected function setAdditionalData($entity)
+    {
+        if (method_exists($entity, 'getBotParameter')) {
+            $var = $entity->getBotParameter();
+            $this->{$var['var']} = $var['id'];
         }
     }
 
