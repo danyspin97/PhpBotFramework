@@ -128,7 +128,7 @@ trait File
         }
 
         // If the language of the user is already set in the array containing localizated strings
-        if (!isset($this->local[$this->bot->language])) {
+        if (!isset($this->local[$this->language])) {
             // Is the bot using webhook?
             if (isset($this->bot->_is_webhook)) {
                 return $this->loadSingleLanguage($this->localization_dir);

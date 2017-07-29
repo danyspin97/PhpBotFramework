@@ -59,7 +59,7 @@ class Button extends InlineKeyboard
             [
                 [
                     [
-                        'text' => $this->bot->local[$this->bot->language]['Back_Button'],
+                        'text' => $this->bot->local[$this->bot->local->language]['Back_Button'],
                         'callback_data' => 'back'
                     ]
                 ]
@@ -87,11 +87,11 @@ class Button extends InlineKeyboard
             [
                 [
                     [
-                        'text' => $this->bot->local[$this->bot->language]['Back_Button'],
+                        'text' => $this->bot->local[$this->bot->local->language]['Back_Button'],
                         'callback_data' => 'back'
                     ],
                     [
-                        'text' => $this->bot->local[$this->bot->language]['Skip_Button'],
+                        'text' => $this->bot->local[$this->bot->local->language]['Skip_Button'],
                         'callback_data' => 'skip'
                     ]
                 ]
@@ -122,7 +122,7 @@ class Button extends InlineKeyboard
 
         foreach ($this->bot->local as $languages => $language_msg) {
             // If the language is the same as the one set for the current user in $bot
-            if (strpos($languages, $this->bot->language) !== false) {
+            if (strpos($languages, $this->bot->local->language) !== false) {
                 // Just create a button with one language in it
                 array_push($inline_keyboard['inline_keyboard'], [
                     [
@@ -133,7 +133,7 @@ class Button extends InlineKeyboard
             } else {
                 array_push($inline_keyboard['inline_keyboard'], [
                         [
-                            'text' => $language_msg['Language'] . '/' . $this->bot->local[$this->bot->language][$languages],
+                            'text' => $language_msg['Language'] . '/' . $this->bot->local[$this->bot->local->language][$languages],
                             'callback_data' => $prefix . '/' . $languages
                         ]
                 ]);
@@ -146,7 +146,7 @@ class Button extends InlineKeyboard
 
         array_push($inline_keyboard['inline_keyboard'], [
                 [
-                    'text' => $this->bot->local[$this->bot->language]['Back_Button'],
+                    'text' => $this->bot->local[$this->bot->local->language]['Back_Button'],
                     'callback_data' => 'back'
                 ]
         ]);
