@@ -37,7 +37,7 @@ class Database
     public $pdo;
 
     /** \brief Table contaning bot users data in the SQL database. */
-    public $user_table = 'User';
+    public $user_table = 'TelegramUser';
 
     /**
      * \addtogroup Database
@@ -125,27 +125,6 @@ class Database
         }
 
         return $response . join(';', $fields);
-    }
-
-    /**
-     * @internal
-     * \brief Sanitize name of the user table depending on database used.
-     */
-    protected function sanitizeUserTable()
-    {
-        static $is_sanitized = false;
-
-        if ($is_sanitized) {
-            return;
-        }
-
-        if ($this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'mysql') {
-            $this->user_table = "`$this->user_table`";
-        } else {
-            $this->user_table = '"' . $this->user_table . '"';
-        }
-
-        $is_sanitized = true;
     }
 
     /** @} */

@@ -39,7 +39,7 @@ class Localization
     protected $bot;
 
     /** \brief Table containing bot users data into database. */
-    public $user_table = 'User';
+    public $user_table = 'TelegramUser';
 
     /** \brief Name of the column that represents the user ID into database */
     public $id_column = 'chat_id';

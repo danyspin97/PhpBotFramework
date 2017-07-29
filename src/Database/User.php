@@ -35,8 +35,6 @@ trait User
 {
     /** @} */
 
-    abstract protected function sanitizeUserTable();
-
     /** @internal
       * \brief PDO connection to the database. */
     public $pdo;
@@ -53,7 +51,7 @@ trait User
      */
 
     /** \brief Table contaning bot users data in the SQL database. */
-    public $user_table = 'User';
+    public $user_table = 'TelegramUser';
 
     /** \brief Name of the column that represents the user id in the sql database */
     public $id_column = 'chat_id';
@@ -69,8 +67,6 @@ trait User
         if (!isset($this->pdo)) {
             throw new BotException("Database connection not set");
         }
-
-        $this->sanitizeUserTable();
 
         // Create insertion query and initialize variable
         $query = "INSERT INTO $this->user_table ($this->id_column) VALUES (:chat_id)";
@@ -109,8 +105,6 @@ trait User
         if (!isset($this->pdo)) {
             throw new BotException("Database connection not set");
         }
-
-        $this->sanitizeUserTable();
 
         $sth = $this->pdo->prepare("SELECT $this->id_column FROM $this->user_table");
 
