@@ -47,7 +47,7 @@ trait File
 
     /** @internal
       * \brief Store the localized strings. */
-    protected $local;
+    public $local;
 
     /** \brief Source for localization files. */
     protected $localization_dir = './localization';

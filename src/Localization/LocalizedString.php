@@ -47,7 +47,7 @@ trait LocalizedString
 
     /** @internal
       * \brief Store the localizated strings. */
-    protected $local;
+    public $local;
 
     /**
      * \brief Get a localized string giving an index.
