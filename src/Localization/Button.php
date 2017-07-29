@@ -120,7 +120,11 @@ class Button extends InlineKeyboard
     {
         $inline_keyboard = ['inline_keyboard' => array()];
 
-        foreach ($this->bot->local as $languages => $language_msg) {
+                    // $bot->local is an object of type Localization
+                    // $local->local is the array where the localizated strings are saved
+        $localization = $this->bot->local->local;
+
+        foreach ($localization as $languages => $language_msg) {
             // If the language is the same as the one set for the current user in $bot
             if (strpos($languages, $this->bot->local->language) !== false) {
                 // Just create a button with one language in it
@@ -133,7 +137,7 @@ class Button extends InlineKeyboard
             } else {
                 array_push($inline_keyboard['inline_keyboard'], [
                         [
-                            'text' => $language_msg['Language'] . '/' . $this->bot->local[$this->bot->local->language][$languages],
+                            'text' => $language_msg['Language'] . '/' . $localization,
                             'callback_data' => $prefix . '/' . $languages
                         ]
                 ]);
