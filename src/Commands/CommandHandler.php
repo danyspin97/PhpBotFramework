@@ -77,7 +77,7 @@ trait CommandHandler
                 if (isset($update[$entity]) && $command->checkCommand($update[$entity])) {
                     $entity = new $command::$object_class($update[$entity]);
 
-                    $this->_chat_id = $entity->getChatID();
+                    $this->chat_id = $entity->getChatID();
 
                     $command->getScript()($this, $entity, ...$command->args);
 
