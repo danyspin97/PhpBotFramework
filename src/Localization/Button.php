@@ -59,7 +59,7 @@ class Button extends InlineKeyboard
             [
                 [
                     [
-                        'text' => $this->bot->local->getStr(Back_Button),
+                        'text' => $this->bot->local->getStr('Back_Button'),
                         'callback_data' => 'back'
                     ]
                 ]
@@ -87,11 +87,11 @@ class Button extends InlineKeyboard
             [
                 [
                     [
-                        'text' => $this->bot->local->getStr(Back_Button),
+                        'text' => $this->bot->local->getStr('Back_Button'),
                         'callback_data' => 'back'
                     ],
                     [
-                        'text' => $this->bot->local->getStr(Skip_Button),
+                        'text' => $this->bot->local->getStr('Skip_Button'),
                         'callback_data' => 'skip'
                     ]
                 ]
@@ -146,7 +146,7 @@ class Button extends InlineKeyboard
 
         array_push($inline_keyboard['inline_keyboard'], [
                 [
-                    'text' => $this->bot->local->getStr(Back_Button),
+                    'text' => $this->bot->local->getStr('Back_Button'),
                     'callback_data' => 'back'
                 ]
         ]);
