@@ -80,7 +80,8 @@ class Localization
             return $row['language'];
         }
 
-        throw new BotException("Could not load language from database for user: $chat_id");
+        $this->language = 'en';
+        return 'en';
     }
 
     /**
