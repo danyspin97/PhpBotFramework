@@ -1,5 +1,5 @@
-CREATE TABLE "User" (
-  "chat_id" int,
+CREATE TABLE TelegramUser (
+  chat_id int,
 
-  PRIMARY KEY ("chat_id")
+  PRIMARY KEY (chat_id)
 );
