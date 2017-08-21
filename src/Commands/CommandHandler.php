@@ -35,10 +35,6 @@ trait CommandHandler
      * \brief Contains all command used by the bot. */
     private $_commands = [];
 
-    /** @internal
-      * \brief Args of regex command, if any. */
-    protected $_args_regex;
-
     /**
      * @internal
      * \brief Initialize commands to speed up processing.
