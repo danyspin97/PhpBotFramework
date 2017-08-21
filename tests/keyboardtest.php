@@ -21,7 +21,7 @@ class KeyboardTest extends TestCase
 
         $this->keyboard->addButton('Third', 'callback_data', '3');
 
-        $this->keyboard->changeRow();
+        $this->keyboard->nextRow();
 
         $this->keyboard->addButton('Fourth', 'callback_data', '4');
 

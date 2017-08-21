@@ -29,7 +29,7 @@ Use:
 
 .. code:: php
 
-   $bot->keyboard->changeRow();
+   $bot->keyboard->nextRow();
 
 to switch to the next row.
 

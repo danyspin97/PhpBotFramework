@@ -135,12 +135,12 @@ class InlineKeyboard
     {
         // If the user has already added a button in this row
         if ($this->column != 0) {
-            $this->changeRow();
+            $this->nextRow();
         }
 
         // Add buttons to the next row
         $this->inline_keyboard[] = $buttons;
-        $this->changeRow();
+        $this->nextRow();
     }
 
     /**
@@ -166,7 +166,7 @@ class InlineKeyboard
     {
         // If we get the end of the row
         if ($this->column == 8) {
-            $this->changeRow();
+            $this->nextRow();
         }
 
         // Add the button
@@ -175,10 +175,19 @@ class InlineKeyboard
     }
 
     /**
+     * @internal
+     * \brief DEPRECATED: use nextRow()
+     */
+    public function changeRow()
+    {
+        $this->nextRow();
+    }
+
+    /**
      * \brief Change row for the current keyboard.
      * \details Change row where the buttons will be saved.
      */
-    public function changeRow()
+    public function nextRow()
     {
         $this->row++;
         $this->column = 0;
@@ -780,13 +789,13 @@ class InlineKeyboard
         // If there are other buttons in this row (checking the column)
         if ($this->column !== 0) {
             // Go to the next
-            $this->changeRow();
+            $this->nextRow();
         }
 
         $this->inline_keyboard[$this->row] = $buttons;
 
         // We added a row
-        $this->changeRow();
+        $this->nextRow();
     }
 
     /** @} */
