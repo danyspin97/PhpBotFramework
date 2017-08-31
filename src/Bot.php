@@ -19,19 +19,14 @@
 namespace PhpBotFramework;
 
 use PhpBotFramework\Exceptions\BotException;
-
+use PhpBotFramework\Database\Getter;
+use PhpBotFramework\Core\BasicBot;
+use PhpBotFramework\Utilities\BotState;
+use PhpBotFramework\Database\Database;
+use PhpBotFramework\Localization\Localization;
+use PhpBotFramework\Entities\InlineQueryResults;
 // Use localized inline keyboard: this means you can display it in various languages.
 use PhpBotFramework\Localization\Button;
-
-use PhpBotFramework\Utilities\BotState;
-
-use PhpBotFramework\Database\Database;
-
-use PhpBotFramework\Database\Getter;
-
-use PhpBotFramework\Localization\Localization;
-
-use PhpBotFramework\Entities\InlineQueryResults;
 
 /**
  * \class Bot Bot class that contains all modules.

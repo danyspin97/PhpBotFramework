@@ -19,11 +19,11 @@
 namespace PhpBotFramework;
 
 use PhpBotFramework\Exceptions\BotException;
-
 use PhpBotFramework\Entities\Message;
 use PhpBotFramework\Entities\CallbackQuery;
 use PhpBotFramework\Entities\ChosenInlineResult;
 use PhpBotFramework\Entities\InlineQuery;
+use \PhpBotFramework\Commands\CommandHandler;
 
 /**
  * \class Bot Bot
@@ -34,11 +34,12 @@ use PhpBotFramework\Entities\InlineQuery;
  */
 class BasicBot extends Core\CoreBot
 {
-    use \PhpBotFramework\Commands\CommandHandler;
+    use CommandHandler,
+        Config;
 
     /** @internal
       * \brief True if the bot is using webhook? */
-    protected $_is_webhook;
+    protected $_is_webhook = false;
 
     public $answerUpdate;
 
@@ -66,7 +67,8 @@ class BasicBot extends Core\CoreBot
 
         // Init all default fallback for updates
         foreach (BasicBot::$update_types as $type => $classes) {
-            $this->answerUpdate[$type] = function ($bot, $message) {};
+            $this->answerUpdate[$type] = function ($bot, $message) {
+            };
         }
 
         // Add alias for entity classes
@@ -91,7 +93,7 @@ class BasicBot extends Core\CoreBot
     {
         $this->_is_webhook = true;
 
-        $this->initCommands();
+        $this->init();
         $this->processUpdate(json_decode(file_get_contents('php://input'), true));
     }
 
@@ -187,6 +189,23 @@ class BasicBot extends Core\CoreBot
                     $bot->{"process$class"}($entity);
                 };
             }
+        }
+    }
+
+    public function init()
+    {
+        $this->initCommands();
+        if ($this->_is_webhook) {
+            $this->logger->pushHandler(new StreamHandler('/var/log/' . $this->bot_name . '.log', Logger::WARNING));
+        } else {
+            if ($this->getBotID === 0) {
+                throw BotException("The bot could not be started");
+            }
+            $logger_path = $this->getScriptPath() . $this->bot_name . '.log';
+            $this->logger->pushHandler(new StreamHandler($logger_path, Logger::WARNING));
+            print('The bot has been started successfully.
+                A log file has been created at ' . $logger_path .
+                '\nTo stop it press <C-c> (Control-C).');
         }
     }
 
