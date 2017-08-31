@@ -66,7 +66,6 @@ bot:
 ::
 
     {
-     {
        "require": {
           "danyspin97/php-bot-framework": "*"
        }
