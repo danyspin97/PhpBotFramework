@@ -12,12 +12,8 @@ Create a bot
     // Require the Composer's autoloader
     require 'vendor/autoload.php';
 
-    /* All code from now will be assumed to use the
-     * framework namespace */
-    namespace PhpBotFramework;
-
     // Create the bot object
-    $bot = new Bot("token");
+    $bot = new PhpBotFramework\Bot("token");
 
 ---------------
 Answer messages
