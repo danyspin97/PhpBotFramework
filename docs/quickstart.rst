@@ -66,7 +66,7 @@ Answer the /start command
     };
 
     // Register the command
-    $bot->addCommand(new Commands\MessageCommand("start", $start_closure);
+    $bot->addCommand(new Commands\MessageCommand("start", $start_closure));
 
 For a complete list of Commands, checkout the `Command
 List <03-commands.html>`__
