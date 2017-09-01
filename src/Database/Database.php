@@ -18,7 +18,7 @@
 
 namespace PhpBotFramework\Database;
 
-use PhpBotFramework\BasicBot;
+use PhpBotFramework\Core\BasicBot;
 use PhpBotFramework\Exceptions\BotException;
 
 define('PDO_DEFAULT_ADAPTER', 'mysql');

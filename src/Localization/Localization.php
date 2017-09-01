@@ -17,7 +17,7 @@
 
 namespace PhpBotFramework\Localization;
 
-use PhpBotFramework\BasicBot;
+use PhpBotFramework\Core\BasicBot;
 use PhpBotFramework\Exceptions\BotException;
 
 class Localization

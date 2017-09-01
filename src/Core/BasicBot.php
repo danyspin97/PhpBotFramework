@@ -16,14 +16,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PhpBotFramework;
+namespace PhpBotFramework\Core;
 
 use PhpBotFramework\Exceptions\BotException;
+use PhpBotFramework\Core\Config;
+use PhpBotFramework\Commands\CommandHandler;
 use PhpBotFramework\Entities\Message;
 use PhpBotFramework\Entities\CallbackQuery;
 use PhpBotFramework\Entities\ChosenInlineResult;
 use PhpBotFramework\Entities\InlineQuery;
-use \PhpBotFramework\Commands\CommandHandler;
+
+use \Monolog\Logger;
+use \Monolog\Handler\StreamHandler;
 
 /**
  * \class Bot Bot
@@ -32,7 +36,7 @@ use \PhpBotFramework\Commands\CommandHandler;
  * An example of its usage is available in webhook.php
  *
  */
-class BasicBot extends Core\CoreBot
+class BasicBot extends CoreBot
 {
     use CommandHandler,
         Config;
@@ -108,14 +112,14 @@ class BasicBot extends Core\CoreBot
      */
     public function getUpdatesLocal(int $limit = 100, int $timeout = 60)
     {
+        $this->init();
+
         $update = [];
 
         // While there aren't updates to process
-        while (empty($update = $this->getUpdates(0, 1))) {
-        }
+        while (empty($update = $this->getUpdates(0, 1)));
 
         $offset = $update[0]['update_id'];
-        $this->initCommands();
 
         // Process all updates
         while (true) {
@@ -198,14 +202,14 @@ class BasicBot extends Core\CoreBot
         if ($this->_is_webhook) {
             $this->logger->pushHandler(new StreamHandler('/var/log/' . $this->bot_name . '.log', Logger::WARNING));
         } else {
-            if ($this->getBotID === 0) {
-                throw BotException("The bot could not be started");
+            if ($this->getBotId() === 0) {
+                throw new BotException("The bot could not be started");
             }
-            $logger_path = $this->getScriptPath() . $this->bot_name . '.log';
+            $logger_path = $this->getScriptPath() . '/' . $this->bot_name . '.log';
             $this->logger->pushHandler(new StreamHandler($logger_path, Logger::WARNING));
-            print('The bot has been started successfully.
-                A log file has been created at ' . $logger_path .
-                '\nTo stop it press <C-c> (Control-C).');
+            print("The bot has been started successfully.\nA log file has been created at " . $logger_path .
+                "\nTo stop it press <C-c> (Control-C).");
+            $this->logger->warning("START LOGGING");
         }
     }
 

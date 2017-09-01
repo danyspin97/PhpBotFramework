@@ -24,7 +24,7 @@ namespace PhpBotFramework\Utilities;
  */
 use PhpBotFramework\Exceptions\BotException;
 
-use PhpBotFramework\BasicBot;
+use PhpBotFramework\Core\BasicBot;
 
 /**
  * \class BotState
