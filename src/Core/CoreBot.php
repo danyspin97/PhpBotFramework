@@ -226,11 +226,7 @@ class CoreBot
     protected function execRequest(string $url)
     {
         $request = $this->_http->request('POST', $url);
-        $response = $this->checkRequestError($request);
-
-        if (!$response) {
-            $this->logger->warning("Failed to call '$url', code 500 or 404 returned.");
-        }
+        $response = $this->checkRequestError($request, $url);
 
         return $response;
     }
@@ -252,10 +248,10 @@ class CoreBot
                 ]
             ]]);
 
-        return $this->checkRequestError($response);
+        return $this->checkRequestError($response, $url);
     }
 
-    public function checkRequestError($response)
+    public function checkRequestError($response, string $url)
     {
         $http_code = $response->getStatusCode();
 
@@ -275,7 +271,7 @@ class CoreBot
             return false;
         } else {
             $response = json_decode($response->getBody(), true);
-            $this->logger->error("Request has failed with error {$response['error_code']}: {$response['description']}\n");
+            $this->logger->error("Request '$url' has failed with error {$response['error_code']}: {$response['description']}\n");
             return false;
         }
     }
