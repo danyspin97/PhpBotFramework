@@ -98,7 +98,11 @@ class BasicBot extends CoreBot
         $this->_is_webhook = true;
 
         $this->init();
-        $this->processUpdate(json_decode(file_get_contents('php://input'), true));
+        $update = json_decode(file_get_contents('php://input'), true);
+        if (!$update) {
+            throw new BotException("Empty webhook update received");
+        }
+        $this->processUpdate($update);
     }
 
     /**
