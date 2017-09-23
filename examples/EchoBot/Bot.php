@@ -18,4 +18,4 @@ class EchoBot extends PhpBotFramework\Bot
 }
 
 $bot = new EchoBot('YOUR_BOT_TOKEN');
-$bot->run("getUpdates");
+$bot->run(GETUPDATES);

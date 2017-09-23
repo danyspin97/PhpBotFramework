@@ -18,6 +18,9 @@
 
 namespace PhpBotFramework\Core;
 
+define('WEBHOOK', 0);
+define('GETUPDATES', 1);
+
 /**
  * \brief Contains helper functions for running the bot
  */
@@ -30,11 +33,11 @@ trait Run
      * @{
      */
 
-    public function run(string $type)
+    public function run(int $type = WEBHOOK)
     {
         $this->init();
 
-        if ($type == "Webhook") {
+        if ($type == WEBHOOK) {
             $this->processWebhookUpdate();
             return;
         }

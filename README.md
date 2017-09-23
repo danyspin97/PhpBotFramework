@@ -46,7 +46,7 @@ $bot->addMessageCommand('about', function($bot, $message) {
 });
 
 // Receive updates from Telegram using getUpdates
-$bot->run("getUpdates");
+$bot->run(GETUPDATES);
 ```
 
 ## Features
