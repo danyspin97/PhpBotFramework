@@ -18,15 +18,11 @@
 
 namespace PhpBotFramework\Core;
 
-use \Monolog\Logger;
-
-use \Monolog\Handler\StreamHandler;
-
 use PhpBotFramework\Exceptions\BotException;
-
 use PhpBotFramework\Entities\File as TelegramFile;
-
 use PhpBotFramework\Entities\InlineKeyboard;
+
+use \Monolog\Logger;
 
 /**
  * \mainpage
@@ -72,6 +68,8 @@ class CoreBot
     /** \@internal
       * brief Contains parameters of the next request. */
     protected $parameters;
+
+    private $debug;
 
     /**
      * \@internal
@@ -227,6 +225,11 @@ class CoreBot
     {
         $request = $this->_http->request('POST', $url);
         $response = $this->checkRequestError($request, $url);
+
+        if ($this->debug) {
+            print_r($url);
+            print_r($response);
+        }
 
         return $response;
     }

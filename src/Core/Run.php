@@ -20,6 +20,7 @@ namespace PhpBotFramework\Core;
 
 define('WEBHOOK', 0);
 define('GETUPDATES', 1);
+define('DEBUG', 2);
 
 /**
  * \brief Contains helper functions for running the bot
@@ -28,11 +29,18 @@ trait Run
 {
     abstract public function init();
 
+    /** @internal \brief Is the bot in debug mode? */
+    private $debug = false;
+
     /**
      * \addtogroup Bot
      * @{
      */
 
+    /**
+     * \brief Start the bot.
+     * @param int $type How should the bot run?
+     */
     public function run(int $type = WEBHOOK)
     {
         if ($type == WEBHOOK) {
@@ -40,6 +48,10 @@ trait Run
             $this->init();
             $this->processWebhookUpdate();
             return;
+        }
+
+        if ($type == DEBUG) {
+            $this->debug = true;
         }
 
         $this->init();
