@@ -8,13 +8,14 @@
 
 require_once '../../vendor/autoload.php';
 
-class EchoBot extends PhpBotFramework\Bot {
-  // Override processMessage in order to send user the same message it give us.
-  protected function processMessage($message) {
-    $this->sendMessage($message['text']);
-  }
+class EchoBot extends PhpBotFramework\Bot
+{
+    // Override processMessage in order to send user the same message it give us.
+    protected function processMessage($message)
+    {
+        $this->sendMessage($message['text']);
+    }
 }
 
 $bot = new EchoBot('YOUR_BOT_TOKEN');
-$bot->getUpdatesLocal();
-
+$bot->run("getUpdates");

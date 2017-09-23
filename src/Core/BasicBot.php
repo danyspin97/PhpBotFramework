@@ -40,6 +40,7 @@ use PhpBotFramework\Logging\TelegramHandler;
 class BasicBot extends CoreBot
 {
     use CommandHandler,
+        Run,
         Logging;
 
     /** @internal
@@ -80,66 +81,6 @@ class BasicBot extends CoreBot
         class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\EditedMessage');
         class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\ChannelPost');
         class_alias('PhpBotFramework\Entities\Message', 'PhpBotFramework\Entities\EditedChannelPost');
-    }
-
-    /** @} */
-
-    /**
-     * \addtogroup Bot
-     * @{
-     */
-
-    /**
-     * \brief Get update and process it.
-     * \details Call this method if user is using webhook.
-     * It'll get bot's update from php::\input, check it and then process it using <b>processUpdate</b>.
-     */
-    public function processWebhookUpdate()
-    {
-        $this->_is_webhook = true;
-
-        $this->init();
-        $update = json_decode(file_get_contents('php://input'), true);
-        if (!$update) {
-            throw new BotException("Empty webhook update received");
-        }
-        $this->processUpdate($update);
-    }
-
-    /**
-     * \brief Get updates received by the bot, and hold the offset in $offset.
-     * \details Get the <code>update_id</code> of the first update to parse, set it in $offset and
-     * then it start an infinite loop where it processes updates and keep $offset on the update_id of the last update received.
-     * Each processUpdate() method call is surrounded by a try/catch.
-     * @see getUpdates
-     * @param int $limit <i>Optional</i>. Limits the number of updates to be retrieved. Values between 1—100 are accepted.
-     * @param int $timeout <i>Optional</i>. Timeout in seconds for long polling.
-     */
-    public function getUpdatesLocal(int $limit = 100, int $timeout = 60)
-    {
-        $this->init();
-
-        $update = [];
-
-        // While there aren't updates to process
-        while (empty($update = $this->getUpdates(0, 1)));
-
-        $offset = $update[0]['update_id'];
-
-        // Process all updates
-        while (true) {
-            $updates = $this->execRequest("getUpdates?offset=$offset&limit=$limit&timeout=$timeout");
-
-            foreach ($updates as $key => $update) {
-                try {
-                    $this->processUpdate($update);
-                } catch (BotException $e) {
-                    echo $e->getMessage();
-                }
-            }
-
-            $offset += sizeof($updates);
-        }
     }
 
     /** @} */

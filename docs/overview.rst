@@ -18,6 +18,7 @@ Features
 -  Localization
 -  Save status for interactive chats
 -  Upload local files
+-  Logging
 
 ------------
 Requirements

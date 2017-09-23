@@ -84,7 +84,7 @@ At the end of your bot script add:
 
 .. code:: php
 
-    $bot->getUpdatesLocal();
+    $bot->run("getUpdates");
 
 Your bot will start asking updates to Telegram and will process them
 using ``Bot::answerUpdate`` and Commands.
@@ -99,5 +99,5 @@ Add this line at the end of your bot script:
 
 .. code:: php
 
-    $bot->processWebhookUpdate();
+    $bot->run("Webhook");
 

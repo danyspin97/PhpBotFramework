@@ -87,7 +87,7 @@ class BotState
      *     };
      *
      *     $bot->addMessageCommand("start", $start_closure);
-     *     $bot->getUpdatesLocal();
+     *     $bot->run("getUpdates");
      * @{
      */
 

@@ -12,6 +12,8 @@ Welcome to PhpBotFramework’s documentation!
    overview
    installation
    quickstart
+   database
+   logging
 
 .. toctree::
    :maxdepth: 2
@@ -27,7 +29,6 @@ Welcome to PhpBotFramework’s documentation!
    commands
    keyboards
    inline_queries
-   database
 
 Indices and tables
 ==================
