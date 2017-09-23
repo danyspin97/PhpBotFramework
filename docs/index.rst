@@ -25,7 +25,7 @@ Welcome to PhpBotFramework’s documentation!
    :caption: Entities:
 
    commands
-   keyboard
+   keyboards
    inline_queries
    database
 

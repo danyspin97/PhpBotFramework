@@ -19,7 +19,7 @@
 namespace PhpBotFramework\Core;
 
 use PhpBotFramework\Exceptions\BotException;
-use PhpBotFramework\Core\Config;
+use PhpBotFramework\Logging\Logging;
 use PhpBotFramework\Commands\CommandHandler;
 use PhpBotFramework\Entities\Message;
 use PhpBotFramework\Entities\CallbackQuery;
@@ -28,6 +28,7 @@ use PhpBotFramework\Entities\InlineQuery;
 
 use \Monolog\Logger;
 use \Monolog\Handler\StreamHandler;
+use PhpBotFramework\Logging\TelegramHandler;
 
 /**
  * \class Bot Bot
@@ -39,7 +40,7 @@ use \Monolog\Handler\StreamHandler;
 class BasicBot extends CoreBot
 {
     use CommandHandler,
-        Config;
+        Logging;
 
     /** @internal
       * \brief True if the bot is using webhook? */
@@ -214,6 +215,10 @@ class BasicBot extends CoreBot
             print("The bot has been started successfully.\nA log file has been created at " . $logger_path .
                 "\nTo stop it press <C-c> (Control-C).");
             $this->logger->warning("START LOGGING");
+        }
+
+        if ($this->getChatLog() !== "") {
+            $this->logger->pushHandler(new TelegramHandler($this, Logger::WARNING));
         }
     }
 

@@ -123,6 +123,9 @@ trait User
                 $this->bot->chat_id = $user[$this->id_column];
                 $this->bot->sendMessage($text, $reply_markup, null, $parse_mode, $disable_web_preview, $disable_notification);
             }
+
+            // Wait after each message sent to avoid spamming
+            sleep(1);
         }
 
         return $sth->rowCount();

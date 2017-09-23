@@ -36,14 +36,30 @@ CallbackCommands get triggered when an inline button containing the correspondin
                 $bot->editMessageText("This message now contains helpful information");
                 // Don't forget to call Bot::answerCallbackQuery to remove the updating circle in the button
                 $bot->answerCallbackQuery();
-            });
+            }
+    );
+
+------------
+AdminCommand
+------------
+
+Admin command are valid only for selected id.
+
+.. code:: php
+
+    $admin_command = new PhpBotFramework\Commands\AdminCommand("data",
+            function ($bot, $message) {
+                $bot->sendMessage("Important data sent here");
+            },
+            // user_id of admins
+            [ 2501295, 25912395 ]
+    );
 
 ---------------------
 MultiCharacterCommand
 ---------------------
 
 MultiCharacterCommand get triggered by messages what contains the selected keyword, prefixed by one of the wanted characters:
-]
 
 .. code:: php
 

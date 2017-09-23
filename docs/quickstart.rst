@@ -99,5 +99,5 @@ Add this line at the end of your bot script:
 
 .. code:: php
 
-    $bot->processUpdateWebhook();
+    $bot->processWebhookUpdate();
 

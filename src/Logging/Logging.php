@@ -16,34 +16,60 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace PhpBotFramework\Core;
+namespace PhpBotFramework\Logging;
 
 use PhpBotFramework\Exceptions\BotException;
 
 /**
- * \class Inline
- * \brief All inline API Methods.
+ * \class Logging
+ * \brief Logging data and helper.
  */
-trait Config
+trait Logging
 {
     public $bot_name = 'phpbotframework_bot';
 
-    public $chat_log = 0;
+    private $chat_log = "";
 
     public $script_path;
 
+    /**
+     * \brief Set bot name for logging purporses.
+     * @param string $name Bot name.
+     */
     public function setBotName(string $name)
     {
         // TODO Check for trailing characters
         $this->bot_name = $name;
     }
 
-    public function setChatLog(string $chat_id)
+    /**
+     * \brief Get chat_id choosed for logging.
+     * @return string Chat_id target.
+     */
+    public function getChatLog() : string
     {
-        // TODO Check if chat is valid
-        $this->chat_log = $chat_id;
+        return $this->chat_log;
     }
 
+    /**
+     * \brief Set chat_id choosed for logging.
+     * @param string $chat_id Chat_id choosed.
+     * @param bool $skip_check Skip checking if the chat is valid (set true only if the bot is using webhook to get updates).
+     */
+    public function setChatLog(string $chat_id, bool $skip_check = false)
+    {
+        // Check that the bot can write in that chat
+        if (!$skip_check && $this->getChat($chat_id) !== false) {
+            $this->chat_log = $chat_id;
+        }
+    }
+
+    /**
+     * @internal
+     * \brief Get the path of the script.
+     * \description Get the path of the script when getUpdates is used so we can save the log in that folder.
+     * @return string Path of the script.
+     */
     public function getScriptPath() : string
     {
         $backtrace = debug_backtrace(
