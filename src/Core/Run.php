@@ -35,14 +35,15 @@ trait Run
 
     public function run(int $type = WEBHOOK)
     {
-        $this->init();
-
         if ($type == WEBHOOK) {
+            $this->_is_webhook = true;
+            $this->init();
             $this->processWebhookUpdate();
             return;
         }
 
-        $this->getUpdates();
+        $this->init();
+        $this->getUpdatesLocal();
     }
 
     /** @} */
@@ -55,9 +56,6 @@ trait Run
      */
     public function processWebhookUpdate()
     {
-        $this->_is_webhook = true;
-
-        $this->init();
         $update = json_decode(file_get_contents('php://input'), true);
         if (!$update) {
             throw new BotException("Empty webhook update received");
@@ -89,7 +87,7 @@ trait Run
         while (true) {
             $updates = $this->execRequest("getUpdates?offset=$offset&limit=$limit&timeout=$timeout");
 
-            foreach ($updates as $key => $update) {
+            foreach ($updates as $update) {
                 try {
                     $this->processUpdate($update);
                 } catch (BotException $e) {
