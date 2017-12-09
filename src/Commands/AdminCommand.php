@@ -78,7 +78,7 @@ class AdminCommand extends MessageCommand
 
         // If we found a valid command (check first lenght, then use strpos)
         if ($message_is_command && $this->length == $message['entities'][0]['length'] &&
-            strpos($this->command, $message['text'], $message['entities'][0]['offset']) !== false) {
+            strpos($message['text'], $this->command, $message['entities'][0]['offset']) !== false) {
           // Check that the user can execute the command
           if (in_array($message['from']['id'], $this->ids)) {
             return true;
